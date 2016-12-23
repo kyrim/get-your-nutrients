@@ -5,7 +5,7 @@ This will include both macro and micro nutrients, and give suggestions based on 
 from the person's diet.
 
 #TODO
-  [ ] Implement import from USDA foods database (sr228)
-  [ ] Create phoenix ecto models for this database
-  [ ] Create endpoints to access this data in Phoenix
-  [ ] Create front end
+- [ ] Implement import from USDA foods database (sr228)
+- [ ] Create phoenix ecto models for this database
+- [ ] Create endpoints to access this data in Phoenix
+- [ ] Create front end
