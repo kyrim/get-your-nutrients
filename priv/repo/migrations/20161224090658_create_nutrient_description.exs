@@ -2,7 +2,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateNutrientDescription do
   use Ecto.Migration
 
   def change do
-    create table(:nutrient_descriptions, primary_key: false)) do
+    create table(:nutrient_descriptions, primary_key: false) do
       add :nutrient_description_id, :string, size: 3, primary_key: true
       add :units, :string, size: 7, null: false
       add :tag_name, :string, size: 20

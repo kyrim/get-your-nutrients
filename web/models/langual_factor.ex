@@ -1,6 +1,6 @@
 defmodule GetYourNutrients.LangualFactor do
   use GetYourNutrients.Web, :model
-
+  
   schema "langual_factors" do
     belongs_to :food, GetYourNutrients.Food
     belongs_to :langual_description, GetYourNutrients.LangualDescription

@@ -1,12 +1,9 @@
 defmodule GetYourNutrients.Food do
   use GetYourNutrients.Web, :model
 
-  @primary_key false
+  @primary_key {:food_id, :string, []}
+  @derive {Phoenix.Param, key: :food_id}
   schema "foods" do
-    # 5-digit Nutrient Databank number that uniquely identifies a food item.
-    # If this field is defined as numeric, the leading zero will be lost.
-    field :food_id, :string, primary_key: true
-
     # 200-character description of food item.
     field :long_description, :string
 

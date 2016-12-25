@@ -1,12 +1,9 @@
 defmodule GetYourNutrients.LangualDescription do
   use GetYourNutrients.Web, :model
 
-  @primary_key false
+  @primary_key {:langual_description_id, :string, []}
+  @derive {Phoenix.Param, key: :langual_description_id}
   schema "langual_descriptions" do
-    # The LanguaL factor from the Thesaurus. Only those codes used to factor
-    # the foods contained in the LanguaL Factor file are included in this file.
-    field :langual_description_id, :string, primary_key: true
-
     # The description of the LanguaL Factor Code from the thesaurus.
     field :description, :string
 

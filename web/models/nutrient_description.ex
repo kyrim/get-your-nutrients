@@ -1,10 +1,10 @@
 defmodule GetYourNutrients.NutrientDescription do
   use GetYourNutrients.Web, :model
 
+  @primary_key {:nutrient_description_id, :string, []}
+  @derive {Phoenix.Param, key: :nutrient_description_id}
   schema "nutrient_descriptions" do
-    # Unique 3-digit identifier code for a nutrient.
-    field :nutrient_description_id, :string, primary_key: true
-
+    
     # Units of measure (mg, g, μg, and so on).
     field :units, :string
 
