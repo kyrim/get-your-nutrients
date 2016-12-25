@@ -3,8 +3,8 @@ defmodule GetYourNutrients.Repo.Migrations.CreateLangualFactor do
 
   def change do
     create table(:langual_factors, primary_key: false) do
-      add :food_id, size: 5, primary_key: true, references(:foods, on_delete: :nothing)
-      add :langual_description_id, size: 5, primary_key: true, references(:langual_descriptions, on_delete: :nothing)
+      add :food_id, references(:foods, [column: :food_id, type: :string])
+      add :langual_description_id, references(:langual_descriptions, [column: :langual_description_id, type: :string])
 
       timestamps()
     end

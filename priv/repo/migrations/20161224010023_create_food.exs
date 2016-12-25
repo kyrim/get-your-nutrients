@@ -2,7 +2,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
   use Ecto.Migration
 
   def change do
-    create table(:foods) do
+    create table(:foods, primary_key: false) do
       add :food_id, :string, size: 5, primary_key: true
       add :long_description, :string, size: 200
       add :short_description, :string, size: 60
@@ -16,7 +16,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
       add :protein_factor, :float
       add :fat_factor, :float
       add :carbohydrate_factor, :float
-      add :food_group_id, :string, references(:food_groups, column: :food_group_id)
+      add :food_group_id, references(:food_groups, column: :food_group_id, type: :string)
 
       timestamps()
     end
