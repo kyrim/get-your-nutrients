@@ -70,10 +70,17 @@ h2 > a:hover:before {
 /* Progress */
 
 .progress-label {
-  float: left;
+    float: left;
     margin-right: 1em;
+    width: 9em;
+}
+.progress-percentage {
+  float: right;
 }
 
 .progress {
   margin-top: 0.2em;
 }
+
+
+
