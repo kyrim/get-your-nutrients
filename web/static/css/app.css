@@ -2,6 +2,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
+  background-color: '#fdfdfd';
 }
 
 /* Top section */
@@ -23,7 +24,7 @@ body {
   height: 100px;
 }
 
-.header h1, h2 {
+.header h1, .header h2 {
     padding-left: 0.25em;
     display: table-cell;
     vertical-align: middle;
@@ -64,4 +65,15 @@ h2 > a:hover:before {
   visibility: visible;
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
+}
+
+/* Progress */
+
+.progress-label {
+  float: left;
+    margin-right: 1em;
+}
+
+.progress {
+  margin-top: 0.2em;
 }

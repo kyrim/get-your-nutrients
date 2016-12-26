@@ -2,19 +2,18 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 
 
 -- Model
 
 
 type alias Model =
-    {}
+    List ( Float, String )
 
 
 initialModel : Model
 initialModel =
-    {}
+    []
 
 
 init : ( Model, Cmd Msg )
@@ -43,13 +42,51 @@ banner =
         ]
 
 
-view : Model -> Html Msg
-view model =
+topSection : Html Msg
+topSection =
     div [ class "o-grid top-section" ]
         [ div [ class "o-grid__cell" ]
             [ banner ]
         , div [ class "o-grid__cell--offset" ]
             [ div [ class "about" ] [ h2 [ class "c-heading" ] [ a [ href "#about" ] [ text "About" ] ] ]
+            ]
+        ]
+
+
+nutrientProgress : String -> Int -> Html Msg
+nutrientProgress label percentage =
+    div [ class "o-grid__cell" ]
+        [ div [ class "progress-label" ]
+            [ text label ]
+        , div
+            [ class "c-progress u-medium progress" ]
+            [ div
+                [ class "c-progress__bar"
+                , style
+                    [ ( "width", toString (percentage) ++ "%" )
+                    ]
+                ]
+                [ text (toString (percentage) ++ "%") ]
+            ]
+        ]
+
+
+progressSection : Model -> Html Msg
+progressSection model =
+    div [ class "o-grid--large-fit" ]
+        [ nutrientProgress "Vitamin A" 40
+        , nutrientProgress "Vitamin B" 10
+        ]
+
+
+view : Model -> Html Msg
+view model =
+    div []
+        [ topSection
+        , div
+            [ class "o-grid" ]
+            [ div [ class "o-grid__cell" ] [ progressSection model ]
+            , div [ class "o-grid__cell" ] [ text "blah" ]
             ]
         ]
 
