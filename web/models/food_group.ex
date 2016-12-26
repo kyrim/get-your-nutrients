@@ -11,7 +11,6 @@ defmodule GetYourNutrients.FoodGroup do
 # 4-digit code indicating food group to which a food item belongs.
     has_many :foods, GetYourNutrients.Food
 
-    timestamps()
   end
 
   @doc """

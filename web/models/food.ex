@@ -48,10 +48,9 @@ defmodule GetYourNutrients.Food do
     # Factor for calculating calories from carbohydrate
     field :carbohydrate_factor, :float
 
-    belongs_to :food_groups, GetYourNutrients.FoodGroup   
-    has_many :nutrients, FoodGroup 
-
-    timestamps()
+    belongs_to :food_group, GetYourNutrients.FoodGroup   
+    has_many :nutrient, FoodGroup 
+    
   end 
 
   @doc """

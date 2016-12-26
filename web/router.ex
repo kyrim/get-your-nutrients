@@ -19,8 +19,9 @@ defmodule GetYourNutrients.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", GetYourNutrients do
-  #   pipe_through :api
-  # end
+  scope "/api", GetYourNutrients do
+    pipe_through :api
+
+    resources "/food" , FoodController, only: [:index]
+  end
 end

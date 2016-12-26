@@ -59,7 +59,6 @@ defmodule GetYourNutrients.Nutrient do
     belongs_to :foods, GetYourNutrients.Food
     belongs_to :nutrient_descriptions, GetYourNutrients.NutrientDescription
 
-    timestamps()
   end
 
   @doc """

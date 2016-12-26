@@ -25,7 +25,6 @@ defmodule GetYourNutrients.NutrientDescription do
 
     has_many :nutrients, GetYourNutrients.Nutrient
 
-    timestamps()
   end
 
   @doc """
