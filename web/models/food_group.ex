@@ -8,6 +8,9 @@ defmodule GetYourNutrients.FoodGroup do
     # Name of food group.
     field :description, :string
 
+# 4-digit code indicating food group to which a food item belongs.
+    belongs_to :food, GetYourNutrients.Food
+
     timestamps()
   end
 

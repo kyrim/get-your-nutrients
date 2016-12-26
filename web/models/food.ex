@@ -48,11 +48,10 @@ defmodule GetYourNutrients.Food do
     # Factor for calculating calories from carbohydrate
     field :carbohydrate_factor, :float
 
-    # 4-digit code indicating food group to which a food item belongs.
-    belongs_to :food_group, GetYourNutrients.FoodGroup
+    has_one :food_group, FoodGroup    
 
     timestamps()
-  end
+  end 
 
   @doc """
   Builds a changeset based on the `struct` and `params`.
