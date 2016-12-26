@@ -81,6 +81,16 @@ h2 > a:hover:before {
 .progress {
   margin-top: 0.2em;
 }
+.nutrient-progress {
+  opacity:0.7;
+}
 
+.nutrient-progress:hover{
+  opacity:1;
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
 
 

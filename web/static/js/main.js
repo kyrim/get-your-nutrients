@@ -8322,7 +8322,7 @@ var _user$project$Main$nutrientProgress = F2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('o-grid__cell'),
+				_0: _elm_lang$html$Html_Attributes$class('o-grid__cell nutrient-progress'),
 				_1: {ctor: '[]'}
 			},
 			{
