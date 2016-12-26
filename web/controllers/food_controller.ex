@@ -4,7 +4,7 @@ defmodule GetYourNutrients.FoodController do
   alias GetYourNutrients.Food
 
   def index(conn, _params) do
-    foods = Repo.all(Food)
+    foods = Food |> Repo.all    
     render conn, "index.json", foods: foods
   end
 end
