@@ -23,6 +23,8 @@ defmodule GetYourNutrients.NutrientDescription do
     # produced from SR.
     field :sort_order, :integer
 
+    has_many :nutrients, GetYourNutrients.Nutrient
+
     timestamps()
   end
 

@@ -4,6 +4,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
   def change do
     create table(:foods, primary_key: false) do
       add :food_id, :string, size: 5, primary_key: true
+      add :food_group_id, references(:food_groups, column: :food_group_id, type: :string)
       add :long_description, :string, size: 200
       add :short_description, :string, size: 60
       add :common_name, :string, size: 100
@@ -16,11 +17,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
       add :protein_factor, :float
       add :fat_factor, :float
       add :carbohydrate_factor, :float
-      add :food_group_id, references(:food_groups, column: :food_group_id, type: :string)
-
-      timestamps()
     end
     create index(:foods, [:food_group_id])
-
   end
 end

@@ -9,9 +9,6 @@ defmodule GetYourNutrients.Repo.Migrations.CreateNutrientDescription do
       add :description, :string, size: 60, null: false
       add :precision, :string, size: 1, null: false
       add :sort_order, :integer, null: false
-
-      timestamps()
     end
-
   end
 end
