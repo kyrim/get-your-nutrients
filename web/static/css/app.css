@@ -90,7 +90,7 @@ h2 > a:hover:before {
   -webkit-transform: scale(1.05);
   -ms-transform: scale(1.05);
   transform: scale(1.05);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 

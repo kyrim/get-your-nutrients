@@ -2,32 +2,46 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Color exposing (..)
 
 
 -- Model
 
 
+type alias Nutrient =
+    ( String, Int )
+
+
 type alias Model =
-    List ( String, Int )
+    { vitamins : List Nutrient
+    , minerals : List Nutrient
+    }
 
 
 initialModel : Model
 initialModel =
-    [ ( "Biotin", 5 )
-    , ( "Folate", 10 )
-    , ( "Vitamin A", 15 )
-    , ( "Vitamin B1", 16 )
-    , ( "Vitamin B2", 12 )
-    , ( "Vitamin B3", 13 )
-    , ( "Vitamin B5", 17 )
-    , ( "Vitamin B6", 35 )
-    , ( "Vitamin B12", 32 )
-    , ( "Vitamin C", 60 )
-    , ( "Vitamin D", 100 )
-    , ( "Vitamin E", 20 )
-    , ( "Vitamin K", 50 )
-    ]
+    { vitamins =
+        [ ( "Biotin", 5 )
+        , ( "Folate", 10 )
+        , ( "Vitamin A", 15 )
+        , ( "Vitamin B1", 16 )
+        , ( "Vitamin B2", 12 )
+        , ( "Vitamin B3", 13 )
+        , ( "Vitamin B5", 17 )
+        , ( "Vitamin B6", 35 )
+        , ( "Vitamin B12", 32 )
+        , ( "Vitamin C", 60 )
+        , ( "Vitamin D", 100 )
+        , ( "Vitamin E", 20 )
+        , ( "Vitamin K", 50 )
+        ]
+    , minerals =
+        [ ( "Boron", 5 )
+        , ( "Calcium", 10 )
+        , ( "Chromium", 10 )
+        , ( "Copper", 10 )
+        , ( "Fluorine", 20 )
+        ]
+    }
 
 
 init : ( Model, Cmd Msg )
@@ -103,21 +117,21 @@ nutrientProgress label percentage =
             ]
 
 
-createNutrientProgress : ( String, Int ) -> Html Msg
+createNutrientProgress : Nutrient -> Html Msg
 createNutrientProgress ( label, percentage ) =
     nutrientProgress label percentage
 
 
-progressSection : Model -> Html Msg
-progressSection model =
+nutrientSection : List Nutrient -> String -> Html Msg
+nutrientSection nutrients category =
     div [ class "o-grid--large-fit" ]
         ([ div
             [ class "o-grid__cell" ]
-            [ h2 [ class "c-heading" ] [ text "Vitamins" ] ]
+            [ h2 [ class "c-heading" ] [ text category ] ]
          ]
             ++ (List.map
                     createNutrientProgress
-                    model
+                    nutrients
                )
         )
 
@@ -128,7 +142,8 @@ view model =
         [ topSection
         , div
             [ class "o-grid" ]
-            [ div [ class "o-grid__cell" ] [ progressSection model ]
+            [ div [ class "o-grid__cell" ] [ nutrientSection model.vitamins "Vitamins" ]
+            , div [ class "o-grid__cell" ] [ nutrientSection model.minerals "Minerals" ]
             , div [ class "o-grid__cell" ] [ text "blah" ]
             , div [ class "o-grid__cell" ] [ text "blah" ]
             ]
