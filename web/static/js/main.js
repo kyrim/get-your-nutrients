@@ -8296,7 +8296,7 @@ var _user$project$Main$searchBar = A2(
 				_elm_lang$html$Html$button,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('c-button c-button--brand'),
+					_0: _elm_lang$html$Html_Attributes$class('c-button c-button--brand add-button'),
 					_1: {ctor: '[]'}
 				},
 				{
@@ -8610,7 +8610,7 @@ var _user$project$Main$nutrientSection = F2(
 				_elm_lang$core$Basics_ops['++'],
 				{
 					ctor: '::',
-					_0: _user$project$BlazeHelpers$defaultCell(
+					_0: _user$project$BlazeHelpers$fullCell(
 						{
 							ctor: '::',
 							_0: _user$project$BlazeHelpers$heading2(category),

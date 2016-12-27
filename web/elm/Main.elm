@@ -126,7 +126,7 @@ createNutrientProgress ( label, percentage ) =
 nutrientSection : List Nutrient -> String -> Html Msg
 nutrientSection nutrients category =
     gridWithCls "large-fit"
-        ([ defaultCell [ heading2 category ]
+        ([ fullCell [ heading2 category ]
          ]
             ++ (List.map
                     createNutrientProgress
@@ -205,7 +205,7 @@ searchBar =
             , i [ class "a fa fa-search c-icon" ] []
             ]
         , button
-            [ class "c-button c-button--brand" ]
+            [ class "c-button c-button--brand add-button" ]
             [ text "+" ]
         ]
 
