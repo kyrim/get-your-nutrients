@@ -137,20 +137,31 @@ nutrientSection nutrients category =
 
 foodRow : String -> Html Msg
 foodRow food =
-    label [ class "c-card__item c-field c-field--choice food-item" ]
-        [ input [ type_ "checkbox" ] []
-        , text food
+    div []
+        [ label [ class "c-card__item c-field c-field--choice food-item" ]
+            [ input [ type_ "checkbox" ] []
+            , text food
+            ]
         ]
 
 
-selectedFoodsSection : List String -> Html Msg
-selectedFoodsSection foods =
+selectedFoodSection : List String -> Html Msg
+selectedFoodSection food =
     grid
         [ fullCell
-            [ h2 [ class "c-heading u-center-block" ]
-                [ text "Selected Foods"
-                , a [ class "reset-button" ]
-                    [ i [ class "fa fa-undo", title "Clear all foods" ] []
+            [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
+                [ text "Selected Food"
+                , a
+                    [ class "selected-food-button c-tooltip c-tooltip--top"
+                    , attribute "aria-label" "Clear all food"
+                    ]
+                    [ i [ class "fa fa-undo" ] []
+                    ]
+                , a
+                    [ class "selected-food-button c-tooltip c-tooltip--top"
+                    , attribute "aria-label" "Remove selected food"
+                    ]
+                    [ i [ class "fa fa-times" ] []
                     ]
                 ]
             ]
@@ -158,7 +169,7 @@ selectedFoodsSection foods =
             [ div [ class "c-card c-card--menu" ]
                 (List.map
                     foodRow
-                    foods
+                    food
                 )
             ]
         ]
@@ -170,7 +181,7 @@ informationSection heading info =
         [ fullCell
             [ div
                 [ class "c-card u-high" ]
-                [ div [ class "c-card__item c-card__item--info" ]
+                [ div [ class "c-card__item info-panel-header" ]
                     [ text heading ]
                 , div [ class "c-card__item" ]
                     [ div [ class "c-paragraph info-panel-text" ]
@@ -182,20 +193,32 @@ informationSection heading info =
         ]
 
 
+searchBar : Html Msg
+searchBar =
+    div [ class "c-input-group" ]
+        [ div [ class "o-field o-field--icon-right" ]
+            [ input
+                [ class "c-field"
+                , placeholder "Search for food here and add to calculate nutrients"
+                ]
+                []
+            , i [ class "a fa fa-search c-icon" ] []
+            ]
+        , button
+            [ class "c-button c-button--brand" ]
+            [ text "+" ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     div []
         [ topSection
         , grid
             [ cell 50
-                [ defaultCellWithCls "u-letter-box--small"
-                    [ div [ class "o-field o-field--icon-right" ]
-                        [ input [ class "c-field", placeholder "Search here to add foods and calculate nutrients" ] []
-                        , i [ class "a fa fa-search c-icon" ] []
-                        ]
-                    ]
+                [ defaultCellWithCls "u-letter-box--small" [ searchBar ]
                 , grid
-                    [ defaultCell [ selectedFoodsSection [ "apple" ] ]
+                    [ defaultCell [ selectedFoodSection [ "Apple", "Orange", "Potato" ] ]
                     , defaultCell [ heading2 "Recommended" ]
                     ]
                 ]
@@ -205,7 +228,7 @@ view model =
                 ]
             , defaultCell
                 [ heading2 ""
-                , informationSection "Nothing Selected" "Please add foods to begin calculating."
+                , informationSection "Nothing Selected" "Please add food to begin calculating."
                 ]
             ]
         ]

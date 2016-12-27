@@ -8247,6 +8247,66 @@ var _user$project$Main$update = F2(
 		var _p0 = message;
 		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 	});
+var _user$project$Main$searchBar = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('c-input-group'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('o-field o-field--icon-right'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('c-field'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$i,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('a fa fa-search c-icon'),
+							_1: {ctor: '[]'}
+						},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('c-button c-button--brand'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('+'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
 var _user$project$Main$informationSection = F2(
 	function (heading, info) {
 		return _user$project$BlazeHelpers$grid(
@@ -8268,7 +8328,7 @@ var _user$project$Main$informationSection = F2(
 									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('c-card__item c-card__item--info'),
+										_0: _elm_lang$html$Html_Attributes$class('c-card__item info-panel-header'),
 										_1: {ctor: '[]'}
 									},
 									{
@@ -8311,30 +8371,37 @@ var _user$project$Main$informationSection = F2(
 	});
 var _user$project$Main$foodRow = function (food) {
 	return A2(
-		_elm_lang$html$Html$label,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
-			_1: {ctor: '[]'}
-		},
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$input,
+				_elm_lang$html$Html$label,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$type_('checkbox'),
+					_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
 					_1: {ctor: '[]'}
 				},
-				{ctor: '[]'}),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(food),
-				_1: {ctor: '[]'}
-			}
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('checkbox'),
+							_1: {ctor: '[]'}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(food),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$selectedFoodsSection = function (foods) {
+var _user$project$Main$selectedFoodSection = function (food) {
 	return _user$project$BlazeHelpers$grid(
 		{
 			ctor: '::',
@@ -8345,20 +8412,24 @@ var _user$project$Main$selectedFoodsSection = function (foods) {
 						_elm_lang$html$Html$h2,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block'),
+							_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block smaller-tooltip'),
 							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Selected Foods'),
+							_0: _elm_lang$html$Html$text('Selected Food'),
 							_1: {
 								ctor: '::',
 								_0: A2(
 									_elm_lang$html$Html$a,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('reset-button'),
-										_1: {ctor: '[]'}
+										_0: _elm_lang$html$Html_Attributes$class('selected-food-button c-tooltip c-tooltip--top'),
+										_1: {
+											ctor: '::',
+											_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-label', 'Clear all food'),
+											_1: {ctor: '[]'}
+										}
 									},
 									{
 										ctor: '::',
@@ -8367,16 +8438,38 @@ var _user$project$Main$selectedFoodsSection = function (foods) {
 											{
 												ctor: '::',
 												_0: _elm_lang$html$Html_Attributes$class('fa fa-undo'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$title('Clear all foods'),
-													_1: {ctor: '[]'}
-												}
+												_1: {ctor: '[]'}
 											},
 											{ctor: '[]'}),
 										_1: {ctor: '[]'}
 									}),
-								_1: {ctor: '[]'}
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('selected-food-button c-tooltip c-tooltip--top'),
+											_1: {
+												ctor: '::',
+												_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-label', 'Remove selected food'),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$i,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('fa fa-times'),
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
 							}
 						}),
 					_1: {ctor: '[]'}
@@ -8393,7 +8486,7 @@ var _user$project$Main$selectedFoodsSection = function (foods) {
 								_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu'),
 								_1: {ctor: '[]'}
 							},
-							A2(_elm_lang$core$List$map, _user$project$Main$foodRow, foods)),
+							A2(_elm_lang$core$List$map, _user$project$Main$foodRow, food)),
 						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
@@ -8658,40 +8751,7 @@ var _user$project$Main$view = function (model) {
 									'u-letter-box--small',
 									{
 										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('o-field o-field--icon-right'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$input,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('c-field'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$placeholder('Search here to add foods and calculate nutrients'),
-															_1: {ctor: '[]'}
-														}
-													},
-													{ctor: '[]'}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$i,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('a fa fa-search c-icon'),
-															_1: {ctor: '[]'}
-														},
-														{ctor: '[]'}),
-													_1: {ctor: '[]'}
-												}
-											}),
+										_0: _user$project$Main$searchBar,
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -8702,11 +8762,19 @@ var _user$project$Main$view = function (model) {
 											_0: _user$project$BlazeHelpers$defaultCell(
 												{
 													ctor: '::',
-													_0: _user$project$Main$selectedFoodsSection(
+													_0: _user$project$Main$selectedFoodSection(
 														{
 															ctor: '::',
-															_0: 'apple',
-															_1: {ctor: '[]'}
+															_0: 'Apple',
+															_1: {
+																ctor: '::',
+																_0: 'Orange',
+																_1: {
+																	ctor: '::',
+																	_0: 'Potato',
+																	_1: {ctor: '[]'}
+																}
+															}
 														}),
 													_1: {ctor: '[]'}
 												}),
@@ -8744,7 +8812,7 @@ var _user$project$Main$view = function (model) {
 										_0: _user$project$BlazeHelpers$heading2(''),
 										_1: {
 											ctor: '::',
-											_0: A2(_user$project$Main$informationSection, 'Nothing Selected', 'Please add foods to begin calculating.'),
+											_0: A2(_user$project$Main$informationSection, 'Nothing Selected', 'Please add food to begin calculating.'),
 											_1: {ctor: '[]'}
 										}
 									}),

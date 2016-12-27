@@ -86,7 +86,7 @@ body {
   opacity:0.7;
 }
 
-.reset-button:hover, .nutrient-progress:hover{
+.selected-food-button:hover, .nutrient-progress:hover{
   opacity:1;
   -webkit-transform: scale(1.07);
   -ms-transform: scale(1.07);
@@ -101,13 +101,18 @@ body {
   font-size: 0.75em;
 }
 
-/* food item */
+.info-panel-header {
+  background-color: #3FB8AF;
+  color: white;
+}
+
+/* Selected Foods */
 
 .food-item > input {
   margin-right: 1em;
 }
 
-.reset-button {
+.selected-food-button {
   opacity:0.5;
   margin-left : 0.5em;
   float:right;
