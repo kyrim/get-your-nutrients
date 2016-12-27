@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import BlazeHelpers exposing (..)
 
 
 -- Model
@@ -76,7 +77,7 @@ topSection =
         [ div [ class "o-grid__cell" ]
             [ banner ]
         , div [ class "o-grid__cell--offset" ]
-            [ div [ class "about" ] [ h2 [ class "c-heading" ] [ a [ href "#about" ] [ text "About" ] ] ]
+            [ div [ class "about" ] [ h2 [ class "c-heading" ] [ a [ href "about" ] [ text "About" ] ] ]
             ]
         ]
 
@@ -124,10 +125,8 @@ createNutrientProgress ( label, percentage ) =
 
 nutrientSection : List Nutrient -> String -> Html Msg
 nutrientSection nutrients category =
-    div [ class "o-grid--large-fit" ]
-        ([ div
-            [ class "o-grid__cell" ]
-            [ h2 [ class "c-heading" ] [ text category ] ]
+    gridWithCls "large-fit"
+        ([ defaultCell [ heading2 category ]
          ]
             ++ (List.map
                     createNutrientProgress
@@ -136,16 +135,78 @@ nutrientSection nutrients category =
         )
 
 
+foodRow : String -> Html Msg
+foodRow food =
+    label [ class "c-card__item c-field c-field--choice food-item" ]
+        [ input [ type_ "checkbox" ] []
+        , text food
+        ]
+
+
+selectedFoodsSection : List String -> Html Msg
+selectedFoodsSection foods =
+    grid
+        [ fullCell
+            [ h2 [ class "c-heading u-center-block" ]
+                [ text "Selected Foods"
+                , a [ class "reset-button" ]
+                    [ i [ class "fa fa-undo", title "Clear all foods" ] []
+                    ]
+                ]
+            ]
+        , fullCell
+            [ div [ class "c-card c-card--menu" ]
+                (List.map
+                    foodRow
+                    foods
+                )
+            ]
+        ]
+
+
+informationSection : String -> String -> Html Msg
+informationSection heading info =
+    grid
+        [ fullCell
+            [ div
+                [ class "c-card u-high" ]
+                [ div [ class "c-card__item c-card__item--info" ]
+                    [ text heading ]
+                , div [ class "c-card__item" ]
+                    [ div [ class "c-paragraph info-panel-text" ]
+                        [ text info
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     div []
         [ topSection
-        , div
-            [ class "o-grid" ]
-            [ div [ class "o-grid__cell" ] [ nutrientSection model.vitamins "Vitamins" ]
-            , div [ class "o-grid__cell" ] [ nutrientSection model.minerals "Minerals" ]
-            , div [ class "o-grid__cell" ] [ text "blah" ]
-            , div [ class "o-grid__cell" ] [ text "blah" ]
+        , grid
+            [ cell 50
+                [ defaultCellWithCls "u-letter-box--small"
+                    [ div [ class "o-field o-field--icon-right" ]
+                        [ input [ class "c-field", placeholder "Search here to add foods and calculate nutrients" ] []
+                        , i [ class "a fa fa-search c-icon" ] []
+                        ]
+                    ]
+                , grid
+                    [ defaultCell [ selectedFoodsSection [ "apple" ] ]
+                    , defaultCell [ heading2 "Recommended" ]
+                    ]
+                ]
+            , defaultCell
+                [ nutrientSection model.vitamins "Vitamins (DI%)"
+                , nutrientSection model.minerals "Minerals (DI%)"
+                ]
+            , defaultCell
+                [ heading2 ""
+                , informationSection "Nothing Selected" "Please add foods to begin calculating."
+                ]
             ]
         ]
 

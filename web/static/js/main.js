@@ -8141,6 +8141,104 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
+var _user$project$BlazeHelpers$heading3 = function (txt) {
+	return A2(
+		_elm_lang$html$Html$h3,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('c-heading'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(txt),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$BlazeHelpers$heading2 = function (txt) {
+	return A2(
+		_elm_lang$html$Html$h2,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('c-heading'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(txt),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$BlazeHelpers$heading1 = function (txt) {
+	return A2(
+		_elm_lang$html$Html$h1,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('c-heading'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(txt),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$BlazeHelpers$defaultCellWithCls = F2(
+	function (cls, contents) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'o-grid__cell ', cls)),
+				_1: {ctor: '[]'}
+			},
+			contents);
+	});
+var _user$project$BlazeHelpers$defaultCell = function (contents) {
+	return A2(_user$project$BlazeHelpers$defaultCellWithCls, '', contents);
+};
+var _user$project$BlazeHelpers$cellWithCls = F3(
+	function (width, cls, contents) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'o-grid__cell o-grid__cell--width-',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(width),
+							A2(_elm_lang$core$Basics_ops['++'], ' ', cls)))),
+				_1: {ctor: '[]'}
+			},
+			contents);
+	});
+var _user$project$BlazeHelpers$cell = F2(
+	function (width, contents) {
+		return A3(_user$project$BlazeHelpers$cellWithCls, width, '', contents);
+	});
+var _user$project$BlazeHelpers$fullCell = function (contents) {
+	return A2(_user$project$BlazeHelpers$cell, 100, contents);
+};
+var _user$project$BlazeHelpers$gridWithCls = F2(
+	function (cls, contents) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'o-grid o-grid--wrap ', cls)),
+				_1: {ctor: '[]'}
+			},
+			contents);
+	});
+var _user$project$BlazeHelpers$grid = function (contents) {
+	return A2(_user$project$BlazeHelpers$gridWithCls, '', contents);
+};
+
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
@@ -8149,6 +8247,159 @@ var _user$project$Main$update = F2(
 		var _p0 = message;
 		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 	});
+var _user$project$Main$informationSection = F2(
+	function (heading, info) {
+		return _user$project$BlazeHelpers$grid(
+			{
+				ctor: '::',
+				_0: _user$project$BlazeHelpers$fullCell(
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('c-card u-high'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('c-card__item c-card__item--info'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(heading),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('c-paragraph info-panel-text'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(info),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Main$foodRow = function (food) {
+	return A2(
+		_elm_lang$html$Html$label,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$input,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$type_('checkbox'),
+					_1: {ctor: '[]'}
+				},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(food),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Main$selectedFoodsSection = function (foods) {
+	return _user$project$BlazeHelpers$grid(
+		{
+			ctor: '::',
+			_0: _user$project$BlazeHelpers$fullCell(
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$h2,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Selected Foods'),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$a,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('reset-button'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$i,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('fa fa-undo'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$title('Clear all foods'),
+													_1: {ctor: '[]'}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _user$project$BlazeHelpers$fullCell(
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu'),
+								_1: {ctor: '[]'}
+							},
+							A2(_elm_lang$core$List$map, _user$project$Main$foodRow, foods)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _user$project$Main$nutrientProgress = F2(
 	function (label, percentage) {
 		var colour = (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? '#FF3D7F' : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? '#FFAB2E' : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? '#7FC7AF' : '#6ABE6E'));
@@ -8260,37 +8511,16 @@ var _user$project$Main$createNutrientProgress = function (_p1) {
 var _user$project$Main$nutrientSection = F2(
 	function (nutrients, category) {
 		return A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('o-grid--large-fit'),
-				_1: {ctor: '[]'}
-			},
+			_user$project$BlazeHelpers$gridWithCls,
+			'large-fit',
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				{
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
+					_0: _user$project$BlazeHelpers$defaultCell(
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('o-grid__cell'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$h2,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(category),
-									_1: {ctor: '[]'}
-								}),
+							_0: _user$project$BlazeHelpers$heading2(category),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -8389,7 +8619,7 @@ var _user$project$Main$topSection = A2(
 										_elm_lang$html$Html$a,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('#about'),
+											_0: _elm_lang$html$Html_Attributes$href('about'),
 											_1: {ctor: '[]'}
 										},
 										{
@@ -8415,71 +8645,110 @@ var _user$project$Main$view = function (model) {
 			_0: _user$project$Main$topSection,
 			_1: {
 				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('o-grid'),
-						_1: {ctor: '[]'}
-					},
+				_0: _user$project$BlazeHelpers$grid(
 					{
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$div,
+							_user$project$BlazeHelpers$cell,
+							50,
 							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('o-grid__cell'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(_user$project$Main$nutrientSection, model.vitamins, 'Vitamins'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('o-grid__cell'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(_user$project$Main$nutrientSection, model.minerals, 'Minerals'),
-									_1: {ctor: '[]'}
-								}),
-							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$div,
+									_user$project$BlazeHelpers$defaultCellWithCls,
+									'u-letter-box--small',
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('o-grid__cell'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('blah'),
+										_0: A2(
+											_elm_lang$html$Html$div,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('o-field o-field--icon-right'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$input,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('c-field'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$placeholder('Search here to add foods and calculate nutrients'),
+															_1: {ctor: '[]'}
+														}
+													},
+													{ctor: '[]'}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$i,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('a fa fa-search c-icon'),
+															_1: {ctor: '[]'}
+														},
+														{ctor: '[]'}),
+													_1: {ctor: '[]'}
+												}
+											}),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
+									_0: _user$project$BlazeHelpers$grid(
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('o-grid__cell'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('blah'),
-											_1: {ctor: '[]'}
+											_0: _user$project$BlazeHelpers$defaultCell(
+												{
+													ctor: '::',
+													_0: _user$project$Main$selectedFoodsSection(
+														{
+															ctor: '::',
+															_0: 'apple',
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: _user$project$BlazeHelpers$defaultCell(
+													{
+														ctor: '::',
+														_0: _user$project$BlazeHelpers$heading2('Recommended'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
 										}),
 									_1: {ctor: '[]'}
 								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _user$project$BlazeHelpers$defaultCell(
+								{
+									ctor: '::',
+									_0: A2(_user$project$Main$nutrientSection, model.vitamins, 'Vitamins (DI%)'),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main$nutrientSection, model.minerals, 'Minerals (DI%)'),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _user$project$BlazeHelpers$defaultCell(
+									{
+										ctor: '::',
+										_0: _user$project$BlazeHelpers$heading2(''),
+										_1: {
+											ctor: '::',
+											_0: A2(_user$project$Main$informationSection, 'Nothing Selected', 'Please add foods to begin calculating.'),
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {ctor: '[]'}
 							}
 						}
 					}),

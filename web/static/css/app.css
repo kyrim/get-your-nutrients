@@ -2,7 +2,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background-color: '#fdfdfd';
+  background-color: #fbfbfb;
 }
 
 /* Top section */
@@ -36,17 +36,17 @@ body {
 
 /* General Animations */
 
-h2 > a {
+.about > h2 > a {
   position: relative;
   color: #000;
   text-decoration: none;
 }
 
-h2 > a:hover {
+.about > h2 > a:hover {
   color: #000;
 }
 
-h2 > a:before {
+.about > h2 > a:before {
   content: "";
   position: absolute;
   width: 100%;
@@ -61,7 +61,7 @@ h2 > a:before {
   transition: all 0.3s ease-in-out 0s;
 }
 
-h2 > a:hover:before {
+.about > h2 > a:hover:before {
   visibility: visible;
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
@@ -82,15 +82,34 @@ h2 > a:hover:before {
   margin-top: 0.2em;
 }
 .nutrient-progress {
+  cursor: pointer;
   opacity:0.7;
 }
 
-.nutrient-progress:hover{
+.reset-button:hover, .nutrient-progress:hover{
   opacity:1;
-  -webkit-transform: scale(1.05);
-  -ms-transform: scale(1.05);
-  transform: scale(1.05);
+  -webkit-transform: scale(1.07);
+  -ms-transform: scale(1.07);
+  transform: scale(1.07);
   transition: all 0.2s ease;
 }
 
 
+/* Information Panel */
+
+.info-panel-text {
+  font-size: 0.75em;
+}
+
+/* food item */
+
+.food-item > input {
+  margin-right: 1em;
+}
+
+.reset-button {
+  opacity:0.5;
+  margin-left : 0.5em;
+  float:right;
+  cursor: pointer;
+}
