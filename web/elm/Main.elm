@@ -95,7 +95,7 @@ nutrientProgress label percentage =
             else
                 "#6ABE6E"
     in
-        div [ class "o-grid__cell nutrient-progress" ]
+        div [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress" ]
             [ div [ class "progress-label" ]
                 [ span [] [ text label ]
                 , span
