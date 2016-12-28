@@ -73,7 +73,7 @@ banner =
 
 topSection : Html Msg
 topSection =
-    div [ class "o-grid top-section" ]
+    div [ class "o-grid" ]
         [ div [ class "o-grid__cell" ]
             [ banner ]
         , div [ class "o-grid__cell--offset" ]
