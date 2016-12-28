@@ -8662,7 +8662,7 @@ var _user$project$Main$topSection = A2(
 	_elm_lang$html$Html$div,
 	{
 		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('o-grid top-section'),
+		_0: _elm_lang$html$Html_Attributes$class('o-grid'),
 		_1: {ctor: '[]'}
 	},
 	{
