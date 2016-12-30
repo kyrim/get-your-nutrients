@@ -2,60 +2,66 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import Api exposing (..)
+import Http exposing (..)
+import Models exposing (..)
 import BlazeHelpers exposing (..)
 
 
 -- Model
 
 
-type alias Nutrient =
-    ( String, Int )
-
-
 type alias Model =
     { vitamins : List Nutrient
     , minerals : List Nutrient
+    , selectedFoods : List Food
+    , potentialFoods : List Food
+    , recommendedFoods : List Food
+    }
+
+
+nu : ( String, Int ) -> Nutrient
+nu ( name, percentage ) =
+    { nutrientId = name
+    , name = name
+    , percentage = percentage
     }
 
 
 initialModel : Model
 initialModel =
     { vitamins =
-        [ ( "Biotin", 5 )
-        , ( "Folate", 10 )
-        , ( "Vitamin A", 15 )
-        , ( "Vitamin B1", 16 )
-        , ( "Vitamin B2", 12 )
-        , ( "Vitamin B3", 13 )
-        , ( "Vitamin B5", 17 )
-        , ( "Vitamin B6", 35 )
-        , ( "Vitamin B12", 32 )
-        , ( "Vitamin C", 60 )
-        , ( "Vitamin D", 100 )
-        , ( "Vitamin E", 20 )
-        , ( "Vitamin K", 50 )
+        [ nu ( "Biotin", 5 )
+        , nu ( "Folate", 10 )
+        , nu ( "Vitamin A", 15 )
+        , nu ( "Vitamin B1", 16 )
+        , nu ( "Vitamin B2", 12 )
+        , nu ( "Vitamin B3", 13 )
+        , nu ( "Vitamin B5", 17 )
+        , nu ( "Vitamin B6", 35 )
+        , nu ( "Vitamin B12", 32 )
+        , nu ( "Vitamin C", 60 )
+        , nu ( "Vitamin D", 100 )
+        , nu ( "Vitamin E", 20 )
+        , nu ( "Vitamin K", 50 )
         ]
     , minerals =
-        [ ( "Boron", 5 )
-        , ( "Calcium", 10 )
-        , ( "Chromium", 10 )
-        , ( "Copper", 10 )
-        , ( "Fluorine", 20 )
+        [ nu ( "Boron", 5 )
+        , nu ( "Calcium", 10 )
+        , nu ( "Chromium", 10 )
+        , nu ( "Copper", 10 )
+        , nu ( "Fluorine", 20 )
         ]
+    , selectedFoods = [ { foodId = "40", name = "Apple", nutrients = [] } ]
+    , potentialFoods = []
+    , recommendedFoods = [ { foodId = "40", name = "Orange", nutrients = [] } ]
     }
 
 
 init : ( Model, Cmd Msg )
 init =
     ( initialModel, Cmd.none )
-
-
-
--- MESSAGES
-
-
-type Msg
-    = None
 
 
 
@@ -73,8 +79,8 @@ banner =
 
 topSection : Html Msg
 topSection =
-    div [ class "o-grid" ]
-        [ div [ class "o-grid__cell" ]
+    grid
+        [ defaultCell
             [ banner ]
         , div [ class "o-grid__cell--offset" ]
             [ div [ class "about" ] [ h2 [ class "c-heading" ] [ a [ href "about" ] [ text "About" ] ] ]
@@ -94,6 +100,9 @@ nutrientProgress label percentage =
                 "#7FC7AF"
             else
                 "#6ABE6E"
+
+        percentageStr =
+            toString percentage
     in
         div [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress" ]
             [ div [ class "progress-label" ]
@@ -102,7 +111,7 @@ nutrientProgress label percentage =
                     [ class "progress-percentage"
                     , style [ ( "color", colour ) ]
                     ]
-                    [ text ((toString percentage) ++ "%") ]
+                    [ text (percentageStr ++ "%") ]
                 ]
             , div
                 [ class "c-progress u-medium progress" ]
@@ -119,8 +128,8 @@ nutrientProgress label percentage =
 
 
 createNutrientProgress : Nutrient -> Html Msg
-createNutrientProgress ( label, percentage ) =
-    nutrientProgress label percentage
+createNutrientProgress nutrient =
+    nutrientProgress nutrient.name nutrient.percentage
 
 
 nutrientSection : List Nutrient -> String -> Html Msg
@@ -135,18 +144,18 @@ nutrientSection nutrients category =
         )
 
 
-foodRow : String -> Html Msg
+foodRow : Food -> Html Msg
 foodRow food =
     div []
         [ label [ class "c-card__item c-field c-field--choice food-item" ]
             [ input [ type_ "checkbox" ] []
-            , text food
+            , text food.name
             ]
         ]
 
 
-selectedFoodSection : List String -> Html Msg
-selectedFoodSection food =
+selectedFoodSection : List Food -> Html Msg
+selectedFoodSection foods =
     grid
         [ fullCell
             [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
@@ -169,7 +178,33 @@ selectedFoodSection food =
             [ div [ class "c-card c-card--menu" ]
                 (List.map
                     foodRow
-                    food
+                    foods
+                )
+            ]
+        ]
+
+
+recommendedFoodRow : Food -> Html Msg
+recommendedFoodRow food =
+    li [ class "c-card__item food-item" ]
+        [ i [ class "fa fa-arrow-left" ]
+            []
+        , text food.name
+        ]
+
+
+recommendedFoodSection : List Food -> Html Msg
+recommendedFoodSection recommendedFoods =
+    grid
+        [ fullCell
+            [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
+                [ text "Recommended" ]
+            ]
+        , fullCell
+            [ ul [ class "c-card c-card--menu" ]
+                (List.map
+                    recommendedFoodRow
+                    recommendedFoods
                 )
             ]
         ]
@@ -193,20 +228,25 @@ informationSection heading info =
         ]
 
 
-searchBar : Html Msg
-searchBar =
-    div [ class "c-input-group" ]
-        [ div [ class "o-field o-field--icon-right" ]
-            [ input
-                [ class "c-field"
-                , placeholder "Search for food here and add to calculate nutrients"
+searchBar : List Food -> Html Msg
+searchBar potentialFoods =
+    div [ class "search-holder" ]
+        [ fullCell
+            [ div [ class "o-field o-field--icon-right" ]
+                [ input
+                    [ class "c-field"
+                    , placeholder "Search for food here and add to calculate nutrients"
+                    , onInput FindFood
+                    ]
+                    []
+                , i [ class "a fa fa-search c-icon" ] []
                 ]
-                []
-            , i [ class "a fa fa-search c-icon" ] []
             ]
-        , button
-            [ class "c-button c-button--brand add-button" ]
-            [ text "+" ]
+        , div
+            [ class "search-dropdown" ]
+            [ ul [ class "c-card c-card--menu u-high " ]
+                (List.map (\x -> li [ class "c-card__item" ] [ text x.name ]) potentialFoods)
+            ]
         ]
 
 
@@ -216,10 +256,10 @@ view model =
         [ topSection
         , grid
             [ cell 50
-                [ defaultCellWithCls "u-letter-box--small" [ searchBar ]
+                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.potentialFoods ]
                 , grid
-                    [ defaultCell [ selectedFoodSection [ "Apple", "Orange", "Potato" ] ]
-                    , defaultCell [ heading2 "Recommended" ]
+                    [ defaultCell [ selectedFoodSection model.selectedFoods ]
+                    , defaultCell [ recommendedFoodSection model.recommendedFoods ]
                     ]
                 ]
             , defaultCell
@@ -235,13 +275,28 @@ view model =
 
 
 
+-- MESSAGES
+
+
+type Msg
+    = FindFood String
+    | FoundFoods (Result Http.Error (List Food))
+
+
+
 -- Update
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
-        None ->
+        FindFood food ->
+            ( model, (findFoods food FoundFoods) )
+
+        FoundFoods (Ok foods) ->
+            ( { model | potentialFoods = foods }, Cmd.none )
+
+        FoundFoods (Err _) ->
             ( model, Cmd.none )
 
 

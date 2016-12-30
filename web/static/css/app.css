@@ -104,7 +104,7 @@ body {
 
 /* Selected Foods */
 
-.food-item > input {
+.food-item > input, .food-item i {
   margin-right: 1em;
 }
 
@@ -117,4 +117,17 @@ body {
 
 .add-button {
   padding: 5px 15px 5px 15px;
+}
+
+.search-holder {
+    position: relative;
+}
+.search-dropdown {
+    position: absolute;
+    z-index: 1;
+    width : 100%;
+}
+
+input:focus + .search-dropdown {
+    display: block;
 }

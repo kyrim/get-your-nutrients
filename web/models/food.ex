@@ -61,4 +61,10 @@ defmodule GetYourNutrients.Food do
     |> cast(params, [:food_id, :long_description, :short_description, :common_name, :manufacturer_name, :survey, :refuse_description, :refuse_percentage, :scientific_name, :nitrogen_factor, :protein_factor, :fat_factor, :carbohydrate_factor])
     |> validate_required([:food_id, :long_description, :short_description, :common_name, :manufacturer_name, :survey, :refuse_description, :refuse_percentage, :scientific_name, :nitrogen_factor, :protein_factor, :fat_factor, :carbohydrate_factor])
   end
+
+  def search(query, search_term) do
+    from(u in query,
+    where: fragment("similarity(?, ?) > ?", u.long_description, ^search_term, 0.2),
+    order_by: fragment("similarity(?, ?) DESC", u.long_description, ^search_term))
+  end
 end
