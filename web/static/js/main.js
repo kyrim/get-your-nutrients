@@ -9856,29 +9856,51 @@ var _user$project$Main$FoundFoods = function (a) {
 var _user$project$Main$update = F2(
 	function (message, model) {
 		var _p3 = message;
-		if (_p3.ctor === 'FindFood') {
-			return {
-				ctor: '_Tuple2',
-				_0: model,
-				_1: A2(_user$project$Api$findFoods, _p3._0, _user$project$Main$FoundFoods)
-			};
-		} else {
-			if (_p3._0.ctor === 'Ok') {
+		switch (_p3.ctor) {
+			case 'ClearSearch':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _p3._0._0}),
+						{
+							potentialFoods: {ctor: '[]'}
+						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			} else {
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			}
+			case 'FindFood':
+				var _p4 = _p3._0;
+				return _elm_lang$core$String$isEmpty(
+					_elm_lang$core$String$trim(_p4)) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							potentialFoods: {ctor: '[]'}
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: A2(_user$project$Api$findFoods, _p4, _user$project$Main$FoundFoods)
+				};
+			default:
+				if (_p3._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{potentialFoods: _p3._0._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
 		}
 	});
 var _user$project$Main$FindFood = function (a) {
 	return {ctor: 'FindFood', _0: a};
 };
+var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
 var _user$project$Main$searchBar = function (potentialFoods) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9912,7 +9934,11 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 										_1: {
 											ctor: '::',
 											_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$FindFood),
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								},
@@ -9938,7 +9964,7 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('search-dropdown'),
+						_0: _elm_lang$html$Html_Attributes$class('search-dropdown u-pillar-box--large'),
 						_1: {ctor: '[]'}
 					},
 					{

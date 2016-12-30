@@ -237,13 +237,14 @@ searchBar potentialFoods =
                     [ class "c-field"
                     , placeholder "Search for food here and add to calculate nutrients"
                     , onInput FindFood
+                    , onBlur ClearSearch
                     ]
                     []
                 , i [ class "a fa fa-search c-icon" ] []
                 ]
             ]
         , div
-            [ class "search-dropdown" ]
+            [ class "search-dropdown u-pillar-box--large" ]
             [ ul [ class "c-card c-card--menu u-high " ]
                 (List.map (\x -> li [ class "c-card__item" ] [ text x.name ]) potentialFoods)
             ]
@@ -279,7 +280,8 @@ view model =
 
 
 type Msg
-    = FindFood String
+    = ClearSearch
+    | FindFood String
     | FoundFoods (Result Http.Error (List Food))
 
 
@@ -290,8 +292,14 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
+        ClearSearch ->
+            ( { model | potentialFoods = [] }, Cmd.none )
+
         FindFood food ->
-            ( model, (findFoods food FoundFoods) )
+            if (food |> String.trim |> String.isEmpty) then
+                ( { model | potentialFoods = [] }, Cmd.none )
+            else
+                ( model, (findFoods food FoundFoods) )
 
         FoundFoods (Ok foods) ->
             ( { model | potentialFoods = foods }, Cmd.none )
