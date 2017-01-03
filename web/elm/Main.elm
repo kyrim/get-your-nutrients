@@ -53,9 +53,9 @@ initialModel =
         , nu ( "Copper", 10 )
         , nu ( "Fluorine", 20 )
         ]
-    , selectedFoods = [ { foodId = "40", name = "Apple", nutrients = [] } ]
+    , selectedFoods = []
     , potentialFoods = []
-    , recommendedFoods = [ { foodId = "40", name = "Orange", nutrients = [] } ]
+    , recommendedFoods = []
     }
 
 
@@ -246,7 +246,13 @@ searchBar potentialFoods =
         , div
             [ class "search-dropdown u-pillar-box--large" ]
             [ ul [ class "c-card c-card--menu u-high " ]
-                (List.map (\x -> li [ class "c-card__item" ] [ text x.name ]) potentialFoods)
+                (List.map
+                    (\food ->
+                        li [ class "c-card__item", onMouseDown (SelectFood food) ]
+                            [ text food.name ]
+                    )
+                    potentialFoods
+                )
             ]
         ]
 
@@ -283,6 +289,8 @@ type Msg
     = ClearSearch
     | FindFood String
     | FoundFoods (Result Http.Error (List Food))
+    | SelectFood Food
+    | FoundRecommendedFoods (Result Http.Error (List Food))
 
 
 
@@ -293,19 +301,28 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
         ClearSearch ->
-            ( { model | potentialFoods = [] }, Cmd.none )
+            { model | potentialFoods = [] } ! []
 
         FindFood food ->
             if (food |> String.trim |> String.isEmpty) then
-                ( { model | potentialFoods = [] }, Cmd.none )
+                { model | potentialFoods = [] } ! []
             else
-                ( model, (findFoods food FoundFoods) )
+                model ! [ searchFoods food FoundFoods ]
 
         FoundFoods (Ok foods) ->
-            ( { model | potentialFoods = foods }, Cmd.none )
+            { model | potentialFoods = foods } ! []
 
         FoundFoods (Err _) ->
-            ( model, Cmd.none )
+            model ! []
+
+        SelectFood food ->
+            { model | selectedFoods = model.selectedFoods ++ [ food ] } ! [ getRecommendedFoods model.selectedFoods FoundRecommendedFoods ]
+
+        FoundRecommendedFoods (Ok foods) ->
+            { model | potentialFoods = foods } ! []
+
+        FoundRecommendedFoods (Err _) ->
+            model ! []
 
 
 

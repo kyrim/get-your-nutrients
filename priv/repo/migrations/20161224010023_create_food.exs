@@ -23,9 +23,8 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
 
   def up do
     execute "CREATE extension if not exists pg_trgm;"
-    execute "CREATE INDEX foods_long_description_trgm_index ON foods USING gin (long_description gin_trgm_ops);"
+    execute "CREATE INDEX foods_long_description_gin_trgm_index ON foods USING gin (long_description gin_trgm_ops);"
   end
-
   def down do
     execute "DROP INDEX foods_long_description_trgm_index;"
   end

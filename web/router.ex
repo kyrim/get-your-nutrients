@@ -25,6 +25,8 @@ defmodule GetYourNutrients.Router do
     scope "/food" do
         resources "/" , FoodController, only: [:index]
         resources "/search", SearchFoodController, only: [:show], param: "searchKey"
+
+        resources "/recommend", RecommendFoodController, only: [:create]
     end
   end
 end

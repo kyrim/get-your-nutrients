@@ -9144,9 +9144,27 @@ var _user$project$Api$decodeFood = A3(
 			'foodId',
 			_elm_lang$core$Json_Decode$string,
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Food))));
-var _user$project$Api$findFoods = F2(
-	function (food, msg) {
-		var url = A2(_elm_lang$core$Basics_ops['++'], 'api/food/search/', food);
+var _user$project$Api$getRecommendedFoods = F2(
+	function (foods, msg) {
+		var foodNames = _elm_lang$http$Http$jsonBody(
+			_elm_lang$core$Json_Encode$list(
+				A2(
+					_elm_lang$core$List$map,
+					function (food) {
+						return _elm_lang$core$Json_Encode$string(food.foodId);
+					},
+					foods)));
+		var url = 'api/food/recommend';
+		var request = A3(
+			_elm_lang$http$Http$post,
+			url,
+			foodNames,
+			_elm_lang$core$Json_Decode$list(_user$project$Api$decodeFood));
+		return A2(_elm_lang$http$Http$send, msg, request);
+	});
+var _user$project$Api$searchFoods = F2(
+	function (searchKey, msg) {
+		var url = A2(_elm_lang$core$Basics_ops['++'], 'api/food/search/', searchKey);
 		var request = A2(
 			_elm_lang$http$Http$get,
 			url,
@@ -9825,31 +9843,21 @@ var _user$project$Main$initialModel = {
 			}
 		}
 	},
-	selectedFoods: {
-		ctor: '::',
-		_0: {
-			foodId: '40',
-			name: 'Apple',
-			nutrients: {ctor: '[]'}
-		},
-		_1: {ctor: '[]'}
-	},
+	selectedFoods: {ctor: '[]'},
 	potentialFoods: {ctor: '[]'},
-	recommendedFoods: {
-		ctor: '::',
-		_0: {
-			foodId: '40',
-			name: 'Orange',
-			nutrients: {ctor: '[]'}
-		},
-		_1: {ctor: '[]'}
-	}
+	recommendedFoods: {ctor: '[]'}
 };
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Main$Model = F5(
 	function (a, b, c, d, e) {
 		return {vitamins: a, minerals: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e};
 	});
+var _user$project$Main$FoundRecommendedFoods = function (a) {
+	return {ctor: 'FoundRecommendedFoods', _0: a};
+};
+var _user$project$Main$SelectFood = function (a) {
+	return {ctor: 'SelectFood', _0: a};
+};
 var _user$project$Main$FoundFoods = function (a) {
 	return {ctor: 'FoundFoods', _0: a};
 };
@@ -9858,42 +9866,79 @@ var _user$project$Main$update = F2(
 		var _p3 = message;
 		switch (_p3.ctor) {
 			case 'ClearSearch':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
 						model,
 						{
 							potentialFoods: {ctor: '[]'}
 						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+					{ctor: '[]'});
 			case 'FindFood':
 				var _p4 = _p3._0;
 				return _elm_lang$core$String$isEmpty(
-					_elm_lang$core$String$trim(_p4)) ? {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
+					_elm_lang$core$String$trim(_p4)) ? A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
 						model,
 						{
 							potentialFoods: {ctor: '[]'}
 						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				} : {
-					ctor: '_Tuple2',
-					_0: model,
-					_1: A2(_user$project$Api$findFoods, _p4, _user$project$Main$FoundFoods)
-				};
-			default:
+					{ctor: '[]'}) : A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					{
+						ctor: '::',
+						_0: A2(_user$project$Api$searchFoods, _p4, _user$project$Main$FoundFoods),
+						_1: {ctor: '[]'}
+					});
+			case 'FoundFoods':
 				if (_p3._0.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
 							model,
 							{potentialFoods: _p3._0._0}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
+						{ctor: '[]'});
 				} else {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				}
+			case 'SelectFood':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							selectedFoods: A2(
+								_elm_lang$core$Basics_ops['++'],
+								model.selectedFoods,
+								{
+									ctor: '::',
+									_0: _p3._0,
+									_1: {ctor: '[]'}
+								})
+						}),
+					{
+						ctor: '::',
+						_0: A2(_user$project$Api$getRecommendedFoods, model.selectedFoods, _user$project$Main$FoundRecommendedFoods),
+						_1: {ctor: '[]'}
+					});
+			default:
+				if (_p3._0.ctor === 'Ok') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{potentialFoods: _p3._0._0}),
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
 				}
 		}
 	});
@@ -9978,17 +10023,22 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 							},
 							A2(
 								_elm_lang$core$List$map,
-								function (x) {
+								function (food) {
 									return A2(
 										_elm_lang$html$Html$li,
 										{
 											ctor: '::',
 											_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onMouseDown(
+													_user$project$Main$SelectFood(food)),
+												_1: {ctor: '[]'}
+											}
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text(x.name),
+											_0: _elm_lang$html$Html$text(food.name),
 											_1: {ctor: '[]'}
 										});
 								},

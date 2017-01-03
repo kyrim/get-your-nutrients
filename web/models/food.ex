@@ -67,4 +67,10 @@ defmodule GetYourNutrients.Food do
     where: fragment("similarity(?, ?) > ?", u.long_description, ^search_term, 0.2),
     order_by: fragment("similarity(?, ?) DESC", u.long_description, ^search_term))
   end
+
+    def recommend(query, existing_foods) do
+    from(u in query,
+    where: fragment("similarity(?, ?) > ?", u.long_description, ^search_term, 0.2),
+    order_by: fragment("similarity(?, ?) DESC", u.long_description, ^search_term))
+  end
 end
