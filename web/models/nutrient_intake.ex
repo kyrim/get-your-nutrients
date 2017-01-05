@@ -7,7 +7,7 @@ defmodule GetYourNutrients.NutrientIntake do
     field :high_intake_effects, :string
     field :low_intake_amount, :decimal
     field :high_intake_amount, :decimal
-    belongs_to :nutrient_description, GetYourNutrients.NutrientDescription
+    belongs_to :nutrient_descriptions, GetYourNutrients.NutrientDescription
 
     timestamps()
   end

@@ -37,5 +37,5 @@ python3 data-import.py -i NUT_DATA.txt  -o /tmp/NUT_DATA.psv
 psql -f imports.sql -U postgres -d $DATABASE_NAME
 
 # Delete all relevant files once we're finished
-ls *.txt *.pdf | xargs rm
-ls *.psv | xargs rm
+#ls *.txt *.pdf | xargs rm
+#ls *.psv | xargs rm
