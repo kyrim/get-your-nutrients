@@ -103,7 +103,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
     parse_csv_by_map("NUTR_DEF.txt", &(
         %{
           id: &1[0],
-          units_of_measure: &1[1],
+          unit_of_measure: &1[1],
           tag_name: &1[2],
           description: &1[3],
           precision: &1[4],
@@ -139,19 +139,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
 
   def parse_nutrient_intakes do
     csv = File.stream!("./priv/repo/data/nutrient-intake.csv")
-     |> CSV.decode(headers:  true
-            # ["nutrient_name", 
-            #   "nutrient_id", 
-            #   "description", 
-            #   "daily_intake", 
-            #   "low_intake_amount", 
-            #   "low_intake_description", 
-            #   "high_intake_amount", 
-            #   "high_intake_description", 
-            #   "links", 
-            #   "type"
-            # ]
-            )
+     |> CSV.decode(headers: true)
      |> Enum.to_list
 
       csv
@@ -164,10 +152,11 @@ defmodule GetYourNutrients.DatabaseSeeder do
               %NutrientIntake{
                 description: nutrient_intake["description"],
                 daily_intake: nutrient_intake["daily_intake"] |> parse_string_float,
-              low_intake_amount: nutrient_intake["low_intake_amount"] |> parse_string_float,
+                low_intake_amount: nutrient_intake["low_intake_amount"] |> parse_string_float,
                 low_intake_description: nutrient_intake["low_intake_description"],
                 high_intake_amount: nutrient_intake["high_intake_amount"] |> parse_string_float,
                 high_intake_description: nutrient_intake["high_intake_description"],
+                type: nutrient_intake["type"],
                 nutrient_id: nutrient_description_map[nutrient_intake["nutrient_id"]],
            })
        end)
@@ -212,7 +201,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
         inserted =
                 Repo.insert! %Nutrient{
                   name: nutrient_description.description,
-                  units_of_measure: nutrient_description.units_of_measure,
+                  unit_of_measure: nutrient_description.unit_of_measure,
                 }
         {nutrient_description.id, inserted.id}
         end)

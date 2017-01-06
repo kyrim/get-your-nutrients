@@ -9,6 +9,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateNutrientIntake do
       add :low_intake_description, :text
       add :high_intake_amount, :decimal
       add :high_intake_description, :text
+      add :type, :string, null: false
       add :nutrient_id, references(:nutrients, on_delete: :nothing), null: false
 
       timestamps()

@@ -9109,10 +9109,29 @@ var _elm_lang$http$Http$StringPart = F2(
 	});
 var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
 
-var _user$project$Models$Nutrient = F3(
-	function (a, b, c) {
-		return {id: a, name: b, percentage: c};
-	});
+var _user$project$Models$Nutrient = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return {id: a, name: b, description: c, percentage: d, dailyIntake: e, lowIntakeAmount: f, lowIntakeDescription: g, highIntakeAmount: h, highIntakeDescription: i, unitOfMeasure: j, nutrientType: k};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
 var _user$project$Models$FoodNutrient = F2(
 	function (a, b) {
 		return {nutrientId: a, amount: b};
@@ -9121,6 +9140,8 @@ var _user$project$Models$Food = F3(
 	function (a, b, c) {
 		return {id: a, name: b, nutrients: c};
 	});
+var _user$project$Models$Mineral = {ctor: 'Mineral'};
+var _user$project$Models$Vitamin = {ctor: 'Vitamin'};
 
 var _user$project$Api$stringFloatDecoder = A2(
 	_elm_lang$core$Json_Decode$andThen,
@@ -9133,6 +9154,22 @@ var _user$project$Api$stringFloatDecoder = A2(
 		}
 	},
 	_elm_lang$core$Json_Decode$string);
+var _user$project$Api$stringToNutrientType = function (str) {
+	var _p1 = str;
+	switch (_p1) {
+		case 'Vitamin':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Models$Vitamin);
+		case 'Mineral':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Models$Mineral);
+		default:
+			return _elm_lang$core$Json_Decode$fail(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Value ',
+					A2(_elm_lang$core$Basics_ops['++'], str, 'Is not a direction')));
+	}
+};
+var _user$project$Api$decodeNutrientType = A2(_elm_lang$core$Json_Decode$andThen, _user$project$Api$stringToNutrientType, _elm_lang$core$Json_Decode$string);
 var _user$project$Api$decodeFoodNutrient = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 	'amount',
@@ -9157,17 +9194,58 @@ var _user$project$Api$decodeFood = A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Food))));
 var _user$project$Api$decodeNutrient = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'percentage',
-	_elm_lang$core$Json_Decode$int,
+	'nutrientType',
+	_user$project$Api$decodeNutrientType,
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'name',
+		'unitOfMeasure',
 		_elm_lang$core$Json_Decode$string,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'id',
-			_elm_lang$core$Json_Decode$int,
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Nutrient))));
+			'highIntakeDescription',
+			_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'highIntakeAmount',
+				_elm_lang$core$Json_Decode$nullable(_user$project$Api$stringFloatDecoder),
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'lowIntakeDescription',
+					_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
+					A3(
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+						'lowIntakeAmount',
+						_elm_lang$core$Json_Decode$nullable(_user$project$Api$stringFloatDecoder),
+						A3(
+							_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+							'dailyIntake',
+							_user$project$Api$stringFloatDecoder,
+							A4(
+								_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+								'percentage',
+								_elm_lang$core$Json_Decode$int,
+								0,
+								A3(
+									_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+									'description',
+									_elm_lang$core$Json_Decode$string,
+									A3(
+										_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+										'name',
+										_elm_lang$core$Json_Decode$string,
+										A3(
+											_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+											'id',
+											_elm_lang$core$Json_Decode$int,
+											_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Nutrient))))))))))));
+var _user$project$Api$getAllNutrients = function (msg) {
+	var url = 'api/nutrient/';
+	var request = A2(
+		_elm_lang$http$Http$get,
+		url,
+		_elm_lang$core$Json_Decode$list(_user$project$Api$decodeNutrient));
+	return A2(_elm_lang$http$Http$send, msg, request);
+};
 var _user$project$Api$getRecommendedFoods = F2(
 	function (foods, msg) {
 		var foodNames = _elm_lang$http$Http$jsonBody(
@@ -9778,111 +9856,31 @@ var _user$project$Main$topSection = _user$project$BlazeHelpers$grid(
 			_1: {ctor: '[]'}
 		}
 	});
-var _user$project$Main$nu = function (_p0) {
-	var _p1 = _p0;
-	return {id: 0, name: _p1._0, percentage: _p1._1};
-};
 var _user$project$Main$initialModel = {
-	vitamins: {
-		ctor: '::',
-		_0: _user$project$Main$nu(
-			{ctor: '_Tuple2', _0: 'Biotin', _1: 5}),
-		_1: {
-			ctor: '::',
-			_0: _user$project$Main$nu(
-				{ctor: '_Tuple2', _0: 'Folate', _1: 10}),
-			_1: {
-				ctor: '::',
-				_0: _user$project$Main$nu(
-					{ctor: '_Tuple2', _0: 'Vitamin A', _1: 15}),
-				_1: {
-					ctor: '::',
-					_0: _user$project$Main$nu(
-						{ctor: '_Tuple2', _0: 'Vitamin B1', _1: 16}),
-					_1: {
-						ctor: '::',
-						_0: _user$project$Main$nu(
-							{ctor: '_Tuple2', _0: 'Vitamin B2', _1: 12}),
-						_1: {
-							ctor: '::',
-							_0: _user$project$Main$nu(
-								{ctor: '_Tuple2', _0: 'Vitamin B3', _1: 13}),
-							_1: {
-								ctor: '::',
-								_0: _user$project$Main$nu(
-									{ctor: '_Tuple2', _0: 'Vitamin B5', _1: 17}),
-								_1: {
-									ctor: '::',
-									_0: _user$project$Main$nu(
-										{ctor: '_Tuple2', _0: 'Vitamin B6', _1: 35}),
-									_1: {
-										ctor: '::',
-										_0: _user$project$Main$nu(
-											{ctor: '_Tuple2', _0: 'Vitamin B12', _1: 32}),
-										_1: {
-											ctor: '::',
-											_0: _user$project$Main$nu(
-												{ctor: '_Tuple2', _0: 'Vitamin C', _1: 60}),
-											_1: {
-												ctor: '::',
-												_0: _user$project$Main$nu(
-													{ctor: '_Tuple2', _0: 'Vitamin D', _1: 100}),
-												_1: {
-													ctor: '::',
-													_0: _user$project$Main$nu(
-														{ctor: '_Tuple2', _0: 'Vitamin E', _1: 20}),
-													_1: {
-														ctor: '::',
-														_0: _user$project$Main$nu(
-															{ctor: '_Tuple2', _0: 'Vitamin K', _1: 50}),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	},
-	minerals: {
-		ctor: '::',
-		_0: _user$project$Main$nu(
-			{ctor: '_Tuple2', _0: 'Boron', _1: 5}),
-		_1: {
-			ctor: '::',
-			_0: _user$project$Main$nu(
-				{ctor: '_Tuple2', _0: 'Calcium', _1: 10}),
-			_1: {
-				ctor: '::',
-				_0: _user$project$Main$nu(
-					{ctor: '_Tuple2', _0: 'Chromium', _1: 10}),
-				_1: {
-					ctor: '::',
-					_0: _user$project$Main$nu(
-						{ctor: '_Tuple2', _0: 'Copper', _1: 10}),
-					_1: {
-						ctor: '::',
-						_0: _user$project$Main$nu(
-							{ctor: '_Tuple2', _0: 'Fluorine', _1: 20}),
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		}
-	},
+	vitamins: {ctor: '[]'},
+	minerals: {ctor: '[]'},
 	selectedFoods: {ctor: '[]'},
 	potentialFoods: {ctor: '[]'},
 	recommendedFoods: {ctor: '[]'}
 };
-var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
+var _user$project$Main$nu = function (_p0) {
+	var _p1 = _p0;
+	return {id: 0, name: _p1._0, percentage: _p1._1, description: '', dailyIntake: 400, lowIntakeAmount: _elm_lang$core$Maybe$Nothing, lowIntakeDescription: _elm_lang$core$Maybe$Nothing, highIntakeAmount: _elm_lang$core$Maybe$Nothing, highIntakeDescription: _elm_lang$core$Maybe$Nothing, unitOfMeasure: 'mg', nutrientType: _user$project$Models$Vitamin};
+};
 var _user$project$Main$Model = F5(
 	function (a, b, c, d, e) {
 		return {vitamins: a, minerals: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e};
+	});
+var _user$project$Main$GotNutrients = function (a) {
+	return {ctor: 'GotNutrients', _0: a};
+};
+var _user$project$Main$init = A2(
+	_elm_lang$core$Platform_Cmd_ops['!'],
+	_user$project$Main$initialModel,
+	{
+		ctor: '::',
+		_0: _user$project$Api$getAllNutrients(_user$project$Main$GotNutrients),
+		_1: {ctor: '[]'}
 	});
 var _user$project$Main$FoundRecommendedFoods = function (a) {
 	return {ctor: 'FoundRecommendedFoods', _0: a};
@@ -9979,7 +9977,7 @@ var _user$project$Main$update = F2(
 							_1: {ctor: '[]'}
 						});
 				}
-			default:
+			case 'FoundRecommendedFoods':
 				if (_p2._0.ctor === 'Ok') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
@@ -9991,6 +9989,40 @@ var _user$project$Main$update = F2(
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						model,
+						{ctor: '[]'});
+				}
+			default:
+				if (_p2._0.ctor === 'Err') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					var _p4 = _p2._0._0;
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								vitamins: A2(
+									_elm_lang$core$Basics_ops['++'],
+									model.vitamins,
+									A2(
+										_elm_lang$core$List$filter,
+										function (x) {
+											return _elm_lang$core$Native_Utils.eq(x.nutrientType, _user$project$Models$Vitamin);
+										},
+										_p4)),
+								minerals: A2(
+									_elm_lang$core$Basics_ops['++'],
+									model.minerals,
+									A2(
+										_elm_lang$core$List$filter,
+										function (x) {
+											return _elm_lang$core$Native_Utils.eq(x.nutrientType, _user$project$Models$Mineral);
+										},
+										_p4))
+							}),
 						{ctor: '[]'});
 				}
 		}

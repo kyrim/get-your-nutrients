@@ -26,33 +26,21 @@ nu ( name, percentage ) =
     { id = 0
     , name = name
     , percentage = percentage
+    , description = ""
+    , dailyIntake = 400
+    , lowIntakeAmount = Nothing
+    , lowIntakeDescription = Nothing
+    , highIntakeAmount = Nothing
+    , highIntakeDescription = Nothing
+    , unitOfMeasure = "mg"
+    , nutrientType = Vitamin
     }
 
 
 initialModel : Model
 initialModel =
-    { vitamins =
-        [ nu ( "Biotin", 5 )
-        , nu ( "Folate", 10 )
-        , nu ( "Vitamin A", 15 )
-        , nu ( "Vitamin B1", 16 )
-        , nu ( "Vitamin B2", 12 )
-        , nu ( "Vitamin B3", 13 )
-        , nu ( "Vitamin B5", 17 )
-        , nu ( "Vitamin B6", 35 )
-        , nu ( "Vitamin B12", 32 )
-        , nu ( "Vitamin C", 60 )
-        , nu ( "Vitamin D", 100 )
-        , nu ( "Vitamin E", 20 )
-        , nu ( "Vitamin K", 50 )
-        ]
-    , minerals =
-        [ nu ( "Boron", 5 )
-        , nu ( "Calcium", 10 )
-        , nu ( "Chromium", 10 )
-        , nu ( "Copper", 10 )
-        , nu ( "Fluorine", 20 )
-        ]
+    { vitamins = []
+    , minerals = []
     , selectedFoods = []
     , potentialFoods = []
     , recommendedFoods = []
@@ -61,7 +49,7 @@ initialModel =
 
 init : ( Model, Cmd Msg )
 init =
-    ( initialModel, Cmd.none )
+    initialModel ! [ getAllNutrients GotNutrients ]
 
 
 
@@ -292,6 +280,7 @@ type Msg
     | SelectFood Food
     | GotFood (Result Http.Error Food)
     | FoundRecommendedFoods (Result Http.Error (List Food))
+    | GotNutrients (Result Http.Error (List Nutrient))
 
 
 
@@ -333,6 +322,16 @@ update message model =
 
         FoundRecommendedFoods (Err _) ->
             model ! []
+
+        GotNutrients (Err _) ->
+            model ! []
+
+        GotNutrients (Ok nutrients) ->
+            { model
+                | vitamins = model.vitamins ++ (nutrients |> List.filter (\x -> x.nutrientType == Vitamin))
+                , minerals = model.minerals ++ (nutrients |> List.filter (\x -> x.nutrientType == Mineral))
+            }
+                ! []
 
 
 

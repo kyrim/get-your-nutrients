@@ -1,1 +1,24 @@
-nutrient_name,nutrient_id,description,daily_intake,low_intake_amount,low_intake_description,high_intake_amount,high_intake_description,links,typeFolate,417,"Folate helps tissues grow and cells work. Taking the right amount of folic acid before and during pregnancy helps prevent certain birth defects, including spina bifida. Folate also helps prevent anemia.",400,400,"Folate deficiency may cause: Diarrhea, Gray hair, Mouth ulcers, Peptic ulcer, Poor growth, Swollen tongue (glossitis)",400,"Too much folic acid usually doesn't cause harm, because the vitamin is regularly removed from the body through urine.",http://www.nytimes.com/health/guides/nutrition/folic-acid-folate/overview.html,VitaminVitamin A (RAE),320,"Vitamin A helps form and maintain healthy skin, teeth, skeletal and soft tissue, mucus membranes, and skin. It is also known as retinol because it produces the pigments in the retina of the eye. Vitamin A promotes good vision, especially in low light. It may also be needed for reproduction and breast-feeding.",900,900,"If you don't get enough vitamin A, you are more likely to get infectious diseases and vision problems.",900,"If you get too much vitamin A, you can become sick. Large doses of vitamin A can also cause birth defects.",http://www.nytimes.com/health/guides/nutrition/vitamin-a/overview.html,VitaminThiamin (B1),404,,1.4,,,,,,VitaminRiboflavin (B2),405,,1.6,,,,,,VitaminNiacin (B3),406,,18,,,,,,VitaminPantothenic acid (B5),410,,6,,,,,,VitaminVitamin B6,415,,2,,,,,,VitaminVitamin B12,418,,6,,,,,,VitaminVitamin C,401,,75,,,,,,VitaminVitamin D,328,,5,,,,,,VitaminVitamin E,573,,10,,,,,,VitaminVitamin K,430,,80,,,,,,VitaminCalcium,301,,1000,,,,,,MineralCopper,312,,2,,,,,,MineralFluoride,313,,4000,,,,,,MineralIron,303,,15,,,,,,MineralMagnesium,304,,350,,,,,,MineralManganese,315,,5,,,,,,MineralPhosphorus,305,,1000,,,,,,MineralPotassium,306,,3500,,,,,,MineralSelenium,317,,35,,,,,,MineralSodium,307,,2400,,,,,,MineralZinc,309,,15,,,,,,Mineral
+nutrient_name,nutrient_id,description,daily_intake,low_intake_amount,low_intake_description,high_intake_amount,high_intake_description,links,type
+Folate,417,"Folate helps tissues grow and cells work. Taking the right amount of folic acid before and during pregnancy helps prevent certain birth defects, including spina bifida. Folate also helps prevent anemia.",400,400,"Folate deficiency may cause: Diarrhea, Gray hair, Mouth ulcers, Peptic ulcer, Poor growth, Swollen tongue (glossitis)",400,"Too much folic acid usually doesn't cause harm, because the vitamin is regularly removed from the body through urine.","http://www.nytimes.com/health/guides/nutrition/folic-acid-folate/overview.html",Vitamin
+Vitamin A (RAE),320,"Vitamin A helps form and maintain healthy skin, teeth, skeletal and soft tissue, mucus membranes, and skin. It is also known as retinol because it produces the pigments in the retina of the eye. Vitamin A promotes good vision, especially in low light. It may also be needed for reproduction and breast-feeding.",900,900,"If you don't get enough vitamin A, you are more likely to get infectious diseases and vision problems.",900,"If you get too much vitamin A, you can become sick. Large doses of vitamin A can also cause birth defects.","http://www.nytimes.com/health/guides/nutrition/vitamin-a/overview.html",Vitamin
+Thiamin (B1),404,,1.4,,,,,,Vitamin
+Riboflavin (B2),405,,1.6,,,,,,Vitamin
+Niacin (B3),406,,18,,,,,,Vitamin
+Pantothenic acid (B5),410,,6,,,,,,Vitamin
+Vitamin B6,415,,2,,,,,,Vitamin
+Vitamin B12,418,,6,,,,,,Vitamin
+Vitamin C,401,,75,,,,,,Vitamin
+Vitamin D,328,,5,,,,,,Vitamin
+Vitamin E,573,,10,,,,,,Vitamin
+Vitamin K,430,,80,,,,,,Vitamin
+Calcium,301,,1000,,,,,,Mineral
+Copper,312,,2,,,,,,Mineral
+Fluoride,313,,4000,,,,,,Mineral
+Iron,303,,15,,,,,,Mineral
+Magnesium,304,,350,,,,,,Mineral
+Manganese,315,,5,,,,,,Mineral
+Phosphorus,305,,1000,,,,,,Mineral
+Potassium,306,,3500,,,,,,Mineral
+Selenium,317,,35,,,,,,Mineral
+Sodium,307,,2400,,,,,,Mineral
+Zinc,309,,15,,,,,,Mineral

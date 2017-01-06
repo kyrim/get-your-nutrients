@@ -22,10 +22,14 @@ defmodule GetYourNutrients.Router do
   scope "/api", GetYourNutrients do
     pipe_through :api
 
-    scope "/food" do
-        resources "/" , FoodController, only: [:show]
-        resources "/search", SearchFoodController, only: [:show], param: "searchKey"
-        resources "/recommend", RecommendFoodController, only: [:create]
-    end
+      scope "/food" do
+          resources "/" , FoodController, only: [:show]
+          resources "/search", SearchFoodController, only: [:show], param: "searchKey"
+          resources "/recommend", RecommendFoodController, only: [:create]
+      end
+
+      scope "/nutrient" do
+        resources "/" , NutrientIntakeController, only: [:index]
+      end
   end
 end

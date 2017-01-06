@@ -1,7 +1,7 @@
 module Api exposing (..)
 
 import Http exposing (send, get, Error)
-import Models exposing (Nutrient, Food, FoodNutrient)
+import Models exposing (Nutrient, Food, FoodNutrient, NutrientType)
 import Json.Decode exposing (int, string, float, nullable, Decoder, list, map, andThen, succeed, fail)
 import Json.Encode exposing (string)
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
@@ -53,12 +53,32 @@ getRecommendedFoods foods msg =
         Http.send msg request
 
 
+getAllNutrients : (Result Error (List Nutrient) -> a) -> Cmd a
+getAllNutrients msg =
+    let
+        url =
+            "api/nutrient/"
+
+        request =
+            Http.get url (list decodeNutrient)
+    in
+        Http.send msg request
+
+
 decodeNutrient : Decoder Nutrient
 decodeNutrient =
     decode Nutrient
         |> required "id" Json.Decode.int
         |> required "name" Json.Decode.string
-        |> required "percentage" int
+        |> required "description" Json.Decode.string
+        |> optional "percentage" int 0
+        |> required "dailyIntake" stringFloatDecoder
+        |> required "lowIntakeAmount" (nullable stringFloatDecoder)
+        |> required "lowIntakeDescription" (nullable Json.Decode.string)
+        |> required "highIntakeAmount" (nullable stringFloatDecoder)
+        |> required "highIntakeDescription" (nullable Json.Decode.string)
+        |> required "unitOfMeasure" Json.Decode.string
+        |> required "nutrientType" decodeNutrientType
 
 
 decodeFoodNutrient : Decoder FoodNutrient
@@ -78,6 +98,24 @@ decodeFood =
 
 
 -- Helpers
+
+
+stringToNutrientType : String -> Decoder NutrientType
+stringToNutrientType str =
+    case str of
+        "Vitamin" ->
+            succeed Models.Vitamin
+
+        "Mineral" ->
+            succeed Models.Mineral
+
+        _ ->
+            fail ("Value " ++ str ++ "Is not a direction")
+
+
+decodeNutrientType : Decoder NutrientType
+decodeNutrientType =
+    Json.Decode.string |> andThen stringToNutrientType
 
 
 stringFloatDecoder : Decoder Float

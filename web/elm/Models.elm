@@ -1,10 +1,23 @@
 module Models exposing (..)
 
 
+type NutrientType
+    = Vitamin
+    | Mineral
+
+
 type alias Nutrient =
     { id : Int
     , name : String
+    , description : String
     , percentage : Int
+    , dailyIntake : Float
+    , lowIntakeAmount : Maybe Float
+    , lowIntakeDescription : Maybe String
+    , highIntakeAmount : Maybe Float
+    , highIntakeDescription : Maybe String
+    , unitOfMeasure : String
+    , nutrientType : NutrientType
     }
 
 
