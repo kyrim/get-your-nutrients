@@ -28,7 +28,7 @@ getRecommendedFoods foods msg =
         foodNames =
             (List.map
                 (\food ->
-                    Json.Encode.string food.foodId
+                    Json.Encode.int food.id
                 )
                 foods
             )
@@ -44,7 +44,7 @@ getRecommendedFoods foods msg =
 decodeNutrient : Decoder Nutrient
 decodeNutrient =
     decode Nutrient
-        |> required "nutrientId" Json.Decode.string
+        |> required "id" Json.Decode.int
         |> required "name" Json.Decode.string
         |> required "percentage" int
 
@@ -52,6 +52,6 @@ decodeNutrient =
 decodeFood : Decoder Food
 decodeFood =
     decode Food
-        |> required "foodId" Json.Decode.string
+        |> required "id" Json.Decode.int
         |> required "name" Json.Decode.string
         |> required "nutrients" (list decodeNutrient)

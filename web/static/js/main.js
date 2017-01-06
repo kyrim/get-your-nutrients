@@ -9111,11 +9111,11 @@ var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
 
 var _user$project$Models$Nutrient = F3(
 	function (a, b, c) {
-		return {nutrientId: a, name: b, percentage: c};
+		return {id: a, name: b, percentage: c};
 	});
 var _user$project$Models$Food = F3(
 	function (a, b, c) {
-		return {foodId: a, name: b, nutrients: c};
+		return {id: a, name: b, nutrients: c};
 	});
 
 var _user$project$Api$decodeNutrient = A3(
@@ -9128,8 +9128,8 @@ var _user$project$Api$decodeNutrient = A3(
 		_elm_lang$core$Json_Decode$string,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'nutrientId',
-			_elm_lang$core$Json_Decode$string,
+			'id',
+			_elm_lang$core$Json_Decode$int,
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Nutrient))));
 var _user$project$Api$decodeFood = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
@@ -9141,8 +9141,8 @@ var _user$project$Api$decodeFood = A3(
 		_elm_lang$core$Json_Decode$string,
 		A3(
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'foodId',
-			_elm_lang$core$Json_Decode$string,
+			'id',
+			_elm_lang$core$Json_Decode$int,
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Food))));
 var _user$project$Api$getRecommendedFoods = F2(
 	function (foods, msg) {
@@ -9151,7 +9151,7 @@ var _user$project$Api$getRecommendedFoods = F2(
 				A2(
 					_elm_lang$core$List$map,
 					function (food) {
-						return _elm_lang$core$Json_Encode$string(food.foodId);
+						return _elm_lang$core$Json_Encode$int(food.id);
 					},
 					foods)));
 		var url = 'api/food/recommend';
@@ -9747,8 +9747,7 @@ var _user$project$Main$topSection = _user$project$BlazeHelpers$grid(
 	});
 var _user$project$Main$nu = function (_p0) {
 	var _p1 = _p0;
-	var _p2 = _p1._0;
-	return {nutrientId: _p2, name: _p2, percentage: _p1._1};
+	return {id: 0, name: _p1._0, percentage: _p1._1};
 };
 var _user$project$Main$initialModel = {
 	vitamins: {
@@ -9863,8 +9862,8 @@ var _user$project$Main$FoundFoods = function (a) {
 };
 var _user$project$Main$update = F2(
 	function (message, model) {
-		var _p3 = message;
-		switch (_p3.ctor) {
+		var _p2 = message;
+		switch (_p2.ctor) {
 			case 'ClearSearch':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -9875,9 +9874,9 @@ var _user$project$Main$update = F2(
 						}),
 					{ctor: '[]'});
 			case 'FindFood':
-				var _p4 = _p3._0;
+				var _p3 = _p2._0;
 				return _elm_lang$core$String$isEmpty(
-					_elm_lang$core$String$trim(_p4)) ? A2(
+					_elm_lang$core$String$trim(_p3)) ? A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
@@ -9889,16 +9888,16 @@ var _user$project$Main$update = F2(
 					model,
 					{
 						ctor: '::',
-						_0: A2(_user$project$Api$searchFoods, _p4, _user$project$Main$FoundFoods),
+						_0: A2(_user$project$Api$searchFoods, _p3, _user$project$Main$FoundFoods),
 						_1: {ctor: '[]'}
 					});
 			case 'FoundFoods':
-				if (_p3._0.ctor === 'Ok') {
+				if (_p2._0.ctor === 'Ok') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{potentialFoods: _p3._0._0}),
+							{potentialFoods: _p2._0._0}),
 						{ctor: '[]'});
 				} else {
 					return A2(
@@ -9917,7 +9916,7 @@ var _user$project$Main$update = F2(
 								model.selectedFoods,
 								{
 									ctor: '::',
-									_0: _p3._0,
+									_0: _p2._0,
 									_1: {ctor: '[]'}
 								})
 						}),
@@ -9927,12 +9926,12 @@ var _user$project$Main$update = F2(
 						_1: {ctor: '[]'}
 					});
 			default:
-				if (_p3._0.ctor === 'Ok') {
+				if (_p2._0.ctor === 'Ok') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{potentialFoods: _p3._0._0}),
+							{potentialFoods: _p2._0._0}),
 						{ctor: '[]'});
 				} else {
 					return A2(

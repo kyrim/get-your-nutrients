@@ -7,7 +7,7 @@ defmodule GetYourNutrients.SearchFoodView do
 
   def render("search_food.json", %{search_food: search_food}) do
     %{
-      foodId: search_food.foodId,
+      id: search_food.id,
       name: search_food.name,
       nutrients: [] 
     }

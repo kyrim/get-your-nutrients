@@ -8,7 +8,7 @@ defmodule GetYourNutrients.RecommendFoodController do
     recommend_food = 
           Food
               |> Food.recommend(params) 
-              |> select([f], %{foodId: f.id, name: f.name})
+              |> select([f], %{id: f.id, name: f.name})
               |> limit(10)
               |> Repo.all
 

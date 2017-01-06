@@ -28,7 +28,7 @@ defmodule GetYourNutrients.Food do
 
    def recommend(query, recommended_foods) do
     from(u in query,
-    where: fragment("similarity(?, ?) > ?", u.description, ^recommended_foods, 0.2),
-    order_by: fragment("similarity(?, ?) DESC", u.description, ^recommended_foods))
+    where: fragment("similarity(?, ?) > ?", u.name, ^recommended_foods, 0.2),
+    order_by: fragment("similarity(?, ?) DESC", u.name, ^recommended_foods))
   end
 end

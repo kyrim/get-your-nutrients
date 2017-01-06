@@ -23,7 +23,7 @@ type alias Model =
 
 nu : ( String, Int ) -> Nutrient
 nu ( name, percentage ) =
-    { nutrientId = name
+    { id = 0
     , name = name
     , percentage = percentage
     }

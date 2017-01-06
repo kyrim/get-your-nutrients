@@ -2,14 +2,14 @@ module Models exposing (Nutrient, Food)
 
 
 type alias Nutrient =
-    { nutrientId : String
+    { id : Int
     , name : String
     , percentage : Int
     }
 
 
 type alias Food =
-    { foodId : String
+    { id : Int
     , name : String
     , nutrients : List Nutrient
     }

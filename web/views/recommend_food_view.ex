@@ -7,7 +7,7 @@ defmodule GetYourNutrients.RecommendFoodView do
 
   def render("recommend_food.json", %{recommend_food: recommend_food}) do
     %{
-      foodId: recommend_food.foodId,
+      id: recommend_food.id,
       name: recommend_food.name,
       nutrients: [] 
     }
