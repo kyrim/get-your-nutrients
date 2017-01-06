@@ -236,7 +236,7 @@ searchBar potentialFoods =
                 [ input
                     [ class "c-field"
                     , placeholder "Search for food here and add to calculate nutrients"
-                    , onInput FindFood
+                    , onInput SearchForFood
                     , onBlur ClearSearch
                     ]
                     []
@@ -287,9 +287,10 @@ view model =
 
 type Msg
     = ClearSearch
-    | FindFood String
+    | SearchForFood String
     | FoundFoods (Result Http.Error (List Food))
     | SelectFood Food
+    | GotFood (Result Http.Error Food)
     | FoundRecommendedFoods (Result Http.Error (List Food))
 
 
@@ -303,19 +304,25 @@ update message model =
         ClearSearch ->
             { model | potentialFoods = [] } ! []
 
-        FindFood food ->
+        SearchForFood food ->
             if (food |> String.trim |> String.isEmpty) then
                 { model | potentialFoods = [] } ! []
             else
                 model ! [ searchFoods food FoundFoods ]
 
-        FoundFoods (Ok foods) ->
-            { model | potentialFoods = foods } ! []
-
         FoundFoods (Err _) ->
             model ! []
 
+        FoundFoods (Ok foods) ->
+            { model | potentialFoods = foods } ! []
+
         SelectFood food ->
+            model ! [ getFood food.id GotFood ]
+
+        GotFood (Err _) ->
+            model ! []
+
+        GotFood (Ok food) ->
             { model | selectedFoods = model.selectedFoods ++ [ food ] } ! [ getRecommendedFoods model.selectedFoods FoundRecommendedFoods ]
 
         FoundRecommendedFoods (Ok foods) ->

@@ -9,7 +9,7 @@ defmodule GetYourNutrients.RecommendFoodView do
     %{
       id: recommend_food.id,
       name: recommend_food.name,
-      nutrients: [] 
+      foodNutrients: [] 
     }
   end
 end

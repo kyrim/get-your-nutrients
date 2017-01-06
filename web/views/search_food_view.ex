@@ -9,7 +9,7 @@ defmodule GetYourNutrients.SearchFoodView do
     %{
       id: search_food.id,
       name: search_food.name,
-      nutrients: [] 
+      foodNutrients: [] 
     }
   end
 end

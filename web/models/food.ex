@@ -7,7 +7,8 @@ defmodule GetYourNutrients.Food do
     field :fat_factor, :decimal, null: true
     field :carbohydrate_factor, :decimal, null: true
     belongs_to :food_group, GetYourNutrients.FoodGroup
-
+    has_many :food_nutrients, GetYourNutrients.FoodNutrient
+    
     timestamps()
   end
 

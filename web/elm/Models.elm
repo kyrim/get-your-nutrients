@@ -1,4 +1,4 @@
-module Models exposing (Nutrient, Food)
+module Models exposing (..)
 
 
 type alias Nutrient =
@@ -8,8 +8,14 @@ type alias Nutrient =
     }
 
 
+type alias FoodNutrient =
+    { nutrientId : Int
+    , amount : Float
+    }
+
+
 type alias Food =
     { id : Int
     , name : String
-    , nutrients : List Nutrient
+    , nutrients : List FoodNutrient
     }

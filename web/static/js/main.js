@@ -9113,11 +9113,48 @@ var _user$project$Models$Nutrient = F3(
 	function (a, b, c) {
 		return {id: a, name: b, percentage: c};
 	});
+var _user$project$Models$FoodNutrient = F2(
+	function (a, b) {
+		return {nutrientId: a, amount: b};
+	});
 var _user$project$Models$Food = F3(
 	function (a, b, c) {
 		return {id: a, name: b, nutrients: c};
 	});
 
+var _user$project$Api$stringFloatDecoder = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (val) {
+		var _p0 = _elm_lang$core$String$toFloat(val);
+		if (_p0.ctor === 'Ok') {
+			return _elm_lang$core$Json_Decode$succeed(_p0._0);
+		} else {
+			return _elm_lang$core$Json_Decode$fail(_p0._0);
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _user$project$Api$decodeFoodNutrient = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'amount',
+	_user$project$Api$stringFloatDecoder,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'nutrientId',
+		_elm_lang$core$Json_Decode$int,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$FoodNutrient)));
+var _user$project$Api$decodeFood = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'foodNutrients',
+	_elm_lang$core$Json_Decode$list(_user$project$Api$decodeFoodNutrient),
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'name',
+		_elm_lang$core$Json_Decode$string,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'id',
+			_elm_lang$core$Json_Decode$int,
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Food))));
 var _user$project$Api$decodeNutrient = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 	'percentage',
@@ -9131,19 +9168,6 @@ var _user$project$Api$decodeNutrient = A3(
 			'id',
 			_elm_lang$core$Json_Decode$int,
 			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Nutrient))));
-var _user$project$Api$decodeFood = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'nutrients',
-	_elm_lang$core$Json_Decode$list(_user$project$Api$decodeNutrient),
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'name',
-		_elm_lang$core$Json_Decode$string,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'id',
-			_elm_lang$core$Json_Decode$int,
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Food))));
 var _user$project$Api$getRecommendedFoods = F2(
 	function (foods, msg) {
 		var foodNames = _elm_lang$http$Http$jsonBody(
@@ -9160,6 +9184,15 @@ var _user$project$Api$getRecommendedFoods = F2(
 			url,
 			foodNames,
 			_elm_lang$core$Json_Decode$list(_user$project$Api$decodeFood));
+		return A2(_elm_lang$http$Http$send, msg, request);
+	});
+var _user$project$Api$getFood = F2(
+	function (foodId, msg) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'api/food/',
+			_elm_lang$core$Basics$toString(foodId));
+		var request = A2(_elm_lang$http$Http$get, url, _user$project$Api$decodeFood);
 		return A2(_elm_lang$http$Http$send, msg, request);
 	});
 var _user$project$Api$searchFoods = F2(
@@ -9854,6 +9887,9 @@ var _user$project$Main$Model = F5(
 var _user$project$Main$FoundRecommendedFoods = function (a) {
 	return {ctor: 'FoundRecommendedFoods', _0: a};
 };
+var _user$project$Main$GotFood = function (a) {
+	return {ctor: 'GotFood', _0: a};
+};
 var _user$project$Main$SelectFood = function (a) {
 	return {ctor: 'SelectFood', _0: a};
 };
@@ -9873,7 +9909,7 @@ var _user$project$Main$update = F2(
 							potentialFoods: {ctor: '[]'}
 						}),
 					{ctor: '[]'});
-			case 'FindFood':
+			case 'SearchForFood':
 				var _p3 = _p2._0;
 				return _elm_lang$core$String$isEmpty(
 					_elm_lang$core$String$trim(_p3)) ? A2(
@@ -9892,39 +9928,55 @@ var _user$project$Main$update = F2(
 						_1: {ctor: '[]'}
 					});
 			case 'FoundFoods':
-				if (_p2._0.ctor === 'Ok') {
+				if (_p2._0.ctor === 'Err') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{potentialFoods: _p2._0._0}),
 						{ctor: '[]'});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
 				}
 			case 'SelectFood':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							selectedFoods: A2(
-								_elm_lang$core$Basics_ops['++'],
-								model.selectedFoods,
-								{
-									ctor: '::',
-									_0: _p2._0,
-									_1: {ctor: '[]'}
-								})
-						}),
+					model,
 					{
 						ctor: '::',
-						_0: A2(_user$project$Api$getRecommendedFoods, model.selectedFoods, _user$project$Main$FoundRecommendedFoods),
+						_0: A2(_user$project$Api$getFood, _p2._0.id, _user$project$Main$GotFood),
 						_1: {ctor: '[]'}
 					});
+			case 'GotFood':
+				if (_p2._0.ctor === 'Err') {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{
+								selectedFoods: A2(
+									_elm_lang$core$Basics_ops['++'],
+									model.selectedFoods,
+									{
+										ctor: '::',
+										_0: _p2._0._0,
+										_1: {ctor: '[]'}
+									})
+							}),
+						{
+							ctor: '::',
+							_0: A2(_user$project$Api$getRecommendedFoods, model.selectedFoods, _user$project$Main$FoundRecommendedFoods),
+							_1: {ctor: '[]'}
+						});
+				}
 			default:
 				if (_p2._0.ctor === 'Ok') {
 					return A2(
@@ -9941,8 +9993,8 @@ var _user$project$Main$update = F2(
 				}
 		}
 	});
-var _user$project$Main$FindFood = function (a) {
-	return {ctor: 'FindFood', _0: a};
+var _user$project$Main$SearchForFood = function (a) {
+	return {ctor: 'SearchForFood', _0: a};
 };
 var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
 var _user$project$Main$searchBar = function (potentialFoods) {
@@ -9977,7 +10029,7 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 										_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$FindFood),
+											_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$SearchForFood),
 											_1: {
 												ctor: '::',
 												_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
