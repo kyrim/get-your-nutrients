@@ -9911,8 +9911,10 @@ var _user$project$Main$update = F2(
 					{ctor: '[]'});
 			case 'SearchForFood':
 				var _p3 = _p2._0;
-				return _elm_lang$core$String$isEmpty(
-					_elm_lang$core$String$trim(_p3)) ? A2(
+				return (_elm_lang$core$String$isEmpty(
+					_elm_lang$core$String$trim(_p3)) || (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$String$length(_p3),
+					3) < 0)) ? A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,

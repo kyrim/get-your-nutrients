@@ -3,7 +3,7 @@ defmodule GetYourNutrients.NutrientIntakeTest do
 
   alias GetYourNutrients.NutrientIntake
 
-  @valid_attrs %{daily_intake: "120.5", high_intake_amount: "120.5", high_intake_effects: "some content", low_intake_amount: "120.5", low_intake_effects: "some content"}
+  @valid_attrs %{daily_intake: "120.5", description: "some content", high_intake_amount: "120.5", high_intake_description: "some content", low_intake_amount: "120.5", low_intake_description: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

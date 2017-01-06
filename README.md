@@ -9,3 +9,5 @@ from the person's diet.
 - [ ] Create phoenix ecto models for this database
 - [ ] Create endpoints to access this data in Phoenix
 - [ ] Create front end
+- [ ] Missing Nutrient Data according to http://www.lenntech.com/recommended-daily-intake.htm ? 
+      (Biotin, Boron, Chlorine, Chromium, Iodine, Molybdenum, Nickel, Vanadium) 

@@ -305,7 +305,7 @@ update message model =
             { model | potentialFoods = [] } ! []
 
         SearchForFood food ->
-            if (food |> String.trim |> String.isEmpty) then
+            if ((food |> String.trim |> String.isEmpty) || String.length food < 3) then
                 { model | potentialFoods = [] } ! []
             else
                 model ! [ searchFoods food FoundFoods ]
@@ -323,7 +323,10 @@ update message model =
             model ! []
 
         GotFood (Ok food) ->
-            { model | selectedFoods = model.selectedFoods ++ [ food ] } ! [ getRecommendedFoods model.selectedFoods FoundRecommendedFoods ]
+            { model
+                | selectedFoods = model.selectedFoods ++ [ food ]
+            }
+                ! [ getRecommendedFoods model.selectedFoods FoundRecommendedFoods ]
 
         FoundRecommendedFoods (Ok foods) ->
             { model | potentialFoods = foods } ! []

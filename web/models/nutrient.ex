@@ -4,7 +4,7 @@ defmodule GetYourNutrients.Nutrient do
   schema "nutrients" do
     field :name, :string
     field :units_of_measure, :string
-
+    has_one :nutrient, Nutrient
     timestamps()
   end
 
