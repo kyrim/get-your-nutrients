@@ -40,4 +40,5 @@ config :get_your_nutrients, GetYourNutrients.Repo,
   password: "postgres",
   database: "get_your_nutrients_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 10,
+  after_connect: {GetYourNutrients.Repo, :set_limit, [0.3]}
