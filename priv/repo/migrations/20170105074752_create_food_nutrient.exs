@@ -3,9 +3,9 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFoodNutrient do
 
   def change do
     create table(:food_nutrients) do
-      add :amount, :decimal
-      add :food_id, references(:foods, on_delete: :nothing)
-      add :nutrient_id, references(:nutrients, on_delete: :nothing)
+      add :amount, :decimal, null: false
+      add :food_id, references(:foods, on_delete: :nothing), null: false
+      add :nutrient_id, references(:nutrients, on_delete: :nothing), null: false
 
       timestamps()
     end

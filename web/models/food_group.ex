@@ -2,7 +2,7 @@ defmodule GetYourNutrients.FoodGroup do
   use GetYourNutrients.Web, :model
 
   schema "food_groups" do
-    field :description, :string
+    field :description, :string, null: false
     has_many :foods, GetYourNutrients.Food
 
     timestamps()

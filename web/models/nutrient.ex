@@ -2,9 +2,9 @@ defmodule GetYourNutrients.Nutrient do
   use GetYourNutrients.Web, :model
 
   schema "nutrients" do
-    field :name, :string
+    field :name, :string, null: false
     field :units_of_measure, :string
-    has_one :nutrient, Nutrient
+    has_one :nutrient_intake, NutrientIntake
     timestamps()
   end
 

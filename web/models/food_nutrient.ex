@@ -2,7 +2,7 @@ defmodule GetYourNutrients.FoodNutrient do
   use GetYourNutrients.Web, :model
 
   schema "food_nutrients" do
-    field :amount, :decimal
+    field :amount, :decimal, null: false
     belongs_to :food, GetYourNutrients.Food
     belongs_to :nutrient, GetYourNutrients.Nutrient
 

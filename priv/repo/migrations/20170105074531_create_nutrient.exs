@@ -3,8 +3,8 @@ defmodule GetYourNutrients.Repo.Migrations.CreateNutrient do
 
   def change do
     create table(:nutrients) do
-      add :name, :string
-      add :units_of_measure, :string
+      add :name, :string, null: false
+      add :units_of_measure, :string, null: false
 
       timestamps()
     end

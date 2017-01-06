@@ -4,6 +4,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
   alias GetYourNutrients.Food
   alias GetYourNutrients.Nutrient
   alias GetYourNutrients.FoodNutrient
+  alias GetYourNutrients.NutrientIntake
 
 @file_list ["FD_GROUP.txt", "FOOD_DES.txt", "NUTR_DEF.txt", "NUT_DATA.txt"]
 
@@ -136,6 +137,42 @@ defmodule GetYourNutrients.DatabaseSeeder do
     ))
   end
 
+  def parse_nutrient_intakes do
+    csv = File.stream!("./priv/repo/data/nutrient-intake.csv")
+     |> CSV.decode(headers:  true
+            # ["nutrient_name", 
+            #   "nutrient_id", 
+            #   "description", 
+            #   "daily_intake", 
+            #   "low_intake_amount", 
+            #   "low_intake_description", 
+            #   "high_intake_amount", 
+            #   "high_intake_description", 
+            #   "links", 
+            #   "type"
+            # ]
+            )
+     |> Enum.to_list
+
+      csv
+  end
+
+  def create_nutrient_intakes(nutrient_intakes, nutrient_description_map) do
+    nutrient_intakes
+     |> Enum.map(fn nutrient_intake -> 
+          Repo.insert!(
+              %NutrientIntake{
+                description: nutrient_intake["description"],
+                daily_intake: nutrient_intake["daily_intake"] |> parse_string_float,
+              low_intake_amount: nutrient_intake["low_intake_amount"] |> parse_string_float,
+                low_intake_description: nutrient_intake["low_intake_description"],
+                high_intake_amount: nutrient_intake["high_intake_amount"] |> parse_string_float,
+                high_intake_description: nutrient_intake["high_intake_description"],
+                nutrient_id: nutrient_description_map[nutrient_intake["nutrient_id"]],
+           })
+       end)
+  end
+
   def create_food_groups(food_groups) do
     food_groups 
       |> Enum.map(fn food_group -> 
@@ -202,6 +239,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
 
   def clear do
     Repo.delete_all(FoodNutrient)
+    Repo.delete_all(NutrientIntake)
     Repo.delete_all(Nutrient)
     Repo.delete_all(Food)
     Repo.delete_all(FoodGroup)
@@ -229,14 +267,17 @@ defmodule GetYourNutrients.DatabaseSeeder do
     delete_food_data_files
     unzip_food_data_files
 
+    IO.puts "Creating nutrients"
+    nutrients_map = parse_nutrient_descriptions |> create_nutrients
+
+    IO.puts "Creating nutrient intakes"
+    parse_nutrient_intakes |> create_nutrient_intakes(nutrients_map)
+
     IO.puts "Creating food groups"
     food_group_map = parse_food_groups |> create_food_groups
 
     IO.puts "Creating foods"
     foods_map = parse_foods |> create_foods(food_group_map)
-
-    IO.puts "Creating nutrients"
-    nutrients_map = parse_nutrient_descriptions |> create_nutrients
 
     IO.puts "Creating food nutrients"
     parse_nutrients |> create_food_nutrients(foods_map, nutrients_map)

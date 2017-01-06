@@ -3,11 +3,11 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
 
   def change do
     create table(:foods) do
-      add :name, :string
+      add :name, :string, null: false
       add :protein_factor, :decimal, null: true
       add :fat_factor, :decimal, null: true
       add :carbohydrate_factor, :decimal, null: true
-      add :food_group_id, references(:food_groups, on_delete: :nothing)
+      add :food_group_id, references(:food_groups, on_delete: :nothing), null: false
 
       timestamps()
     end

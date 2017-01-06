@@ -3,7 +3,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFoodGroup do
 
   def change do
     create table(:food_groups) do
-      add :description, :string
+      add :description, :string, null: false
 
       timestamps()
     end

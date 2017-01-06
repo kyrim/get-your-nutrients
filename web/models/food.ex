@@ -2,7 +2,7 @@ defmodule GetYourNutrients.Food do
   use GetYourNutrients.Web, :model
 
   schema "foods" do
-    field :name, :string
+    field :name, :string, null: false
     field :protein_factor, :decimal, null: true
     field :fat_factor, :decimal, null: true
     field :carbohydrate_factor, :decimal, null: true
