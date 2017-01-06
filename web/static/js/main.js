@@ -10018,7 +10018,7 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 							_elm_lang$html$Html$ul,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu u-high '),
+								_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu u-high'),
 								_1: {ctor: '[]'}
 							},
 							A2(

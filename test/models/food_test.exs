@@ -3,7 +3,7 @@ defmodule GetYourNutrients.FoodTest do
 
   alias GetYourNutrients.Food
 
-  @valid_attrs %{carbohydrate_factor: "some content", common_name: "some content", fat_factor: "some content", food_id: "some content", long_description: "some content", manufacturer_name: "some content", nitrogen_factor: "some content", protein_factor: "some content", refuse_description: "some content", refuse_percentage: "some content", scientific_name: "some content", short_description: "some content", survey: "some content"}
+  @valid_attrs %{carbohydrate_factor: "120.5", description: "some content", fat_factor: "120.5", protein_factor: "120.5"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

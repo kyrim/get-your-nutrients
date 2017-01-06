@@ -8,7 +8,7 @@ defmodule GetYourNutrients.SearchFoodController do
     search_food = 
           Food
               |> Food.search(searchKey) 
-              |> select([f], %{foodId: f.food_id, name: f.long_description})
+              |> select([f], %{foodId: f.id, name: f.name})
               |> limit(10)
               |> Repo.all
 

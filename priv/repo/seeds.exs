@@ -1,10 +1,10 @@
 defmodule GetYourNutrients.DatabaseSeeder do
-   alias GetYourNutrients.Repo
-#   alias GetYourNutrients.FoodGroup
-#   alias GetYourNutrients.Food
-#   alias GetYourNutrients.NutrientDescription
-#   alias GetYourNutrients.NutrientIntake
-#   alias GetYourNutrients.Nutrient
+  alias GetYourNutrients.Repo
+  alias GetYourNutrients.FoodGroup
+  alias GetYourNutrients.Food
+  alias GetYourNutrients.Nutrient
+  alias GetYourNutrients.FoodNutrient
+
 @file_list ["FD_GROUP.txt", "FOOD_DES.txt", "NUTR_DEF.txt", "NUT_DATA.txt"]
 
   def unzip_food_data_files do 
@@ -81,7 +81,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
     parse_csv_by_map("FOOD_DES.txt", &(
         %{
           id: &1[0],
-          foodgroup_id: &1[1],
+          food_group_id: &1[1],
           long_description: &1[2],
           short_description: &1[3],
           common_name: &1[4],
@@ -136,50 +136,118 @@ defmodule GetYourNutrients.DatabaseSeeder do
     ))
   end
 
-  # def insert_food_group(foodGroup) do
-  #   # Repo.insert! %FoodGroup{
-  #   #   title: (@titles_list |> Enum.take_random),
-  #   #   url: (@urls_list |> Enum.take_random)
-  #   # }
-  # end
+  def create_food_groups(food_groups) do
+    food_groups 
+      |> Enum.map(fn food_group -> 
+        inserted =
+                Repo.insert!(
+                  %FoodGroup{
+                    description: food_group.description
+                })
+
+        {food_group.id, inserted.id}
+
+        end)
+        |> Enum.into(%{})
+  end
+
+  def create_foods(foods, food_groups_map) do
+    foods 
+      |> Enum.map(fn food ->
+
+        inserted = Repo.insert!(
+                %Food{
+                    name: food.long_description,
+                    protein_factor: food.protein_factor |> parse_string_float,
+                    fat_factor: food.fat_factor |> parse_string_float,
+                    carbohydrate_factor: food.carbohydrate_factor |> parse_string_float,
+                    food_group_id: food_groups_map[food.food_group_id]
+                })
+        
+        {food.id, inserted.id}
+        end)
+        |> Enum.into(%{})
+  end
+
+  def create_nutrients(nutrient_descriptions) do
+    nutrient_descriptions 
+      |> Enum.map(fn nutrient_description -> 
+        inserted =
+                Repo.insert! %Nutrient{
+                  name: nutrient_description.description,
+                  units_of_measure: nutrient_description.units_of_measure,
+                }
+        {nutrient_description.id, inserted.id}
+        end)
+        |> Enum.into(%{})
+  end
+
+  def create_food_nutrients(nutrients, foods_map, nutrients_map) do
+    max_parameter_size = 65535
+    chunk_amount = round(max_parameter_size / 5)
+
+     nutrients 
+      |> Enum.map(fn nutrient -> 
+            [
+              amount: nutrient.amount |> parse_string_float,
+              food_id: foods_map[nutrient.food_id],
+              nutrient_id: nutrients_map[nutrient.nutrient_description_id],
+              inserted_at: Ecto.DateTime.utc,
+              updated_at: Ecto.DateTime.utc
+            ]
+      end)
+      |> Enum.chunk(chunk_amount)
+      |> Enum.each(&(Repo.insert_all(FoodNutrient, &1)))
+  end
 
   def clear do
-    Repo.delete_all
+    Repo.delete_all(FoodNutrient)
+    Repo.delete_all(Nutrient)
+    Repo.delete_all(Food)
+    Repo.delete_all(FoodGroup)
+  end
+
+  def parse_string_float(float) when is_nil(float) do
+     nil 
+  end
+
+  def parse_string_float("") do
+     nil 
+  end
+
+  def parse_string_float(float) do 
+    float |> Float.parse |> elem(0) 
+  end
+
+  def run do
+    IO.puts "Starting to seed database"
+
+    IO.puts "Clearing old databases"
+    clear
+
+    IO.puts "Deleting old food data files and unzipping new ones"
+    delete_food_data_files
+    unzip_food_data_files
+
+    IO.puts "Creating food groups"
+    food_group_map = parse_food_groups |> create_food_groups
+
+    IO.puts "Creating foods"
+    foods_map = parse_foods |> create_foods(food_group_map)
+
+    IO.puts "Creating nutrients"
+    nutrients_map = parse_nutrient_descriptions |> create_nutrients
+
+    IO.puts "Creating food nutrients"
+    parse_nutrients |> create_food_nutrients(foods_map, nutrients_map)
+
+    IO.puts "deleting food data files"
+    delete_food_data_files
+
+    IO.puts "Done seeding database"
   end
 
 end
 
-defmodule Parallel do
-  def map(collection, func) do
-    collection
-    |> Enum.map(&(Task.async(fn -> func.(&1) end)))
-    |> Enum.map(&Task.await/1)
-  end
-end
+GetYourNutrients.DatabaseSeeder.run
 
-IO.puts "Starting to seed database"
-
-IO.puts "Deleting old food data files"
-GetYourNutrients.DatabaseSeeder.delete_food_data_files
-
-IO.puts "Unziping food data files"
-GetYourNutrients.DatabaseSeeder.unzip_food_data_files
-
-IO.puts "Parsing food groups"
-food_groups = GetYourNutrients.DatabaseSeeder.parse_food_groups
-
-IO.puts "Parsing foods"
-foods = GetYourNutrients.DatabaseSeeder.parse_foods
-
-IO.puts "parsing nutrient descriptions"
-nutrient_descriptions = GetYourNutrients.DatabaseSeeder.parse_nutrient_descriptions
-
-IO.puts "parsing nutrients"
-nutrients = GetYourNutrients.DatabaseSeeder.parse_nutrients
-
-IO.puts "deleting old food data files"
-GetYourNutrients.DatabaseSeeder.delete_food_data_files
-
-IO.puts "Done seeding database"
-
-# (1..100) |> Enum.each(fn _ -> <%= application_name %>.DatabaseSeeder.insert_link end)

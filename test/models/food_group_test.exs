@@ -3,7 +3,7 @@ defmodule GetYourNutrients.FoodGroupTest do
 
   alias GetYourNutrients.FoodGroup
 
-  @valid_attrs %{description: "some content", foodgroup_id: "some content"}
+  @valid_attrs %{description: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

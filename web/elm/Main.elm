@@ -245,7 +245,7 @@ searchBar potentialFoods =
             ]
         , div
             [ class "search-dropdown u-pillar-box--large" ]
-            [ ul [ class "c-card c-card--menu u-high " ]
+            [ ul [ class "c-card c-card--menu u-high" ]
                 (List.map
                     (\food ->
                         li [ class "c-card__item", onMouseDown (SelectFood food) ]
