@@ -71,7 +71,7 @@ decodeNutrient =
         |> required "id" Json.Decode.int
         |> required "name" Json.Decode.string
         |> required "description" Json.Decode.string
-        |> optional "percentage" int 0
+        |> optional "amount" Json.Decode.float 0
         |> required "dailyIntake" stringFloatDecoder
         |> required "lowIntakeAmount" (nullable stringFloatDecoder)
         |> required "lowIntakeDescription" (nullable Json.Decode.string)
@@ -93,6 +93,8 @@ decodeFood =
     decode Food
         |> required "id" Json.Decode.int
         |> required "name" Json.Decode.string
+        |> optional "amount" Json.Decode.int 100
+        |> optional "quantity" Json.Decode.int 1
         |> required "foodNutrients" (list decodeFoodNutrient)
 
 

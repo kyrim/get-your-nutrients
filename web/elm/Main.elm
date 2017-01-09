@@ -13,34 +13,16 @@ import BlazeHelpers exposing (..)
 
 
 type alias Model =
-    { vitamins : List Nutrient
-    , minerals : List Nutrient
+    { nutrients : List Nutrient
     , selectedFoods : List Food
     , potentialFoods : List Food
     , recommendedFoods : List Food
     }
 
 
-nu : ( String, Int ) -> Nutrient
-nu ( name, percentage ) =
-    { id = 0
-    , name = name
-    , percentage = percentage
-    , description = ""
-    , dailyIntake = 400
-    , lowIntakeAmount = Nothing
-    , lowIntakeDescription = Nothing
-    , highIntakeAmount = Nothing
-    , highIntakeDescription = Nothing
-    , unitOfMeasure = "mg"
-    , nutrientType = Vitamin
-    }
-
-
 initialModel : Model
 initialModel =
-    { vitamins = []
-    , minerals = []
+    { nutrients = []
     , selectedFoods = []
     , potentialFoods = []
     , recommendedFoods = []
@@ -117,7 +99,7 @@ nutrientProgress label percentage =
 
 createNutrientProgress : Nutrient -> Html Msg
 createNutrientProgress nutrient =
-    nutrientProgress nutrient.name nutrient.percentage
+    nutrientProgress nutrient.name (nutrient.amount / nutrient.dailyIntake * 100 |> round)
 
 
 nutrientSection : List Nutrient -> String -> Html Msg
@@ -136,40 +118,63 @@ foodRow : Food -> Html Msg
 foodRow food =
     div []
         [ label [ class "c-card__item c-field c-field--choice food-item" ]
-            [ input [ type_ "checkbox" ] []
+            [ input [ type_ "number", Html.Attributes.min "1", value (food.quantity |> toString) ] []
             , text food.name
+            ]
+        ]
+
+
+emptyList : String -> Html Msg
+emptyList message =
+    div [ class "c-card list-empty" ]
+        [ div [ class "c-card-item list-empty-text" ]
+            [ text message
             ]
         ]
 
 
 selectedFoodSection : List Food -> Html Msg
 selectedFoodSection foods =
-    grid
-        [ fullCell
-            [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
-                [ text "Selected Food"
-                , a
-                    [ class "selected-food-button c-tooltip c-tooltip--top"
-                    , attribute "aria-label" "Clear all food"
-                    ]
-                    [ i [ class "fa fa-undo" ] []
-                    ]
-                , a
-                    [ class "selected-food-button c-tooltip c-tooltip--top"
-                    , attribute "aria-label" "Remove selected food"
-                    ]
-                    [ i [ class "fa fa-times" ] []
-                    ]
-                ]
-            ]
-        , fullCell
-            [ div [ class "c-card c-card--menu" ]
+    let
+        displaySelectedFoodMenu =
+            (List.length foods) > 0
+
+        selectedFoodMenu =
+            div [ class "c-card c-card--menu" ]
                 (List.map
                     foodRow
                     foods
                 )
+
+        selectedFoodDisplay =
+            if displaySelectedFoodMenu then
+                selectedFoodMenu
+            else
+                emptyList "Please search a food above"
+    in
+        grid
+            [ fullCell
+                [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
+                    [ text "Selected Food"
+                    , a
+                        [ class "selected-food-button c-tooltip c-tooltip--top"
+                        , attribute "aria-label" "Clear all food"
+                        , onClick ClearAllSelected
+                        ]
+                        [ i [ class "fa fa-undo" ] []
+                        ]
+                    , a
+                        [ class "selected-food-button c-tooltip c-tooltip--top"
+                        , attribute "aria-label" "Remove selected food"
+                        ]
+                        [ i [ class "fa fa-times" ] []
+                        ]
+                    ]
+                ]
+            , fullCell
+                [ selectedFoodDisplay
+                ]
             ]
-        ]
 
 
 recommendedFoodRow : Food -> Html Msg
@@ -183,19 +188,32 @@ recommendedFoodRow food =
 
 recommendedFoodSection : List Food -> Html Msg
 recommendedFoodSection recommendedFoods =
-    grid
-        [ fullCell
-            [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
-                [ text "Recommended" ]
-            ]
-        , fullCell
-            [ ul [ class "c-card c-card--menu" ]
+    let
+        displayRecommendedFoodMenu =
+            (List.length recommendedFoods) > 0
+
+        recommendedFoodMenu =
+            ul [ class "c-card c-card--menu" ]
                 (List.map
                     recommendedFoodRow
                     recommendedFoods
                 )
+
+        recommendedFoodDisplay =
+            if displayRecommendedFoodMenu then
+                recommendedFoodMenu
+            else
+                emptyList "Please search a food above"
+    in
+        grid
+            [ fullCell
+                [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
+                    [ text "Recommended" ]
+                ]
+            , fullCell
+                [ recommendedFoodDisplay
+                ]
             ]
-        ]
 
 
 informationSection : String -> String -> Html Msg
@@ -203,7 +221,7 @@ informationSection heading info =
     grid
         [ fullCell
             [ div
-                [ class "c-card u-high" ]
+                [ class "c-card info-panel" ]
                 [ div [ class "c-card__item info-panel-header" ]
                     [ text heading ]
                 , div [ class "c-card__item" ]
@@ -253,20 +271,24 @@ view model =
             [ cell 50
                 [ defaultCellWithCls "u-letter-box--small" [ searchBar model.potentialFoods ]
                 , grid
-                    [ defaultCell [ selectedFoodSection model.selectedFoods ]
-                    , defaultCell [ recommendedFoodSection model.recommendedFoods ]
+                    [ cell 60 [ selectedFoodSection model.selectedFoods ]
+                    , cell 40 [ recommendedFoodSection model.recommendedFoods ]
                     ]
                 ]
             , defaultCell
-                [ nutrientSection model.vitamins "Vitamins (DI%)"
-                , nutrientSection model.minerals "Minerals (DI%)"
-                ]
-            , defaultCell
-                [ heading2 ""
-                , informationSection "Nothing Selected" "Please add food to begin calculating."
+                [ grid
+                    [ fullCell [ informationSection "Nothing Selected" "Please add food to begin calculating." ]
+                    , cell 50 [ nutrientSection (filterNutrient model.nutrients Vitamin) "Vitamins (DI%)" ]
+                    , cell 50 [ nutrientSection (filterNutrient model.nutrients Mineral) "Minerals (DI%)" ]
+                    ]
                 ]
             ]
         ]
+
+
+filterNutrient : List Nutrient -> NutrientType -> List Nutrient
+filterNutrient nutrients nutrientType =
+    List.filter (\nutrient -> nutrient.nutrientType == nutrientType) nutrients
 
 
 
@@ -275,6 +297,7 @@ view model =
 
 type Msg
     = ClearSearch
+    | ClearAllSelected
     | SearchForFood String
     | FoundFoods (Result Http.Error (List Food))
     | SelectFood Food
@@ -292,6 +315,9 @@ update message model =
     case message of
         ClearSearch ->
             { model | potentialFoods = [] } ! []
+
+        ClearAllSelected ->
+            { model | selectedFoods = [] } ! []
 
         SearchForFood food ->
             if ((food |> String.trim |> String.isEmpty) || String.length food < 3) then
@@ -328,8 +354,7 @@ update message model =
 
         GotNutrients (Ok nutrients) ->
             { model
-                | vitamins = model.vitamins ++ (nutrients |> List.filter (\x -> x.nutrientType == Vitamin))
-                , minerals = model.minerals ++ (nutrients |> List.filter (\x -> x.nutrientType == Mineral))
+                | nutrients = model.nutrients ++ nutrients
             }
                 ! []
 

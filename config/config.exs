@@ -12,6 +12,7 @@ config :get_your_nutrients,
 # Configures the endpoint
 config :get_your_nutrients, GetYourNutrients.Endpoint,
   url: [host: "localhost"],
+  http: [compress: true],
   secret_key_base: "m63LMN6uuy9PHRK0BqIGre2zCNk7RQyVV5wsBHvHWN02H17DzGOsrGhFr/+oQEPE",
   render_errors: [view: GetYourNutrients.ErrorView, accepts: ~w(html json)],
   pubsub: [name: GetYourNutrients.PubSub,

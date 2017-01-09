@@ -215,7 +215,9 @@ defmodule GetYourNutrients.DatabaseSeeder do
      nutrients 
       |> Enum.map(fn nutrient -> 
             [
-              amount: nutrient.amount |> parse_string_float,
+              # Dividing by 100 because it is per 100 grams.
+              # It's much easier to calculate per gram.
+              amount: (nutrient.amount / 100) |> parse_string_float,
               food_id: foods_map[nutrient.food_id],
               nutrient_id: nutrients_map[nutrient.nutrient_description_id],
               inserted_at: Ecto.DateTime.utc,

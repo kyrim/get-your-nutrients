@@ -92,13 +92,16 @@ body {
 
 
 /* Information Panel */
+.info-panel {
+  min-height: 13em;
+}
 
 .info-panel-text {
   font-size: 0.75em;
 }
 
 .info-panel-header {
-  background-color: #3FB8AF;
+  background-color: #3f9cb8;
   color: white;
 }
 
@@ -106,6 +109,7 @@ body {
 
 .food-item > input, .food-item i {
   margin-right: 1em;
+  width: 2em;
 }
 
 .selected-food-button {
@@ -130,4 +134,13 @@ body {
 
 input:focus + .search-dropdown {
     display: block;
+}
+
+.list-empty {
+  opacity: 0.5;
+}
+
+.list-empty-text {
+  padding: 0.5em;
+  text-align: center;
 }

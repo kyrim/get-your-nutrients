@@ -10,7 +10,7 @@ type alias Nutrient =
     { id : Int
     , name : String
     , description : String
-    , percentage : Int
+    , amount : Float
     , dailyIntake : Float
     , lowIntakeAmount : Maybe Float
     , lowIntakeDescription : Maybe String
@@ -30,5 +30,7 @@ type alias FoodNutrient =
 type alias Food =
     { id : Int
     , name : String
+    , amount : Int
+    , quantity : Int
     , nutrients : List FoodNutrient
     }
