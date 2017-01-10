@@ -9394,6 +9394,13 @@ var _user$project$BlazeHelpers$grid = function (contents) {
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
+var _user$project$Main$updateFood = F3(
+	function (list, id, updateFunction) {
+		var updater = function (food) {
+			return _elm_lang$core$Native_Utils.eq(food.id, id) ? updateFunction(food) : food;
+		};
+		return A2(_elm_lang$core$List$map, updater, list);
+	});
 var _user$project$Main$filterNutrient = F2(
 	function (nutrients, nutrientType) {
 		return A2(
@@ -9558,47 +9565,6 @@ var _user$project$Main$recommendedFoodSection = function (recommendedFoods) {
 					}),
 				_1: {ctor: '[]'}
 			}
-		});
-};
-var _user$project$Main$foodRow = function (food) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$label,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$input,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$type_('number'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$min('1'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$value(
-										_elm_lang$core$Basics$toString(food.quantity)),
-									_1: {ctor: '[]'}
-								}
-							}
-						},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(food.name),
-						_1: {ctor: '[]'}
-					}
-				}),
-			_1: {ctor: '[]'}
 		});
 };
 var _user$project$Main$nutrientProgress = F2(
@@ -9835,6 +9801,65 @@ var _user$project$Main$Model = F4(
 	function (a, b, c, d) {
 		return {nutrients: a, selectedFoods: b, potentialFoods: c, recommendedFoods: d};
 	});
+var _user$project$Main$UpdateFoodQuantity = F2(
+	function (a, b) {
+		return {ctor: 'UpdateFoodQuantity', _0: a, _1: b};
+	});
+var _user$project$Main$foodRow = function (food) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$label,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('number'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$min('1'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$value(
+										_elm_lang$core$Basics$toString(food.quantity)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(
+											function (val) {
+												return A2(
+													_user$project$Main$UpdateFoodQuantity,
+													food,
+													A2(
+														_elm_lang$core$Maybe$withDefault,
+														1,
+														_elm_lang$core$Result$toMaybe(
+															_elm_lang$core$String$toInt(val))));
+											}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(food.name),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$Main$GotNutrients = function (a) {
 	return {ctor: 'GotNutrients', _0: a};
 };
@@ -9964,7 +9989,7 @@ var _user$project$Main$update = F2(
 						model,
 						{ctor: '[]'});
 				}
-			default:
+			case 'GotNutrients':
 				if (_p0._0.ctor === 'Err') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
@@ -9980,6 +10005,23 @@ var _user$project$Main$update = F2(
 							}),
 						{ctor: '[]'});
 				}
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							selectedFoods: A3(
+								_user$project$Main$updateFood,
+								model.selectedFoods,
+								_p0._0.id,
+								function (n) {
+									return _elm_lang$core$Native_Utils.update(
+										n,
+										{quantity: _p0._1});
+								})
+						}),
+					{ctor: '[]'});
 		}
 	});
 var _user$project$Main$SearchForFood = function (a) {

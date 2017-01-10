@@ -118,7 +118,13 @@ foodRow : Food -> Html Msg
 foodRow food =
     div []
         [ label [ class "c-card__item c-field c-field--choice food-item" ]
-            [ input [ type_ "number", Html.Attributes.min "1", value (food.quantity |> toString) ] []
+            [ input
+                [ type_ "number"
+                , Html.Attributes.min "1"
+                , value (food.quantity |> toString)
+                , onInput (\val -> UpdateFoodQuantity food (String.toInt val |> Result.toMaybe |> Maybe.withDefault 1))
+                ]
+                []
             , text food.name
             ]
         ]
@@ -304,10 +310,23 @@ type Msg
     | GotFood (Result Http.Error Food)
     | FoundRecommendedFoods (Result Http.Error (List Food))
     | GotNutrients (Result Http.Error (List Nutrient))
+    | UpdateFoodQuantity Food Int
 
 
 
 -- Update
+
+
+updateFood : List Food -> Int -> (Food -> Food) -> List Food
+updateFood list id updateFunction =
+    let
+        updater food =
+            if food.id == id then
+                updateFunction food
+            else
+                food
+    in
+        List.map updater list
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -355,6 +374,12 @@ update message model =
         GotNutrients (Ok nutrients) ->
             { model
                 | nutrients = model.nutrients ++ nutrients
+            }
+                ! []
+
+        UpdateFoodQuantity food q ->
+            { model
+                | selectedFoods = (updateFood model.selectedFoods food.id (\n -> { n | quantity = q }))
             }
                 ! []
 
