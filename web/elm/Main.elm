@@ -18,12 +18,18 @@ type HoverItem
     | Nothing
 
 
+type Modal
+    = Hide
+    | Show
+
+
 type alias Model =
     { nutrients : List Nutrient
     , selectedFoods : List Food
     , potentialFoods : List Food
     , recommendedFoods : List Food
     , hoverItem : HoverItem
+    , connectionModalState : Modal
     }
 
 
@@ -34,6 +40,7 @@ initialModel =
     , potentialFoods = []
     , recommendedFoods = []
     , hoverItem = Nothing
+    , connectionModalState = Hide
     }
 
 
@@ -348,27 +355,61 @@ searchBar potentialFoods =
         ]
 
 
-view : Model -> Html Msg
-view model =
+connectionError : Html Msg
+connectionError =
     div []
-        [ topSection
-        , grid
-            [ cell 50
-                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.potentialFoods ]
-                , grid
-                    [ cell 60 [ selectedFoodSection model.selectedFoods ]
-                    , cell 40 [ recommendedFoodSection model.recommendedFoods ]
+        [ div [ class "c-overlay" ]
+            []
+        , div [ class "o-modal connection-error" ]
+            [ div [ class "c-card" ]
+                [ Html.header [ class "c-card__header" ]
+                    [ button [ class "c-button c-button--close", type_ "button", onClick (ConnectionModal Hide) ]
+                        [ text "×" ]
+                    , h2 [ class "c-heading" ]
+                        [ text "Sorry!" ]
                     ]
-                ]
-            , defaultCell
-                [ grid
-                    [ fullCell [ informationSection model.hoverItem ]
-                    , cell 50 [ nutrientSection (filterNutrient model.nutrients Vitamin) "Vitamins (DI%)" ]
-                    , cell 50 [ nutrientSection (filterNutrient model.nutrients Mineral) "Minerals (DI%)" ]
+                , div [ class "c-card__body" ]
+                    [ text "There was a connection error. Please ensure you are connected to the internet and try again!" ]
+                , footer [ class "c-card__footer" ]
+                    [ button [ class "c-button c-button--brand", type_ "button", onClick (ConnectionModal Hide) ]
+                        [ text "Close" ]
                     ]
                 ]
             ]
         ]
+
+
+view : Model -> Html Msg
+view model =
+    let
+        connectionModal =
+            case model.connectionModalState of
+                Hide ->
+                    div [] []
+
+                Show ->
+                    connectionError
+    in
+        div []
+            [ topSection
+            , grid
+                [ cell 50
+                    [ defaultCellWithCls "u-letter-box--small" [ searchBar model.potentialFoods ]
+                    , grid
+                        [ cell 60 [ selectedFoodSection model.selectedFoods ]
+                        , cell 40 [ recommendedFoodSection model.recommendedFoods ]
+                        ]
+                    ]
+                , defaultCell
+                    [ grid
+                        [ fullCell [ informationSection model.hoverItem ]
+                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Vitamin) "Vitamins (DI%)" ]
+                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Mineral) "Minerals (DI%)" ]
+                        ]
+                    ]
+                ]
+            , connectionModal
+            ]
 
 
 filterNutrient : List Nutrient -> NutrientType -> List Nutrient
@@ -393,6 +434,7 @@ type Msg
     | UpdateFoodAmount Food Int
     | RemoveFood Food
     | Hover HoverItem
+    | ConnectionModal Modal
 
 
 
@@ -420,6 +462,14 @@ removeFood list id =
         List.filter filter list
 
 
+showConnectionError : Model -> ( Model, Cmd Msg )
+showConnectionError model =
+    { model
+        | connectionModalState = Show
+    }
+        ! []
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
@@ -436,7 +486,7 @@ update message model =
                 model ! [ searchFoods food FoundFoods ]
 
         FoundFoods (Err _) ->
-            model ! []
+            showConnectionError model
 
         FoundFoods (Ok foods) ->
             { model | potentialFoods = foods } ! []
@@ -445,7 +495,7 @@ update message model =
             model ! [ getFood food.id GotFood ]
 
         GotFood (Err _) ->
-            model ! []
+            showConnectionError model
 
         GotFood (Ok food) ->
             { model
@@ -457,10 +507,10 @@ update message model =
             { model | potentialFoods = foods } ! []
 
         FoundRecommendedFoods (Err _) ->
-            model ! []
+            showConnectionError model
 
         GotNutrients (Err _) ->
-            model ! []
+            showConnectionError model
 
         GotNutrients (Ok nutrients) ->
             { model
@@ -489,6 +539,12 @@ update message model =
         Hover hoverItem ->
             { model
                 | hoverItem = hoverItem
+            }
+                ! []
+
+        ConnectionModal modal ->
+            { model
+                | connectionModalState = modal
             }
                 ! []
 

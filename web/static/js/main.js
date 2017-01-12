@@ -9719,24 +9719,175 @@ var _user$project$Main$topSection = _user$project$BlazeHelpers$grid(
 			_1: {ctor: '[]'}
 		}
 	});
-var _user$project$Main$Model = F5(
-	function (a, b, c, d, e) {
-		return {nutrients: a, selectedFoods: b, potentialFoods: c, recommendedFoods: d, hoverItem: e};
+var _user$project$Main$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {nutrients: a, selectedFoods: b, potentialFoods: c, recommendedFoods: d, hoverItem: e, connectionModalState: f};
 	});
 var _user$project$Main$Nothing = {ctor: 'Nothing'};
-var _user$project$Main$initialModel = {
-	nutrients: {ctor: '[]'},
-	selectedFoods: {ctor: '[]'},
-	potentialFoods: {ctor: '[]'},
-	recommendedFoods: {ctor: '[]'},
-	hoverItem: _user$project$Main$Nothing
-};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
 };
 var _user$project$Main$Nutrient = function (a) {
 	return {ctor: 'Nutrient', _0: a};
 };
+var _user$project$Main$Show = {ctor: 'Show'};
+var _user$project$Main$showConnectionError = function (model) {
+	return A2(
+		_elm_lang$core$Platform_Cmd_ops['!'],
+		_elm_lang$core$Native_Utils.update(
+			model,
+			{connectionModalState: _user$project$Main$Show}),
+		{ctor: '[]'});
+};
+var _user$project$Main$Hide = {ctor: 'Hide'};
+var _user$project$Main$initialModel = {
+	nutrients: {ctor: '[]'},
+	selectedFoods: {ctor: '[]'},
+	potentialFoods: {ctor: '[]'},
+	recommendedFoods: {ctor: '[]'},
+	hoverItem: _user$project$Main$Nothing,
+	connectionModalState: _user$project$Main$Hide
+};
+var _user$project$Main$ConnectionModal = function (a) {
+	return {ctor: 'ConnectionModal', _0: a};
+};
+var _user$project$Main$connectionError = A2(
+	_elm_lang$html$Html$div,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('c-overlay'),
+				_1: {ctor: '[]'}
+			},
+			{ctor: '[]'}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('o-modal connection-error'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('c-card'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$header,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('c-card__header'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$button,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('c-button c-button--close'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$type_('button'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onClick(
+														_user$project$Main$ConnectionModal(_user$project$Main$Hide)),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('×'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$h2,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('c-heading'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Sorry!'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('c-card__body'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('There was a connection error. Please ensure you are connected to the internet and try again!'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$footer,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('c-card__footer'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$button,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('c-button c-button--brand'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$type_('button'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(
+																_user$project$Main$ConnectionModal(_user$project$Main$Hide)),
+															_1: {ctor: '[]'}
+														}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Close'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
 var _user$project$Main$Hover = function (a) {
 	return {ctor: 'Hover', _0: a};
 };
@@ -10096,10 +10247,7 @@ var _user$project$Main$update = F2(
 					});
 			case 'FoundFoods':
 				if (_p3._0.ctor === 'Err') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
+					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
@@ -10119,10 +10267,7 @@ var _user$project$Main$update = F2(
 					});
 			case 'GotFood':
 				if (_p3._0.ctor === 'Err') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
+					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
@@ -10153,17 +10298,11 @@ var _user$project$Main$update = F2(
 							{potentialFoods: _p3._0._0}),
 						{ctor: '[]'});
 				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
+					return _user$project$Main$showConnectionError(model);
 				}
 			case 'GotNutrients':
 				if (_p3._0.ctor === 'Err') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
-						{ctor: '[]'});
+					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
@@ -10217,12 +10356,19 @@ var _user$project$Main$update = F2(
 							selectedFoods: A2(_user$project$Main$removeFood, model.selectedFoods, _p3._0.id)
 						}),
 					{ctor: '[]'});
-			default:
+			case 'Hover':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{hoverItem: _p3._0}),
+					{ctor: '[]'});
+			default:
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{connectionModalState: _p3._0}),
 					{ctor: '[]'});
 		}
 	});
@@ -10410,6 +10556,17 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 		});
 };
 var _user$project$Main$view = function (model) {
+	var connectionModal = function () {
+		var _p5 = model.connectionModalState;
+		if (_p5.ctor === 'Hide') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{ctor: '[]'});
+		} else {
+			return _user$project$Main$connectionError;
+		}
+	}();
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
@@ -10512,7 +10669,11 @@ var _user$project$Main$view = function (model) {
 							_1: {ctor: '[]'}
 						}
 					}),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: connectionModal,
+					_1: {ctor: '[]'}
+				}
 			}
 		});
 };
