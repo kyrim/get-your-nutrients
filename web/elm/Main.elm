@@ -12,11 +12,18 @@ import BlazeHelpers exposing (..)
 -- Model
 
 
+type HoverItem
+    = Nutrient Nutrient
+    | Food Food
+    | Nothing
+
+
 type alias Model =
     { nutrients : List Nutrient
     , selectedFoods : List Food
     , potentialFoods : List Food
     , recommendedFoods : List Food
+    , hoverItem : HoverItem
     }
 
 
@@ -26,6 +33,7 @@ initialModel =
     , selectedFoods = []
     , potentialFoods = []
     , recommendedFoods = []
+    , hoverItem = Nothing
     }
 
 
@@ -58,23 +66,43 @@ topSection =
         ]
 
 
-nutrientProgress : String -> Int -> Html Msg
-nutrientProgress label percentage =
+getNutrientPercentage : Nutrient -> Int
+getNutrientPercentage nutrient =
+    (nutrient.amount / nutrient.dailyIntake * 100 |> round)
+
+
+getPercentageColour : Int -> String
+getPercentageColour percentage =
+    if percentage <= 20 then
+        "#FF3D7F"
+    else if percentage <= 50 then
+        "#FFAB2E"
+    else if percentage <= 80 then
+        "#7FC7AF"
+    else
+        "#6ABE6E"
+
+
+nutrientProgress : Nutrient -> Html Msg
+nutrientProgress nutrient =
     let
-        colour =
-            if percentage <= 20 then
-                "#FF3D7F"
-            else if percentage <= 50 then
-                "#FFAB2E"
-            else if percentage <= 80 then
-                "#7FC7AF"
-            else
-                "#6ABE6E"
+        label =
+            nutrient.name
+
+        percentage =
+            getNutrientPercentage nutrient
 
         percentageStr =
             toString percentage
+
+        colour =
+            getPercentageColour percentage
     in
-        div [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress" ]
+        div
+            [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress"
+            , onMouseOver (Hover (Nutrient nutrient))
+            , onMouseLeave (Hover Nothing)
+            ]
             [ div [ class "progress-label" ]
                 [ span [] [ text label ]
                 , span
@@ -97,21 +125,37 @@ nutrientProgress label percentage =
             ]
 
 
-createNutrientProgress : Nutrient -> Html Msg
-createNutrientProgress nutrient =
-    nutrientProgress nutrient.name (nutrient.amount / nutrient.dailyIntake * 100 |> round)
-
-
 nutrientSection : List Nutrient -> String -> Html Msg
 nutrientSection nutrients category =
     gridWithCls "large-fit"
         ([ fullCell [ heading2 category ]
          ]
             ++ (List.map
-                    createNutrientProgress
+                    nutrientProgress
                     nutrients
                )
         )
+
+
+foodAmount : Food -> Html Msg
+foodAmount food =
+    div [ class "food-item-amount" ]
+        [ input
+            [ type_ "number"
+            , Html.Attributes.min "1"
+            , value (food.amount |> toString)
+            , onInput (\val -> UpdateFoodAmount food (String.toInt val |> Result.toMaybe |> Maybe.withDefault 100))
+            ]
+            []
+        , span
+            []
+            [ text "g" ]
+        , a
+            [ class "selected-food-button"
+            ]
+            [ i [ class "fa fa-times", onClick (RemoveFood food) ] []
+            ]
+        ]
 
 
 foodRow : Food -> Html Msg
@@ -120,12 +164,14 @@ foodRow food =
         [ label [ class "c-card__item c-field c-field--choice food-item" ]
             [ input
                 [ type_ "number"
+                , class "food-item-quantity"
                 , Html.Attributes.min "1"
                 , value (food.quantity |> toString)
                 , onInput (\val -> UpdateFoodQuantity food (String.toInt val |> Result.toMaybe |> Maybe.withDefault 1))
                 ]
                 []
             , text food.name
+            , foodAmount food
             ]
         ]
 
@@ -168,12 +214,6 @@ selectedFoodSection foods =
                         , onClick ClearAllSelected
                         ]
                         [ i [ class "fa fa-undo" ] []
-                        ]
-                    , a
-                        [ class "selected-food-button c-tooltip c-tooltip--top"
-                        , attribute "aria-label" "Remove selected food"
-                        ]
-                        [ i [ class "fa fa-times" ] []
                         ]
                     ]
                 ]
@@ -222,22 +262,61 @@ recommendedFoodSection recommendedFoods =
             ]
 
 
-informationSection : String -> String -> Html Msg
-informationSection heading info =
-    grid
-        [ fullCell
-            [ div
-                [ class "c-card info-panel" ]
-                [ div [ class "c-card__item info-panel-header" ]
-                    [ text heading ]
-                , div [ class "c-card__item" ]
-                    [ div [ class "c-paragraph info-panel-text" ]
-                        [ text info
+informationSection : HoverItem -> Html Msg
+informationSection hoverItem =
+    let
+        header =
+            case hoverItem of
+                Nothing ->
+                    "Nothing"
+
+                Nutrient nutrient ->
+                    nutrient.name
+
+                Food food ->
+                    food.name
+
+        info =
+            case hoverItem of
+                Nothing ->
+                    "Nothing"
+
+                Nutrient nutrient ->
+                    nutrient.description
+
+                Food food ->
+                    "Nothing"
+
+        colour =
+            case hoverItem of
+                Nothing ->
+                    "#3f9cb8"
+
+                Nutrient nutrient ->
+                    nutrient |> getNutrientPercentage |> getPercentageColour
+
+                Food food ->
+                    "#3f9cb8"
+    in
+        grid
+            [ fullCell
+                [ div
+                    [ class "c-card info-panel" ]
+                    [ div
+                        [ class "c-card__item info-panel-header"
+                        , style
+                            [ ( "background-color", colour )
+                            ]
+                        ]
+                        [ text header ]
+                    , div [ class "c-card__item" ]
+                        [ div [ class "c-paragraph info-panel-text" ]
+                            [ text info
+                            ]
                         ]
                     ]
                 ]
             ]
-        ]
 
 
 searchBar : List Food -> Html Msg
@@ -283,7 +362,7 @@ view model =
                 ]
             , defaultCell
                 [ grid
-                    [ fullCell [ informationSection "Nothing Selected" "Please add food to begin calculating." ]
+                    [ fullCell [ informationSection model.hoverItem ]
                     , cell 50 [ nutrientSection (filterNutrient model.nutrients Vitamin) "Vitamins (DI%)" ]
                     , cell 50 [ nutrientSection (filterNutrient model.nutrients Mineral) "Minerals (DI%)" ]
                     ]
@@ -311,6 +390,9 @@ type Msg
     | FoundRecommendedFoods (Result Http.Error (List Food))
     | GotNutrients (Result Http.Error (List Nutrient))
     | UpdateFoodQuantity Food Int
+    | UpdateFoodAmount Food Int
+    | RemoveFood Food
+    | Hover HoverItem
 
 
 
@@ -327,6 +409,15 @@ updateFood list id updateFunction =
                 food
     in
         List.map updater list
+
+
+removeFood : List Food -> Int -> List Food
+removeFood list id =
+    let
+        filter food =
+            food.id /= id
+    in
+        List.filter filter list
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -380,6 +471,24 @@ update message model =
         UpdateFoodQuantity food q ->
             { model
                 | selectedFoods = (updateFood model.selectedFoods food.id (\n -> { n | quantity = q }))
+            }
+                ! []
+
+        UpdateFoodAmount food q ->
+            { model
+                | selectedFoods = (updateFood model.selectedFoods food.id (\n -> { n | amount = q }))
+            }
+                ! []
+
+        RemoveFood food ->
+            { model
+                | selectedFoods = removeFood model.selectedFoods food.id
+            }
+                ! []
+
+        Hover hoverItem ->
+            { model
+                | hoverItem = hoverItem
             }
                 ! []
 

@@ -97,7 +97,7 @@ body {
 }
 
 .info-panel-text {
-  font-size: 0.75em;
+  font-size: 1em;
 }
 
 .info-panel-header {
@@ -107,10 +107,24 @@ body {
 
 /* Selected Foods */
 
-.food-item > input, .food-item i {
+.food-item > input {
   margin-right: 1em;
+  vertical-align: middle;
+}
+.food-item-quantity {
   width: 2em;
 }
+
+.food-item-amount {
+  float: right;
+}
+.food-item-amount > input {
+  width: 3em;
+}
+.food-item-amount > span {
+  margin-left: 0.25em;
+}
+
 
 .selected-food-button {
   opacity:0.5;
