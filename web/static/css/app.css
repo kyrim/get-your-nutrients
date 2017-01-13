@@ -107,6 +107,10 @@ body {
 
 /* Selected Foods */
 
+.food-item {
+  font-size: 0.9em;
+}
+
 .food-item > input {
   margin-right: 1em;
   vertical-align: middle;

@@ -9417,6 +9417,43 @@ var _user$project$Main$filterNutrient = F2(
 			},
 			nutrients);
 	});
+var _user$project$Main$getNutrientFoodAmountById = F2(
+	function (id, food) {
+		return A2(
+			_elm_lang$core$Debug$log,
+			'nutrientAmountByID',
+			_elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$List$map,
+					function (fn) {
+						return (fn.amount * _elm_lang$core$Basics$toFloat(food.amount)) * _elm_lang$core$Basics$toFloat(food.quantity);
+					},
+					A2(
+						_elm_lang$core$List$filter,
+						function (fn) {
+							return _elm_lang$core$Native_Utils.eq(fn.nutrientId, id);
+						},
+						food.nutrients))));
+	});
+var _user$project$Main$calculateNutrientPercentageFromFoods = F2(
+	function (foods, nutrients) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (nutrient) {
+				return _elm_lang$core$Native_Utils.update(
+					nutrient,
+					{
+						amount: _elm_lang$core$List$sum(
+							A2(
+								_elm_lang$core$List$map,
+								function (food) {
+									return A2(_user$project$Main$getNutrientFoodAmountById, nutrient.id, food);
+								},
+								foods))
+					});
+			},
+			nutrients);
+	});
 var _user$project$Main$recommendedFoodRow = function (food) {
 	return A2(
 		_elm_lang$html$Html$li,
@@ -9528,25 +9565,25 @@ var _user$project$Main$informationSection = function (hoverItem) {
 				return _user$project$Main$getPercentageColour(
 					_user$project$Main$getNutrientPercentage(_p0._0));
 			default:
-				return '#3f9cb8';
+				return '#b13fb8';
 		}
 	}();
 	var info = function () {
 		var _p1 = hoverItem;
 		switch (_p1.ctor) {
 			case 'Nothing':
-				return 'Nothing';
+				return 'Please hover over a food or nutrient to view a summary of that particular item.';
 			case 'Nutrient':
 				return _p1._0.description;
 			default:
-				return 'Nothing';
+				return 'The purple section on the progress bars below on each nutrient, shows the perentage of nutrients from the food.';
 		}
 	}();
 	var header = function () {
 		var _p2 = hoverItem;
 		switch (_p2.ctor) {
 			case 'Nothing':
-				return 'Nothing';
+				return 'Summary';
 			case 'Nutrient':
 				return _p2._0.name;
 			default:
@@ -9825,7 +9862,7 @@ var _user$project$Main$connectionError = A2(
 											},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text('Sorry!'),
+												_0: _elm_lang$html$Html$text('Oh no!'),
 												_1: {ctor: '[]'}
 											}),
 										_1: {ctor: '[]'}
@@ -9842,7 +9879,7 @@ var _user$project$Main$connectionError = A2(
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('There was a connection error. Please ensure you are connected to the internet and try again!'),
+										_0: _elm_lang$html$Html$text('There was a connection error. Please ensure you are connected to the internet and try again.'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -10643,7 +10680,10 @@ var _user$project$Main$view = function (model) {
 														ctor: '::',
 														_0: A2(
 															_user$project$Main$nutrientSection,
-															A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Models$Vitamin),
+															A2(
+																_user$project$Main$calculateNutrientPercentageFromFoods,
+																model.selectedFoods,
+																A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Models$Vitamin)),
 															'Vitamins (DI%)'),
 														_1: {ctor: '[]'}
 													}),
@@ -10656,7 +10696,10 @@ var _user$project$Main$view = function (model) {
 															ctor: '::',
 															_0: A2(
 																_user$project$Main$nutrientSection,
-																A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Models$Mineral),
+																A2(
+																	_user$project$Main$calculateNutrientPercentageFromFoods,
+																	model.selectedFoods,
+																	A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Models$Mineral)),
 																'Minerals (DI%)'),
 															_1: {ctor: '[]'}
 														}),

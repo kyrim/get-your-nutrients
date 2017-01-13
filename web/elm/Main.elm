@@ -1,5 +1,6 @@
 module Main exposing (..)
 
+import Debug exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -275,7 +276,7 @@ informationSection hoverItem =
         header =
             case hoverItem of
                 Nothing ->
-                    "Nothing"
+                    "Summary"
 
                 Nutrient nutrient ->
                     nutrient.name
@@ -286,13 +287,13 @@ informationSection hoverItem =
         info =
             case hoverItem of
                 Nothing ->
-                    "Nothing"
+                    "Please hover over a food or nutrient to view a summary of that particular item."
 
                 Nutrient nutrient ->
                     nutrient.description
 
                 Food food ->
-                    "Nothing"
+                    "The purple section on the progress bars below on each nutrient, shows the perentage of nutrients from the food."
 
         colour =
             case hoverItem of
@@ -303,7 +304,7 @@ informationSection hoverItem =
                     nutrient |> getNutrientPercentage |> getPercentageColour
 
                 Food food ->
-                    "#3f9cb8"
+                    "#b13fb8"
     in
         grid
             [ fullCell
@@ -366,10 +367,10 @@ connectionError =
                     [ button [ class "c-button c-button--close", type_ "button", onClick (ConnectionModal Hide) ]
                         [ text "×" ]
                     , h2 [ class "c-heading" ]
-                        [ text "Sorry!" ]
+                        [ text "Oh no!" ]
                     ]
                 , div [ class "c-card__body" ]
-                    [ text "There was a connection error. Please ensure you are connected to the internet and try again!" ]
+                    [ text "There was a connection error. Please ensure you are connected to the internet and try again." ]
                 , footer [ class "c-card__footer" ]
                     [ button [ class "c-button c-button--brand", type_ "button", onClick (ConnectionModal Hide) ]
                         [ text "Close" ]
@@ -403,13 +404,32 @@ view model =
                 , defaultCell
                     [ grid
                         [ fullCell [ informationSection model.hoverItem ]
-                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Vitamin) "Vitamins (DI%)" ]
-                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Mineral) "Minerals (DI%)" ]
+                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Vitamin |> calculateNutrientPercentageFromFoods model.selectedFoods) "Vitamins (DI%)" ]
+                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Mineral |> calculateNutrientPercentageFromFoods model.selectedFoods) "Minerals (DI%)" ]
                         ]
                     ]
                 ]
             , connectionModal
             ]
+
+
+calculateNutrientPercentageFromFoods : List Food -> List Nutrient -> List Nutrient
+calculateNutrientPercentageFromFoods foods nutrients =
+    List.map
+        (\nutrient ->
+            { nutrient
+                | amount = (foods |> List.map (\food -> getNutrientFoodAmountById nutrient.id food) |> List.sum)
+            }
+        )
+        nutrients
+
+
+getNutrientFoodAmountById : Int -> Food -> Float
+getNutrientFoodAmountById id food =
+    List.filter (\fn -> fn.nutrientId == id) food.nutrients
+        |> List.map (\fn -> fn.amount * toFloat food.amount * toFloat food.quantity)
+        |> List.sum
+        |> log "nutrientAmountByID"
 
 
 filterNutrient : List Nutrient -> NutrientType -> List Nutrient
