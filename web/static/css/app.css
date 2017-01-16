@@ -111,29 +111,44 @@ body {
   font-size: 0.9em;
 }
 
-.food-item > input {
-  margin-right: 1em;
-  vertical-align: middle;
+.food-item-amount > input, .food-item-amount > div {
+  display: inline;  
 }
+
 .food-item-quantity {
   width: 2em;
 }
 
 .food-item-amount {
-  float: right;
+  width: 5em;
 }
-.food-item-amount > input {
-  width: 3em;
+
+.food-item-weight {
+  margin-top: 0.5em;
+  border-top: 1px solid lightgray;
+  text-align: right;
 }
+.food-item-align {
+    margin-top: 0.5em;
+  display: inline-block;
+}
+
+.food-item-text {
+  width: 100%;
+}
+
 .food-item-amount > span {
   margin-left: 0.25em;
 }
 
+.marker {
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+}
 
 .selected-food-button {
   opacity:0.5;
   margin-left : 0.5em;
-  float:right;
   cursor: pointer;
 }
 

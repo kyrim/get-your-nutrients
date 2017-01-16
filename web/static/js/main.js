@@ -9166,7 +9166,7 @@ var _user$project$Api$stringToNutrientType = function (str) {
 				A2(
 					_elm_lang$core$Basics_ops['++'],
 					'Value ',
-					A2(_elm_lang$core$Basics_ops['++'], str, 'Is not a direction')));
+					A2(_elm_lang$core$Basics_ops['++'], str, 'Is not a nutrient')));
 	}
 };
 var _user$project$Api$decodeNutrientType = A2(_elm_lang$core$Json_Decode$andThen, _user$project$Api$stringToNutrientType, _elm_lang$core$Json_Decode$string);
@@ -9549,6 +9549,12 @@ var _user$project$Main$recommendedFoodSection = function (recommendedFoods) {
 			}
 		});
 };
+var _user$project$Main$foodAmount = function (food) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{ctor: '[]'});
+};
 var _user$project$Main$getPercentageColour = function (percentage) {
 	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? '#FF3D7F' : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? '#FFAB2E' : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? '#7FC7AF' : '#6ABE6E'));
 };
@@ -9559,7 +9565,7 @@ var _user$project$Main$informationSection = function (hoverItem) {
 	var colour = function () {
 		var _p0 = hoverItem;
 		switch (_p0.ctor) {
-			case 'Nothing':
+			case 'NothingHovered':
 				return '#3f9cb8';
 			case 'Nutrient':
 				return _user$project$Main$getPercentageColour(
@@ -9571,7 +9577,7 @@ var _user$project$Main$informationSection = function (hoverItem) {
 	var info = function () {
 		var _p1 = hoverItem;
 		switch (_p1.ctor) {
-			case 'Nothing':
+			case 'NothingHovered':
 				return 'Please hover over a food or nutrient to view a summary of that particular item.';
 			case 'Nutrient':
 				return _p1._0.description;
@@ -9582,7 +9588,7 @@ var _user$project$Main$informationSection = function (hoverItem) {
 	var header = function () {
 		var _p2 = hoverItem;
 		switch (_p2.ctor) {
-			case 'Nothing':
+			case 'NothingHovered':
 				return 'Summary';
 			case 'Nutrient':
 				return _p2._0.name;
@@ -9760,7 +9766,7 @@ var _user$project$Main$Model = F6(
 	function (a, b, c, d, e, f) {
 		return {nutrients: a, selectedFoods: b, potentialFoods: c, recommendedFoods: d, hoverItem: e, connectionModalState: f};
 	});
-var _user$project$Main$Nothing = {ctor: 'Nothing'};
+var _user$project$Main$NothingHovered = {ctor: 'NothingHovered'};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
 };
@@ -9782,7 +9788,7 @@ var _user$project$Main$initialModel = {
 	selectedFoods: {ctor: '[]'},
 	potentialFoods: {ctor: '[]'},
 	recommendedFoods: {ctor: '[]'},
-	hoverItem: _user$project$Main$Nothing,
+	hoverItem: _user$project$Main$NothingHovered,
 	connectionModalState: _user$project$Main$Hide
 };
 var _user$project$Main$ConnectionModal = function (a) {
@@ -9946,7 +9952,7 @@ var _user$project$Main$nutrientProgress = function (nutrient) {
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Events$onMouseLeave(
-						_user$project$Main$Hover(_user$project$Main$Nothing)),
+						_user$project$Main$Hover(_user$project$Main$NothingHovered)),
 					_1: {ctor: '[]'}
 				}
 			}
@@ -10068,88 +10074,6 @@ var _user$project$Main$UpdateFoodAmount = F2(
 	function (a, b) {
 		return {ctor: 'UpdateFoodAmount', _0: a, _1: b};
 	});
-var _user$project$Main$foodAmount = function (food) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('food-item-amount'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$input,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$type_('number'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$min('1'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$value(
-								_elm_lang$core$Basics$toString(food.amount)),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onInput(
-									function (val) {
-										return A2(
-											_user$project$Main$UpdateFoodAmount,
-											food,
-											A2(
-												_elm_lang$core$Maybe$withDefault,
-												100,
-												_elm_lang$core$Result$toMaybe(
-													_elm_lang$core$String$toInt(val))));
-									}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				},
-				{ctor: '[]'}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$span,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('g'),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$a,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('selected-food-button'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$i,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('fa fa-times'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(
-											_user$project$Main$RemoveFood(food)),
-										_1: {ctor: '[]'}
-									}
-								},
-								{ctor: '[]'}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-};
 var _user$project$Main$UpdateFoodQuantity = F2(
 	function (a, b) {
 		return {ctor: 'UpdateFoodQuantity', _0: a, _1: b};
@@ -10157,64 +10081,192 @@ var _user$project$Main$UpdateFoodQuantity = F2(
 var _user$project$Main$foodRow = function (food) {
 	return A2(
 		_elm_lang$html$Html$div,
-		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onMouseOver(
+					_user$project$Main$Hover(
+						_user$project$Main$Food(food))),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onMouseLeave(
+						_user$project$Main$Hover(_user$project$Main$NothingHovered)),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$label,
+				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
+					_0: _elm_lang$html$Html_Attributes$class('food-item-text'),
 					_1: {ctor: '[]'}
 				},
 				{
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$input,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$type_('number'),
-							_1: {
+					_0: _elm_lang$html$Html$text(food.name),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('food-item-weight'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('food-item-quantity'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$min('1'),
-									_1: {
+								_0: _elm_lang$html$Html_Attributes$class('food-item-align'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$input,
+									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$value(
-											_elm_lang$core$Basics$toString(food.quantity)),
+										_0: _elm_lang$html$Html_Attributes$type_('number'),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onInput(
-												function (val) {
-													return A2(
-														_user$project$Main$UpdateFoodQuantity,
-														food,
-														A2(
-															_elm_lang$core$Maybe$withDefault,
-															1,
-															_elm_lang$core$Result$toMaybe(
-																_elm_lang$core$String$toInt(val))));
-												}),
+											_0: _elm_lang$html$Html_Attributes$class('food-item-quantity'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$min('1'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$value(
+														_elm_lang$core$Basics$toString(food.quantity)),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onInput(
+															function (val) {
+																return A2(
+																	_user$project$Main$UpdateFoodQuantity,
+																	food,
+																	A2(
+																		_elm_lang$core$Maybe$withDefault,
+																		1,
+																		_elm_lang$core$Result$toMaybe(
+																			_elm_lang$core$String$toInt(val))));
+															}),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$span,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('marker'),
 											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('x'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$input,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$type_('number'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('food-item-amount'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$min('1'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$value(
+																_elm_lang$core$Basics$toString(food.amount)),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Events$onInput(
+																	function (val) {
+																		return A2(
+																			_user$project$Main$UpdateFoodAmount,
+																			food,
+																			A2(
+																				_elm_lang$core$Maybe$withDefault,
+																				100,
+																				_elm_lang$core$Result$toMaybe(
+																					_elm_lang$core$String$toInt(val))));
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$span,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('marker'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('g'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$a,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('selected-food-button'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$i,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('fa fa-times'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onClick(
+																		_user$project$Main$RemoveFood(food)),
+																	_1: {ctor: '[]'}
+																}
+															},
+															{ctor: '[]'}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
-							}
-						},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(food.name),
-						_1: {
-							ctor: '::',
-							_0: _user$project$Main$foodAmount(food),
-							_1: {ctor: '[]'}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
 		});
 };
 var _user$project$Main$GotNutrients = function (a) {
@@ -10332,10 +10384,13 @@ var _user$project$Main$update = F2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{potentialFoods: _p3._0._0}),
+							{recommendedFoods: _p3._0._0}),
 						{ctor: '[]'});
 				} else {
-					return _user$project$Main$showConnectionError(model);
+					return A2(
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						model,
+						{ctor: '[]'});
 				}
 			case 'GotNutrients':
 				if (_p3._0.ctor === 'Err') {

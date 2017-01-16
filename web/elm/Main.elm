@@ -16,7 +16,7 @@ import BlazeHelpers exposing (..)
 type HoverItem
     = Nutrient Nutrient
     | Food Food
-    | Nothing
+    | NothingHovered
 
 
 type Modal
@@ -40,7 +40,7 @@ initialModel =
     , selectedFoods = []
     , potentialFoods = []
     , recommendedFoods = []
-    , hoverItem = Nothing
+    , hoverItem = NothingHovered
     , connectionModalState = Hide
     }
 
@@ -109,7 +109,7 @@ nutrientProgress nutrient =
         div
             [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress"
             , onMouseOver (Hover (Nutrient nutrient))
-            , onMouseLeave (Hover Nothing)
+            , onMouseLeave (Hover NothingHovered)
             ]
             [ div [ class "progress-label" ]
                 [ span [] [ text label ]
@@ -147,39 +147,52 @@ nutrientSection nutrients category =
 
 foodAmount : Food -> Html Msg
 foodAmount food =
-    div [ class "food-item-amount" ]
-        [ input
-            [ type_ "number"
-            , Html.Attributes.min "1"
-            , value (food.amount |> toString)
-            , onInput (\val -> UpdateFoodAmount food (String.toInt val |> Result.toMaybe |> Maybe.withDefault 100))
-            ]
-            []
-        , span
-            []
-            [ text "g" ]
-        , a
-            [ class "selected-food-button"
-            ]
-            [ i [ class "fa fa-times", onClick (RemoveFood food) ] []
-            ]
-        ]
+    div []
+        []
 
 
 foodRow : Food -> Html Msg
 foodRow food =
-    div []
-        [ label [ class "c-card__item c-field c-field--choice food-item" ]
-            [ input
-                [ type_ "number"
-                , class "food-item-quantity"
-                , Html.Attributes.min "1"
-                , value (food.quantity |> toString)
-                , onInput (\val -> UpdateFoodQuantity food (String.toInt val |> Result.toMaybe |> Maybe.withDefault 1))
+    div
+        [ class "c-card__item c-field c-field--choice food-item"
+        , onMouseOver (Hover (Food food))
+        , onMouseLeave (Hover NothingHovered)
+        ]
+        [ div [ class "food-item-text" ] [ text food.name ]
+        , div
+            [ class "food-item-weight" ]
+            [ div [ class "food-item-align" ]
+                [ input
+                    [ type_ "number"
+                    , class "food-item-quantity"
+                    , Html.Attributes.min "1"
+                    , value (food.quantity |> toString)
+                    , onInput
+                        (\val ->
+                            UpdateFoodQuantity food
+                                (String.toInt val |> Result.toMaybe |> Maybe.withDefault 1)
+                        )
+                    ]
+                    []
+                , span
+                    [ class "marker" ]
+                    [ text "x" ]
+                , input
+                    [ type_ "number"
+                    , class "food-item-amount"
+                    , Html.Attributes.min "1"
+                    , value (food.amount |> toString)
+                    , onInput (\val -> UpdateFoodAmount food (String.toInt val |> Result.toMaybe |> Maybe.withDefault 100))
+                    ]
+                    []
+                , span
+                    [ class "marker" ]
+                    [ text "g" ]
+                , a
+                    [ class "selected-food-button" ]
+                    [ i [ class "fa fa-times", onClick (RemoveFood food) ] []
+                    ]
                 ]
-                []
-            , text food.name
-            , foodAmount food
             ]
         ]
 
@@ -275,7 +288,7 @@ informationSection hoverItem =
     let
         header =
             case hoverItem of
-                Nothing ->
+                NothingHovered ->
                     "Summary"
 
                 Nutrient nutrient ->
@@ -286,7 +299,7 @@ informationSection hoverItem =
 
         info =
             case hoverItem of
-                Nothing ->
+                NothingHovered ->
                     "Please hover over a food or nutrient to view a summary of that particular item."
 
                 Nutrient nutrient ->
@@ -297,7 +310,7 @@ informationSection hoverItem =
 
         colour =
             case hoverItem of
-                Nothing ->
+                NothingHovered ->
                     "#3f9cb8"
 
                 Nutrient nutrient ->
@@ -524,10 +537,10 @@ update message model =
                 ! [ getRecommendedFoods model.selectedFoods FoundRecommendedFoods ]
 
         FoundRecommendedFoods (Ok foods) ->
-            { model | potentialFoods = foods } ! []
+            { model | recommendedFoods = foods } ! []
 
         FoundRecommendedFoods (Err _) ->
-            showConnectionError model
+            model ! []
 
         GotNutrients (Err _) ->
             showConnectionError model

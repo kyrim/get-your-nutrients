@@ -23,13 +23,13 @@ defmodule GetYourNutrients.Food do
 
     def search(query, search_term) do
     from(u in query,
-    where: fragment("? % ?", u.name, ^search_term),
-    order_by: fragment("? <-> ? DESC", u.name, ^search_term))
+    where: fragment("? @@ phraseto_tsquery(?)", u.name, ^search_term),
+    order_by: fragment("? @@ phraseto_tsquery(?)", u.name, ^search_term))
   end
 
    def recommend(query, recommended_foods) do
     from(u in query,
-    where: fragment("? % ?", u.name, ^recommended_foods),
-    order_by: fragment("? <-> ? DESC", u.name, ^recommended_foods))
+    where: fragment("? @@ phraseto_tsquery(?)", u.name, ^recommended_foods),
+    order_by: fragment("? @@ phraseto_tsquery(?) ASC", u.name, ^recommended_foods))
   end
 end

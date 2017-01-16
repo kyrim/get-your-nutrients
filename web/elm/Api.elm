@@ -112,7 +112,7 @@ stringToNutrientType str =
             succeed Models.Mineral
 
         _ ->
-            fail ("Value " ++ str ++ "Is not a direction")
+            fail ("Value " ++ str ++ "Is not a nutrient")
 
 
 decodeNutrientType : Decoder NutrientType
