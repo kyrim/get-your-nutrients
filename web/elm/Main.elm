@@ -1,13 +1,22 @@
 module Main exposing (..)
 
-import Debug exposing (..)
+-- Elm Specific
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Api exposing (..)
 import Http exposing (..)
-import Models exposing (..)
 import BlazeHelpers exposing (..)
+import Helpers exposing (..)
+import Nutrient.View exposing (..)
+import Nutrient.Models exposing (..)
+import Nutrient.Api exposing (..)
+import Food.View exposing (..)
+import Food.Models exposing (..)
+import Food.Api exposing (..)
+import Navigation.View exposing (..)
+import Connection.View exposing (..)
+import Connection.Models exposing (..)
 
 
 -- Model
@@ -19,24 +28,21 @@ type HoverItem
     | NothingHovered
 
 
-type Modal
-    = Hide
-    | Show
-
-
 type alias Model =
     { nutrients : List Nutrient
+    , searchText : String
     , selectedFoods : List Food
     , potentialFoods : List Food
     , recommendedFoods : List Food
     , hoverItem : HoverItem
-    , connectionModalState : Modal
+    , connectionModalState : ModalState
     }
 
 
 initialModel : Model
 initialModel =
-    { nutrients = []
+    { searchText = ""
+    , nutrients = []
     , selectedFoods = []
     , potentialFoods = []
     , recommendedFoods = []
@@ -53,234 +59,6 @@ init =
 
 -- View
 -- Please note, stylesheet is already included.
-
-
-banner : Html Msg
-banner =
-    div [ class "header" ]
-        [ img [ class "o-image", src "images/logo.png" ] []
-        , h1 [ class "c-heading" ] [ text "Get Your Nutrients" ]
-        ]
-
-
-topSection : Html Msg
-topSection =
-    grid
-        [ defaultCell
-            [ banner ]
-        , div [ class "o-grid__cell--offset" ]
-            [ div [ class "about" ] [ h2 [ class "c-heading" ] [ a [ href "about" ] [ text "About" ] ] ]
-            ]
-        ]
-
-
-getNutrientPercentage : Nutrient -> Int
-getNutrientPercentage nutrient =
-    (nutrient.amount / nutrient.dailyIntake * 100 |> round)
-
-
-getPercentageColour : Int -> String
-getPercentageColour percentage =
-    if percentage <= 20 then
-        "#FF3D7F"
-    else if percentage <= 50 then
-        "#FFAB2E"
-    else if percentage <= 80 then
-        "#7FC7AF"
-    else
-        "#6ABE6E"
-
-
-nutrientProgress : Nutrient -> Html Msg
-nutrientProgress nutrient =
-    let
-        label =
-            nutrient.name
-
-        percentage =
-            getNutrientPercentage nutrient
-
-        percentageStr =
-            toString percentage
-
-        colour =
-            getPercentageColour percentage
-    in
-        div
-            [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress"
-            , onMouseOver (Hover (Nutrient nutrient))
-            , onMouseLeave (Hover NothingHovered)
-            ]
-            [ div [ class "progress-label" ]
-                [ span [] [ text label ]
-                , span
-                    [ class "progress-percentage"
-                    , style [ ( "color", colour ) ]
-                    ]
-                    [ text (percentageStr ++ "%") ]
-                ]
-            , div
-                [ class "c-progress u-medium progress" ]
-                [ div
-                    [ class "c-progress__bar"
-                    , style
-                        [ ( "width", toString (percentage) ++ "%" )
-                        , ( "background-color", colour )
-                        ]
-                    ]
-                    []
-                ]
-            ]
-
-
-nutrientSection : List Nutrient -> String -> Html Msg
-nutrientSection nutrients category =
-    gridWithCls "large-fit"
-        ([ fullCell [ heading2 category ]
-         ]
-            ++ (List.map
-                    nutrientProgress
-                    nutrients
-               )
-        )
-
-
-foodAmount : Food -> Html Msg
-foodAmount food =
-    div []
-        []
-
-
-foodRow : Food -> Html Msg
-foodRow food =
-    div
-        [ class "c-card__item c-field c-field--choice food-item"
-        , onMouseOver (Hover (Food food))
-        , onMouseLeave (Hover NothingHovered)
-        ]
-        [ div [ class "food-item-text" ] [ text food.name ]
-        , div
-            [ class "food-item-weight" ]
-            [ div [ class "food-item-align" ]
-                [ input
-                    [ type_ "number"
-                    , class "food-item-quantity"
-                    , Html.Attributes.min "1"
-                    , value (food.quantity |> toString)
-                    , onInput
-                        (\val ->
-                            UpdateFoodQuantity food
-                                (String.toInt val |> Result.toMaybe |> Maybe.withDefault 1)
-                        )
-                    ]
-                    []
-                , span
-                    [ class "marker" ]
-                    [ text "x" ]
-                , input
-                    [ type_ "number"
-                    , class "food-item-amount"
-                    , Html.Attributes.min "1"
-                    , value (food.amount |> toString)
-                    , onInput (\val -> UpdateFoodAmount food (String.toInt val |> Result.toMaybe |> Maybe.withDefault 100))
-                    ]
-                    []
-                , span
-                    [ class "marker" ]
-                    [ text "g" ]
-                , a
-                    [ class "selected-food-button" ]
-                    [ i [ class "fa fa-times", onClick (RemoveFood food) ] []
-                    ]
-                ]
-            ]
-        ]
-
-
-emptyList : String -> Html Msg
-emptyList message =
-    div [ class "c-card list-empty" ]
-        [ div [ class "c-card-item list-empty-text" ]
-            [ text message
-            ]
-        ]
-
-
-selectedFoodSection : List Food -> Html Msg
-selectedFoodSection foods =
-    let
-        displaySelectedFoodMenu =
-            (List.length foods) > 0
-
-        selectedFoodMenu =
-            div [ class "c-card c-card--menu" ]
-                (List.map
-                    foodRow
-                    foods
-                )
-
-        selectedFoodDisplay =
-            if displaySelectedFoodMenu then
-                selectedFoodMenu
-            else
-                emptyList "Please search a food above"
-    in
-        grid
-            [ fullCell
-                [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
-                    [ text "Selected Food"
-                    , a
-                        [ class "selected-food-button c-tooltip c-tooltip--top"
-                        , attribute "aria-label" "Clear all food"
-                        , onClick ClearAllSelected
-                        ]
-                        [ i [ class "fa fa-undo" ] []
-                        ]
-                    ]
-                ]
-            , fullCell
-                [ selectedFoodDisplay
-                ]
-            ]
-
-
-recommendedFoodRow : Food -> Html Msg
-recommendedFoodRow food =
-    li [ class "c-card__item food-item" ]
-        [ i [ class "fa fa-arrow-left" ]
-            []
-        , text food.name
-        ]
-
-
-recommendedFoodSection : List Food -> Html Msg
-recommendedFoodSection recommendedFoods =
-    let
-        displayRecommendedFoodMenu =
-            (List.length recommendedFoods) > 0
-
-        recommendedFoodMenu =
-            ul [ class "c-card c-card--menu" ]
-                (List.map
-                    recommendedFoodRow
-                    recommendedFoods
-                )
-
-        recommendedFoodDisplay =
-            if displayRecommendedFoodMenu then
-                recommendedFoodMenu
-            else
-                emptyList "Please search a food above"
-    in
-        grid
-            [ fullCell
-                [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
-                    [ text "Recommended" ]
-                ]
-            , fullCell
-                [ recommendedFoodDisplay
-                ]
-            ]
 
 
 informationSection : HoverItem -> Html Msg
@@ -300,7 +78,7 @@ informationSection hoverItem =
         info =
             case hoverItem of
                 NothingHovered ->
-                    "Please hover over a food or nutrient to view a summary of that particular item."
+                    "Please hover over a food or nutrient to view its summary."
 
                 Nutrient nutrient ->
                     nutrient.description
@@ -314,7 +92,7 @@ informationSection hoverItem =
                     "#3f9cb8"
 
                 Nutrient nutrient ->
-                    nutrient |> getNutrientPercentage |> getPercentageColour
+                    nutrient.dailyIntake |> getPercentage nutrient.amount |> getPercentageColour
 
                 Food food ->
                     "#b13fb8"
@@ -340,15 +118,16 @@ informationSection hoverItem =
             ]
 
 
-searchBar : List Food -> Html Msg
-searchBar potentialFoods =
+searchBar : String -> List Food -> Html Msg
+searchBar searchText potentialFoods =
     div [ class "search-holder" ]
         [ fullCell
             [ div [ class "o-field o-field--icon-right" ]
                 [ input
                     [ class "c-field"
                     , placeholder "Search for food here and add to calculate nutrients"
-                    , onInput SearchForFood
+                    , value searchText
+                    , onInput UpdateSearchText
                     , onBlur ClearSearch
                     ]
                     []
@@ -369,69 +148,124 @@ searchBar potentialFoods =
         ]
 
 
-connectionError : Html Msg
-connectionError =
-    div []
-        [ div [ class "c-overlay" ]
-            []
-        , div [ class "o-modal connection-error" ]
-            [ div [ class "c-card" ]
-                [ Html.header [ class "c-card__header" ]
-                    [ button [ class "c-button c-button--close", type_ "button", onClick (ConnectionModal Hide) ]
-                        [ text "×" ]
-                    , h2 [ class "c-heading" ]
-                        [ text "Oh no!" ]
-                    ]
-                , div [ class "c-card__body" ]
-                    [ text "There was a connection error. Please ensure you are connected to the internet and try again." ]
-                , footer [ class "c-card__footer" ]
-                    [ button [ class "c-button c-button--brand", type_ "button", onClick (ConnectionModal Hide) ]
-                        [ text "Close" ]
-                    ]
-                ]
-            ]
-        ]
+getFoodFromHoverItem : HoverItem -> Maybe Food
+getFoodFromHoverItem item =
+    case item of
+        NothingHovered ->
+            Nothing
+
+        Nutrient nutrient ->
+            Nothing
+
+        Food food ->
+            Just food
+
+
+
+-- MESSAGES
+
+
+type Msg
+    = ClearSearch
+    | UpdateSearchText String
+    | ClearAllSelected
+    | FoundFoods (Result Http.Error (List Food))
+    | SelectFood Food
+    | GotFood (Result Http.Error Food)
+    | FoundRecommendedFoods (Result Http.Error (List Food))
+    | GotNutrients (Result Http.Error (List Nutrient))
+    | UpdateFoodQuantity Food Int
+    | UpdateFoodAmount Food Int
+    | RemoveFood Food
+    | Hover HoverItem
+    | ConnectionModal ModalState
+
+
+selectedFoodSectionConfig : SelectedFoodSectionConfig Msg
+selectedFoodSectionConfig =
+    { onClearAll = ClearAllSelected }
+
+
+foodRowConfig : FoodRowConfig Msg
+foodRowConfig =
+    { onFocus = Hover << Food
+    , onBlur = Hover NothingHovered
+    , onRemove = RemoveFood
+    , onQuantityChange = UpdateFoodQuantity
+    , onAmountChange = UpdateFoodAmount
+    }
 
 
 view : Model -> Html Msg
 view model =
-    let
-        connectionModal =
-            case model.connectionModalState of
-                Hide ->
-                    div [] []
-
-                Show ->
-                    connectionError
-    in
-        div []
-            [ topSection
-            , grid
-                [ cell 50
-                    [ defaultCellWithCls "u-letter-box--small" [ searchBar model.potentialFoods ]
-                    , grid
-                        [ cell 60 [ selectedFoodSection model.selectedFoods ]
-                        , cell 40 [ recommendedFoodSection model.recommendedFoods ]
-                        ]
+    div []
+        [ topSection
+        , grid
+            [ cell 50
+                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods ]
+                , grid
+                    [ cell 60 [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
+                    , cell 40 [ recommendedFoodSection model.recommendedFoods ]
                     ]
-                , defaultCell
-                    [ grid
-                        [ fullCell [ informationSection model.hoverItem ]
-                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Vitamin |> calculateNutrientPercentageFromFoods model.selectedFoods) "Vitamins (DI%)" ]
-                        , cell 50 [ nutrientSection (filterNutrient model.nutrients Mineral |> calculateNutrientPercentageFromFoods model.selectedFoods) "Minerals (DI%)" ]
+                ]
+            , defaultCell
+                [ grid
+                    [ fullCell [ informationSection model.hoverItem ]
+                    , cell 50
+                        [ nutrientSection
+                            { mouseOver = (\n -> (Hover (Nutrient n))), mouseLeave = Hover NothingHovered }
+                            (hoverItemIsFood
+                                model.hoverItem
+                            )
+                            "Vitamins (DI%)"
+                            (filterNutrient model.nutrients Vitamin
+                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) model.selectedFoods
+                            )
+                        ]
+                    , cell 50
+                        [ nutrientSection
+                            { mouseOver = (\n -> (Hover (Nutrient n))), mouseLeave = Hover NothingHovered }
+                            (hoverItemIsFood
+                                model.hoverItem
+                            )
+                            "Minerals (DI%)"
+                            (filterNutrient model.nutrients Mineral
+                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) model.selectedFoods
+                            )
                         ]
                     ]
                 ]
-            , connectionModal
             ]
+        , connectionError { onClose = (ConnectionModal Hide) } model.connectionModalState
+        ]
 
 
-calculateNutrientPercentageFromFoods : List Food -> List Nutrient -> List Nutrient
-calculateNutrientPercentageFromFoods foods nutrients =
+hoverItemIsFood : HoverItem -> Bool
+hoverItemIsFood item =
+    case item of
+        Nutrient nutrient ->
+            False
+
+        Food food ->
+            True
+
+        NothingHovered ->
+            False
+
+
+calculateNutrientPercentageFromFoods : Maybe Food -> List Food -> List Nutrient -> List Nutrient
+calculateNutrientPercentageFromFoods hoveredFood foods nutrients =
     List.map
         (\nutrient ->
             { nutrient
                 | amount = (foods |> List.map (\food -> getNutrientFoodAmountById nutrient.id food) |> List.sum)
+                , hoveredAmount =
+                    case hoveredFood of
+                        Nothing ->
+                            0
+
+                        Just food ->
+                            getNutrientFoodAmountById nutrient.id food
             }
         )
         nutrients
@@ -442,32 +276,11 @@ getNutrientFoodAmountById id food =
     List.filter (\fn -> fn.nutrientId == id) food.nutrients
         |> List.map (\fn -> fn.amount * toFloat food.amount * toFloat food.quantity)
         |> List.sum
-        |> log "nutrientAmountByID"
 
 
 filterNutrient : List Nutrient -> NutrientType -> List Nutrient
 filterNutrient nutrients nutrientType =
     List.filter (\nutrient -> nutrient.nutrientType == nutrientType) nutrients
-
-
-
--- MESSAGES
-
-
-type Msg
-    = ClearSearch
-    | ClearAllSelected
-    | SearchForFood String
-    | FoundFoods (Result Http.Error (List Food))
-    | SelectFood Food
-    | GotFood (Result Http.Error Food)
-    | FoundRecommendedFoods (Result Http.Error (List Food))
-    | GotNutrients (Result Http.Error (List Nutrient))
-    | UpdateFoodQuantity Food Int
-    | UpdateFoodAmount Food Int
-    | RemoveFood Food
-    | Hover HoverItem
-    | ConnectionModal Modal
 
 
 
@@ -509,14 +322,14 @@ update message model =
         ClearSearch ->
             { model | potentialFoods = [] } ! []
 
+        UpdateSearchText text ->
+            if ((text |> String.trim |> String.isEmpty) || String.length text < 3) then
+                { model | potentialFoods = [], searchText = text } ! []
+            else
+                { model | searchText = text } ! [ searchFoods text FoundFoods ]
+
         ClearAllSelected ->
             { model | selectedFoods = [] } ! []
-
-        SearchForFood food ->
-            if ((food |> String.trim |> String.isEmpty) || String.length food < 3) then
-                { model | potentialFoods = [] } ! []
-            else
-                model ! [ searchFoods food FoundFoods ]
 
         FoundFoods (Err _) ->
             showConnectionError model

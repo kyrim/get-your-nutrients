@@ -1,4 +1,4 @@
-module Models exposing (..)
+module Nutrient.Models exposing (..)
 
 
 type NutrientType
@@ -11,6 +11,7 @@ type alias Nutrient =
     , name : String
     , description : String
     , amount : Float
+    , hoveredAmount : Float
     , dailyIntake : Float
     , lowIntakeAmount : Maybe Float
     , lowIntakeDescription : Maybe String
@@ -18,19 +19,4 @@ type alias Nutrient =
     , highIntakeDescription : Maybe String
     , unitOfMeasure : String
     , nutrientType : NutrientType
-    }
-
-
-type alias FoodNutrient =
-    { nutrientId : Int
-    , amount : Float
-    }
-
-
-type alias Food =
-    { id : Int
-    , name : String
-    , amount : Int
-    , quantity : Int
-    , nutrients : List FoodNutrient
     }

@@ -9109,190 +9109,6 @@ var _elm_lang$http$Http$StringPart = F2(
 	});
 var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
 
-var _user$project$Models$Nutrient = function (a) {
-	return function (b) {
-		return function (c) {
-			return function (d) {
-				return function (e) {
-					return function (f) {
-						return function (g) {
-							return function (h) {
-								return function (i) {
-									return function (j) {
-										return function (k) {
-											return {id: a, name: b, description: c, amount: d, dailyIntake: e, lowIntakeAmount: f, lowIntakeDescription: g, highIntakeAmount: h, highIntakeDescription: i, unitOfMeasure: j, nutrientType: k};
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
-};
-var _user$project$Models$FoodNutrient = F2(
-	function (a, b) {
-		return {nutrientId: a, amount: b};
-	});
-var _user$project$Models$Food = F5(
-	function (a, b, c, d, e) {
-		return {id: a, name: b, amount: c, quantity: d, nutrients: e};
-	});
-var _user$project$Models$Mineral = {ctor: 'Mineral'};
-var _user$project$Models$Vitamin = {ctor: 'Vitamin'};
-
-var _user$project$Api$stringFloatDecoder = A2(
-	_elm_lang$core$Json_Decode$andThen,
-	function (val) {
-		var _p0 = _elm_lang$core$String$toFloat(val);
-		if (_p0.ctor === 'Ok') {
-			return _elm_lang$core$Json_Decode$succeed(_p0._0);
-		} else {
-			return _elm_lang$core$Json_Decode$fail(_p0._0);
-		}
-	},
-	_elm_lang$core$Json_Decode$string);
-var _user$project$Api$stringToNutrientType = function (str) {
-	var _p1 = str;
-	switch (_p1) {
-		case 'Vitamin':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Models$Vitamin);
-		case 'Mineral':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Models$Mineral);
-		default:
-			return _elm_lang$core$Json_Decode$fail(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'Value ',
-					A2(_elm_lang$core$Basics_ops['++'], str, 'Is not a nutrient')));
-	}
-};
-var _user$project$Api$decodeNutrientType = A2(_elm_lang$core$Json_Decode$andThen, _user$project$Api$stringToNutrientType, _elm_lang$core$Json_Decode$string);
-var _user$project$Api$decodeFoodNutrient = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'amount',
-	_user$project$Api$stringFloatDecoder,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'nutrientId',
-		_elm_lang$core$Json_Decode$int,
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$FoodNutrient)));
-var _user$project$Api$decodeFood = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'foodNutrients',
-	_elm_lang$core$Json_Decode$list(_user$project$Api$decodeFoodNutrient),
-	A4(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-		'quantity',
-		_elm_lang$core$Json_Decode$int,
-		1,
-		A4(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-			'amount',
-			_elm_lang$core$Json_Decode$int,
-			100,
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'name',
-				_elm_lang$core$Json_Decode$string,
-				A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'id',
-					_elm_lang$core$Json_Decode$int,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Food))))));
-var _user$project$Api$decodeNutrient = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'nutrientType',
-	_user$project$Api$decodeNutrientType,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'unitOfMeasure',
-		_elm_lang$core$Json_Decode$string,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'highIntakeDescription',
-			_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'highIntakeAmount',
-				_elm_lang$core$Json_Decode$nullable(_user$project$Api$stringFloatDecoder),
-				A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'lowIntakeDescription',
-					_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
-					A3(
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-						'lowIntakeAmount',
-						_elm_lang$core$Json_Decode$nullable(_user$project$Api$stringFloatDecoder),
-						A3(
-							_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-							'dailyIntake',
-							_user$project$Api$stringFloatDecoder,
-							A4(
-								_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-								'amount',
-								_elm_lang$core$Json_Decode$float,
-								0,
-								A3(
-									_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-									'description',
-									_elm_lang$core$Json_Decode$string,
-									A3(
-										_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-										'name',
-										_elm_lang$core$Json_Decode$string,
-										A3(
-											_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-											'id',
-											_elm_lang$core$Json_Decode$int,
-											_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Models$Nutrient))))))))))));
-var _user$project$Api$getAllNutrients = function (msg) {
-	var url = 'api/nutrient/';
-	var request = A2(
-		_elm_lang$http$Http$get,
-		url,
-		_elm_lang$core$Json_Decode$list(_user$project$Api$decodeNutrient));
-	return A2(_elm_lang$http$Http$send, msg, request);
-};
-var _user$project$Api$getRecommendedFoods = F2(
-	function (foods, msg) {
-		var foodNames = _elm_lang$http$Http$jsonBody(
-			_elm_lang$core$Json_Encode$list(
-				A2(
-					_elm_lang$core$List$map,
-					function (food) {
-						return _elm_lang$core$Json_Encode$int(food.id);
-					},
-					foods)));
-		var url = 'api/food/recommend';
-		var request = A3(
-			_elm_lang$http$Http$post,
-			url,
-			foodNames,
-			_elm_lang$core$Json_Decode$list(_user$project$Api$decodeFood));
-		return A2(_elm_lang$http$Http$send, msg, request);
-	});
-var _user$project$Api$getFood = F2(
-	function (foodId, msg) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'api/food/',
-			_elm_lang$core$Basics$toString(foodId));
-		var request = A2(_elm_lang$http$Http$get, url, _user$project$Api$decodeFood);
-		return A2(_elm_lang$http$Http$send, msg, request);
-	});
-var _user$project$Api$searchFoods = F2(
-	function (searchKey, msg) {
-		var url = A2(_elm_lang$core$Basics_ops['++'], 'api/food/search/', searchKey);
-		var request = A2(
-			_elm_lang$http$Http$get,
-			url,
-			_elm_lang$core$Json_Decode$list(_user$project$Api$decodeFood));
-		return A2(_elm_lang$http$Http$send, msg, request);
-	});
-
 var _user$project$BlazeHelpers$heading3 = function (txt) {
 	return A2(
 		_elm_lang$html$Html$h3,
@@ -9391,70 +9207,261 @@ var _user$project$BlazeHelpers$grid = function (contents) {
 	return A2(_user$project$BlazeHelpers$gridWithCls, '', contents);
 };
 
-var _user$project$Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
+var _user$project$Connection_Models$Show = {ctor: 'Show'};
+var _user$project$Connection_Models$Hide = {ctor: 'Hide'};
+
+var _user$project$Connection_View$connectionError = F2(
+	function (config, state) {
+		var modalView = function () {
+			var _p0 = state;
+			if (_p0.ctor === 'Hide') {
+				return A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{ctor: '[]'});
+			} else {
+				return A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('c-overlay'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('o-modal connection-error'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('c-card'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$header,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('c-card__header'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$button,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('c-button c-button--close'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$type_('button'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onClick(config.onClose),
+																	_1: {ctor: '[]'}
+																}
+															}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('×'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$h2,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('c-heading'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Oh no!'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('c-card__body'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('There was a connection error. Please ensure you are connected to the internet and try again.'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$footer,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('c-card__footer'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$button,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('c-button c-button--brand'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$type_('button'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onClick(config.onClose),
+																			_1: {ctor: '[]'}
+																		}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Close'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					});
+			}
+		}();
+		return modalView;
+	});
+var _user$project$Connection_View$ConnectionErrorConfig = function (a) {
+	return {onClose: a};
 };
-var _user$project$Main$removeFood = F2(
-	function (list, id) {
-		var filter = function (food) {
-			return !_elm_lang$core$Native_Utils.eq(food.id, id);
-		};
-		return A2(_elm_lang$core$List$filter, filter, list);
+
+var _user$project$Helpers$stringFloatDecoder = A2(
+	_elm_lang$core$Json_Decode$andThen,
+	function (val) {
+		var _p0 = _elm_lang$core$String$toFloat(val);
+		if (_p0.ctor === 'Ok') {
+			return _elm_lang$core$Json_Decode$succeed(_p0._0);
+		} else {
+			return _elm_lang$core$Json_Decode$fail(_p0._0);
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _user$project$Helpers$limitTo = F2(
+	function (number, limit) {
+		return (_elm_lang$core$Native_Utils.cmp(number, limit) > 0) ? limit : number;
 	});
-var _user$project$Main$updateFood = F3(
-	function (list, id, updateFunction) {
-		var updater = function (food) {
-			return _elm_lang$core$Native_Utils.eq(food.id, id) ? updateFunction(food) : food;
-		};
-		return A2(_elm_lang$core$List$map, updater, list);
+var _user$project$Helpers$getPercentage = F2(
+	function (amount, dailyIntake) {
+		return _elm_lang$core$Basics$round((amount / dailyIntake) * 100);
 	});
-var _user$project$Main$filterNutrient = F2(
-	function (nutrients, nutrientType) {
-		return A2(
-			_elm_lang$core$List$filter,
-			function (nutrient) {
-				return _elm_lang$core$Native_Utils.eq(nutrient.nutrientType, nutrientType);
-			},
-			nutrients);
+
+var _user$project$Food_Models$FoodNutrient = F2(
+	function (a, b) {
+		return {nutrientId: a, amount: b};
 	});
-var _user$project$Main$getNutrientFoodAmountById = F2(
-	function (id, food) {
-		return A2(
-			_elm_lang$core$Debug$log,
-			'nutrientAmountByID',
-			_elm_lang$core$List$sum(
+var _user$project$Food_Models$Food = F5(
+	function (a, b, c, d, e) {
+		return {id: a, name: b, amount: c, quantity: d, nutrients: e};
+	});
+
+var _user$project$Food_Api$decodeFoodNutrient = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'amount',
+	_user$project$Helpers$stringFloatDecoder,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'nutrientId',
+		_elm_lang$core$Json_Decode$int,
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Food_Models$FoodNutrient)));
+var _user$project$Food_Api$decodeFood = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'foodNutrients',
+	_elm_lang$core$Json_Decode$list(_user$project$Food_Api$decodeFoodNutrient),
+	A4(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+		'quantity',
+		_elm_lang$core$Json_Decode$int,
+		1,
+		A4(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+			'amount',
+			_elm_lang$core$Json_Decode$int,
+			100,
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'name',
+				_elm_lang$core$Json_Decode$string,
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'id',
+					_elm_lang$core$Json_Decode$int,
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Food_Models$Food))))));
+var _user$project$Food_Api$getRecommendedFoods = F2(
+	function (foods, msg) {
+		var foodNames = _elm_lang$http$Http$jsonBody(
+			_elm_lang$core$Json_Encode$list(
 				A2(
 					_elm_lang$core$List$map,
-					function (fn) {
-						return (fn.amount * _elm_lang$core$Basics$toFloat(food.amount)) * _elm_lang$core$Basics$toFloat(food.quantity);
+					function (food) {
+						return _elm_lang$core$Json_Encode$int(food.id);
 					},
-					A2(
-						_elm_lang$core$List$filter,
-						function (fn) {
-							return _elm_lang$core$Native_Utils.eq(fn.nutrientId, id);
-						},
-						food.nutrients))));
+					foods)));
+		var url = 'api/food/recommend';
+		var request = A3(
+			_elm_lang$http$Http$post,
+			url,
+			foodNames,
+			_elm_lang$core$Json_Decode$list(_user$project$Food_Api$decodeFood));
+		return A2(_elm_lang$http$Http$send, msg, request);
 	});
-var _user$project$Main$calculateNutrientPercentageFromFoods = F2(
-	function (foods, nutrients) {
-		return A2(
-			_elm_lang$core$List$map,
-			function (nutrient) {
-				return _elm_lang$core$Native_Utils.update(
-					nutrient,
-					{
-						amount: _elm_lang$core$List$sum(
-							A2(
-								_elm_lang$core$List$map,
-								function (food) {
-									return A2(_user$project$Main$getNutrientFoodAmountById, nutrient.id, food);
-								},
-								foods))
-					});
-			},
-			nutrients);
+var _user$project$Food_Api$getFood = F2(
+	function (foodId, msg) {
+		var url = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'api/food/',
+			_elm_lang$core$Basics$toString(foodId));
+		var request = A2(_elm_lang$http$Http$get, url, _user$project$Food_Api$decodeFood);
+		return A2(_elm_lang$http$Http$send, msg, request);
 	});
-var _user$project$Main$recommendedFoodRow = function (food) {
+var _user$project$Food_Api$searchFoods = F2(
+	function (searchKey, msg) {
+		var url = A2(_elm_lang$core$Basics_ops['++'], 'api/food/search/', searchKey);
+		var request = A2(
+			_elm_lang$http$Http$get,
+			url,
+			_elm_lang$core$Json_Decode$list(_user$project$Food_Api$decodeFood));
+		return A2(_elm_lang$http$Http$send, msg, request);
+	});
+
+var _user$project$Food_View$recommendedFoodRow = function (food) {
 	return A2(
 		_elm_lang$html$Html$li,
 		{
@@ -9479,7 +9486,7 @@ var _user$project$Main$recommendedFoodRow = function (food) {
 			}
 		});
 };
-var _user$project$Main$emptyList = function (message) {
+var _user$project$Food_View$emptyList = function (message) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -9504,7 +9511,7 @@ var _user$project$Main$emptyList = function (message) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$recommendedFoodSection = function (recommendedFoods) {
+var _user$project$Food_View$recommendedFoodSection = function (recommendedFoods) {
 	var recommendedFoodMenu = A2(
 		_elm_lang$html$Html$ul,
 		{
@@ -9512,11 +9519,11 @@ var _user$project$Main$recommendedFoodSection = function (recommendedFoods) {
 			_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu'),
 			_1: {ctor: '[]'}
 		},
-		A2(_elm_lang$core$List$map, _user$project$Main$recommendedFoodRow, recommendedFoods));
+		A2(_elm_lang$core$List$map, _user$project$Food_View$recommendedFoodRow, recommendedFoods));
 	var displayRecommendedFoodMenu = _elm_lang$core$Native_Utils.cmp(
 		_elm_lang$core$List$length(recommendedFoods),
 		0) > 0;
-	var recommendedFoodDisplay = displayRecommendedFoodMenu ? recommendedFoodMenu : _user$project$Main$emptyList('Please search a food above');
+	var recommendedFoodDisplay = displayRecommendedFoodMenu ? recommendedFoodMenu : _user$project$Food_View$emptyList('Please search a food above');
 	return _user$project$BlazeHelpers$grid(
 		{
 			ctor: '::',
@@ -9549,51 +9556,793 @@ var _user$project$Main$recommendedFoodSection = function (recommendedFoods) {
 			}
 		});
 };
-var _user$project$Main$foodAmount = function (food) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{ctor: '[]'});
+var _user$project$Food_View$onInputToInt = F4(
+	function (food, $default, onFunction, string) {
+		return A2(
+			onFunction,
+			food,
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				$default,
+				_elm_lang$core$Result$toMaybe(
+					_elm_lang$core$String$toInt(string))));
+	});
+var _user$project$Food_View$foodRow = F2(
+	function (_p0, food) {
+		var _p1 = _p0;
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onMouseOver(
+						_p1.onFocus(food)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onMouseLeave(_p1.onBlur),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('food-item-text'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(food.name),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('food-item-weight'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('food-item-align'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$input,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$type_('number'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('food-item-quantity'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$min('1'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$value(
+															_elm_lang$core$Basics$toString(food.quantity)),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onInput(
+																A3(_user$project$Food_View$onInputToInt, food, 1, _p1.onQuantityChange)),
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$span,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('marker'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('x'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$input,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$type_('number'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('food-item-amount'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$min('1'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$value(
+																	_elm_lang$core$Basics$toString(food.amount)),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onInput(
+																		A3(_user$project$Food_View$onInputToInt, food, 100, _p1.onAmountChange)),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												},
+												{ctor: '[]'}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$span,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$class('marker'),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('g'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$a,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('selected-food-button'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$i,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$class('fa fa-times'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onClick(
+																			_p1.onRemove(food)),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{ctor: '[]'}),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Food_View$selectedFoodSection = F3(
+	function (_p2, foodRowConfig, foods) {
+		var _p3 = _p2;
+		var selectedFoodMenu = A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu'),
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Food_View$foodRow(foodRowConfig),
+				foods));
+		var displaySelectedFoodMenu = _elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$List$length(foods),
+			0) > 0;
+		var selectedFoodDisplay = displaySelectedFoodMenu ? selectedFoodMenu : _user$project$Food_View$emptyList('Please search a food above');
+		return _user$project$BlazeHelpers$grid(
+			{
+				ctor: '::',
+				_0: _user$project$BlazeHelpers$fullCell(
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$h2,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block smaller-tooltip'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Selected Food'),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('selected-food-button c-tooltip c-tooltip--top'),
+											_1: {
+												ctor: '::',
+												_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-label', 'Clear all food'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onClick(_p3.onClearAll),
+													_1: {ctor: '[]'}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$i,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('fa fa-undo'),
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$BlazeHelpers$fullCell(
+						{
+							ctor: '::',
+							_0: selectedFoodDisplay,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Food_View$FoodRowConfig = F5(
+	function (a, b, c, d, e) {
+		return {onFocus: a, onBlur: b, onRemove: c, onQuantityChange: d, onAmountChange: e};
+	});
+var _user$project$Food_View$SelectedFoodSectionConfig = function (a) {
+	return {onClearAll: a};
 };
-var _user$project$Main$getPercentageColour = function (percentage) {
+
+var _user$project$Nutrient_Models$Nutrient = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return {id: a, name: b, description: c, amount: d, hoveredAmount: e, dailyIntake: f, lowIntakeAmount: g, lowIntakeDescription: h, highIntakeAmount: i, highIntakeDescription: j, unitOfMeasure: k, nutrientType: l};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _user$project$Nutrient_Models$Mineral = {ctor: 'Mineral'};
+var _user$project$Nutrient_Models$Vitamin = {ctor: 'Vitamin'};
+
+var _user$project$Nutrient_View$getPercentageColour = function (percentage) {
 	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? '#FF3D7F' : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? '#FFAB2E' : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? '#7FC7AF' : '#6ABE6E'));
 };
-var _user$project$Main$getNutrientPercentage = function (nutrient) {
-	return _elm_lang$core$Basics$round((nutrient.amount / nutrient.dailyIntake) * 100);
+var _user$project$Nutrient_View$nutrientProgress = F3(
+	function (config, isHovered, nutrient) {
+		var percentage = A2(_user$project$Helpers$getPercentage, nutrient.amount, nutrient.dailyIntake);
+		var percentageColour = isHovered ? 'lightgray' : _user$project$Nutrient_View$getPercentageColour(percentage);
+		var hoverPercentage = A2(_user$project$Helpers$getPercentage, nutrient.hoveredAmount, nutrient.dailyIntake);
+		var percentageToDisplay = (_elm_lang$core$Native_Utils.cmp(hoverPercentage, 0) > 0) ? hoverPercentage : percentage;
+		var hoverWidth = (_elm_lang$core$Native_Utils.cmp(hoverPercentage, 100) > 0) ? 100 : hoverPercentage;
+		var percentageWidth = (_elm_lang$core$Native_Utils.cmp(percentage, 100) > 0) ? (100 - hoverWidth) : (percentage - hoverWidth);
+		var displayColour = (_elm_lang$core$Native_Utils.cmp(hoverWidth, 0) > 0) ? '#b13fb8' : (isHovered ? 'lightgray' : percentageColour);
+		var label = nutrient.name;
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('o-grid__cell o-grid__cell--width-100 nutrient-progress'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onMouseOver(
+						config.mouseOver(nutrient)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onMouseLeave(config.mouseLeave),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('progress-label'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(label),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$span,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('progress-percentage'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'color', _1: displayColour},
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(percentageToDisplay),
+											'%')),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('c-progress u-medium progress'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('c-progress__bar'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple2',
+													_0: 'width',
+													_1: A2(
+														_elm_lang$core$Basics_ops['++'],
+														_elm_lang$core$Basics$toString(hoverWidth),
+														'%')
+												},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#b13fb8'},
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('c-progress__bar'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$style(
+												{
+													ctor: '::',
+													_0: {
+														ctor: '_Tuple2',
+														_0: 'width',
+														_1: A2(
+															_elm_lang$core$Basics_ops['++'],
+															_elm_lang$core$Basics$toString(percentageWidth),
+															'%')
+													},
+													_1: {
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: 'background-color', _1: percentageColour},
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Nutrient_View$nutrientSection = F4(
+	function (config, foodIsHovered, category, nutrients) {
+		return A2(
+			_user$project$BlazeHelpers$gridWithCls,
+			'large-fit',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _user$project$BlazeHelpers$fullCell(
+						{
+							ctor: '::',
+							_0: _user$project$BlazeHelpers$heading2(category),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				A2(
+					_elm_lang$core$List$map,
+					A2(_user$project$Nutrient_View$nutrientProgress, config, foodIsHovered),
+					nutrients)));
+	});
+var _user$project$Nutrient_View$NutrientProgressConfig = F2(
+	function (a, b) {
+		return {mouseOver: a, mouseLeave: b};
+	});
+
+var _user$project$Nutrient_Api$stringToNutrientType = function (str) {
+	var _p0 = str;
+	switch (_p0) {
+		case 'Vitamin':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Nutrient_Models$Vitamin);
+		case 'Mineral':
+			return _elm_lang$core$Json_Decode$succeed(_user$project$Nutrient_Models$Mineral);
+		default:
+			return _elm_lang$core$Json_Decode$fail(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Value ',
+					A2(_elm_lang$core$Basics_ops['++'], str, 'Is not a nutrient')));
+	}
+};
+var _user$project$Nutrient_Api$decodeNutrientType = A2(_elm_lang$core$Json_Decode$andThen, _user$project$Nutrient_Api$stringToNutrientType, _elm_lang$core$Json_Decode$string);
+var _user$project$Nutrient_Api$decodeNutrient = A3(
+	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+	'nutrientType',
+	_user$project$Nutrient_Api$decodeNutrientType,
+	A3(
+		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+		'unitOfMeasure',
+		_elm_lang$core$Json_Decode$string,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'highIntakeDescription',
+			_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
+			A3(
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+				'highIntakeAmount',
+				_elm_lang$core$Json_Decode$nullable(_user$project$Helpers$stringFloatDecoder),
+				A3(
+					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+					'lowIntakeDescription',
+					_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
+					A3(
+						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+						'lowIntakeAmount',
+						_elm_lang$core$Json_Decode$nullable(_user$project$Helpers$stringFloatDecoder),
+						A3(
+							_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+							'dailyIntake',
+							_user$project$Helpers$stringFloatDecoder,
+							A4(
+								_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+								'hoveredAmount',
+								_elm_lang$core$Json_Decode$float,
+								0,
+								A4(
+									_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
+									'amount',
+									_elm_lang$core$Json_Decode$float,
+									0,
+									A3(
+										_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+										'description',
+										_elm_lang$core$Json_Decode$string,
+										A3(
+											_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+											'name',
+											_elm_lang$core$Json_Decode$string,
+											A3(
+												_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+												'id',
+												_elm_lang$core$Json_Decode$int,
+												_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Nutrient_Models$Nutrient)))))))))))));
+var _user$project$Nutrient_Api$getAllNutrients = function (msg) {
+	var url = 'api/nutrient/';
+	var request = A2(
+		_elm_lang$http$Http$get,
+		url,
+		_elm_lang$core$Json_Decode$list(_user$project$Nutrient_Api$decodeNutrient));
+	return A2(_elm_lang$http$Http$send, msg, request);
+};
+
+var _user$project$Navigation_View$banner = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('header'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$img,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('o-image'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$src('images/logo.png'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{ctor: '[]'}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('c-heading'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Get Your Nutrients'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
+var _user$project$Navigation_View$topSection = _user$project$BlazeHelpers$grid(
+	{
+		ctor: '::',
+		_0: _user$project$BlazeHelpers$defaultCell(
+			{
+				ctor: '::',
+				_0: _user$project$Navigation_View$banner,
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('o-grid__cell--offset'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('about'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h2,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('c-heading'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$href('about'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('About'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
+
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Main$showConnectionError = function (model) {
+	return A2(
+		_elm_lang$core$Platform_Cmd_ops['!'],
+		_elm_lang$core$Native_Utils.update(
+			model,
+			{connectionModalState: _user$project$Connection_Models$Show}),
+		{ctor: '[]'});
+};
+var _user$project$Main$removeFood = F2(
+	function (list, id) {
+		var filter = function (food) {
+			return !_elm_lang$core$Native_Utils.eq(food.id, id);
+		};
+		return A2(_elm_lang$core$List$filter, filter, list);
+	});
+var _user$project$Main$updateFood = F3(
+	function (list, id, updateFunction) {
+		var updater = function (food) {
+			return _elm_lang$core$Native_Utils.eq(food.id, id) ? updateFunction(food) : food;
+		};
+		return A2(_elm_lang$core$List$map, updater, list);
+	});
+var _user$project$Main$filterNutrient = F2(
+	function (nutrients, nutrientType) {
+		return A2(
+			_elm_lang$core$List$filter,
+			function (nutrient) {
+				return _elm_lang$core$Native_Utils.eq(nutrient.nutrientType, nutrientType);
+			},
+			nutrients);
+	});
+var _user$project$Main$getNutrientFoodAmountById = F2(
+	function (id, food) {
+		return _elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				function (fn) {
+					return (fn.amount * _elm_lang$core$Basics$toFloat(food.amount)) * _elm_lang$core$Basics$toFloat(food.quantity);
+				},
+				A2(
+					_elm_lang$core$List$filter,
+					function (fn) {
+						return _elm_lang$core$Native_Utils.eq(fn.nutrientId, id);
+					},
+					food.nutrients)));
+	});
+var _user$project$Main$calculateNutrientPercentageFromFoods = F3(
+	function (hoveredFood, foods, nutrients) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (nutrient) {
+				return _elm_lang$core$Native_Utils.update(
+					nutrient,
+					{
+						amount: _elm_lang$core$List$sum(
+							A2(
+								_elm_lang$core$List$map,
+								function (food) {
+									return A2(_user$project$Main$getNutrientFoodAmountById, nutrient.id, food);
+								},
+								foods)),
+						hoveredAmount: function () {
+							var _p0 = hoveredFood;
+							if (_p0.ctor === 'Nothing') {
+								return 0;
+							} else {
+								return A2(_user$project$Main$getNutrientFoodAmountById, nutrient.id, _p0._0);
+							}
+						}()
+					});
+			},
+			nutrients);
+	});
+var _user$project$Main$hoverItemIsFood = function (item) {
+	var _p1 = item;
+	switch (_p1.ctor) {
+		case 'Nutrient':
+			return false;
+		case 'Food':
+			return true;
+		default:
+			return false;
+	}
+};
+var _user$project$Main$getFoodFromHoverItem = function (item) {
+	var _p2 = item;
+	switch (_p2.ctor) {
+		case 'NothingHovered':
+			return _elm_lang$core$Maybe$Nothing;
+		case 'Nutrient':
+			return _elm_lang$core$Maybe$Nothing;
+		default:
+			return _elm_lang$core$Maybe$Just(_p2._0);
+	}
 };
 var _user$project$Main$informationSection = function (hoverItem) {
 	var colour = function () {
-		var _p0 = hoverItem;
-		switch (_p0.ctor) {
+		var _p3 = hoverItem;
+		switch (_p3.ctor) {
 			case 'NothingHovered':
 				return '#3f9cb8';
 			case 'Nutrient':
-				return _user$project$Main$getPercentageColour(
-					_user$project$Main$getNutrientPercentage(_p0._0));
+				var _p4 = _p3._0;
+				return _user$project$Nutrient_View$getPercentageColour(
+					A2(_user$project$Helpers$getPercentage, _p4.amount, _p4.dailyIntake));
 			default:
 				return '#b13fb8';
 		}
 	}();
 	var info = function () {
-		var _p1 = hoverItem;
-		switch (_p1.ctor) {
+		var _p5 = hoverItem;
+		switch (_p5.ctor) {
 			case 'NothingHovered':
-				return 'Please hover over a food or nutrient to view a summary of that particular item.';
+				return 'Please hover over a food or nutrient to view its summary.';
 			case 'Nutrient':
-				return _p1._0.description;
+				return _p5._0.description;
 			default:
 				return 'The purple section on the progress bars below on each nutrient, shows the perentage of nutrients from the food.';
 		}
 	}();
 	var header = function () {
-		var _p2 = hoverItem;
-		switch (_p2.ctor) {
+		var _p6 = hoverItem;
+		switch (_p6.ctor) {
 			case 'NothingHovered':
 				return 'Summary';
 			case 'Nutrient':
-				return _p2._0.name;
+				return _p6._0.name;
 			default:
-				return _p2._0.name;
+				return _p6._0.name;
 		}
 	}();
 	return _user$project$BlazeHelpers$grid(
@@ -9665,408 +10414,32 @@ var _user$project$Main$informationSection = function (hoverItem) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$banner = A2(
-	_elm_lang$html$Html$div,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('header'),
-		_1: {ctor: '[]'}
-	},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$img,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('o-image'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$src('images/logo.png'),
-					_1: {ctor: '[]'}
-				}
-			},
-			{ctor: '[]'}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h1,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Get Your Nutrients'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		}
-	});
-var _user$project$Main$topSection = _user$project$BlazeHelpers$grid(
-	{
-		ctor: '::',
-		_0: _user$project$BlazeHelpers$defaultCell(
-			{
-				ctor: '::',
-				_0: _user$project$Main$banner,
-				_1: {ctor: '[]'}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('o-grid__cell--offset'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('about'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$h2,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$a,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('about'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('About'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		}
-	});
-var _user$project$Main$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {nutrients: a, selectedFoods: b, potentialFoods: c, recommendedFoods: d, hoverItem: e, connectionModalState: f};
+var _user$project$Main$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {nutrients: a, searchText: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e, hoverItem: f, connectionModalState: g};
 	});
 var _user$project$Main$NothingHovered = {ctor: 'NothingHovered'};
+var _user$project$Main$initialModel = {
+	searchText: '',
+	nutrients: {ctor: '[]'},
+	selectedFoods: {ctor: '[]'},
+	potentialFoods: {ctor: '[]'},
+	recommendedFoods: {ctor: '[]'},
+	hoverItem: _user$project$Main$NothingHovered,
+	connectionModalState: _user$project$Connection_Models$Hide
+};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
 };
 var _user$project$Main$Nutrient = function (a) {
 	return {ctor: 'Nutrient', _0: a};
 };
-var _user$project$Main$Show = {ctor: 'Show'};
-var _user$project$Main$showConnectionError = function (model) {
-	return A2(
-		_elm_lang$core$Platform_Cmd_ops['!'],
-		_elm_lang$core$Native_Utils.update(
-			model,
-			{connectionModalState: _user$project$Main$Show}),
-		{ctor: '[]'});
-};
-var _user$project$Main$Hide = {ctor: 'Hide'};
-var _user$project$Main$initialModel = {
-	nutrients: {ctor: '[]'},
-	selectedFoods: {ctor: '[]'},
-	potentialFoods: {ctor: '[]'},
-	recommendedFoods: {ctor: '[]'},
-	hoverItem: _user$project$Main$NothingHovered,
-	connectionModalState: _user$project$Main$Hide
-};
 var _user$project$Main$ConnectionModal = function (a) {
 	return {ctor: 'ConnectionModal', _0: a};
 };
-var _user$project$Main$connectionError = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('c-overlay'),
-				_1: {ctor: '[]'}
-			},
-			{ctor: '[]'}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('o-modal connection-error'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('c-card'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$header,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-card__header'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$button,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('c-button c-button--close'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$type_('button'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onClick(
-														_user$project$Main$ConnectionModal(_user$project$Main$Hide)),
-													_1: {ctor: '[]'}
-												}
-											}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('×'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$h2,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Oh no!'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('c-card__body'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('There was a connection error. Please ensure you are connected to the internet and try again.'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$footer,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('c-card__footer'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$button,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('c-button c-button--brand'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('button'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onClick(
-																_user$project$Main$ConnectionModal(_user$project$Main$Hide)),
-															_1: {ctor: '[]'}
-														}
-													}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Close'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		}
-	});
 var _user$project$Main$Hover = function (a) {
 	return {ctor: 'Hover', _0: a};
 };
-var _user$project$Main$nutrientProgress = function (nutrient) {
-	var percentage = _user$project$Main$getNutrientPercentage(nutrient);
-	var percentageStr = _elm_lang$core$Basics$toString(percentage);
-	var colour = _user$project$Main$getPercentageColour(percentage);
-	var label = nutrient.name;
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('o-grid__cell o-grid__cell--width-100 nutrient-progress'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onMouseOver(
-					_user$project$Main$Hover(
-						_user$project$Main$Nutrient(nutrient))),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onMouseLeave(
-						_user$project$Main$Hover(_user$project$Main$NothingHovered)),
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('progress-label'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$span,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text(label),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$span,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('progress-percentage'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$style(
-										{
-											ctor: '::',
-											_0: {ctor: '_Tuple2', _0: 'color', _1: colour},
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
-							},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(
-									A2(_elm_lang$core$Basics_ops['++'], percentageStr, '%')),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('c-progress u-medium progress'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-progress__bar'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$style(
-										{
-											ctor: '::',
-											_0: {
-												ctor: '_Tuple2',
-												_0: 'width',
-												_1: A2(
-													_elm_lang$core$Basics_ops['++'],
-													_elm_lang$core$Basics$toString(percentage),
-													'%')
-											},
-											_1: {
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 'background-color', _1: colour},
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}
-							},
-							{ctor: '[]'}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$Main$nutrientSection = F2(
-	function (nutrients, category) {
-		return A2(
-			_user$project$BlazeHelpers$gridWithCls,
-			'large-fit',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				{
-					ctor: '::',
-					_0: _user$project$BlazeHelpers$fullCell(
-						{
-							ctor: '::',
-							_0: _user$project$BlazeHelpers$heading2(category),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				},
-				A2(_elm_lang$core$List$map, _user$project$Main$nutrientProgress, nutrients)));
-	});
 var _user$project$Main$RemoveFood = function (a) {
 	return {ctor: 'RemoveFood', _0: a};
 };
@@ -10078,196 +10451,15 @@ var _user$project$Main$UpdateFoodQuantity = F2(
 	function (a, b) {
 		return {ctor: 'UpdateFoodQuantity', _0: a, _1: b};
 	});
-var _user$project$Main$foodRow = function (food) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onMouseOver(
-					_user$project$Main$Hover(
-						_user$project$Main$Food(food))),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onMouseLeave(
-						_user$project$Main$Hover(_user$project$Main$NothingHovered)),
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('food-item-text'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(food.name),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('food-item-weight'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('food-item-align'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$input,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$type_('number'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('food-item-quantity'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$min('1'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$value(
-														_elm_lang$core$Basics$toString(food.quantity)),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onInput(
-															function (val) {
-																return A2(
-																	_user$project$Main$UpdateFoodQuantity,
-																	food,
-																	A2(
-																		_elm_lang$core$Maybe$withDefault,
-																		1,
-																		_elm_lang$core$Result$toMaybe(
-																			_elm_lang$core$String$toInt(val))));
-															}),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}
-									},
-									{ctor: '[]'}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$span,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('marker'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('x'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$input,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$type_('number'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('food-item-amount'),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$min('1'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$value(
-																_elm_lang$core$Basics$toString(food.amount)),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	function (val) {
-																		return A2(
-																			_user$project$Main$UpdateFoodAmount,
-																			food,
-																			A2(
-																				_elm_lang$core$Maybe$withDefault,
-																				100,
-																				_elm_lang$core$Result$toMaybe(
-																					_elm_lang$core$String$toInt(val))));
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											},
-											{ctor: '[]'}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$span,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('marker'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('g'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$a,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('selected-food-button'),
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$i,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('fa fa-times'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onClick(
-																		_user$project$Main$RemoveFood(food)),
-																	_1: {ctor: '[]'}
-																}
-															},
-															{ctor: '[]'}),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
-		});
+var _user$project$Main$foodRowConfig = {
+	onFocus: function (_p7) {
+		return _user$project$Main$Hover(
+			_user$project$Main$Food(_p7));
+	},
+	onBlur: _user$project$Main$Hover(_user$project$Main$NothingHovered),
+	onRemove: _user$project$Main$RemoveFood,
+	onQuantityChange: _user$project$Main$UpdateFoodQuantity,
+	onAmountChange: _user$project$Main$UpdateFoodAmount
 };
 var _user$project$Main$GotNutrients = function (a) {
 	return {ctor: 'GotNutrients', _0: a};
@@ -10277,7 +10469,7 @@ var _user$project$Main$init = A2(
 	_user$project$Main$initialModel,
 	{
 		ctor: '::',
-		_0: _user$project$Api$getAllNutrients(_user$project$Main$GotNutrients),
+		_0: _user$project$Nutrient_Api$getAllNutrients(_user$project$Main$GotNutrients),
 		_1: {ctor: '[]'}
 	});
 var _user$project$Main$FoundRecommendedFoods = function (a) {
@@ -10294,8 +10486,8 @@ var _user$project$Main$FoundFoods = function (a) {
 };
 var _user$project$Main$update = F2(
 	function (message, model) {
-		var _p3 = message;
-		switch (_p3.ctor) {
+		var _p8 = message;
+		switch (_p8.ctor) {
 			case 'ClearSearch':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -10305,6 +10497,29 @@ var _user$project$Main$update = F2(
 							potentialFoods: {ctor: '[]'}
 						}),
 					{ctor: '[]'});
+			case 'UpdateSearchText':
+				var _p9 = _p8._0;
+				return (_elm_lang$core$String$isEmpty(
+					_elm_lang$core$String$trim(_p9)) || (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$String$length(_p9),
+					3) < 0)) ? A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							potentialFoods: {ctor: '[]'},
+							searchText: _p9
+						}),
+					{ctor: '[]'}) : A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{searchText: _p9}),
+					{
+						ctor: '::',
+						_0: A2(_user$project$Food_Api$searchFoods, _p9, _user$project$Main$FoundFoods),
+						_1: {ctor: '[]'}
+					});
 			case 'ClearAllSelected':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -10314,35 +10529,15 @@ var _user$project$Main$update = F2(
 							selectedFoods: {ctor: '[]'}
 						}),
 					{ctor: '[]'});
-			case 'SearchForFood':
-				var _p4 = _p3._0;
-				return (_elm_lang$core$String$isEmpty(
-					_elm_lang$core$String$trim(_p4)) || (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$String$length(_p4),
-					3) < 0)) ? A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							potentialFoods: {ctor: '[]'}
-						}),
-					{ctor: '[]'}) : A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
-					{
-						ctor: '::',
-						_0: A2(_user$project$Api$searchFoods, _p4, _user$project$Main$FoundFoods),
-						_1: {ctor: '[]'}
-					});
 			case 'FoundFoods':
-				if (_p3._0.ctor === 'Err') {
+				if (_p8._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{potentialFoods: _p3._0._0}),
+							{potentialFoods: _p8._0._0}),
 						{ctor: '[]'});
 				}
 			case 'SelectFood':
@@ -10351,11 +10546,11 @@ var _user$project$Main$update = F2(
 					model,
 					{
 						ctor: '::',
-						_0: A2(_user$project$Api$getFood, _p3._0.id, _user$project$Main$GotFood),
+						_0: A2(_user$project$Food_Api$getFood, _p8._0.id, _user$project$Main$GotFood),
 						_1: {ctor: '[]'}
 					});
 			case 'GotFood':
-				if (_p3._0.ctor === 'Err') {
+				if (_p8._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
@@ -10368,23 +10563,23 @@ var _user$project$Main$update = F2(
 									model.selectedFoods,
 									{
 										ctor: '::',
-										_0: _p3._0._0,
+										_0: _p8._0._0,
 										_1: {ctor: '[]'}
 									})
 							}),
 						{
 							ctor: '::',
-							_0: A2(_user$project$Api$getRecommendedFoods, model.selectedFoods, _user$project$Main$FoundRecommendedFoods),
+							_0: A2(_user$project$Food_Api$getRecommendedFoods, model.selectedFoods, _user$project$Main$FoundRecommendedFoods),
 							_1: {ctor: '[]'}
 						});
 				}
 			case 'FoundRecommendedFoods':
-				if (_p3._0.ctor === 'Ok') {
+				if (_p8._0.ctor === 'Ok') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{recommendedFoods: _p3._0._0}),
+							{recommendedFoods: _p8._0._0}),
 						{ctor: '[]'});
 				} else {
 					return A2(
@@ -10393,7 +10588,7 @@ var _user$project$Main$update = F2(
 						{ctor: '[]'});
 				}
 			case 'GotNutrients':
-				if (_p3._0.ctor === 'Err') {
+				if (_p8._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
@@ -10401,7 +10596,7 @@ var _user$project$Main$update = F2(
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{
-								nutrients: A2(_elm_lang$core$Basics_ops['++'], model.nutrients, _p3._0._0)
+								nutrients: A2(_elm_lang$core$Basics_ops['++'], model.nutrients, _p8._0._0)
 							}),
 						{ctor: '[]'});
 				}
@@ -10414,11 +10609,11 @@ var _user$project$Main$update = F2(
 							selectedFoods: A3(
 								_user$project$Main$updateFood,
 								model.selectedFoods,
-								_p3._0.id,
+								_p8._0.id,
 								function (n) {
 									return _elm_lang$core$Native_Utils.update(
 										n,
-										{quantity: _p3._1});
+										{quantity: _p8._1});
 								})
 						}),
 					{ctor: '[]'});
@@ -10431,11 +10626,11 @@ var _user$project$Main$update = F2(
 							selectedFoods: A3(
 								_user$project$Main$updateFood,
 								model.selectedFoods,
-								_p3._0.id,
+								_p8._0.id,
 								function (n) {
 									return _elm_lang$core$Native_Utils.update(
 										n,
-										{amount: _p3._1});
+										{amount: _p8._1});
 								})
 						}),
 					{ctor: '[]'});
@@ -10445,7 +10640,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							selectedFoods: A2(_user$project$Main$removeFood, model.selectedFoods, _p3._0.id)
+							selectedFoods: A2(_user$project$Main$removeFood, model.selectedFoods, _p8._0.id)
 						}),
 					{ctor: '[]'});
 			case 'Hover':
@@ -10453,218 +10648,138 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{hoverItem: _p3._0}),
+						{hoverItem: _p8._0}),
 					{ctor: '[]'});
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{connectionModalState: _p3._0}),
+						{connectionModalState: _p8._0}),
 					{ctor: '[]'});
 		}
 	});
-var _user$project$Main$SearchForFood = function (a) {
-	return {ctor: 'SearchForFood', _0: a};
-};
 var _user$project$Main$ClearAllSelected = {ctor: 'ClearAllSelected'};
-var _user$project$Main$selectedFoodSection = function (foods) {
-	var selectedFoodMenu = A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu'),
-			_1: {ctor: '[]'}
-		},
-		A2(_elm_lang$core$List$map, _user$project$Main$foodRow, foods));
-	var displaySelectedFoodMenu = _elm_lang$core$Native_Utils.cmp(
-		_elm_lang$core$List$length(foods),
-		0) > 0;
-	var selectedFoodDisplay = displaySelectedFoodMenu ? selectedFoodMenu : _user$project$Main$emptyList('Please search a food above');
-	return _user$project$BlazeHelpers$grid(
-		{
-			ctor: '::',
-			_0: _user$project$BlazeHelpers$fullCell(
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h2,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block smaller-tooltip'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Selected Food'),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$a,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('selected-food-button c-tooltip c-tooltip--top'),
-										_1: {
-											ctor: '::',
-											_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-label', 'Clear all food'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$ClearAllSelected),
-												_1: {ctor: '[]'}
-											}
-										}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$i,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('fa fa-undo'),
-												_1: {ctor: '[]'}
-											},
-											{ctor: '[]'}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
+var _user$project$Main$selectedFoodSectionConfig = {onClearAll: _user$project$Main$ClearAllSelected};
+var _user$project$Main$UpdateSearchText = function (a) {
+	return {ctor: 'UpdateSearchText', _0: a};
+};
+var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
+var _user$project$Main$searchBar = F2(
+	function (searchText, potentialFoods) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('search-holder'),
+				_1: {ctor: '[]'}
+			},
+			{
 				ctor: '::',
 				_0: _user$project$BlazeHelpers$fullCell(
 					{
 						ctor: '::',
-						_0: selectedFoodDisplay,
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('o-field o-field--icon-right'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$input,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('c-field'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$value(searchText),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$i,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('a fa fa-search c-icon'),
+											_1: {ctor: '[]'}
+										},
+										{ctor: '[]'}),
+									_1: {ctor: '[]'}
+								}
+							}),
 						_1: {ctor: '[]'}
 					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
-var _user$project$Main$searchBar = function (potentialFoods) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('search-holder'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _user$project$BlazeHelpers$fullCell(
-				{
+				_1: {
 					ctor: '::',
 					_0: A2(
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('o-field o-field--icon-right'),
+							_0: _elm_lang$html$Html_Attributes$class('search-dropdown u-pillar-box--large'),
 							_1: {ctor: '[]'}
 						},
 						{
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$input,
+								_elm_lang$html$Html$ul,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-field'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$SearchForFood),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
-												_1: {ctor: '[]'}
-											}
-										}
-									}
+									_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu u-high'),
+									_1: {ctor: '[]'}
 								},
-								{ctor: '[]'}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$i,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('a fa fa-search c-icon'),
-										_1: {ctor: '[]'}
+								A2(
+									_elm_lang$core$List$map,
+									function (food) {
+										return A2(
+											_elm_lang$html$Html$li,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onMouseDown(
+														_user$project$Main$SelectFood(food)),
+													_1: {ctor: '[]'}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(food.name),
+												_1: {ctor: '[]'}
+											});
 									},
-									{ctor: '[]'}),
-								_1: {ctor: '[]'}
-							}
+									potentialFoods)),
+							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('search-dropdown u-pillar-box--large'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$ul,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu u-high'),
-								_1: {ctor: '[]'}
-							},
-							A2(
-								_elm_lang$core$List$map,
-								function (food) {
-									return A2(
-										_elm_lang$html$Html$li,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Events$onMouseDown(
-													_user$project$Main$SelectFood(food)),
-												_1: {ctor: '[]'}
-											}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(food.name),
-											_1: {ctor: '[]'}
-										});
-								},
-								potentialFoods)),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
+				}
+			});
+	});
 var _user$project$Main$view = function (model) {
-	var connectionModal = function () {
-		var _p5 = model.connectionModalState;
-		if (_p5.ctor === 'Hide') {
-			return A2(
-				_elm_lang$html$Html$div,
-				{ctor: '[]'},
-				{ctor: '[]'});
-		} else {
-			return _user$project$Main$connectionError;
-		}
-	}();
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _user$project$Main$topSection,
+			_0: _user$project$Navigation_View$topSection,
 			_1: {
 				ctor: '::',
 				_0: _user$project$BlazeHelpers$grid(
@@ -10680,7 +10795,7 @@ var _user$project$Main$view = function (model) {
 									'u-letter-box--small',
 									{
 										ctor: '::',
-										_0: _user$project$Main$searchBar(model.potentialFoods),
+										_0: A2(_user$project$Main$searchBar, model.searchText, model.potentialFoods),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -10693,7 +10808,7 @@ var _user$project$Main$view = function (model) {
 												60,
 												{
 													ctor: '::',
-													_0: _user$project$Main$selectedFoodSection(model.selectedFoods),
+													_0: A3(_user$project$Food_View$selectedFoodSection, _user$project$Main$selectedFoodSectionConfig, _user$project$Main$foodRowConfig, model.selectedFoods),
 													_1: {ctor: '[]'}
 												}),
 											_1: {
@@ -10703,7 +10818,7 @@ var _user$project$Main$view = function (model) {
 													40,
 													{
 														ctor: '::',
-														_0: _user$project$Main$recommendedFoodSection(model.recommendedFoods),
+														_0: _user$project$Food_View$recommendedFoodSection(model.recommendedFoods),
 														_1: {ctor: '[]'}
 													}),
 												_1: {ctor: '[]'}
@@ -10733,13 +10848,22 @@ var _user$project$Main$view = function (model) {
 													50,
 													{
 														ctor: '::',
-														_0: A2(
-															_user$project$Main$nutrientSection,
-															A2(
+														_0: A4(
+															_user$project$Nutrient_View$nutrientSection,
+															{
+																mouseOver: function (n) {
+																	return _user$project$Main$Hover(
+																		_user$project$Main$Nutrient(n));
+																},
+																mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
+															},
+															_user$project$Main$hoverItemIsFood(model.hoverItem),
+															'Vitamins (DI%)',
+															A3(
 																_user$project$Main$calculateNutrientPercentageFromFoods,
+																_user$project$Main$getFoodFromHoverItem(model.hoverItem),
 																model.selectedFoods,
-																A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Models$Vitamin)),
-															'Vitamins (DI%)'),
+																A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Nutrient_Models$Vitamin))),
 														_1: {ctor: '[]'}
 													}),
 												_1: {
@@ -10749,13 +10873,22 @@ var _user$project$Main$view = function (model) {
 														50,
 														{
 															ctor: '::',
-															_0: A2(
-																_user$project$Main$nutrientSection,
-																A2(
+															_0: A4(
+																_user$project$Nutrient_View$nutrientSection,
+																{
+																	mouseOver: function (n) {
+																		return _user$project$Main$Hover(
+																			_user$project$Main$Nutrient(n));
+																	},
+																	mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
+																},
+																_user$project$Main$hoverItemIsFood(model.hoverItem),
+																'Minerals (DI%)',
+																A3(
 																	_user$project$Main$calculateNutrientPercentageFromFoods,
+																	_user$project$Main$getFoodFromHoverItem(model.hoverItem),
 																	model.selectedFoods,
-																	A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Models$Mineral)),
-																'Minerals (DI%)'),
+																	A2(_user$project$Main$filterNutrient, model.nutrients, _user$project$Nutrient_Models$Mineral))),
 															_1: {ctor: '[]'}
 														}),
 													_1: {ctor: '[]'}
@@ -10769,7 +10902,12 @@ var _user$project$Main$view = function (model) {
 					}),
 				_1: {
 					ctor: '::',
-					_0: connectionModal,
+					_0: A2(
+						_user$project$Connection_View$connectionError,
+						{
+							onClose: _user$project$Main$ConnectionModal(_user$project$Connection_Models$Hide)
+						},
+						model.connectionModalState),
 					_1: {ctor: '[]'}
 				}
 			}
