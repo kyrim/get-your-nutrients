@@ -103,6 +103,18 @@ body {
 .info-panel-header {
   background-color: #3f9cb8;
   color: white;
+  position: relative;
+}
+
+.info-panel-side-header {
+  right: 0.5em;
+  position: absolute;
+  display: inline-block;
+  opacity: 0.75;
+}
+
+.info-panel-header-text {
+  display: inline-block;
 }
 
 /* Selected Foods */

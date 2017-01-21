@@ -7,8 +7,12 @@ type alias FoodNutrient =
     }
 
 
+type alias FoodId =
+    Int
+
+
 type alias Food =
-    { id : Int
+    { id : FoodId
     , name : String
     , amount : Int
     , quantity : Int

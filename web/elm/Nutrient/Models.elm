@@ -6,8 +6,12 @@ type NutrientType
     | Mineral
 
 
+type alias NutrientId =
+    Int
+
+
 type alias Nutrient =
-    { id : Int
+    { id : NutrientId
     , name : String
     , description : String
     , amount : Float

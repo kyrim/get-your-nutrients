@@ -5,14 +5,15 @@ import Html.Attributes exposing (..)
 import BlazeHelpers exposing (..)
 import Html.Events exposing (..)
 import Food.Models exposing (..)
+import Json.Decode as Json
 
 
 type alias FoodRowConfig msg =
-    { onFocus : Food -> msg
+    { onFocus : FoodId -> msg
     , onBlur : msg
-    , onRemove : Food -> msg
-    , onQuantityChange : Food -> Int -> msg
-    , onAmountChange : Food -> Int -> msg
+    , onRemove : FoodId -> msg
+    , onQuantityChange : FoodId -> Int -> msg
+    , onAmountChange : FoodId -> Int -> msg
     }
 
 
@@ -21,7 +22,7 @@ type alias SelectedFoodSectionConfig msg =
     }
 
 
-onInputToInt : Food -> Int -> (Food -> Int -> msg) -> (String -> msg)
+onInputToInt : FoodId -> Int -> (FoodId -> Int -> msg) -> (String -> msg)
 onInputToInt food default onFunction =
     (\string -> onFunction food (string |> String.toInt |> Result.toMaybe |> Maybe.withDefault default))
 
@@ -30,7 +31,7 @@ foodRow : FoodRowConfig msg -> Food -> Html msg
 foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
     div
         [ class "c-card__item c-field c-field--choice food-item"
-        , onMouseOver (onFocus food)
+        , onMouseOver (onFocus food.id)
         , onMouseLeave onBlur
         ]
         [ div [ class "food-item-text" ] [ text food.name ]
@@ -42,7 +43,7 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
                     , class "food-item-quantity"
                     , Html.Attributes.min "1"
                     , value (food.quantity |> toString)
-                    , onInput (onInputToInt food 1 onQuantityChange)
+                    , onInput (onInputToInt food.id 1 onQuantityChange)
                     ]
                     []
                 , span
@@ -53,7 +54,7 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
                     , class "food-item-amount"
                     , Html.Attributes.min "1"
                     , value (food.amount |> toString)
-                    , onInput (onInputToInt food 100 onAmountChange)
+                    , onInput (onInputToInt food.id 100 onAmountChange)
                     ]
                     []
                 , span
@@ -61,7 +62,7 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
                     [ text "g" ]
                 , a
                     [ class "selected-food-button" ]
-                    [ i [ class "fa fa-times", onClick (onRemove food) ] []
+                    [ i [ class "fa fa-times", onClick (onRemove food.id) ] []
                     ]
                 ]
             ]

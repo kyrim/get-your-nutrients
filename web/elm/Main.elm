@@ -2,6 +2,7 @@ module Main exposing (..)
 
 -- Elm Specific
 
+import Dict exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -24,14 +25,14 @@ import Connection.Models exposing (..)
 
 type HoverItem
     = Nutrient Nutrient
-    | Food Food
+    | Food FoodId
     | NothingHovered
 
 
 type alias Model =
-    { nutrients : List Nutrient
+    { nutrients : Dict NutrientId Nutrient
     , searchText : String
-    , selectedFoods : List Food
+    , selectedFoods : Dict FoodId Food
     , potentialFoods : List Food
     , recommendedFoods : List Food
     , hoverItem : HoverItem
@@ -42,8 +43,8 @@ type alias Model =
 initialModel : Model
 initialModel =
     { searchText = ""
-    , nutrients = []
-    , selectedFoods = []
+    , nutrients = Dict.empty
+    , selectedFoods = Dict.empty
     , potentialFoods = []
     , recommendedFoods = []
     , hoverItem = NothingHovered
@@ -61,8 +62,8 @@ init =
 -- Please note, stylesheet is already included.
 
 
-informationSection : HoverItem -> Html Msg
-informationSection hoverItem =
+informationSection : HoverItem -> Dict FoodId Food -> Html Msg
+informationSection hoverItem foodDict =
     let
         header =
             case hoverItem of
@@ -72,8 +73,24 @@ informationSection hoverItem =
                 Nutrient nutrient ->
                     nutrient.name
 
-                Food food ->
-                    food.name
+                Food foodId ->
+                    case (Dict.get foodId foodDict) of
+                        Nothing ->
+                            ""
+
+                        Just food ->
+                            food.name
+
+        sideHeader =
+            case hoverItem of
+                NothingHovered ->
+                    ""
+
+                Nutrient nutrient ->
+                    (nutrient.amount |> toString) ++ " / " ++ (nutrient.dailyIntake |> toString) ++ "" ++ nutrient.unitOfMeasure
+
+                Food foodId ->
+                    ""
 
         info =
             case hoverItem of
@@ -107,7 +124,9 @@ informationSection hoverItem =
                             [ ( "background-color", colour )
                             ]
                         ]
-                        [ text header ]
+                        [ div [ class "info-panel-header-text" ] [ text header ]
+                        , div [ class "info-panel-side-header" ] [ text sideHeader ]
+                        ]
                     , div [ class "c-card__item" ]
                         [ div [ class "c-paragraph info-panel-text" ]
                             [ text info
@@ -148,7 +167,7 @@ searchBar searchText potentialFoods =
         ]
 
 
-getFoodFromHoverItem : HoverItem -> Maybe Food
+getFoodFromHoverItem : HoverItem -> Maybe FoodId
 getFoodFromHoverItem item =
     case item of
         NothingHovered ->
@@ -174,9 +193,9 @@ type Msg
     | GotFood (Result Http.Error Food)
     | FoundRecommendedFoods (Result Http.Error (List Food))
     | GotNutrients (Result Http.Error (List Nutrient))
-    | UpdateFoodQuantity Food Int
-    | UpdateFoodAmount Food Int
-    | RemoveFood Food
+    | UpdateFoodQuantity FoodId Int
+    | UpdateFoodAmount FoodId Int
+    | RemoveFood FoodId
     | Hover HoverItem
     | ConnectionModal ModalState
 
@@ -204,33 +223,33 @@ view model =
             [ cell 50
                 [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods ]
                 , grid
-                    [ cell 60 [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
+                    [ cell 60 [ model.selectedFoods |> Dict.values |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
                     , cell 40 [ recommendedFoodSection model.recommendedFoods ]
                     ]
                 ]
             , defaultCell
                 [ grid
-                    [ fullCell [ informationSection model.hoverItem ]
+                    [ fullCell [ informationSection model.hoverItem model.selectedFoods ]
                     , cell 50
                         [ nutrientSection
-                            { mouseOver = (\n -> (Hover (Nutrient n))), mouseLeave = Hover NothingHovered }
-                            (hoverItemIsFood
-                                model.hoverItem
-                            )
+                            { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
                             "Vitamins (DI%)"
-                            (filterNutrient model.nutrients Vitamin
+                            (hoverItemIsFood model.hoverItem)
+                            (model.nutrients
+                                |> filterNutrient Vitamin
                                 |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) model.selectedFoods
+                                |> Dict.values
                             )
                         ]
                     , cell 50
                         [ nutrientSection
-                            { mouseOver = (\n -> (Hover (Nutrient n))), mouseLeave = Hover NothingHovered }
-                            (hoverItemIsFood
-                                model.hoverItem
-                            )
+                            { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
                             "Minerals (DI%)"
-                            (filterNutrient model.nutrients Mineral
+                            (hoverItemIsFood model.hoverItem)
+                            (model.nutrients
+                                |> filterNutrient Mineral
                                 |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) model.selectedFoods
+                                |> Dict.values
                             )
                         ]
                     ]
@@ -253,59 +272,59 @@ hoverItemIsFood item =
             False
 
 
-calculateNutrientPercentageFromFoods : Maybe Food -> List Food -> List Nutrient -> List Nutrient
-calculateNutrientPercentageFromFoods hoveredFood foods nutrients =
-    List.map
-        (\nutrient ->
-            { nutrient
-                | amount = (foods |> List.map (\food -> getNutrientFoodAmountById nutrient.id food) |> List.sum)
-                , hoveredAmount =
-                    case hoveredFood of
+calculateNutrientPercentageFromFoods : Maybe FoodId -> Dict FoodId Food -> Dict NutrientId Nutrient -> Dict NutrientId Nutrient
+calculateNutrientPercentageFromFoods hoveredFoodId foods nutrients =
+    let
+        food =
+            case hoveredFoodId of
+                Nothing ->
+                    Nothing
+
+                Just foodId ->
+                    case foods |> Dict.get foodId of
                         Nothing ->
-                            0
+                            Maybe.Nothing
 
                         Just food ->
-                            getNutrientFoodAmountById nutrient.id food
-            }
-        )
-        nutrients
+                            Just food
+    in
+        Dict.map
+            (\nutrientId nutrient ->
+                { nutrient
+                    | amount = (foods |> Dict.values |> List.map (\food -> getNutrientFoodAmountById nutrient.id food) |> List.sum)
+                    , hoveredAmount =
+                        case hoveredFoodId of
+                            Nothing ->
+                                0
+
+                            Just foodId ->
+                                case foods |> Dict.get foodId of
+                                    Nothing ->
+                                        0
+
+                                    Just food ->
+                                        getNutrientFoodAmountById nutrient.id food
+                }
+            )
+            nutrients
 
 
 getNutrientFoodAmountById : Int -> Food -> Float
 getNutrientFoodAmountById id food =
-    List.filter (\fn -> fn.nutrientId == id) food.nutrients
+    food.nutrients
+        |> List.filter (\fn -> fn.nutrientId == id)
         |> List.map (\fn -> fn.amount * toFloat food.amount * toFloat food.quantity)
         |> List.sum
 
 
-filterNutrient : List Nutrient -> NutrientType -> List Nutrient
-filterNutrient nutrients nutrientType =
-    List.filter (\nutrient -> nutrient.nutrientType == nutrientType) nutrients
+filterNutrient : NutrientType -> Dict NutrientId Nutrient -> Dict NutrientId Nutrient
+filterNutrient nutrientType nutrients =
+    nutrients
+        |> Dict.filter (\nutrientId nutrient -> nutrient.nutrientType == nutrientType)
 
 
 
 -- Update
-
-
-updateFood : List Food -> Int -> (Food -> Food) -> List Food
-updateFood list id updateFunction =
-    let
-        updater food =
-            if food.id == id then
-                updateFunction food
-            else
-                food
-    in
-        List.map updater list
-
-
-removeFood : List Food -> Int -> List Food
-removeFood list id =
-    let
-        filter food =
-            food.id /= id
-    in
-        List.filter filter list
 
 
 showConnectionError : Model -> ( Model, Cmd Msg )
@@ -329,7 +348,7 @@ update message model =
                 { model | searchText = text } ! [ searchFoods text FoundFoods ]
 
         ClearAllSelected ->
-            { model | selectedFoods = [] } ! []
+            { model | selectedFoods = Dict.empty } ! []
 
         FoundFoods (Err _) ->
             showConnectionError model
@@ -345,9 +364,9 @@ update message model =
 
         GotFood (Ok food) ->
             { model
-                | selectedFoods = model.selectedFoods ++ [ food ]
+                | selectedFoods = model.selectedFoods |> Dict.insert food.id food
             }
-                ! [ getRecommendedFoods model.selectedFoods FoundRecommendedFoods ]
+                ! [ getRecommendedFoods (model.selectedFoods |> Dict.values) FoundRecommendedFoods ]
 
         FoundRecommendedFoods (Ok foods) ->
             { model | recommendedFoods = foods } ! []
@@ -360,25 +379,29 @@ update message model =
 
         GotNutrients (Ok nutrients) ->
             { model
-                | nutrients = model.nutrients ++ nutrients
+                | nutrients = nutrients |> List.map (\n -> ( n.id, n )) |> Dict.fromList
             }
                 ! []
 
-        UpdateFoodQuantity food q ->
+        UpdateFoodQuantity foodId q ->
             { model
-                | selectedFoods = (updateFood model.selectedFoods food.id (\n -> { n | quantity = q }))
+                | selectedFoods =
+                    model.selectedFoods
+                        |> Dict.update foodId (Maybe.map (\food -> { food | quantity = q }))
             }
                 ! []
 
-        UpdateFoodAmount food q ->
+        UpdateFoodAmount foodId q ->
             { model
-                | selectedFoods = (updateFood model.selectedFoods food.id (\n -> { n | amount = q }))
+                | selectedFoods =
+                    model.selectedFoods
+                        |> Dict.update foodId (Maybe.map (\food -> { food | amount = q }))
             }
                 ! []
 
-        RemoveFood food ->
+        RemoveFood foodId ->
             { model
-                | selectedFoods = removeFood model.selectedFoods food.id
+                | selectedFoods = Dict.remove foodId model.selectedFoods
             }
                 ! []
 

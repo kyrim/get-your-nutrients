@@ -105,8 +105,8 @@ nutrientProgress config isHovered nutrient =
             ]
 
 
-nutrientSection : NutrientProgressConfig msg -> Bool -> String -> List Nutrient -> Html msg
-nutrientSection config foodIsHovered category nutrients =
+nutrientSection : NutrientProgressConfig msg -> String -> Bool -> List Nutrient -> Html msg
+nutrientSection config category foodIsHovered nutrients =
     gridWithCls "large-fit"
         ([ fullCell [ heading2 category ]
          ]
