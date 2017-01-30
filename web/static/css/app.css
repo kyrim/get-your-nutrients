@@ -123,6 +123,25 @@ body {
   font-size: 0.9em;
 }
 
+.recommended-food-item {
+  overflow: auto;
+  font-size: 0.9em;
+
+}
+
+.recommended-icon {
+   float: left;
+   width:20%;
+    margin: 0 auto;
+    color: gray;
+}
+
+.recommended-text {
+   float: left;
+   width: 80%;
+    margin: 0 auto;
+}
+
 .food-item-amount > input, .food-item-amount > div {
   display: inline;  
 }

@@ -6,7 +6,7 @@ defmodule GetYourNutrients.NutrientIntakeController do
     def index(conn, params) do
 
         nutrient_intakes = 
-          Repo.all from ni in NutrientIntake,
+          Repo.all from ni in NutrientIntake, 
             join: n in Nutrient,
                  on: ni.nutrient_id == n.id,
             select: %{
@@ -19,7 +19,7 @@ defmodule GetYourNutrients.NutrientIntakeController do
                 high_intake_amount: ni.high_intake_amount,
                 high_intake_description: ni.high_intake_description,
                 unit_of_measure: n.unit_of_measure,
-                type: ni.type }
+                type: ni.type }   
 
     render(conn, "index.json", nutrient_intakes: nutrient_intakes)
   end

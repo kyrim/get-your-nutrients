@@ -118,10 +118,10 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
 
 recommendedFoodRow : Food -> Html msg
 recommendedFoodRow food =
-    li [ class "c-card__item food-item" ]
-        [ i [ class "fa fa-arrow-left" ]
+    li [ class "c-card__item recommended-food-item" ]
+        [ i [ class "fa fa-arrow-left recommended-icon" ]
             []
-        , text food.name
+        , div [ class "recommended-text" ] [ text food.name ]
         ]
 
 

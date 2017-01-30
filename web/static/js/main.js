@@ -9466,7 +9466,7 @@ var _user$project$Food_View$recommendedFoodRow = function (food) {
 		_elm_lang$html$Html$li,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card__item food-item'),
+			_0: _elm_lang$html$Html_Attributes$class('c-card__item recommended-food-item'),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -9475,13 +9475,24 @@ var _user$project$Food_View$recommendedFoodRow = function (food) {
 				_elm_lang$html$Html$i,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('fa fa-arrow-left'),
+					_0: _elm_lang$html$Html_Attributes$class('fa fa-arrow-left recommended-icon'),
 					_1: {ctor: '[]'}
 				},
 				{ctor: '[]'}),
 			_1: {
 				ctor: '::',
-				_0: _elm_lang$html$Html$text(food.name),
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('recommended-text'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(food.name),
+						_1: {ctor: '[]'}
+					}),
 				_1: {ctor: '[]'}
 			}
 		});
