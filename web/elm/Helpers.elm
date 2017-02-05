@@ -15,7 +15,6 @@ limitTo number limit =
     else
         number
 
-
 stringFloatDecoder : Decoder Float
 stringFloatDecoder =
     (Json.Decode.string)

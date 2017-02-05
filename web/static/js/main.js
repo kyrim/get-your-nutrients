@@ -9211,8 +9211,37 @@ var _user$project$BlazeHelpers$grid = function (contents) {
 	return A2(_user$project$BlazeHelpers$gridWithCls, '', contents);
 };
 
+var _user$project$Connection_Models$emptyListIfNotLoaded = function (loadStateEntity) {
+	var _p0 = loadStateEntity;
+	switch (_p0.ctor) {
+		case 'NotLoaded':
+			return {ctor: '[]'};
+		case 'Loading':
+			return _p0._0;
+		default:
+			return _p0._0;
+	}
+};
+var _user$project$Connection_Models$emptyDictIfNotLoaded = function (loadStateEntity) {
+	var _p1 = loadStateEntity;
+	switch (_p1.ctor) {
+		case 'NotLoaded':
+			return _elm_lang$core$Dict$empty;
+		case 'Loading':
+			return _p1._0;
+		default:
+			return _p1._0;
+	}
+};
 var _user$project$Connection_Models$Show = {ctor: 'Show'};
 var _user$project$Connection_Models$Hide = {ctor: 'Hide'};
+var _user$project$Connection_Models$Loaded = function (a) {
+	return {ctor: 'Loaded', _0: a};
+};
+var _user$project$Connection_Models$Loading = function (a) {
+	return {ctor: 'Loading', _0: a};
+};
+var _user$project$Connection_Models$NotLoaded = {ctor: 'NotLoaded'};
 
 var _user$project$Connection_View$connectionError = F2(
 	function (config, state) {
@@ -9363,6 +9392,80 @@ var _user$project$Connection_View$connectionError = F2(
 		}();
 		return modalView;
 	});
+var _user$project$Connection_View$loadingImage = A2(
+	_elm_lang$html$Html$li,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('spinner'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('rect1'),
+						_1: {ctor: '[]'}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('rect2'),
+							_1: {ctor: '[]'}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('rect3'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('rect4'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('rect5'),
+										_1: {ctor: '[]'}
+									},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}),
+		_1: {ctor: '[]'}
+	});
 var _user$project$Connection_View$ConnectionErrorConfig = function (a) {
 	return {onClose: a};
 };
@@ -9501,7 +9604,7 @@ var _user$project$Food_View$recommendedFoodRow = function (food) {
 			}
 		});
 };
-var _user$project$Food_View$emptyList = function (message) {
+var _user$project$Food_View$listWithOneItem = function (item) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -9520,25 +9623,34 @@ var _user$project$Food_View$emptyList = function (message) {
 				},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(message),
+					_0: item,
 					_1: {ctor: '[]'}
 				}),
 			_1: {ctor: '[]'}
 		});
 };
 var _user$project$Food_View$recommendedFoodSection = function (recommendedFoods) {
-	var recommendedFoodMenu = A2(
-		_elm_lang$html$Html$ul,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
-			_1: {ctor: '[]'}
-		},
-		A2(_elm_lang$core$List$map, _user$project$Food_View$recommendedFoodRow, recommendedFoods));
-	var displayRecommendedFoodMenu = _elm_lang$core$Native_Utils.cmp(
-		_elm_lang$core$List$length(recommendedFoods),
-		0) > 0;
-	var recommendedFoodDisplay = displayRecommendedFoodMenu ? recommendedFoodMenu : _user$project$Food_View$emptyList('Please search a food above');
+	var pleaseSearchFoodText = _user$project$Food_View$listWithOneItem(
+		_elm_lang$html$Html$text('Please search a food above'));
+	var recommendedFoodDisplay = function () {
+		var _p0 = recommendedFoods;
+		switch (_p0.ctor) {
+			case 'NotLoaded':
+				return pleaseSearchFoodText;
+			case 'Loading':
+				return _user$project$Food_View$listWithOneItem(_user$project$Connection_View$loadingImage);
+			default:
+				var _p1 = _p0._0;
+				return _elm_lang$core$List$isEmpty(_p1) ? pleaseSearchFoodText : A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
+						_1: {ctor: '[]'}
+					},
+					A2(_elm_lang$core$List$map, _user$project$Food_View$recommendedFoodRow, _p1));
+		}
+	}();
 	return _user$project$BlazeHelpers$grid(
 		{
 			ctor: '::',
@@ -9583,8 +9695,8 @@ var _user$project$Food_View$onInputToInt = F4(
 					_elm_lang$core$String$toInt(string))));
 	});
 var _user$project$Food_View$foodRow = F2(
-	function (_p0, food) {
-		var _p1 = _p0;
+	function (_p2, food) {
+		var _p3 = _p2;
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -9593,10 +9705,10 @@ var _user$project$Food_View$foodRow = F2(
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Events$onMouseOver(
-						_p1.onFocus(food.id)),
+						_p3.onFocus(food.id)),
 					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onMouseLeave(_p1.onBlur),
+						_0: _elm_lang$html$Html_Events$onMouseLeave(_p3.onBlur),
 						_1: {ctor: '[]'}
 					}
 				}
@@ -9653,7 +9765,7 @@ var _user$project$Food_View$foodRow = F2(
 														_1: {
 															ctor: '::',
 															_0: _elm_lang$html$Html_Events$onInput(
-																A3(_user$project$Food_View$onInputToInt, food.id, 1, _p1.onQuantityChange)),
+																A3(_user$project$Food_View$onInputToInt, food.id, 1, _p3.onQuantityChange)),
 															_1: {ctor: '[]'}
 														}
 													}
@@ -9695,7 +9807,7 @@ var _user$project$Food_View$foodRow = F2(
 																_1: {
 																	ctor: '::',
 																	_0: _elm_lang$html$Html_Events$onInput(
-																		A3(_user$project$Food_View$onInputToInt, food.id, 100, _p1.onAmountChange)),
+																		A3(_user$project$Food_View$onInputToInt, food.id, 100, _p3.onAmountChange)),
 																	_1: {ctor: '[]'}
 																}
 															}
@@ -9736,7 +9848,7 @@ var _user$project$Food_View$foodRow = F2(
 																	_1: {
 																		ctor: '::',
 																		_0: _elm_lang$html$Html_Events$onClick(
-																			_p1.onRemove(food.id)),
+																			_p3.onRemove(food.id)),
 																		_1: {ctor: '[]'}
 																	}
 																},
@@ -9756,23 +9868,32 @@ var _user$project$Food_View$foodRow = F2(
 			});
 	});
 var _user$project$Food_View$selectedFoodSection = F3(
-	function (_p2, foodRowConfig, foods) {
-		var _p3 = _p2;
-		var selectedFoodMenu = A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
-				_1: {ctor: '[]'}
-			},
-			A2(
-				_elm_lang$core$List$map,
-				_user$project$Food_View$foodRow(foodRowConfig),
-				foods));
-		var displaySelectedFoodMenu = _elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$List$length(foods),
-			0) > 0;
-		var selectedFoodDisplay = displaySelectedFoodMenu ? selectedFoodMenu : _user$project$Food_View$emptyList('Please search a food above');
+	function (_p4, foodRowConfig, foods) {
+		var _p5 = _p4;
+		var pleaseSearchFoodText = _user$project$Food_View$listWithOneItem(
+			_elm_lang$html$Html$text('Please search a food above'));
+		var selectedFoodDisplay = function () {
+			var _p6 = foods;
+			switch (_p6.ctor) {
+				case 'NotLoaded':
+					return pleaseSearchFoodText;
+				case 'Loading':
+					return _user$project$Food_View$listWithOneItem(_user$project$Connection_View$loadingImage);
+				default:
+					var _p7 = _p6._0;
+					return _elm_lang$core$Dict$isEmpty(_p7) ? pleaseSearchFoodText : A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
+							_1: {ctor: '[]'}
+						},
+						A2(
+							_elm_lang$core$List$map,
+							_user$project$Food_View$foodRow(foodRowConfig),
+							_elm_lang$core$Dict$values(_p7)));
+			}
+		}();
 		return _user$project$BlazeHelpers$grid(
 			{
 				ctor: '::',
@@ -9801,7 +9922,7 @@ var _user$project$Food_View$selectedFoodSection = F3(
 												_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-label', 'Clear all food'),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onClick(_p3.onClearAll),
+													_0: _elm_lang$html$Html_Events$onClick(_p5.onClearAll),
 													_1: {ctor: '[]'}
 												}
 											}
@@ -10330,80 +10451,6 @@ var _user$project$Main$getFoodFromHoverItem = function (item) {
 			return _elm_lang$core$Maybe$Just(_p5._0);
 	}
 };
-var _user$project$Main$loadingImage = A2(
-	_elm_lang$html$Html$li,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
-		_1: {ctor: '[]'}
-	},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('spinner'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('rect1'),
-						_1: {ctor: '[]'}
-					},
-					{ctor: '[]'}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('rect2'),
-							_1: {ctor: '[]'}
-						},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('rect3'),
-								_1: {ctor: '[]'}
-							},
-							{ctor: '[]'}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('rect4'),
-									_1: {ctor: '[]'}
-								},
-								{ctor: '[]'}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('rect5'),
-										_1: {ctor: '[]'}
-									},
-									{ctor: '[]'}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			}),
-		_1: {ctor: '[]'}
-	});
 var _user$project$Main$informationSection = F2(
 	function (hoverItem, foodDict) {
 		var colour = function () {
@@ -10564,29 +10611,15 @@ var _user$project$Main$informationSection = F2(
 	});
 var _user$project$Main$Model = F8(
 	function (a, b, c, d, e, f, g, h) {
-		return {nutrients: a, searchText: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e, hoverItem: f, connectionModalState: g, loadingPotentialFoods: h};
+		return {searchText: a, nutrients: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e, hoverItem: f, connectionModalState: g, loadingPotentialFoods: h};
 	});
 var _user$project$Main$NothingHovered = {ctor: 'NothingHovered'};
+var _user$project$Main$initialModel = {searchText: '', nutrients: _elm_lang$core$Dict$empty, selectedFoods: _user$project$Connection_Models$NotLoaded, potentialFoods: _user$project$Connection_Models$NotLoaded, recommendedFoods: _user$project$Connection_Models$NotLoaded, hoverItem: _user$project$Main$NothingHovered, connectionModalState: _user$project$Connection_Models$Hide, loadingPotentialFoods: true};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
 };
 var _user$project$Main$Nutrient = function (a) {
 	return {ctor: 'Nutrient', _0: a};
-};
-var _user$project$Main$Loaded = function (a) {
-	return {ctor: 'Loaded', _0: a};
-};
-var _user$project$Main$Loading = {ctor: 'Loading'};
-var _user$project$Main$NotLoaded = {ctor: 'NotLoaded'};
-var _user$project$Main$initialModel = {
-	searchText: '',
-	nutrients: _elm_lang$core$Dict$empty,
-	selectedFoods: _elm_lang$core$Dict$empty,
-	potentialFoods: _user$project$Main$NotLoaded,
-	recommendedFoods: {ctor: '[]'},
-	hoverItem: _user$project$Main$NothingHovered,
-	connectionModalState: _user$project$Connection_Models$Hide,
-	loadingPotentialFoods: true
 };
 var _user$project$Main$ConnectionModal = function (a) {
 	return {ctor: 'ConnectionModal', _0: a};
@@ -10647,7 +10680,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _user$project$Main$NotLoaded}),
+						{potentialFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'UpdateSearchText':
 				var _p15 = _p14._0;
@@ -10658,12 +10691,16 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _user$project$Main$NotLoaded, searchText: _p15}),
+						{potentialFoods: _user$project$Connection_Models$NotLoaded, searchText: _p15}),
 					{ctor: '[]'}) : A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{searchText: _p15, potentialFoods: _user$project$Main$Loading}),
+						{
+							searchText: _p15,
+							potentialFoods: _user$project$Connection_Models$Loading(
+								_user$project$Connection_Models$emptyListIfNotLoaded(model.potentialFoods))
+						}),
 					{
 						ctor: '::',
 						_0: A2(_user$project$Food_Api$searchFoods, _p15, _user$project$Main$FoundFoods),
@@ -10674,28 +10711,33 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{selectedFoods: _elm_lang$core$Dict$empty}),
+						{selectedFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'FoundFoods':
 				if (_p14._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{potentialFoods: _user$project$Main$NotLoaded}));
+							{potentialFoods: _user$project$Connection_Models$NotLoaded}));
 				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{
-								potentialFoods: _user$project$Main$Loaded(_p14._0._0)
+								potentialFoods: _user$project$Connection_Models$Loaded(_p14._0._0)
 							}),
 						{ctor: '[]'});
 				}
 			case 'SelectFood':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
-					model,
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							selectedFoods: _user$project$Connection_Models$Loading(
+								_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods))
+						}),
 					{
 						ctor: '::',
 						_0: A2(_user$project$Food_Api$getFood, _p14._0.id, _user$project$Main$GotFood),
@@ -10711,13 +10753,21 @@ var _user$project$Main$update = F2(
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{
-								selectedFoods: A3(_elm_lang$core$Dict$insert, _p16.id, _p16, model.selectedFoods)
+								selectedFoods: _user$project$Connection_Models$Loaded(
+									A3(
+										_elm_lang$core$Dict$insert,
+										_p16.id,
+										_p16,
+										_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods))),
+								recommendedFoods: _user$project$Connection_Models$Loading(
+									_user$project$Connection_Models$emptyListIfNotLoaded(model.recommendedFoods))
 							}),
 						{
 							ctor: '::',
 							_0: A2(
 								_user$project$Food_Api$getRecommendedFoods,
-								_elm_lang$core$Dict$values(model.selectedFoods),
+								_elm_lang$core$Dict$values(
+									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)),
 								_user$project$Main$FoundRecommendedFoods),
 							_1: {ctor: '[]'}
 						});
@@ -10728,7 +10778,9 @@ var _user$project$Main$update = F2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{recommendedFoods: _p14._0._0}),
+							{
+								recommendedFoods: _user$project$Connection_Models$Loaded(_p14._0._0)
+							}),
 						{ctor: '[]'});
 				} else {
 					return A2(
@@ -10761,16 +10813,17 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							selectedFoods: A3(
-								_elm_lang$core$Dict$update,
-								_p14._0,
-								_elm_lang$core$Maybe$map(
-									function (food) {
-										return _elm_lang$core$Native_Utils.update(
-											food,
-											{quantity: _p14._1});
-									}),
-								model.selectedFoods)
+							selectedFoods: _user$project$Connection_Models$Loaded(
+								A3(
+									_elm_lang$core$Dict$update,
+									_p14._0,
+									_elm_lang$core$Maybe$map(
+										function (food) {
+											return _elm_lang$core$Native_Utils.update(
+												food,
+												{quantity: _p14._1});
+										}),
+									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
 					{ctor: '[]'});
 			case 'UpdateFoodAmount':
@@ -10779,16 +10832,17 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							selectedFoods: A3(
-								_elm_lang$core$Dict$update,
-								_p14._0,
-								_elm_lang$core$Maybe$map(
-									function (food) {
-										return _elm_lang$core$Native_Utils.update(
-											food,
-											{amount: _p14._1});
-									}),
-								model.selectedFoods)
+							selectedFoods: _user$project$Connection_Models$Loaded(
+								A3(
+									_elm_lang$core$Dict$update,
+									_p14._0,
+									_elm_lang$core$Maybe$map(
+										function (food) {
+											return _elm_lang$core$Native_Utils.update(
+												food,
+												{amount: _p14._1});
+										}),
+									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
 					{ctor: '[]'});
 			case 'RemoveFood':
@@ -10797,7 +10851,11 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							selectedFoods: A2(_elm_lang$core$Dict$remove, _p14._0, model.selectedFoods)
+							selectedFoods: _user$project$Connection_Models$Loaded(
+								A2(
+									_elm_lang$core$Dict$remove,
+									_p14._0,
+									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
 					{ctor: '[]'});
 			case 'Hover':
@@ -10843,7 +10901,7 @@ var _user$project$Main$searchBar = F2(
 				case 'Loading':
 					return {
 						ctor: '::',
-						_0: _user$project$Main$loadingImage,
+						_0: _user$project$Connection_View$loadingImage,
 						_1: {ctor: '[]'}
 					};
 				default:
@@ -11007,11 +11065,7 @@ var _user$project$Main$view = function (model) {
 												60,
 												{
 													ctor: '::',
-													_0: A3(
-														_user$project$Food_View$selectedFoodSection,
-														_user$project$Main$selectedFoodSectionConfig,
-														_user$project$Main$foodRowConfig,
-														_elm_lang$core$Dict$values(model.selectedFoods)),
+													_0: A3(_user$project$Food_View$selectedFoodSection, _user$project$Main$selectedFoodSectionConfig, _user$project$Main$foodRowConfig, model.selectedFoods),
 													_1: {ctor: '[]'}
 												}),
 											_1: {
@@ -11041,7 +11095,10 @@ var _user$project$Main$view = function (model) {
 											_0: _user$project$BlazeHelpers$fullCell(
 												{
 													ctor: '::',
-													_0: A2(_user$project$Main$informationSection, model.hoverItem, model.selectedFoods),
+													_0: A2(
+														_user$project$Main$informationSection,
+														model.hoverItem,
+														_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)),
 													_1: {ctor: '[]'}
 												}),
 											_1: {
@@ -11066,7 +11123,7 @@ var _user$project$Main$view = function (model) {
 																A3(
 																	_user$project$Main$calculateNutrientPercentageFromFoods,
 																	_user$project$Main$getFoodFromHoverItem(model.hoverItem),
-																	model.selectedFoods,
+																	_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
 																	A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Vitamin, model.nutrients)))),
 														_1: {ctor: '[]'}
 													}),
@@ -11092,7 +11149,7 @@ var _user$project$Main$view = function (model) {
 																	A3(
 																		_user$project$Main$calculateNutrientPercentageFromFoods,
 																		_user$project$Main$getFoodFromHoverItem(model.hoverItem),
-																		model.selectedFoods,
+																		_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
 																		A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Mineral, model.nutrients)))),
 															_1: {ctor: '[]'}
 														}),

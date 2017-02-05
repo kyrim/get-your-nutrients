@@ -28,17 +28,12 @@ type HoverItem
     | Food FoodId
     | NothingHovered
 
-type LoadState a = 
-    NotLoaded 
-    | Loading
-    | Loaded a
-
 type alias Model =
-    { nutrients : Dict NutrientId Nutrient
-    , searchText : String
-    , selectedFoods : Dict FoodId Food
+    { searchText : String
+    , nutrients : Dict NutrientId Nutrient
+    , selectedFoods : LoadState (Dict FoodId Food)
     , potentialFoods : LoadState (List Food)
-    , recommendedFoods : List Food
+    , recommendedFoods : LoadState (List Food)
     , hoverItem : HoverItem
     , connectionModalState : ModalState
     , loadingPotentialFoods : Bool
@@ -49,9 +44,9 @@ initialModel : Model
 initialModel =
     { searchText = ""
     , nutrients = Dict.empty
-    , selectedFoods = Dict.empty
+    , selectedFoods = NotLoaded
     , potentialFoods = NotLoaded
-    , recommendedFoods = []
+    , recommendedFoods = NotLoaded
     , hoverItem = NothingHovered
     , connectionModalState = Hide
     , loadingPotentialFoods = True
@@ -142,31 +137,13 @@ informationSection hoverItem foodDict =
                 ]
             ]
 
-loadingImage : Html Msg
-loadingImage = 
-    li [class "c-card__item"] [
-        div [ class "spinner" ]
-        [ div [ class "rect1" ]
-            []
-        , div [ class "rect2" ]
-            []
-        , div [ class "rect3" ]
-            []
-        , div [ class "rect4" ]
-            []
-        , div [ class "rect5" ]
-            []
-        ]
-    ]
-
-
 searchBar : String -> LoadState (List Food) -> Html Msg
 searchBar searchText potentialFoods =
     let 
         content = 
             case potentialFoods of 
             NotLoaded -> []
-            Loading -> 
+            Loading previousFoods -> 
                 [ loadingImage ]
             Loaded foods -> 
                 if List.isEmpty foods then
@@ -181,7 +158,7 @@ searchBar searchText potentialFoods =
         ulStyle = 
             case potentialFoods of
                 NotLoaded -> "c-card search-bar-ul u-high"
-                Loading -> "c-card search-bar-ul u-high"
+                Loading previousFoods -> "c-card search-bar-ul u-high"
                 Loaded foods -> 
                 if (List.isEmpty foods) then "c-card search-bar-ul u-high"
                 else "c-card c-card--menu search-bar-ul u-high"
@@ -264,13 +241,13 @@ view model =
             [ cell 50
                 [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods]
                 , grid
-                    [ cell 60 [ model.selectedFoods |> Dict.values |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
+                    [ cell 60 [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
                     , cell 40 [ recommendedFoodSection model.recommendedFoods ]
                     ]
                 ]
             , defaultCell
                 [ grid
-                    [ fullCell [ informationSection model.hoverItem model.selectedFoods ]
+                    [ fullCell [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ]
                     , cell 50
                         [ nutrientSection
                             { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
@@ -278,7 +255,7 @@ view model =
                             (hoverItemIsFood model.hoverItem)
                             (model.nutrients
                                 |> filterNutrient Vitamin
-                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) model.selectedFoods
+                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
                                 |> Dict.values
                             )
                         ]
@@ -289,7 +266,7 @@ view model =
                             (hoverItemIsFood model.hoverItem)
                             (model.nutrients
                                 |> filterNutrient Mineral
-                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) model.selectedFoods
+                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
                                 |> Dict.values
                             )
                         ]
@@ -386,10 +363,10 @@ update message model =
             if ((text |> String.trim |> String.isEmpty) || String.length text < 3) then
                 { model | potentialFoods = NotLoaded, searchText = text } ! []
             else
-                { model | searchText = text, potentialFoods = Loading } ! [ searchFoods text FoundFoods ]
+                { model | searchText = text, potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods) } ! [ searchFoods text FoundFoods ]
 
         ClearAllSelected ->
-            { model | selectedFoods = Dict.empty } ! []
+            { model | selectedFoods = NotLoaded } ! []
 
         FoundFoods (Err _) ->
             { model | potentialFoods = NotLoaded} 
@@ -399,19 +376,23 @@ update message model =
             { model | potentialFoods = (Loaded foods) } ! []
 
         SelectFood food ->
-            model ! [ getFood food.id GotFood ]
+             { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood food.id GotFood ]
 
         GotFood (Err _) ->
             showConnectionError model
 
         GotFood (Ok food) ->
             { model
-                | selectedFoods = model.selectedFoods |> Dict.insert food.id food
+                | selectedFoods = model.selectedFoods 
+                |> emptyDictIfNotLoaded 
+                |> Dict.insert food.id food 
+                |> Loaded
+                , recommendedFoods = Loading (emptyListIfNotLoaded model.recommendedFoods)
             }
-                ! [ getRecommendedFoods (model.selectedFoods |> Dict.values) FoundRecommendedFoods ]
+                ! [ getRecommendedFoods (model.selectedFoods |> emptyDictIfNotLoaded |> Dict.values) FoundRecommendedFoods ]
 
         FoundRecommendedFoods (Ok foods) ->
-            { model | recommendedFoods = foods } ! []
+            { model | recommendedFoods = Loaded foods } ! []
 
         FoundRecommendedFoods (Err _) ->
             model ! []
@@ -428,22 +409,25 @@ update message model =
         UpdateFoodQuantity foodId q ->
             { model
                 | selectedFoods =
-                    model.selectedFoods
+                    model.selectedFoods |> emptyDictIfNotLoaded
                         |> Dict.update foodId (Maybe.map (\food -> { food | quantity = q }))
+                        |> Loaded
             }
                 ! []
 
         UpdateFoodAmount foodId q ->
             { model
                 | selectedFoods =
-                    model.selectedFoods
+                    model.selectedFoods 
+                        |> emptyDictIfNotLoaded
                         |> Dict.update foodId (Maybe.map (\food -> { food | amount = q }))
+                        |> Loaded
             }
                 ! []
 
         RemoveFood foodId ->
             { model
-                | selectedFoods = Dict.remove foodId model.selectedFoods
+                | selectedFoods = model.selectedFoods |> emptyDictIfNotLoaded |> Dict.remove foodId |> Loaded
             }
                 ! []
 

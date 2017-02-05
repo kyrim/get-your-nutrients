@@ -5,8 +5,9 @@ import Html.Attributes exposing (..)
 import BlazeHelpers exposing (..)
 import Html.Events exposing (..)
 import Food.Models exposing (..)
-import Json.Decode as Json
-
+import Connection.Models exposing (..)
+import Connection.View exposing (..)
+import Dict exposing (..)
 
 type alias FoodRowConfig msg =
     { onFocus : FoodId -> msg
@@ -69,33 +70,33 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
         ]
 
 
-emptyList : String -> Html msg
-emptyList message =
+listWithOneItem : Html msg -> Html msg
+listWithOneItem item =
     div [ class "c-card list-empty" ]
         [ div [ class "c-card-item list-empty-text" ]
-            [ text message
+            [  item
             ]
         ]
 
 
-selectedFoodSection : SelectedFoodSectionConfig msg -> FoodRowConfig msg -> List Food -> Html msg
+selectedFoodSection : SelectedFoodSectionConfig msg -> FoodRowConfig msg -> LoadState (Dict FoodId Food) -> Html msg
 selectedFoodSection { onClearAll } foodRowConfig foods =
     let
-        displaySelectedFoodMenu =
-            (List.length foods) > 0
-
-        selectedFoodMenu =
-            div [ class "c-card c-card--menu food-menu" ]
+        pleaseSearchFoodText =  listWithOneItem (text "Please search a food above")
+        selectedFoodDisplay = 
+        case foods of
+            NotLoaded -> pleaseSearchFoodText
+            Loading previousFoods -> listWithOneItem loadingImage
+            Loaded loadedFoods -> 
+                if Dict.isEmpty loadedFoods then
+                    pleaseSearchFoodText
+                else 
+                div [ class "c-card c-card--menu food-menu" ]
                 (List.map
                     (foodRow foodRowConfig)
-                    foods
-                )
+                    (Dict.values loadedFoods)
+                )       
 
-        selectedFoodDisplay =
-            if displaySelectedFoodMenu then
-                selectedFoodMenu
-            else
-                emptyList "Please search a food above"
     in
         grid
             [ fullCell
@@ -125,24 +126,23 @@ recommendedFoodRow food =
         ]
 
 
-recommendedFoodSection : List Food -> Html msg
+recommendedFoodSection : LoadState (List Food) -> Html msg
 recommendedFoodSection recommendedFoods =
     let
-        displayRecommendedFoodMenu =
-            (List.length recommendedFoods) > 0
-
-        recommendedFoodMenu =
-            ul [ class "c-card c-card--menu food-menu" ]
+        pleaseSearchFoodText =  listWithOneItem (text "Please search a food above")
+        recommendedFoodDisplay = 
+        case recommendedFoods of
+            NotLoaded -> pleaseSearchFoodText
+            Loading previousFoods -> listWithOneItem loadingImage
+            Loaded loadedFoods -> 
+                if List.isEmpty loadedFoods then
+                    pleaseSearchFoodText
+                else 
+                div [ class "c-card c-card--menu food-menu" ]
                 (List.map
                     recommendedFoodRow
-                    recommendedFoods
-                )
-
-        recommendedFoodDisplay =
-            if displayRecommendedFoodMenu then
-                recommendedFoodMenu
-            else
-                emptyList "Please search a food above"
+                    loadedFoods
+                ) 
     in
         grid
             [ fullCell
