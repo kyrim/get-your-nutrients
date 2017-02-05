@@ -14,7 +14,8 @@ defmodule GetYourNutrients.RecommendFoodController do
             join: n in Nutrient, where: fn_.nutrient_id == n.id,
             join: ni in NutrientIntake, where: ni.nutrient_id == n.id,
             where: not f.id in ^ids,
-            
+            group_by: [f.id, f.name],
+            order_by: fragment("SUM(? / ?) DESC", fn_.amount, ni.daily_intake),
             select: %{
               id: f.id,
               name: f.name,

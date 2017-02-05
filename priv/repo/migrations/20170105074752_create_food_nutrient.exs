@@ -11,6 +11,6 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFoodNutrient do
     end
     create index(:food_nutrients, [:food_id])
     create index(:food_nutrients, [:nutrient_id])
-
+    create index(:food_nutrients, [:amount])
   end
 end

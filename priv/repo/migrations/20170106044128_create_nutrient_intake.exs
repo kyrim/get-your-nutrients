@@ -15,6 +15,7 @@ defmodule GetYourNutrients.Repo.Migrations.CreateNutrientIntake do
       timestamps()
     end
     create index(:nutrient_intakes, [:nutrient_id])
-
+    create index(:nutrient_intakes, [:daily_intake])
+    
   end
 end
