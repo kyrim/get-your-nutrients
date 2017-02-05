@@ -10330,6 +10330,80 @@ var _user$project$Main$getFoodFromHoverItem = function (item) {
 			return _elm_lang$core$Maybe$Just(_p5._0);
 	}
 };
+var _user$project$Main$loadingImage = A2(
+	_elm_lang$html$Html$li,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('spinner'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('rect1'),
+						_1: {ctor: '[]'}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('rect2'),
+							_1: {ctor: '[]'}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('rect3'),
+								_1: {ctor: '[]'}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('rect4'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('rect5'),
+										_1: {ctor: '[]'}
+									},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}),
+		_1: {ctor: '[]'}
+	});
 var _user$project$Main$informationSection = F2(
 	function (hoverItem, foodDict) {
 		var colour = function () {
@@ -10488,25 +10562,31 @@ var _user$project$Main$informationSection = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Main$Model = F7(
-	function (a, b, c, d, e, f, g) {
-		return {nutrients: a, searchText: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e, hoverItem: f, connectionModalState: g};
+var _user$project$Main$Model = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {nutrients: a, searchText: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e, hoverItem: f, connectionModalState: g, loadingPotentialFoods: h};
 	});
 var _user$project$Main$NothingHovered = {ctor: 'NothingHovered'};
-var _user$project$Main$initialModel = {
-	searchText: '',
-	nutrients: _elm_lang$core$Dict$empty,
-	selectedFoods: _elm_lang$core$Dict$empty,
-	potentialFoods: {ctor: '[]'},
-	recommendedFoods: {ctor: '[]'},
-	hoverItem: _user$project$Main$NothingHovered,
-	connectionModalState: _user$project$Connection_Models$Hide
-};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
 };
 var _user$project$Main$Nutrient = function (a) {
 	return {ctor: 'Nutrient', _0: a};
+};
+var _user$project$Main$Loaded = function (a) {
+	return {ctor: 'Loaded', _0: a};
+};
+var _user$project$Main$Loading = {ctor: 'Loading'};
+var _user$project$Main$NotLoaded = {ctor: 'NotLoaded'};
+var _user$project$Main$initialModel = {
+	searchText: '',
+	nutrients: _elm_lang$core$Dict$empty,
+	selectedFoods: _elm_lang$core$Dict$empty,
+	potentialFoods: _user$project$Main$NotLoaded,
+	recommendedFoods: {ctor: '[]'},
+	hoverItem: _user$project$Main$NothingHovered,
+	connectionModalState: _user$project$Connection_Models$Hide,
+	loadingPotentialFoods: true
 };
 var _user$project$Main$ConnectionModal = function (a) {
 	return {ctor: 'ConnectionModal', _0: a};
@@ -10567,9 +10647,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{
-							potentialFoods: {ctor: '[]'}
-						}),
+						{potentialFoods: _user$project$Main$NotLoaded}),
 					{ctor: '[]'});
 			case 'UpdateSearchText':
 				var _p15 = _p14._0;
@@ -10580,15 +10658,12 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{
-							potentialFoods: {ctor: '[]'},
-							searchText: _p15
-						}),
+						{potentialFoods: _user$project$Main$NotLoaded, searchText: _p15}),
 					{ctor: '[]'}) : A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{searchText: _p15}),
+						{searchText: _p15, potentialFoods: _user$project$Main$Loading}),
 					{
 						ctor: '::',
 						_0: A2(_user$project$Food_Api$searchFoods, _p15, _user$project$Main$FoundFoods),
@@ -10603,13 +10678,18 @@ var _user$project$Main$update = F2(
 					{ctor: '[]'});
 			case 'FoundFoods':
 				if (_p14._0.ctor === 'Err') {
-					return _user$project$Main$showConnectionError(model);
+					return _user$project$Main$showConnectionError(
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{potentialFoods: _user$project$Main$NotLoaded}));
 				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{potentialFoods: _p14._0._0}),
+							{
+								potentialFoods: _user$project$Main$Loaded(_p14._0._0)
+							}),
 						{ctor: '[]'});
 				}
 			case 'SelectFood':
@@ -10744,6 +10824,69 @@ var _user$project$Main$UpdateSearchText = function (a) {
 var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
 var _user$project$Main$searchBar = F2(
 	function (searchText, potentialFoods) {
+		var ulStyle = function () {
+			var _p17 = potentialFoods;
+			switch (_p17.ctor) {
+				case 'NotLoaded':
+					return 'c-card search-bar-ul u-high';
+				case 'Loading':
+					return 'c-card search-bar-ul u-high';
+				default:
+					return _elm_lang$core$List$isEmpty(_p17._0) ? 'c-card search-bar-ul u-high' : 'c-card c-card--menu search-bar-ul u-high';
+			}
+		}();
+		var content = function () {
+			var _p18 = potentialFoods;
+			switch (_p18.ctor) {
+				case 'NotLoaded':
+					return {ctor: '[]'};
+				case 'Loading':
+					return {
+						ctor: '::',
+						_0: _user$project$Main$loadingImage,
+						_1: {ctor: '[]'}
+					};
+				default:
+					var _p19 = _p18._0;
+					return _elm_lang$core$List$isEmpty(_p19) ? {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$li,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('c-card__item no-results'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('No Results'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					} : A2(
+						_elm_lang$core$List$map,
+						function (food) {
+							return A2(
+								_elm_lang$html$Html$li,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onMouseDown(
+											_user$project$Main$SelectFood(food)),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(food.name),
+									_1: {ctor: '[]'}
+								});
+						},
+						_p19);
+			}
+		}();
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -10819,31 +10962,10 @@ var _user$project$Main$searchBar = F2(
 								_elm_lang$html$Html$ul,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu u-high'),
+									_0: _elm_lang$html$Html_Attributes$class(ulStyle),
 									_1: {ctor: '[]'}
 								},
-								A2(
-									_elm_lang$core$List$map,
-									function (food) {
-										return A2(
-											_elm_lang$html$Html$li,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onMouseDown(
-														_user$project$Main$SelectFood(food)),
-													_1: {ctor: '[]'}
-												}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(food.name),
-												_1: {ctor: '[]'}
-											});
-									},
-									potentialFoods)),
+								content),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -10932,9 +11054,9 @@ var _user$project$Main$view = function (model) {
 														_0: A4(
 															_user$project$Nutrient_View$nutrientSection,
 															{
-																mouseOver: function (_p17) {
+																mouseOver: function (_p20) {
 																	return _user$project$Main$Hover(
-																		_user$project$Main$Nutrient(_p17));
+																		_user$project$Main$Nutrient(_p20));
 																},
 																mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
 															},
@@ -10958,9 +11080,9 @@ var _user$project$Main$view = function (model) {
 															_0: A4(
 																_user$project$Nutrient_View$nutrientSection,
 																{
-																	mouseOver: function (_p18) {
+																	mouseOver: function (_p21) {
 																		return _user$project$Main$Hover(
-																			_user$project$Main$Nutrient(_p18));
+																			_user$project$Main$Nutrient(_p21));
 																	},
 																	mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
 																},

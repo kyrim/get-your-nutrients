@@ -28,15 +28,20 @@ type HoverItem
     | Food FoodId
     | NothingHovered
 
+type LoadState a = 
+    NotLoaded 
+    | Loading
+    | Loaded a
 
 type alias Model =
     { nutrients : Dict NutrientId Nutrient
     , searchText : String
     , selectedFoods : Dict FoodId Food
-    , potentialFoods : List Food
+    , potentialFoods : LoadState (List Food)
     , recommendedFoods : List Food
     , hoverItem : HoverItem
     , connectionModalState : ModalState
+    , loadingPotentialFoods : Bool
     }
 
 
@@ -45,10 +50,11 @@ initialModel =
     { searchText = ""
     , nutrients = Dict.empty
     , selectedFoods = Dict.empty
-    , potentialFoods = []
+    , potentialFoods = NotLoaded
     , recommendedFoods = []
     , hoverItem = NothingHovered
     , connectionModalState = Hide
+    , loadingPotentialFoods = True
     }
 
 
@@ -136,35 +142,70 @@ informationSection hoverItem foodDict =
                 ]
             ]
 
+loadingImage : Html Msg
+loadingImage = 
+    li [class "c-card__item"] [
+        div [ class "spinner" ]
+        [ div [ class "rect1" ]
+            []
+        , div [ class "rect2" ]
+            []
+        , div [ class "rect3" ]
+            []
+        , div [ class "rect4" ]
+            []
+        , div [ class "rect5" ]
+            []
+        ]
+    ]
 
-searchBar : String -> List Food -> Html Msg
+
+searchBar : String -> LoadState (List Food) -> Html Msg
 searchBar searchText potentialFoods =
-    div [ class "search-holder" ]
-        [ fullCell
-            [ div [ class "o-field o-field--icon-right" ]
-                [ input
-                    [ class "c-field"
-                    , placeholder "Search for food here and add to calculate nutrients"
-                    , value searchText
-                    , onInput UpdateSearchText
-                    , onBlur ClearSearch
+    let 
+        content = 
+            case potentialFoods of 
+            NotLoaded -> []
+            Loading -> 
+                [ loadingImage ]
+            Loaded foods -> 
+                if List.isEmpty foods then
+                    [ li [class "c-card__item no-results"] [text "No Results"] ]
+                else
+                  List.map
+                        (\food ->
+                            li [ class "c-card__item", onMouseDown (SelectFood food) ]
+                                [ text food.name ]
+                        )
+                        foods
+        ulStyle = 
+            case potentialFoods of
+                NotLoaded -> "c-card search-bar-ul u-high"
+                Loading -> "c-card search-bar-ul u-high"
+                Loaded foods -> 
+                if (List.isEmpty foods) then "c-card search-bar-ul u-high"
+                else "c-card c-card--menu search-bar-ul u-high"
+    in
+        div [ class "search-holder" ]
+            [ fullCell
+                [ div [ class "o-field o-field--icon-right" ]
+                    [ input
+                        [ class "c-field"
+                        , placeholder "Search for food here and add to calculate nutrients"
+                        , value searchText
+                        , onInput UpdateSearchText
+                        , onBlur ClearSearch
+                        ]
+                        []
+                    , i [ class "a fa fa-search c-icon" ] []
                     ]
-                    []
-                , i [ class "a fa fa-search c-icon" ] []
+                ]
+            , div
+                [ class "search-dropdown u-pillar-box--large" ]
+                [ ul [ class ulStyle ]
+                    content
                 ]
             ]
-        , div
-            [ class "search-dropdown u-pillar-box--large" ]
-            [ ul [ class "c-card c-card--menu u-high" ]
-                (List.map
-                    (\food ->
-                        li [ class "c-card__item", onMouseDown (SelectFood food) ]
-                            [ text food.name ]
-                    )
-                    potentialFoods
-                )
-            ]
-        ]
 
 
 getFoodFromHoverItem : HoverItem -> Maybe FoodId
@@ -221,7 +262,7 @@ view model =
         [ topSection
         , grid
             [ cell 50
-                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods ]
+                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods]
                 , grid
                     [ cell 60 [ model.selectedFoods |> Dict.values |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
                     , cell 40 [ recommendedFoodSection model.recommendedFoods ]
@@ -339,22 +380,23 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
         ClearSearch ->
-            { model | potentialFoods = [] } ! []
+            { model | potentialFoods = NotLoaded } ! []
 
         UpdateSearchText text ->
             if ((text |> String.trim |> String.isEmpty) || String.length text < 3) then
-                { model | potentialFoods = [], searchText = text } ! []
+                { model | potentialFoods = NotLoaded, searchText = text } ! []
             else
-                { model | searchText = text } ! [ searchFoods text FoundFoods ]
+                { model | searchText = text, potentialFoods = Loading } ! [ searchFoods text FoundFoods ]
 
         ClearAllSelected ->
             { model | selectedFoods = Dict.empty } ! []
 
         FoundFoods (Err _) ->
-            showConnectionError model
+            { model | potentialFoods = NotLoaded} 
+            |> showConnectionError 
 
         FoundFoods (Ok foods) ->
-            { model | potentialFoods = foods } ! []
+            { model | potentialFoods = (Loaded foods) } ! []
 
         SelectFood food ->
             model ! [ getFood food.id GotFood ]
