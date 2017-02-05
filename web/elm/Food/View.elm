@@ -85,7 +85,7 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
             (List.length foods) > 0
 
         selectedFoodMenu =
-            div [ class "c-card c-card--menu" ]
+            div [ class "c-card c-card--menu food-menu" ]
                 (List.map
                     (foodRow foodRowConfig)
                     foods
@@ -132,7 +132,7 @@ recommendedFoodSection recommendedFoods =
             (List.length recommendedFoods) > 0
 
         recommendedFoodMenu =
-            ul [ class "c-card c-card--menu" ]
+            ul [ class "c-card c-card--menu food-menu" ]
                 (List.map
                     recommendedFoodRow
                     recommendedFoods

@@ -9531,7 +9531,7 @@ var _user$project$Food_View$recommendedFoodSection = function (recommendedFoods)
 		_elm_lang$html$Html$ul,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu'),
+			_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
 			_1: {ctor: '[]'}
 		},
 		A2(_elm_lang$core$List$map, _user$project$Food_View$recommendedFoodRow, recommendedFoods));
@@ -9762,7 +9762,7 @@ var _user$project$Food_View$selectedFoodSection = F3(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu'),
+				_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
 				_1: {ctor: '[]'}
 			},
 			A2(

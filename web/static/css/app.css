@@ -3,6 +3,7 @@
 body {
   font-family: 'Open Sans', sans-serif;
   background-color: #fbfbfb;
+  height: 100%;
 }
 
 /* Top section */
@@ -18,6 +19,11 @@ body {
   float: left;
   width: 100px;
   height: 100px;
+}
+
+.food-menu {
+  max-height: 100%;
+  overflow: auto;
 }
 
 .header h1, .header h2 {
