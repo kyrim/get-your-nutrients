@@ -162,22 +162,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
        end)
   end
 
-  def create_food_groups(food_groups) do
-    food_groups 
-      |> Enum.map(fn food_group -> 
-        inserted =
-                Repo.insert!(
-                  %FoodGroup{
-                    description: food_group.description
-                })
-
-        {food_group.id, inserted.id}
-
-        end)
-        |> Enum.into(%{})
-  end
-
-  def create_foods(foods, food_groups_map) do
+  def create_foods(foods) do
     foods 
       |> Enum.map(fn food ->
 
@@ -186,8 +171,7 @@ defmodule GetYourNutrients.DatabaseSeeder do
                     name: food.long_description,
                     protein_factor: food.protein_factor |> parse_string_float,
                     fat_factor: food.fat_factor |> parse_string_float,
-                    carbohydrate_factor: food.carbohydrate_factor |> parse_string_float,
-                    food_group_id: food_groups_map[food.food_group_id]
+                    carbohydrate_factor: food.carbohydrate_factor |> parse_string_float
                 })
         
         {food.id, inserted.id}
@@ -266,11 +250,9 @@ defmodule GetYourNutrients.DatabaseSeeder do
     IO.puts "Creating nutrient intakes"
     parse_nutrient_intakes |> create_nutrient_intakes(nutrients_map)
 
-    IO.puts "Creating food groups"
-    food_group_map = parse_food_groups |> create_food_groups
 
     IO.puts "Creating foods"
-    foods_map = parse_foods |> create_foods(food_group_map)
+    foods_map = parse_foods |> create_foods
 
     IO.puts "Creating food nutrients"
     parse_nutrients |> create_food_nutrients(foods_map, nutrients_map)

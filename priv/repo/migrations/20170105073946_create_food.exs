@@ -7,7 +7,6 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
       add :protein_factor, :decimal, null: true
       add :fat_factor, :decimal, null: true
       add :carbohydrate_factor, :decimal, null: true
-      add :food_group_id, references(:food_groups, on_delete: :nothing), null: false
 
       timestamps()
     end
