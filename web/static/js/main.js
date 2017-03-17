@@ -9568,42 +9568,48 @@ var _user$project$Food_Api$searchFoods = F2(
 		return A2(_elm_lang$http$Http$send, msg, request);
 	});
 
-var _user$project$Food_View$recommendedFoodRow = function (food) {
-	return A2(
-		_elm_lang$html$Html$li,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card__item recommended-food-item'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$i,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('fa fa-arrow-left recommended-icon'),
-					_1: {ctor: '[]'}
-				},
-				{ctor: '[]'}),
-			_1: {
+var _user$project$Food_View$recommendedFoodRow = F2(
+	function (config, food) {
+		return A2(
+			_elm_lang$html$Html$li,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('c-card__item recommended-food-item'),
+				_1: {ctor: '[]'}
+			},
+			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$div,
+					_elm_lang$html$Html$i,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('recommended-text'),
+						_0: _elm_lang$html$Html_Attributes$class('fa fa-arrow-left recommended-icon'),
 						_1: {ctor: '[]'}
 					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(food.name),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('recommended-text'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(
+									config.onClick(food)),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(food.name),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
 var _user$project$Food_View$listWithOneItem = function (item) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9629,60 +9635,64 @@ var _user$project$Food_View$listWithOneItem = function (item) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Food_View$recommendedFoodSection = function (recommendedFoods) {
-	var pleaseSearchFoodText = _user$project$Food_View$listWithOneItem(
-		_elm_lang$html$Html$text('Please search a food above'));
-	var recommendedFoodDisplay = function () {
-		var _p0 = recommendedFoods;
-		switch (_p0.ctor) {
-			case 'NotLoaded':
-				return pleaseSearchFoodText;
-			case 'Loading':
-				return _user$project$Food_View$listWithOneItem(_user$project$Connection_View$loadingImage);
-			default:
-				var _p1 = _p0._0;
-				return _elm_lang$core$List$isEmpty(_p1) ? pleaseSearchFoodText : A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
-						_1: {ctor: '[]'}
-					},
-					A2(_elm_lang$core$List$map, _user$project$Food_View$recommendedFoodRow, _p1));
-		}
-	}();
-	return _user$project$BlazeHelpers$grid(
-		{
-			ctor: '::',
-			_0: _user$project$BlazeHelpers$fullCell(
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$h2,
+var _user$project$Food_View$recommendedFoodSection = F2(
+	function (config, recommendedFoods) {
+		var pleaseSearchFoodText = _user$project$Food_View$listWithOneItem(
+			_elm_lang$html$Html$text('Please search a food above'));
+		var recommendedFoodDisplay = function () {
+			var _p0 = recommendedFoods;
+			switch (_p0.ctor) {
+				case 'NotLoaded':
+					return pleaseSearchFoodText;
+				case 'Loading':
+					return _user$project$Food_View$listWithOneItem(_user$project$Connection_View$loadingImage);
+				default:
+					var _p1 = _p0._0;
+					return _elm_lang$core$List$isEmpty(_p1) ? pleaseSearchFoodText : A2(
+						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block smaller-tooltip'),
+							_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
 							_1: {ctor: '[]'}
 						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('Recommended'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
+						A2(
+							_elm_lang$core$List$map,
+							_user$project$Food_View$recommendedFoodRow(config),
+							_p1));
+			}
+		}();
+		return _user$project$BlazeHelpers$grid(
+			{
 				ctor: '::',
 				_0: _user$project$BlazeHelpers$fullCell(
 					{
 						ctor: '::',
-						_0: recommendedFoodDisplay,
+						_0: A2(
+							_elm_lang$html$Html$h2,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block smaller-tooltip'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Recommended'),
+								_1: {ctor: '[]'}
+							}),
 						_1: {ctor: '[]'}
 					}),
-				_1: {ctor: '[]'}
-			}
-		});
-};
+				_1: {
+					ctor: '::',
+					_0: _user$project$BlazeHelpers$fullCell(
+						{
+							ctor: '::',
+							_0: recommendedFoodDisplay,
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
 var _user$project$Food_View$onInputToInt = F4(
 	function (food, $default, onFunction, string) {
 		return A2(
@@ -9960,6 +9970,9 @@ var _user$project$Food_View$FoodRowConfig = F5(
 	function (a, b, c, d, e) {
 		return {onFocus: a, onBlur: b, onRemove: c, onQuantityChange: d, onAmountChange: e};
 	});
+var _user$project$Food_View$RecommendedFoodRowConfig = function (a) {
+	return {onClick: a};
+};
 var _user$project$Food_View$SelectedFoodSectionConfig = function (a) {
 	return {onClearAll: a};
 };
@@ -10668,6 +10681,7 @@ var _user$project$Main$GotFood = function (a) {
 var _user$project$Main$SelectFood = function (a) {
 	return {ctor: 'SelectFood', _0: a};
 };
+var _user$project$Main$recommendedFoodRowConfig = {onClick: _user$project$Main$SelectFood};
 var _user$project$Main$FoundFoods = function (a) {
 	return {ctor: 'FoundFoods', _0: a};
 };
@@ -11075,7 +11089,7 @@ var _user$project$Main$view = function (model) {
 													40,
 													{
 														ctor: '::',
-														_0: _user$project$Food_View$recommendedFoodSection(model.recommendedFoods),
+														_0: A2(_user$project$Food_View$recommendedFoodSection, _user$project$Main$recommendedFoodRowConfig, model.recommendedFoods),
 														_1: {ctor: '[]'}
 													}),
 												_1: {ctor: '[]'}
