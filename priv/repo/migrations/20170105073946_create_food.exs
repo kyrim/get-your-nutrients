@@ -10,7 +10,6 @@ defmodule GetYourNutrients.Repo.Migrations.CreateFood do
 
       timestamps()
     end
-    create index(:foods, [:food_group_id])
     execute "CREATE extension if not exists pg_trgm;"
     execute "CREATE INDEX foods_name_gin_index ON foods USING gin (name gin_trgm_ops);"
 

@@ -1,6 +1,5 @@
 defmodule GetYourNutrients.DatabaseSeeder do
   alias GetYourNutrients.Repo
-  alias GetYourNutrients.FoodGroup
   alias GetYourNutrients.Food
   alias GetYourNutrients.Nutrient
   alias GetYourNutrients.FoodNutrient
@@ -69,20 +68,11 @@ defmodule GetYourNutrients.DatabaseSeeder do
   end 
 
 
-  def parse_food_groups do
-    parse_csv_by_map("FD_GROUP.txt", &(
-        %{
-          id: &1[0],
-          description: &1[1]
-        }
-    ))
-  end
 
   def parse_foods do
     parse_csv_by_map("FOOD_DES.txt", &(
         %{
           id: &1[0],
-          food_group_id: &1[1],
           long_description: &1[2],
           short_description: &1[3],
           common_name: &1[4],
@@ -219,7 +209,6 @@ defmodule GetYourNutrients.DatabaseSeeder do
     Repo.delete_all(NutrientIntake)
     Repo.delete_all(Nutrient)
     Repo.delete_all(Food)
-    Repo.delete_all(FoodGroup)
   end
 
   def parse_string_float(float) when is_nil(float) do
