@@ -197,6 +197,26 @@ searchBar searchText potentialFoods =
             ]
 
 
+personDetailSection : Html Msg
+personDetailSection =
+    grid
+        [ fullCell
+            [ text "Gender"
+            , select [ class "c-field", Html.Attributes.size 2 ]
+                [ option [] [ text "Male" ]
+                , option [] [ text "Female" ]
+                ]
+            ]
+        , fullCell
+            [ text "Age"
+            , input [ class "c-field", type_ "number" ]
+                [ option [] [ text "Male" ]
+                , option [] [ text "Female" ]
+                ]
+            ]
+        ]
+
+
 getFoodFromHoverItem : HoverItem -> Maybe FoodId
 getFoodFromHoverItem item =
     case item of
@@ -266,6 +286,7 @@ view model =
             , defaultCell
                 [ grid
                     [ fullCell [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ]
+                    , fullCell [ personDetailSection ]
                     , cell 50
                         [ nutrientSection
                             { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }

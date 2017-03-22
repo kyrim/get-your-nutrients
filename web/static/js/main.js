@@ -10464,6 +10464,100 @@ var _user$project$Main$getFoodFromHoverItem = function (item) {
 			return _elm_lang$core$Maybe$Just(_p5._0);
 	}
 };
+var _user$project$Main$personDetailSection = _user$project$BlazeHelpers$grid(
+	{
+		ctor: '::',
+		_0: _user$project$BlazeHelpers$fullCell(
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Gender'),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$select,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('c-field'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$size(2),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$option,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Male'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$option,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Female'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}),
+		_1: {
+			ctor: '::',
+			_0: _user$project$BlazeHelpers$fullCell(
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Age'),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('c-field'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$type_('number'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$option,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Male'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$option,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Female'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
 var _user$project$Main$informationSection = F2(
 	function (hoverItem, foodDict) {
 		var colour = function () {
@@ -11117,28 +11211,10 @@ var _user$project$Main$view = function (model) {
 												}),
 											_1: {
 												ctor: '::',
-												_0: A2(
-													_user$project$BlazeHelpers$cell,
-													50,
+												_0: _user$project$BlazeHelpers$fullCell(
 													{
 														ctor: '::',
-														_0: A4(
-															_user$project$Nutrient_View$nutrientSection,
-															{
-																mouseOver: function (_p20) {
-																	return _user$project$Main$Hover(
-																		_user$project$Main$Nutrient(_p20));
-																},
-																mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
-															},
-															'Vitamins (DI%)',
-															_user$project$Main$hoverItemIsFood(model.hoverItem),
-															_elm_lang$core$Dict$values(
-																A3(
-																	_user$project$Main$calculateNutrientPercentageFromFoods,
-																	_user$project$Main$getFoodFromHoverItem(model.hoverItem),
-																	_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
-																	A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Vitamin, model.nutrients)))),
+														_0: _user$project$Main$personDetailSection,
 														_1: {ctor: '[]'}
 													}),
 												_1: {
@@ -11151,23 +11227,50 @@ var _user$project$Main$view = function (model) {
 															_0: A4(
 																_user$project$Nutrient_View$nutrientSection,
 																{
-																	mouseOver: function (_p21) {
+																	mouseOver: function (_p20) {
 																		return _user$project$Main$Hover(
-																			_user$project$Main$Nutrient(_p21));
+																			_user$project$Main$Nutrient(_p20));
 																	},
 																	mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
 																},
-																'Minerals (DI%)',
+																'Vitamins (DI%)',
 																_user$project$Main$hoverItemIsFood(model.hoverItem),
 																_elm_lang$core$Dict$values(
 																	A3(
 																		_user$project$Main$calculateNutrientPercentageFromFoods,
 																		_user$project$Main$getFoodFromHoverItem(model.hoverItem),
 																		_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
-																		A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Mineral, model.nutrients)))),
+																		A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Vitamin, model.nutrients)))),
 															_1: {ctor: '[]'}
 														}),
-													_1: {ctor: '[]'}
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_user$project$BlazeHelpers$cell,
+															50,
+															{
+																ctor: '::',
+																_0: A4(
+																	_user$project$Nutrient_View$nutrientSection,
+																	{
+																		mouseOver: function (_p21) {
+																			return _user$project$Main$Hover(
+																				_user$project$Main$Nutrient(_p21));
+																		},
+																		mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
+																	},
+																	'Minerals (DI%)',
+																	_user$project$Main$hoverItemIsFood(model.hoverItem),
+																	_elm_lang$core$Dict$values(
+																		A3(
+																			_user$project$Main$calculateNutrientPercentageFromFoods,
+																			_user$project$Main$getFoodFromHoverItem(model.hoverItem),
+																			_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
+																			A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Mineral, model.nutrients)))),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
 												}
 											}
 										}),
