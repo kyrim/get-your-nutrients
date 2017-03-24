@@ -28,6 +28,7 @@ type HoverItem
     | Food FoodId
     | NothingHovered
 
+
 type alias Model =
     { searchText : String
     , nutrients : Dict NutrientId Nutrient
@@ -137,31 +138,42 @@ informationSection hoverItem foodDict =
                 ]
             ]
 
+
 searchBar : String -> LoadState (List Food) -> Html Msg
 searchBar searchText potentialFoods =
-    let 
-        content = 
-            case potentialFoods of 
-            NotLoaded -> []
-            Loading previousFoods -> 
-                [ loadingImage ]
-            Loaded foods -> 
-                if List.isEmpty foods then
-                    [ li [class "c-card__item no-results"] [text "No Results"] ]
-                else
-                  List.map
-                        (\food ->
-                            li [ class "c-card__item", onMouseDown (SelectFood food) ]
-                                [ text food.name ]
-                        )
-                        foods
-        ulStyle = 
+    let
+        content =
             case potentialFoods of
-                NotLoaded -> "c-card search-bar-ul u-high"
-                Loading previousFoods -> "c-card search-bar-ul u-high"
-                Loaded foods -> 
-                if (List.isEmpty foods) then "c-card search-bar-ul u-high"
-                else "c-card c-card--menu search-bar-ul u-high"
+                NotLoaded ->
+                    []
+
+                Loading previousFoods ->
+                    [ loadingImage ]
+
+                Loaded foods ->
+                    if List.isEmpty foods then
+                        [ li [ class "c-card__item no-results" ] [ text "No Results" ] ]
+                    else
+                        List.map
+                            (\food ->
+                                li [ class "c-card__item", onMouseDown (SelectFood food) ]
+                                    [ text food.name ]
+                            )
+                            foods
+
+        ulStyle =
+            case potentialFoods of
+                NotLoaded ->
+                    "c-card search-bar-ul u-high"
+
+                Loading previousFoods ->
+                    "c-card search-bar-ul u-high"
+
+                Loaded foods ->
+                    if (List.isEmpty foods) then
+                        "c-card search-bar-ul u-high"
+                    else
+                        "c-card c-card--menu search-bar-ul u-high"
     in
         div [ class "search-holder" ]
             [ fullCell
@@ -233,16 +245,22 @@ foodRowConfig =
     }
 
 
+recommendedFoodRowConfig : RecommendedFoodRowConfig Msg
+recommendedFoodRowConfig =
+    { onClick = SelectFood
+    }
+
+
 view : Model -> Html Msg
 view model =
     div []
         [ topSection
         , grid
             [ cell 50
-                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods]
+                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods ]
                 , grid
                     [ cell 60 [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
-                    , cell 40 [ recommendedFoodSection model.recommendedFoods ]
+                    , cell 40 [ recommendedFoodSection recommendedFoodRowConfig model.recommendedFoods ]
                     ]
                 ]
             , defaultCell
@@ -369,24 +387,25 @@ update message model =
             { model | selectedFoods = NotLoaded } ! []
 
         FoundFoods (Err _) ->
-            { model | potentialFoods = NotLoaded} 
-            |> showConnectionError 
+            { model | potentialFoods = NotLoaded }
+                |> showConnectionError
 
         FoundFoods (Ok foods) ->
             { model | potentialFoods = (Loaded foods) } ! []
 
         SelectFood food ->
-             { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood food.id GotFood ]
+            { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood food.id GotFood ]
 
         GotFood (Err _) ->
             showConnectionError model
 
         GotFood (Ok food) ->
             { model
-                | selectedFoods = model.selectedFoods 
-                |> emptyDictIfNotLoaded 
-                |> Dict.insert food.id food 
-                |> Loaded
+                | selectedFoods =
+                    model.selectedFoods
+                        |> emptyDictIfNotLoaded
+                        |> Dict.insert food.id food
+                        |> Loaded
                 , recommendedFoods = Loading (emptyListIfNotLoaded model.recommendedFoods)
             }
                 ! [ getRecommendedFoods (model.selectedFoods |> emptyDictIfNotLoaded |> Dict.values) FoundRecommendedFoods ]
@@ -409,7 +428,8 @@ update message model =
         UpdateFoodQuantity foodId q ->
             { model
                 | selectedFoods =
-                    model.selectedFoods |> emptyDictIfNotLoaded
+                    model.selectedFoods
+                        |> emptyDictIfNotLoaded
                         |> Dict.update foodId (Maybe.map (\food -> { food | quantity = q }))
                         |> Loaded
             }
@@ -418,7 +438,7 @@ update message model =
         UpdateFoodAmount foodId q ->
             { model
                 | selectedFoods =
-                    model.selectedFoods 
+                    model.selectedFoods
                         |> emptyDictIfNotLoaded
                         |> Dict.update foodId (Maybe.map (\food -> { food | amount = q }))
                         |> Loaded
