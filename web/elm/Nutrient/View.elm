@@ -85,7 +85,7 @@ nutrientProgress config isHovered nutrient =
                     [ text ((percentageToDisplay |> toString) ++ "%") ]
                 ]
             , div
-                [ class "u-medium progress" ]
+                [ class "progress" ]
                 [ div
                     [ style
                         [ ( "width", (hoverWidth |> toString) ++ "%" )

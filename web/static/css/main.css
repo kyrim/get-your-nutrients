@@ -1,3 +1,16 @@
+.Header {
+    overflow: hidden;
+    display: table;
+    margin-top: 1em;
+}
+
+.Header > img {
+    margin: 0 auto;
+    float: left;
+    width: 100px;
+    height: 100px;
+}
+
 .NutrientLow {
     color: #FF3D7F;
 }

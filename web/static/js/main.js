@@ -19504,11 +19504,7 @@ var _user$project$Connection_View$connectionError = F2(
 	});
 var _user$project$Connection_View$loadingImage = A2(
 	_elm_lang$html$Html$li,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
-		_1: {ctor: '[]'}
-	},
+	{ctor: '[]'},
 	{
 		ctor: '::',
 		_0: A2(
@@ -19754,7 +19750,7 @@ var _user$project$Food_View$recommendedFoodSection = F2(
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
+							_0: _elm_lang$html$Html_Attributes$class('food-menu'),
 							_1: {ctor: '[]'}
 						},
 						A2(
@@ -19777,7 +19773,7 @@ var _user$project$Food_View$recommendedFoodSection = F2(
 							_elm_lang$html$Html$h2,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block smaller-tooltip'),
+								_0: _elm_lang$html$Html_Attributes$class('smaller-tooltip'),
 								_1: {ctor: '[]'}
 							},
 							{
@@ -20187,60 +20183,109 @@ var _user$project$Nutrient_Api$getAllNutrients = function (msg) {
 	return A2(_elm_lang$http$Http$send, msg, request);
 };
 
-var _user$project$MainCss$nutrientFull = '6ABE6E';
-var _user$project$MainCss$nutrientHigh = '7FC7AF';
-var _user$project$MainCss$nutrientMedium = 'FFAB2E';
-var _user$project$MainCss$nutrientLow = 'FF3D7F';
+var _user$project$MainCss$nutrientFull = '#6ABE6E';
+var _user$project$MainCss$nutrientHigh = '#7FC7AF';
+var _user$project$MainCss$nutrientMedium = '#FFAB2E';
+var _user$project$MainCss$nutrientLow = '#FF3D7F';
 var _user$project$MainCss$NutrientFull = {ctor: 'NutrientFull'};
 var _user$project$MainCss$NutrientHigh = {ctor: 'NutrientHigh'};
 var _user$project$MainCss$NutrientMedium = {ctor: 'NutrientMedium'};
 var _user$project$MainCss$NutrientLow = {ctor: 'NutrientLow'};
+var _user$project$MainCss$Header = {ctor: 'Header'};
 var _user$project$MainCss$css = _rtfeldman$elm_css$Css$stylesheet(
 	{
 		ctor: '::',
 		_0: A2(
 			_rtfeldman$elm_css$Css$class,
-			_user$project$MainCss$NutrientLow,
+			_user$project$MainCss$Header,
 			{
 				ctor: '::',
-				_0: _rtfeldman$elm_css$Css$color(
-					_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientLow)),
-				_1: {ctor: '[]'}
+				_0: _rtfeldman$elm_css$Css$overflow(_rtfeldman$elm_css$Css$hidden),
+				_1: {
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$table),
+					_1: {
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css$marginTop(
+							_rtfeldman$elm_css$Css$em(1)),
+						_1: {
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css$children(
+								{
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css_Elements$img(
+										{
+											ctor: '::',
+											_0: A2(_rtfeldman$elm_css$Css$margin2, _rtfeldman$elm_css$Css$zero, _rtfeldman$elm_css$Css$auto),
+											_1: {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$left),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$width(
+														_rtfeldman$elm_css$Css$px(100)),
+													_1: {
+														ctor: '::',
+														_0: _rtfeldman$elm_css$Css$height(
+															_rtfeldman$elm_css$Css$px(100)),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
 			}),
 		_1: {
 			ctor: '::',
 			_0: A2(
 				_rtfeldman$elm_css$Css$class,
-				_user$project$MainCss$NutrientMedium,
+				_user$project$MainCss$NutrientLow,
 				{
 					ctor: '::',
 					_0: _rtfeldman$elm_css$Css$color(
-						_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientMedium)),
+						_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientLow)),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
 				_0: A2(
 					_rtfeldman$elm_css$Css$class,
-					_user$project$MainCss$NutrientHigh,
+					_user$project$MainCss$NutrientMedium,
 					{
 						ctor: '::',
 						_0: _rtfeldman$elm_css$Css$color(
-							_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientHigh)),
+							_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientMedium)),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_rtfeldman$elm_css$Css$class,
-						_user$project$MainCss$NutrientFull,
+						_user$project$MainCss$NutrientHigh,
 						{
 							ctor: '::',
 							_0: _rtfeldman$elm_css$Css$color(
-								_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientFull)),
+								_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientHigh)),
 							_1: {ctor: '[]'}
 						}),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rtfeldman$elm_css$Css$class,
+							_user$project$MainCss$NutrientFull,
+							{
+								ctor: '::',
+								_0: _rtfeldman$elm_css$Css$color(
+									_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientFull)),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		}
@@ -20330,7 +20375,7 @@ var _user$project$Nutrient_View$nutrientProgress = F3(
 						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('u-medium progress'),
+							_0: _elm_lang$html$Html_Attributes$class('progress'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -20432,7 +20477,7 @@ var _user$project$Navigation_View$banner = A2(
 	_elm_lang$html$Html$div,
 	{
 		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('header'),
+		_0: _elm_lang$html$Html_Attributes$class('Header'),
 		_1: {ctor: '[]'}
 	},
 	{
@@ -20441,23 +20486,15 @@ var _user$project$Navigation_View$banner = A2(
 			_elm_lang$html$Html$img,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('o-image'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$src('images/logo.png'),
-					_1: {ctor: '[]'}
-				}
+				_0: _elm_lang$html$Html_Attributes$src('images/logo.png'),
+				_1: {ctor: '[]'}
 			},
 			{ctor: '[]'}),
 		_1: {
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$h1,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-					_1: {ctor: '[]'}
-				},
+				{ctor: '[]'},
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html$text('Get Your Nutrients'),
@@ -20497,11 +20534,7 @@ var _user$project$Navigation_View$topSection = A2(
 							ctor: '::',
 							_0: A2(
 								_elm_lang$html$Html$h2,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-									_1: {ctor: '[]'}
-								},
+								{ctor: '[]'},
 								{
 									ctor: '::',
 									_0: A2(

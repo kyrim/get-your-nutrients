@@ -155,7 +155,7 @@ recommendedFoodSection config recommendedFoods =
                     if List.isEmpty loadedFoods then
                         pleaseSearchFoodText
                     else
-                        div [ class "c-card c-card--menu food-menu" ]
+                        div [ class "food-menu" ]
                             (List.map
                                 (recommendedFoodRow config)
                                 loadedFoods
@@ -163,7 +163,7 @@ recommendedFoodSection config recommendedFoods =
     in
         Grid.row []
             [ Grid.col []
-                [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
+                [ h2 [ class "smaller-tooltip" ]
                     [ text "Recommended" ]
                 ]
             , Grid.col []

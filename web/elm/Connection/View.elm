@@ -13,7 +13,7 @@ type alias ConnectionErrorConfig msg =
 
 loadingImage : Html msg
 loadingImage =
-    li [ class "c-card__item" ]
+    li []
         [ div [ class "spinner" ]
             [ div [ class "rect1" ]
                 []

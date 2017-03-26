@@ -1,12 +1,13 @@
 module MainCss exposing (..)
 
 import Css exposing (..)
-import Css.Elements exposing (body, li)
+import Css.Elements exposing (body, img, li)
 import Css.Namespace exposing (namespace)
 
 
 type CssClasses
-    = NutrientLow
+    = Header
+    | NutrientLow
     | NutrientMedium
     | NutrientHigh
     | NutrientFull
@@ -14,7 +15,20 @@ type CssClasses
 
 css =
     stylesheet
-        [ class NutrientLow [ color (hex nutrientLow) ]
+        [ class Header
+            [ overflow hidden
+            , display table
+            , marginTop (em 1)
+            , children
+                [ img
+                    [ margin2 zero auto
+                    , float left
+                    , width (px 100)
+                    , height (px 100)
+                    ]
+                ]
+            ]
+        , class NutrientLow [ color (hex nutrientLow) ]
         , class NutrientMedium [ color (hex nutrientMedium) ]
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
@@ -26,16 +40,16 @@ css =
 
 
 nutrientLow =
-    "FF3D7F"
+    "#FF3D7F"
 
 
 nutrientMedium =
-    "FFAB2E"
+    "#FFAB2E"
 
 
 nutrientHigh =
-    "7FC7AF"
+    "#7FC7AF"
 
 
 nutrientFull =
-    "6ABE6E"
+    "#6ABE6E"

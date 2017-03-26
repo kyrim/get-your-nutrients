@@ -8,9 +8,9 @@ import Bootstrap.Navbar as Navbar
 
 banner : Html msg
 banner =
-    div [ class "header" ]
-        [ img [ class "o-image", src "images/logo.png" ] []
-        , h1 [ class "c-heading" ] [ text "Get Your Nutrients" ]
+    div [ class "Header" ]
+        [ img [ src "images/logo.png" ] []
+        , h1 [] [ text "Get Your Nutrients" ]
         ]
 
 
@@ -19,7 +19,7 @@ topSection =
     Grid.row []
         [ Grid.col [] [ banner ]
         , Grid.col []
-            [ div [ class "about" ] [ h2 [ class "c-heading" ] [ a [ href "about" ] [ text "About" ] ] ]
+            [ div [ class "about" ] [ h2 [] [ a [ href "about" ] [ text "About" ] ] ]
             ]
         ]
 
