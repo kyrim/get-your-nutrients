@@ -2,7 +2,8 @@ module Navigation.View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import BlazeHelpers exposing (..)
+import Bootstrap.Grid as Grid
+import Bootstrap.Navbar as Navbar
 
 
 banner : Html msg
@@ -15,10 +16,22 @@ banner =
 
 topSection : Html msg
 topSection =
-    grid
-        [ defaultCell
-            [ banner ]
-        , div [ class "o-grid__cell--offset" ]
+    Grid.row []
+        [ Grid.col [] [ banner ]
+        , Grid.col []
             [ div [ class "about" ] [ h2 [ class "c-heading" ] [ a [ href "about" ] [ text "About" ] ] ]
             ]
         ]
+
+
+
+-- topSection : msg -> Html msg
+-- topSection msg =
+--     Navbar.config msg
+--         |> Navbar.withAnimation
+--         |> Navbar.brand [ href "#" ] [ text "Brand" ]
+--         |> Navbar.items
+--             [ Navbar.itemLink [ href "#" ] [ text "Item 1" ]
+--             , Navbar.itemLink [ href "#" ] [ text "Item 2" ]
+--             ]
+--         |> Navbar.view Navbar.initializeState

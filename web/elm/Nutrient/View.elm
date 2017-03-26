@@ -5,19 +5,20 @@ import Nutrient.Models exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import BlazeHelpers exposing (..)
+import Bootstrap.Grid as Grid
+import MainCss
 
 
 getPercentageColour : Int -> String
 getPercentageColour percentage =
     if percentage <= 20 then
-        "#FF3D7F"
+        MainCss.nutrientLow
     else if percentage <= 50 then
-        "#FFAB2E"
+        MainCss.nutrientMedium
     else if percentage <= 80 then
-        "#7FC7AF"
+        MainCss.nutrientHigh
     else
-        "#6ABE6E"
+        MainCss.nutrientFull
 
 
 type alias NutrientProgressConfig msg =
@@ -71,7 +72,7 @@ nutrientProgress config isHovered nutrient =
                 percentageColour
     in
         div
-            [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress"
+            [ class "nutrient-progress"
             , onMouseOver (config.mouseOver nutrient)
             , onMouseLeave config.mouseLeave
             ]
@@ -84,18 +85,16 @@ nutrientProgress config isHovered nutrient =
                     [ text ((percentageToDisplay |> toString) ++ "%") ]
                 ]
             , div
-                [ class "c-progress u-medium progress" ]
+                [ class "u-medium progress" ]
                 [ div
-                    [ class "c-progress__bar"
-                    , style
+                    [ style
                         [ ( "width", (hoverWidth |> toString) ++ "%" )
                         , ( "background-color", "#b13fb8" )
                         ]
                     ]
                     []
                 , div
-                    [ class "c-progress__bar"
-                    , style
+                    [ style
                         [ ( "width", (percentageWidth |> toString) ++ "%" )
                         , ( "background-color", percentageColour )
                         ]
@@ -107,14 +106,12 @@ nutrientProgress config isHovered nutrient =
 
 nutrientSection : NutrientProgressConfig msg -> String -> Bool -> List Nutrient -> Html msg
 nutrientSection config category foodIsHovered nutrients =
-    gridWithCls "large-fit"
-        ([ fullCell [ heading2 category ]
-         ]
-            ++ (List.map
-                    (nutrientProgress
-                        config
-                        foodIsHovered
-                    )
-                    nutrients
-               )
-        )
+    Grid.row []
+        [ Grid.col []
+            ([ h2 [] [ text category ] ]
+                ++ (List.map
+                        (nutrientProgress config foodIsHovered)
+                        nutrients
+                   )
+            )
+        ]

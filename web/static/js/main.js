@@ -5837,6 +5837,158 @@ var _NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required = F3(
 			decoder);
 	});
 
+var _debois$elm_dom$DOM$className = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'className',
+		_1: {ctor: '[]'}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _debois$elm_dom$DOM$scrollTop = A2(_elm_lang$core$Json_Decode$field, 'scrollTop', _elm_lang$core$Json_Decode$float);
+var _debois$elm_dom$DOM$scrollLeft = A2(_elm_lang$core$Json_Decode$field, 'scrollLeft', _elm_lang$core$Json_Decode$float);
+var _debois$elm_dom$DOM$offsetTop = A2(_elm_lang$core$Json_Decode$field, 'offsetTop', _elm_lang$core$Json_Decode$float);
+var _debois$elm_dom$DOM$offsetLeft = A2(_elm_lang$core$Json_Decode$field, 'offsetLeft', _elm_lang$core$Json_Decode$float);
+var _debois$elm_dom$DOM$offsetHeight = A2(_elm_lang$core$Json_Decode$field, 'offsetHeight', _elm_lang$core$Json_Decode$float);
+var _debois$elm_dom$DOM$offsetWidth = A2(_elm_lang$core$Json_Decode$field, 'offsetWidth', _elm_lang$core$Json_Decode$float);
+var _debois$elm_dom$DOM$childNodes = function (decoder) {
+	var loop = F2(
+		function (idx, xs) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (_p0) {
+					return A2(
+						_elm_lang$core$Maybe$withDefault,
+						_elm_lang$core$Json_Decode$succeed(xs),
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (x) {
+								return A2(
+									loop,
+									idx + 1,
+									{ctor: '::', _0: x, _1: xs});
+							},
+							_p0));
+				},
+				_elm_lang$core$Json_Decode$maybe(
+					A2(
+						_elm_lang$core$Json_Decode$field,
+						_elm_lang$core$Basics$toString(idx),
+						decoder)));
+		});
+	return A2(
+		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$List$reverse,
+		A2(
+			_elm_lang$core$Json_Decode$field,
+			'childNodes',
+			A2(
+				loop,
+				0,
+				{ctor: '[]'})));
+};
+var _debois$elm_dom$DOM$childNode = function (idx) {
+	return _elm_lang$core$Json_Decode$at(
+		{
+			ctor: '::',
+			_0: 'childNodes',
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$core$Basics$toString(idx),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _debois$elm_dom$DOM$parentElement = function (decoder) {
+	return A2(_elm_lang$core$Json_Decode$field, 'parentElement', decoder);
+};
+var _debois$elm_dom$DOM$previousSibling = function (decoder) {
+	return A2(_elm_lang$core$Json_Decode$field, 'previousSibling', decoder);
+};
+var _debois$elm_dom$DOM$nextSibling = function (decoder) {
+	return A2(_elm_lang$core$Json_Decode$field, 'nextSibling', decoder);
+};
+var _debois$elm_dom$DOM$offsetParent = F2(
+	function (x, decoder) {
+		return _elm_lang$core$Json_Decode$oneOf(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$Json_Decode$field,
+					'offsetParent',
+					_elm_lang$core$Json_Decode$null(x)),
+				_1: {
+					ctor: '::',
+					_0: A2(_elm_lang$core$Json_Decode$field, 'offsetParent', decoder),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _debois$elm_dom$DOM$position = F2(
+	function (x, y) {
+		return A2(
+			_elm_lang$core$Json_Decode$andThen,
+			function (_p1) {
+				var _p2 = _p1;
+				var _p4 = _p2._1;
+				var _p3 = _p2._0;
+				return A2(
+					_debois$elm_dom$DOM$offsetParent,
+					{ctor: '_Tuple2', _0: _p3, _1: _p4},
+					A2(_debois$elm_dom$DOM$position, _p3, _p4));
+			},
+			A5(
+				_elm_lang$core$Json_Decode$map4,
+				F4(
+					function (scrollLeft, scrollTop, offsetLeft, offsetTop) {
+						return {ctor: '_Tuple2', _0: (x + offsetLeft) - scrollLeft, _1: (y + offsetTop) - scrollTop};
+					}),
+				_debois$elm_dom$DOM$scrollLeft,
+				_debois$elm_dom$DOM$scrollTop,
+				_debois$elm_dom$DOM$offsetLeft,
+				_debois$elm_dom$DOM$offsetTop));
+	});
+var _debois$elm_dom$DOM$boundingClientRect = A4(
+	_elm_lang$core$Json_Decode$map3,
+	F3(
+		function (_p5, width, height) {
+			var _p6 = _p5;
+			return {top: _p6._1, left: _p6._0, width: width, height: height};
+		}),
+	A2(_debois$elm_dom$DOM$position, 0, 0),
+	_debois$elm_dom$DOM$offsetWidth,
+	_debois$elm_dom$DOM$offsetHeight);
+var _debois$elm_dom$DOM$target = function (decoder) {
+	return A2(_elm_lang$core$Json_Decode$field, 'target', decoder);
+};
+var _debois$elm_dom$DOM$Rectangle = F4(
+	function (a, b, c, d) {
+		return {top: a, left: b, width: c, height: d};
+	});
+
+var _elm_lang$animation_frame$Native_AnimationFrame = function()
+{
+
+function create()
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		var id = requestAnimationFrame(function() {
+			callback(_elm_lang$core$Native_Scheduler.succeed(Date.now()));
+		});
+
+		return function() {
+			cancelAnimationFrame(id);
+		};
+	});
+}
+
+return {
+	create: create
+};
+
+}();
+
 var _elm_lang$core$Task$onError = _elm_lang$core$Native_Scheduler.onError;
 var _elm_lang$core$Task$andThen = _elm_lang$core$Native_Scheduler.andThen;
 var _elm_lang$core$Task$spawnCmd = F2(
@@ -6248,6 +6400,641 @@ var _elm_lang$core$Time$subMap = F2(
 			});
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
+
+var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
+var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
+var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
+
+var _elm_lang$animation_frame$AnimationFrame$rAF = _elm_lang$animation_frame$Native_AnimationFrame.create(
+	{ctor: '_Tuple0'});
+var _elm_lang$animation_frame$AnimationFrame$subscription = _elm_lang$core$Native_Platform.leaf('AnimationFrame');
+var _elm_lang$animation_frame$AnimationFrame$State = F3(
+	function (a, b, c) {
+		return {subs: a, request: b, oldTime: c};
+	});
+var _elm_lang$animation_frame$AnimationFrame$init = _elm_lang$core$Task$succeed(
+	A3(
+		_elm_lang$animation_frame$AnimationFrame$State,
+		{ctor: '[]'},
+		_elm_lang$core$Maybe$Nothing,
+		0));
+var _elm_lang$animation_frame$AnimationFrame$onEffects = F3(
+	function (router, subs, _p0) {
+		var _p1 = _p0;
+		var _p5 = _p1.request;
+		var _p4 = _p1.oldTime;
+		var _p2 = {ctor: '_Tuple2', _0: _p5, _1: subs};
+		if (_p2._0.ctor === 'Nothing') {
+			if (_p2._1.ctor === '[]') {
+				return _elm_lang$core$Task$succeed(
+					A3(
+						_elm_lang$animation_frame$AnimationFrame$State,
+						{ctor: '[]'},
+						_elm_lang$core$Maybe$Nothing,
+						_p4));
+			} else {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (pid) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							function (time) {
+								return _elm_lang$core$Task$succeed(
+									A3(
+										_elm_lang$animation_frame$AnimationFrame$State,
+										subs,
+										_elm_lang$core$Maybe$Just(pid),
+										time));
+							},
+							_elm_lang$core$Time$now);
+					},
+					_elm_lang$core$Process$spawn(
+						A2(
+							_elm_lang$core$Task$andThen,
+							_elm_lang$core$Platform$sendToSelf(router),
+							_elm_lang$animation_frame$AnimationFrame$rAF)));
+			}
+		} else {
+			if (_p2._1.ctor === '[]') {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (_p3) {
+						return _elm_lang$core$Task$succeed(
+							A3(
+								_elm_lang$animation_frame$AnimationFrame$State,
+								{ctor: '[]'},
+								_elm_lang$core$Maybe$Nothing,
+								_p4));
+					},
+					_elm_lang$core$Process$kill(_p2._0._0));
+			} else {
+				return _elm_lang$core$Task$succeed(
+					A3(_elm_lang$animation_frame$AnimationFrame$State, subs, _p5, _p4));
+			}
+		}
+	});
+var _elm_lang$animation_frame$AnimationFrame$onSelfMsg = F3(
+	function (router, newTime, _p6) {
+		var _p7 = _p6;
+		var _p10 = _p7.subs;
+		var diff = newTime - _p7.oldTime;
+		var send = function (sub) {
+			var _p8 = sub;
+			if (_p8.ctor === 'Time') {
+				return A2(
+					_elm_lang$core$Platform$sendToApp,
+					router,
+					_p8._0(newTime));
+			} else {
+				return A2(
+					_elm_lang$core$Platform$sendToApp,
+					router,
+					_p8._0(diff));
+			}
+		};
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (pid) {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (_p9) {
+						return _elm_lang$core$Task$succeed(
+							A3(
+								_elm_lang$animation_frame$AnimationFrame$State,
+								_p10,
+								_elm_lang$core$Maybe$Just(pid),
+								newTime));
+					},
+					_elm_lang$core$Task$sequence(
+						A2(_elm_lang$core$List$map, send, _p10)));
+			},
+			_elm_lang$core$Process$spawn(
+				A2(
+					_elm_lang$core$Task$andThen,
+					_elm_lang$core$Platform$sendToSelf(router),
+					_elm_lang$animation_frame$AnimationFrame$rAF)));
+	});
+var _elm_lang$animation_frame$AnimationFrame$Diff = function (a) {
+	return {ctor: 'Diff', _0: a};
+};
+var _elm_lang$animation_frame$AnimationFrame$diffs = function (tagger) {
+	return _elm_lang$animation_frame$AnimationFrame$subscription(
+		_elm_lang$animation_frame$AnimationFrame$Diff(tagger));
+};
+var _elm_lang$animation_frame$AnimationFrame$Time = function (a) {
+	return {ctor: 'Time', _0: a};
+};
+var _elm_lang$animation_frame$AnimationFrame$times = function (tagger) {
+	return _elm_lang$animation_frame$AnimationFrame$subscription(
+		_elm_lang$animation_frame$AnimationFrame$Time(tagger));
+};
+var _elm_lang$animation_frame$AnimationFrame$subMap = F2(
+	function (func, sub) {
+		var _p11 = sub;
+		if (_p11.ctor === 'Time') {
+			return _elm_lang$animation_frame$AnimationFrame$Time(
+				function (_p12) {
+					return func(
+						_p11._0(_p12));
+				});
+		} else {
+			return _elm_lang$animation_frame$AnimationFrame$Diff(
+				function (_p13) {
+					return func(
+						_p11._0(_p13));
+				});
+		}
+	});
+_elm_lang$core$Native_Platform.effectManagers['AnimationFrame'] = {pkg: 'elm-lang/animation-frame', init: _elm_lang$animation_frame$AnimationFrame$init, onEffects: _elm_lang$animation_frame$AnimationFrame$onEffects, onSelfMsg: _elm_lang$animation_frame$AnimationFrame$onSelfMsg, tag: 'sub', subMap: _elm_lang$animation_frame$AnimationFrame$subMap};
+
+var _elm_lang$core$Color$fmod = F2(
+	function (f, n) {
+		var integer = _elm_lang$core$Basics$floor(f);
+		return (_elm_lang$core$Basics$toFloat(
+			A2(_elm_lang$core$Basics_ops['%'], integer, n)) + f) - _elm_lang$core$Basics$toFloat(integer);
+	});
+var _elm_lang$core$Color$rgbToHsl = F3(
+	function (red, green, blue) {
+		var b = _elm_lang$core$Basics$toFloat(blue) / 255;
+		var g = _elm_lang$core$Basics$toFloat(green) / 255;
+		var r = _elm_lang$core$Basics$toFloat(red) / 255;
+		var cMax = A2(
+			_elm_lang$core$Basics$max,
+			A2(_elm_lang$core$Basics$max, r, g),
+			b);
+		var cMin = A2(
+			_elm_lang$core$Basics$min,
+			A2(_elm_lang$core$Basics$min, r, g),
+			b);
+		var c = cMax - cMin;
+		var lightness = (cMax + cMin) / 2;
+		var saturation = _elm_lang$core$Native_Utils.eq(lightness, 0) ? 0 : (c / (1 - _elm_lang$core$Basics$abs((2 * lightness) - 1)));
+		var hue = _elm_lang$core$Basics$degrees(60) * (_elm_lang$core$Native_Utils.eq(cMax, r) ? A2(_elm_lang$core$Color$fmod, (g - b) / c, 6) : (_elm_lang$core$Native_Utils.eq(cMax, g) ? (((b - r) / c) + 2) : (((r - g) / c) + 4)));
+		return {ctor: '_Tuple3', _0: hue, _1: saturation, _2: lightness};
+	});
+var _elm_lang$core$Color$hslToRgb = F3(
+	function (hue, saturation, lightness) {
+		var normHue = hue / _elm_lang$core$Basics$degrees(60);
+		var chroma = (1 - _elm_lang$core$Basics$abs((2 * lightness) - 1)) * saturation;
+		var x = chroma * (1 - _elm_lang$core$Basics$abs(
+			A2(_elm_lang$core$Color$fmod, normHue, 2) - 1));
+		var _p0 = (_elm_lang$core$Native_Utils.cmp(normHue, 0) < 0) ? {ctor: '_Tuple3', _0: 0, _1: 0, _2: 0} : ((_elm_lang$core$Native_Utils.cmp(normHue, 1) < 0) ? {ctor: '_Tuple3', _0: chroma, _1: x, _2: 0} : ((_elm_lang$core$Native_Utils.cmp(normHue, 2) < 0) ? {ctor: '_Tuple3', _0: x, _1: chroma, _2: 0} : ((_elm_lang$core$Native_Utils.cmp(normHue, 3) < 0) ? {ctor: '_Tuple3', _0: 0, _1: chroma, _2: x} : ((_elm_lang$core$Native_Utils.cmp(normHue, 4) < 0) ? {ctor: '_Tuple3', _0: 0, _1: x, _2: chroma} : ((_elm_lang$core$Native_Utils.cmp(normHue, 5) < 0) ? {ctor: '_Tuple3', _0: x, _1: 0, _2: chroma} : ((_elm_lang$core$Native_Utils.cmp(normHue, 6) < 0) ? {ctor: '_Tuple3', _0: chroma, _1: 0, _2: x} : {ctor: '_Tuple3', _0: 0, _1: 0, _2: 0}))))));
+		var r = _p0._0;
+		var g = _p0._1;
+		var b = _p0._2;
+		var m = lightness - (chroma / 2);
+		return {ctor: '_Tuple3', _0: r + m, _1: g + m, _2: b + m};
+	});
+var _elm_lang$core$Color$toRgb = function (color) {
+	var _p1 = color;
+	if (_p1.ctor === 'RGBA') {
+		return {red: _p1._0, green: _p1._1, blue: _p1._2, alpha: _p1._3};
+	} else {
+		var _p2 = A3(_elm_lang$core$Color$hslToRgb, _p1._0, _p1._1, _p1._2);
+		var r = _p2._0;
+		var g = _p2._1;
+		var b = _p2._2;
+		return {
+			red: _elm_lang$core$Basics$round(255 * r),
+			green: _elm_lang$core$Basics$round(255 * g),
+			blue: _elm_lang$core$Basics$round(255 * b),
+			alpha: _p1._3
+		};
+	}
+};
+var _elm_lang$core$Color$toHsl = function (color) {
+	var _p3 = color;
+	if (_p3.ctor === 'HSLA') {
+		return {hue: _p3._0, saturation: _p3._1, lightness: _p3._2, alpha: _p3._3};
+	} else {
+		var _p4 = A3(_elm_lang$core$Color$rgbToHsl, _p3._0, _p3._1, _p3._2);
+		var h = _p4._0;
+		var s = _p4._1;
+		var l = _p4._2;
+		return {hue: h, saturation: s, lightness: l, alpha: _p3._3};
+	}
+};
+var _elm_lang$core$Color$HSLA = F4(
+	function (a, b, c, d) {
+		return {ctor: 'HSLA', _0: a, _1: b, _2: c, _3: d};
+	});
+var _elm_lang$core$Color$hsla = F4(
+	function (hue, saturation, lightness, alpha) {
+		return A4(
+			_elm_lang$core$Color$HSLA,
+			hue - _elm_lang$core$Basics$turns(
+				_elm_lang$core$Basics$toFloat(
+					_elm_lang$core$Basics$floor(hue / (2 * _elm_lang$core$Basics$pi)))),
+			saturation,
+			lightness,
+			alpha);
+	});
+var _elm_lang$core$Color$hsl = F3(
+	function (hue, saturation, lightness) {
+		return A4(_elm_lang$core$Color$hsla, hue, saturation, lightness, 1);
+	});
+var _elm_lang$core$Color$complement = function (color) {
+	var _p5 = color;
+	if (_p5.ctor === 'HSLA') {
+		return A4(
+			_elm_lang$core$Color$hsla,
+			_p5._0 + _elm_lang$core$Basics$degrees(180),
+			_p5._1,
+			_p5._2,
+			_p5._3);
+	} else {
+		var _p6 = A3(_elm_lang$core$Color$rgbToHsl, _p5._0, _p5._1, _p5._2);
+		var h = _p6._0;
+		var s = _p6._1;
+		var l = _p6._2;
+		return A4(
+			_elm_lang$core$Color$hsla,
+			h + _elm_lang$core$Basics$degrees(180),
+			s,
+			l,
+			_p5._3);
+	}
+};
+var _elm_lang$core$Color$grayscale = function (p) {
+	return A4(_elm_lang$core$Color$HSLA, 0, 0, 1 - p, 1);
+};
+var _elm_lang$core$Color$greyscale = function (p) {
+	return A4(_elm_lang$core$Color$HSLA, 0, 0, 1 - p, 1);
+};
+var _elm_lang$core$Color$RGBA = F4(
+	function (a, b, c, d) {
+		return {ctor: 'RGBA', _0: a, _1: b, _2: c, _3: d};
+	});
+var _elm_lang$core$Color$rgba = _elm_lang$core$Color$RGBA;
+var _elm_lang$core$Color$rgb = F3(
+	function (r, g, b) {
+		return A4(_elm_lang$core$Color$RGBA, r, g, b, 1);
+	});
+var _elm_lang$core$Color$lightRed = A4(_elm_lang$core$Color$RGBA, 239, 41, 41, 1);
+var _elm_lang$core$Color$red = A4(_elm_lang$core$Color$RGBA, 204, 0, 0, 1);
+var _elm_lang$core$Color$darkRed = A4(_elm_lang$core$Color$RGBA, 164, 0, 0, 1);
+var _elm_lang$core$Color$lightOrange = A4(_elm_lang$core$Color$RGBA, 252, 175, 62, 1);
+var _elm_lang$core$Color$orange = A4(_elm_lang$core$Color$RGBA, 245, 121, 0, 1);
+var _elm_lang$core$Color$darkOrange = A4(_elm_lang$core$Color$RGBA, 206, 92, 0, 1);
+var _elm_lang$core$Color$lightYellow = A4(_elm_lang$core$Color$RGBA, 255, 233, 79, 1);
+var _elm_lang$core$Color$yellow = A4(_elm_lang$core$Color$RGBA, 237, 212, 0, 1);
+var _elm_lang$core$Color$darkYellow = A4(_elm_lang$core$Color$RGBA, 196, 160, 0, 1);
+var _elm_lang$core$Color$lightGreen = A4(_elm_lang$core$Color$RGBA, 138, 226, 52, 1);
+var _elm_lang$core$Color$green = A4(_elm_lang$core$Color$RGBA, 115, 210, 22, 1);
+var _elm_lang$core$Color$darkGreen = A4(_elm_lang$core$Color$RGBA, 78, 154, 6, 1);
+var _elm_lang$core$Color$lightBlue = A4(_elm_lang$core$Color$RGBA, 114, 159, 207, 1);
+var _elm_lang$core$Color$blue = A4(_elm_lang$core$Color$RGBA, 52, 101, 164, 1);
+var _elm_lang$core$Color$darkBlue = A4(_elm_lang$core$Color$RGBA, 32, 74, 135, 1);
+var _elm_lang$core$Color$lightPurple = A4(_elm_lang$core$Color$RGBA, 173, 127, 168, 1);
+var _elm_lang$core$Color$purple = A4(_elm_lang$core$Color$RGBA, 117, 80, 123, 1);
+var _elm_lang$core$Color$darkPurple = A4(_elm_lang$core$Color$RGBA, 92, 53, 102, 1);
+var _elm_lang$core$Color$lightBrown = A4(_elm_lang$core$Color$RGBA, 233, 185, 110, 1);
+var _elm_lang$core$Color$brown = A4(_elm_lang$core$Color$RGBA, 193, 125, 17, 1);
+var _elm_lang$core$Color$darkBrown = A4(_elm_lang$core$Color$RGBA, 143, 89, 2, 1);
+var _elm_lang$core$Color$black = A4(_elm_lang$core$Color$RGBA, 0, 0, 0, 1);
+var _elm_lang$core$Color$white = A4(_elm_lang$core$Color$RGBA, 255, 255, 255, 1);
+var _elm_lang$core$Color$lightGrey = A4(_elm_lang$core$Color$RGBA, 238, 238, 236, 1);
+var _elm_lang$core$Color$grey = A4(_elm_lang$core$Color$RGBA, 211, 215, 207, 1);
+var _elm_lang$core$Color$darkGrey = A4(_elm_lang$core$Color$RGBA, 186, 189, 182, 1);
+var _elm_lang$core$Color$lightGray = A4(_elm_lang$core$Color$RGBA, 238, 238, 236, 1);
+var _elm_lang$core$Color$gray = A4(_elm_lang$core$Color$RGBA, 211, 215, 207, 1);
+var _elm_lang$core$Color$darkGray = A4(_elm_lang$core$Color$RGBA, 186, 189, 182, 1);
+var _elm_lang$core$Color$lightCharcoal = A4(_elm_lang$core$Color$RGBA, 136, 138, 133, 1);
+var _elm_lang$core$Color$charcoal = A4(_elm_lang$core$Color$RGBA, 85, 87, 83, 1);
+var _elm_lang$core$Color$darkCharcoal = A4(_elm_lang$core$Color$RGBA, 46, 52, 54, 1);
+var _elm_lang$core$Color$Radial = F5(
+	function (a, b, c, d, e) {
+		return {ctor: 'Radial', _0: a, _1: b, _2: c, _3: d, _4: e};
+	});
+var _elm_lang$core$Color$radial = _elm_lang$core$Color$Radial;
+var _elm_lang$core$Color$Linear = F3(
+	function (a, b, c) {
+		return {ctor: 'Linear', _0: a, _1: b, _2: c};
+	});
+var _elm_lang$core$Color$linear = _elm_lang$core$Color$Linear;
+
+//import Maybe, Native.List //
+
+var _elm_lang$core$Native_Regex = function() {
+
+function escape(str)
+{
+	return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+function caseInsensitive(re)
+{
+	return new RegExp(re.source, 'gi');
+}
+function regex(raw)
+{
+	return new RegExp(raw, 'g');
+}
+
+function contains(re, string)
+{
+	return string.match(re) !== null;
+}
+
+function find(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var out = [];
+	var number = 0;
+	var string = str;
+	var lastIndex = re.lastIndex;
+	var prevLastIndex = -1;
+	var result;
+	while (number++ < n && (result = re.exec(string)))
+	{
+		if (prevLastIndex === re.lastIndex) break;
+		var i = result.length - 1;
+		var subs = new Array(i);
+		while (i > 0)
+		{
+			var submatch = result[i];
+			subs[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		out.push({
+			match: result[0],
+			submatches: _elm_lang$core$Native_List.fromArray(subs),
+			index: result.index,
+			number: number
+		});
+		prevLastIndex = re.lastIndex;
+	}
+	re.lastIndex = lastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+function replace(n, re, replacer, string)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	var count = 0;
+	function jsReplacer(match)
+	{
+		if (count++ >= n)
+		{
+			return match;
+		}
+		var i = arguments.length - 3;
+		var submatches = new Array(i);
+		while (i > 0)
+		{
+			var submatch = arguments[i];
+			submatches[--i] = submatch === undefined
+				? _elm_lang$core$Maybe$Nothing
+				: _elm_lang$core$Maybe$Just(submatch);
+		}
+		return replacer({
+			match: match,
+			submatches: _elm_lang$core$Native_List.fromArray(submatches),
+			index: arguments[arguments.length - 2],
+			number: count
+		});
+	}
+	return string.replace(re, jsReplacer);
+}
+
+function split(n, re, str)
+{
+	n = n.ctor === 'All' ? Infinity : n._0;
+	if (n === Infinity)
+	{
+		return _elm_lang$core$Native_List.fromArray(str.split(re));
+	}
+	var string = str;
+	var result;
+	var out = [];
+	var start = re.lastIndex;
+	var restoreLastIndex = re.lastIndex;
+	while (n--)
+	{
+		if (!(result = re.exec(string))) break;
+		out.push(string.slice(start, result.index));
+		start = re.lastIndex;
+	}
+	out.push(string.slice(start));
+	re.lastIndex = restoreLastIndex;
+	return _elm_lang$core$Native_List.fromArray(out);
+}
+
+return {
+	regex: regex,
+	caseInsensitive: caseInsensitive,
+	escape: escape,
+
+	contains: F2(contains),
+	find: F3(find),
+	replace: F4(replace),
+	split: F3(split)
+};
+
+}();
+
+var _elm_lang$core$Regex$split = _elm_lang$core$Native_Regex.split;
+var _elm_lang$core$Regex$replace = _elm_lang$core$Native_Regex.replace;
+var _elm_lang$core$Regex$find = _elm_lang$core$Native_Regex.find;
+var _elm_lang$core$Regex$contains = _elm_lang$core$Native_Regex.contains;
+var _elm_lang$core$Regex$caseInsensitive = _elm_lang$core$Native_Regex.caseInsensitive;
+var _elm_lang$core$Regex$regex = _elm_lang$core$Native_Regex.regex;
+var _elm_lang$core$Regex$escape = _elm_lang$core$Native_Regex.escape;
+var _elm_lang$core$Regex$Match = F4(
+	function (a, b, c, d) {
+		return {match: a, submatches: b, index: c, number: d};
+	});
+var _elm_lang$core$Regex$Regex = {ctor: 'Regex'};
+var _elm_lang$core$Regex$AtMost = function (a) {
+	return {ctor: 'AtMost', _0: a};
+};
+var _elm_lang$core$Regex$All = {ctor: 'All'};
+
+var _elm_lang$dom$Native_Dom = function() {
+
+var fakeNode = {
+	addEventListener: function() {},
+	removeEventListener: function() {}
+};
+
+var onDocument = on(typeof document !== 'undefined' ? document : fakeNode);
+var onWindow = on(typeof window !== 'undefined' ? window : fakeNode);
+
+function on(node)
+{
+	return function(eventName, decoder, toTask)
+	{
+		return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+
+			function performTask(event)
+			{
+				var result = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, event);
+				if (result.ctor === 'Ok')
+				{
+					_elm_lang$core$Native_Scheduler.rawSpawn(toTask(result._0));
+				}
+			}
+
+			node.addEventListener(eventName, performTask);
+
+			return function()
+			{
+				node.removeEventListener(eventName, performTask);
+			};
+		});
+	};
+}
+
+var rAF = typeof requestAnimationFrame !== 'undefined'
+	? requestAnimationFrame
+	: function(callback) { callback(); };
+
+function withNode(id, doStuff)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		rAF(function()
+		{
+			var node = document.getElementById(id);
+			if (node === null)
+			{
+				callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NotFound', _0: id }));
+				return;
+			}
+			callback(_elm_lang$core$Native_Scheduler.succeed(doStuff(node)));
+		});
+	});
+}
+
+
+// FOCUS
+
+function focus(id)
+{
+	return withNode(id, function(node) {
+		node.focus();
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function blur(id)
+{
+	return withNode(id, function(node) {
+		node.blur();
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+
+// SCROLLING
+
+function getScrollTop(id)
+{
+	return withNode(id, function(node) {
+		return node.scrollTop;
+	});
+}
+
+function setScrollTop(id, desiredScrollTop)
+{
+	return withNode(id, function(node) {
+		node.scrollTop = desiredScrollTop;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function toBottom(id)
+{
+	return withNode(id, function(node) {
+		node.scrollTop = node.scrollHeight;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function getScrollLeft(id)
+{
+	return withNode(id, function(node) {
+		return node.scrollLeft;
+	});
+}
+
+function setScrollLeft(id, desiredScrollLeft)
+{
+	return withNode(id, function(node) {
+		node.scrollLeft = desiredScrollLeft;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function toRight(id)
+{
+	return withNode(id, function(node) {
+		node.scrollLeft = node.scrollWidth;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+
+// SIZE
+
+function width(options, id)
+{
+	return withNode(id, function(node) {
+		switch (options.ctor)
+		{
+			case 'Content':
+				return node.scrollWidth;
+			case 'VisibleContent':
+				return node.clientWidth;
+			case 'VisibleContentWithBorders':
+				return node.offsetWidth;
+			case 'VisibleContentWithBordersAndMargins':
+				var rect = node.getBoundingClientRect();
+				return rect.right - rect.left;
+		}
+	});
+}
+
+function height(options, id)
+{
+	return withNode(id, function(node) {
+		switch (options.ctor)
+		{
+			case 'Content':
+				return node.scrollHeight;
+			case 'VisibleContent':
+				return node.clientHeight;
+			case 'VisibleContentWithBorders':
+				return node.offsetHeight;
+			case 'VisibleContentWithBordersAndMargins':
+				var rect = node.getBoundingClientRect();
+				return rect.bottom - rect.top;
+		}
+	});
+}
+
+return {
+	onDocument: F3(onDocument),
+	onWindow: F3(onWindow),
+
+	focus: focus,
+	blur: blur,
+
+	getScrollTop: getScrollTop,
+	setScrollTop: F2(setScrollTop),
+	getScrollLeft: getScrollLeft,
+	setScrollLeft: F2(setScrollLeft),
+	toBottom: toBottom,
+	toRight: toRight,
+
+	height: F2(height),
+	width: F2(width)
+};
+
+}();
+
+var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
+var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -9113,102 +9900,9457 @@ var _elm_lang$http$Http$StringPart = F2(
 	});
 var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
 
-var _user$project$BlazeHelpers$heading3 = function (txt) {
-	return A2(
-		_elm_lang$html$Html$h3,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(txt),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$BlazeHelpers$heading2 = function (txt) {
-	return A2(
-		_elm_lang$html$Html$h2,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(txt),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$BlazeHelpers$heading1 = function (txt) {
-	return A2(
-		_elm_lang$html$Html$h1,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(txt),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$BlazeHelpers$defaultCellWithCls = F2(
-	function (cls, contents) {
+var _elm_lang$mouse$Mouse_ops = _elm_lang$mouse$Mouse_ops || {};
+_elm_lang$mouse$Mouse_ops['&>'] = F2(
+	function (t1, t2) {
 		return A2(
-			_elm_lang$html$Html$div,
+			_elm_lang$core$Task$andThen,
+			function (_p0) {
+				return t2;
+			},
+			t1);
+	});
+var _elm_lang$mouse$Mouse$onSelfMsg = F3(
+	function (router, _p1, state) {
+		var _p2 = _p1;
+		var _p3 = A2(_elm_lang$core$Dict$get, _p2.category, state);
+		if (_p3.ctor === 'Nothing') {
+			return _elm_lang$core$Task$succeed(state);
+		} else {
+			var send = function (tagger) {
+				return A2(
+					_elm_lang$core$Platform$sendToApp,
+					router,
+					tagger(_p2.position));
+			};
+			return A2(
+				_elm_lang$mouse$Mouse_ops['&>'],
+				_elm_lang$core$Task$sequence(
+					A2(_elm_lang$core$List$map, send, _p3._0.taggers)),
+				_elm_lang$core$Task$succeed(state));
+		}
+	});
+var _elm_lang$mouse$Mouse$init = _elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty);
+var _elm_lang$mouse$Mouse$categorizeHelpHelp = F2(
+	function (value, maybeValues) {
+		var _p4 = maybeValues;
+		if (_p4.ctor === 'Nothing') {
+			return _elm_lang$core$Maybe$Just(
+				{
+					ctor: '::',
+					_0: value,
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return _elm_lang$core$Maybe$Just(
+				{ctor: '::', _0: value, _1: _p4._0});
+		}
+	});
+var _elm_lang$mouse$Mouse$categorizeHelp = F2(
+	function (subs, subDict) {
+		categorizeHelp:
+		while (true) {
+			var _p5 = subs;
+			if (_p5.ctor === '[]') {
+				return subDict;
+			} else {
+				var _v4 = _p5._1,
+					_v5 = A3(
+					_elm_lang$core$Dict$update,
+					_p5._0._0,
+					_elm_lang$mouse$Mouse$categorizeHelpHelp(_p5._0._1),
+					subDict);
+				subs = _v4;
+				subDict = _v5;
+				continue categorizeHelp;
+			}
+		}
+	});
+var _elm_lang$mouse$Mouse$categorize = function (subs) {
+	return A2(_elm_lang$mouse$Mouse$categorizeHelp, subs, _elm_lang$core$Dict$empty);
+};
+var _elm_lang$mouse$Mouse$subscription = _elm_lang$core$Native_Platform.leaf('Mouse');
+var _elm_lang$mouse$Mouse$Position = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _elm_lang$mouse$Mouse$position = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_elm_lang$mouse$Mouse$Position,
+	A2(_elm_lang$core$Json_Decode$field, 'pageX', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'pageY', _elm_lang$core$Json_Decode$int));
+var _elm_lang$mouse$Mouse$Watcher = F2(
+	function (a, b) {
+		return {taggers: a, pid: b};
+	});
+var _elm_lang$mouse$Mouse$Msg = F2(
+	function (a, b) {
+		return {category: a, position: b};
+	});
+var _elm_lang$mouse$Mouse$onEffects = F3(
+	function (router, newSubs, oldState) {
+		var rightStep = F3(
+			function (category, taggers, task) {
+				var tracker = A3(
+					_elm_lang$dom$Dom_LowLevel$onDocument,
+					category,
+					_elm_lang$mouse$Mouse$position,
+					function (_p6) {
+						return A2(
+							_elm_lang$core$Platform$sendToSelf,
+							router,
+							A2(_elm_lang$mouse$Mouse$Msg, category, _p6));
+					});
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (state) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							function (pid) {
+								return _elm_lang$core$Task$succeed(
+									A3(
+										_elm_lang$core$Dict$insert,
+										category,
+										A2(_elm_lang$mouse$Mouse$Watcher, taggers, pid),
+										state));
+							},
+							_elm_lang$core$Process$spawn(tracker));
+					},
+					task);
+			});
+		var bothStep = F4(
+			function (category, _p7, taggers, task) {
+				var _p8 = _p7;
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (state) {
+						return _elm_lang$core$Task$succeed(
+							A3(
+								_elm_lang$core$Dict$insert,
+								category,
+								A2(_elm_lang$mouse$Mouse$Watcher, taggers, _p8.pid),
+								state));
+					},
+					task);
+			});
+		var leftStep = F3(
+			function (category, _p9, task) {
+				var _p10 = _p9;
+				return A2(
+					_elm_lang$mouse$Mouse_ops['&>'],
+					_elm_lang$core$Process$kill(_p10.pid),
+					task);
+			});
+		return A6(
+			_elm_lang$core$Dict$merge,
+			leftStep,
+			bothStep,
+			rightStep,
+			oldState,
+			_elm_lang$mouse$Mouse$categorize(newSubs),
+			_elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty));
+	});
+var _elm_lang$mouse$Mouse$MySub = F2(
+	function (a, b) {
+		return {ctor: 'MySub', _0: a, _1: b};
+	});
+var _elm_lang$mouse$Mouse$clicks = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'click', tagger));
+};
+var _elm_lang$mouse$Mouse$moves = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'mousemove', tagger));
+};
+var _elm_lang$mouse$Mouse$downs = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'mousedown', tagger));
+};
+var _elm_lang$mouse$Mouse$ups = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'mouseup', tagger));
+};
+var _elm_lang$mouse$Mouse$subMap = F2(
+	function (func, _p11) {
+		var _p12 = _p11;
+		return A2(
+			_elm_lang$mouse$Mouse$MySub,
+			_p12._0,
+			function (_p13) {
+				return func(
+					_p12._1(_p13));
+			});
+	});
+_elm_lang$core$Native_Platform.effectManagers['Mouse'] = {pkg: 'elm-lang/mouse', init: _elm_lang$mouse$Mouse$init, onEffects: _elm_lang$mouse$Mouse$onEffects, onSelfMsg: _elm_lang$mouse$Mouse$onSelfMsg, tag: 'sub', subMap: _elm_lang$mouse$Mouse$subMap};
+
+var _elm_lang$window$Native_Window = function()
+{
+
+var size = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)	{
+	callback(_elm_lang$core$Native_Scheduler.succeed({
+		width: window.innerWidth,
+		height: window.innerHeight
+	}));
+});
+
+return {
+	size: size
+};
+
+}();
+var _elm_lang$window$Window_ops = _elm_lang$window$Window_ops || {};
+_elm_lang$window$Window_ops['&>'] = F2(
+	function (task1, task2) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (_p0) {
+				return task2;
+			},
+			task1);
+	});
+var _elm_lang$window$Window$onSelfMsg = F3(
+	function (router, dimensions, state) {
+		var _p1 = state;
+		if (_p1.ctor === 'Nothing') {
+			return _elm_lang$core$Task$succeed(state);
+		} else {
+			var send = function (_p2) {
+				var _p3 = _p2;
+				return A2(
+					_elm_lang$core$Platform$sendToApp,
+					router,
+					_p3._0(dimensions));
+			};
+			return A2(
+				_elm_lang$window$Window_ops['&>'],
+				_elm_lang$core$Task$sequence(
+					A2(_elm_lang$core$List$map, send, _p1._0.subs)),
+				_elm_lang$core$Task$succeed(state));
+		}
+	});
+var _elm_lang$window$Window$init = _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
+var _elm_lang$window$Window$size = _elm_lang$window$Native_Window.size;
+var _elm_lang$window$Window$width = A2(
+	_elm_lang$core$Task$map,
+	function (_) {
+		return _.width;
+	},
+	_elm_lang$window$Window$size);
+var _elm_lang$window$Window$height = A2(
+	_elm_lang$core$Task$map,
+	function (_) {
+		return _.height;
+	},
+	_elm_lang$window$Window$size);
+var _elm_lang$window$Window$onEffects = F3(
+	function (router, newSubs, oldState) {
+		var _p4 = {ctor: '_Tuple2', _0: oldState, _1: newSubs};
+		if (_p4._0.ctor === 'Nothing') {
+			if (_p4._1.ctor === '[]') {
+				return _elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing);
+			} else {
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (pid) {
+						return _elm_lang$core$Task$succeed(
+							_elm_lang$core$Maybe$Just(
+								{subs: newSubs, pid: pid}));
+					},
+					_elm_lang$core$Process$spawn(
+						A3(
+							_elm_lang$dom$Dom_LowLevel$onWindow,
+							'resize',
+							_elm_lang$core$Json_Decode$succeed(
+								{ctor: '_Tuple0'}),
+							function (_p5) {
+								return A2(
+									_elm_lang$core$Task$andThen,
+									_elm_lang$core$Platform$sendToSelf(router),
+									_elm_lang$window$Window$size);
+							})));
+			}
+		} else {
+			if (_p4._1.ctor === '[]') {
+				return A2(
+					_elm_lang$window$Window_ops['&>'],
+					_elm_lang$core$Process$kill(_p4._0._0.pid),
+					_elm_lang$core$Task$succeed(_elm_lang$core$Maybe$Nothing));
+			} else {
+				return _elm_lang$core$Task$succeed(
+					_elm_lang$core$Maybe$Just(
+						{subs: newSubs, pid: _p4._0._0.pid}));
+			}
+		}
+	});
+var _elm_lang$window$Window$subscription = _elm_lang$core$Native_Platform.leaf('Window');
+var _elm_lang$window$Window$Size = F2(
+	function (a, b) {
+		return {width: a, height: b};
+	});
+var _elm_lang$window$Window$MySub = function (a) {
+	return {ctor: 'MySub', _0: a};
+};
+var _elm_lang$window$Window$resizes = function (tagger) {
+	return _elm_lang$window$Window$subscription(
+		_elm_lang$window$Window$MySub(tagger));
+};
+var _elm_lang$window$Window$subMap = F2(
+	function (func, _p6) {
+		var _p7 = _p6;
+		return _elm_lang$window$Window$MySub(
+			function (_p8) {
+				return func(
+					_p7._0(_p8));
+			});
+	});
+_elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
+
+var _rtfeldman$elm_css_util$Css_Helpers$toCssIdentifier = function (identifier) {
+	return A4(
+		_elm_lang$core$Regex$replace,
+		_elm_lang$core$Regex$All,
+		_elm_lang$core$Regex$regex('[^a-zA-Z0-9_-]'),
+		function (_p0) {
+			return '';
+		},
+		A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('\\s+'),
+			function (_p1) {
+				return '-';
+			},
+			_elm_lang$core$String$trim(
+				_elm_lang$core$Basics$toString(identifier))));
+};
+var _rtfeldman$elm_css_util$Css_Helpers$identifierToString = F2(
+	function (name, identifier) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			_rtfeldman$elm_css_util$Css_Helpers$toCssIdentifier(name),
+			_rtfeldman$elm_css_util$Css_Helpers$toCssIdentifier(identifier));
+	});
+
+var _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations = function (declarations) {
+	dropEmptyDeclarations:
+	while (true) {
+		var _p0 = declarations;
+		if (_p0.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			switch (_p0._0.ctor) {
+				case 'StyleBlockDeclaration':
+					var _p1 = _p0._1;
+					if (_elm_lang$core$List$isEmpty(_p0._0._0._2)) {
+						var _v1 = _p1;
+						declarations = _v1;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p1)
+						};
+					}
+				case 'MediaRule':
+					var _p4 = _p0._1;
+					if (A2(
+						_elm_lang$core$List$all,
+						function (_p2) {
+							var _p3 = _p2;
+							return _elm_lang$core$List$isEmpty(_p3._2);
+						},
+						_p0._0._1)) {
+						var _v3 = _p4;
+						declarations = _v3;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p4)
+						};
+					}
+				case 'SupportsRule':
+					var _p5 = _p0._1;
+					if (_elm_lang$core$List$isEmpty(_p0._0._1)) {
+						var _v4 = _p5;
+						declarations = _v4;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p5)
+						};
+					}
+				case 'DocumentRule':
+					return {
+						ctor: '::',
+						_0: _p0._0,
+						_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p0._1)
+					};
+				case 'PageRule':
+					var _p6 = _p0._1;
+					if (_elm_lang$core$List$isEmpty(_p0._0._1)) {
+						var _v5 = _p6;
+						declarations = _v5;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p6)
+						};
+					}
+				case 'FontFace':
+					var _p7 = _p0._1;
+					if (_elm_lang$core$List$isEmpty(_p0._0._0)) {
+						var _v6 = _p7;
+						declarations = _v6;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p7)
+						};
+					}
+				case 'Keyframes':
+					var _p8 = _p0._1;
+					if (_elm_lang$core$List$isEmpty(_p0._0._1)) {
+						var _v7 = _p8;
+						declarations = _v7;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p8)
+						};
+					}
+				case 'Viewport':
+					var _p9 = _p0._1;
+					if (_elm_lang$core$List$isEmpty(_p0._0._0)) {
+						var _v8 = _p9;
+						declarations = _v8;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p9)
+						};
+					}
+				case 'CounterStyle':
+					var _p10 = _p0._1;
+					if (_elm_lang$core$List$isEmpty(_p0._0._0)) {
+						var _v9 = _p10;
+						declarations = _v9;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p10)
+						};
+					}
+				default:
+					var _p13 = _p0._1;
+					if (A2(
+						_elm_lang$core$List$all,
+						function (_p11) {
+							var _p12 = _p11;
+							return _elm_lang$core$List$isEmpty(_p12._1);
+						},
+						_p0._0._0)) {
+						var _v11 = _p13;
+						declarations = _v11;
+						continue dropEmptyDeclarations;
+					} else {
+						return {
+							ctor: '::',
+							_0: _p0._0,
+							_1: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p13)
+						};
+					}
+			}
+		}
+	}
+};
+var _rtfeldman$elm_css$Css_Structure$dropEmpty = function (_p14) {
+	var _p15 = _p14;
+	return {
+		charset: _p15.charset,
+		imports: _p15.imports,
+		namespaces: _p15.namespaces,
+		declarations: _rtfeldman$elm_css$Css_Structure$dropEmptyDeclarations(_p15.declarations)
+	};
+};
+var _rtfeldman$elm_css$Css_Structure$concatMapLast = F2(
+	function (update, list) {
+		var _p16 = list;
+		if (_p16.ctor === '[]') {
+			return list;
+		} else {
+			if (_p16._1.ctor === '[]') {
+				return update(_p16._0);
+			} else {
+				return {
+					ctor: '::',
+					_0: _p16._0,
+					_1: A2(_rtfeldman$elm_css$Css_Structure$concatMapLast, update, _p16._1)
+				};
+			}
+		}
+	});
+var _rtfeldman$elm_css$Css_Structure$mapLast = F2(
+	function (update, list) {
+		var _p17 = list;
+		if (_p17.ctor === '[]') {
+			return list;
+		} else {
+			if (_p17._1.ctor === '[]') {
+				return {
+					ctor: '::',
+					_0: update(_p17._0),
+					_1: {ctor: '[]'}
+				};
+			} else {
+				return {
+					ctor: '::',
+					_0: _p17._0,
+					_1: A2(_rtfeldman$elm_css$Css_Structure$mapLast, update, _p17._1)
+				};
+			}
+		}
+	});
+var _rtfeldman$elm_css$Css_Structure$Property = F3(
+	function (a, b, c) {
+		return {important: a, key: b, value: c};
+	});
+var _rtfeldman$elm_css$Css_Structure$Stylesheet = F4(
+	function (a, b, c, d) {
+		return {charset: a, imports: b, namespaces: c, declarations: d};
+	});
+var _rtfeldman$elm_css$Css_Structure$FontFeatureValues = function (a) {
+	return {ctor: 'FontFeatureValues', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$CounterStyle = function (a) {
+	return {ctor: 'CounterStyle', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$Viewport = function (a) {
+	return {ctor: 'Viewport', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$Keyframes = F2(
+	function (a, b) {
+		return {ctor: 'Keyframes', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Structure$FontFace = function (a) {
+	return {ctor: 'FontFace', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$PageRule = F2(
+	function (a, b) {
+		return {ctor: 'PageRule', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Structure$DocumentRule = F5(
+	function (a, b, c, d, e) {
+		return {ctor: 'DocumentRule', _0: a, _1: b, _2: c, _3: d, _4: e};
+	});
+var _rtfeldman$elm_css$Css_Structure$SupportsRule = F2(
+	function (a, b) {
+		return {ctor: 'SupportsRule', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Structure$MediaRule = F2(
+	function (a, b) {
+		return {ctor: 'MediaRule', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Structure$StyleBlockDeclaration = function (a) {
+	return {ctor: 'StyleBlockDeclaration', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$concatMapLastStyleBlock = F2(
+	function (update, declarations) {
+		var _p18 = declarations;
+		_v15_12:
+		do {
+			if (_p18.ctor === '[]') {
+				return declarations;
+			} else {
+				if (_p18._1.ctor === '[]') {
+					switch (_p18._0.ctor) {
+						case 'StyleBlockDeclaration':
+							return A2(
+								_elm_lang$core$List$map,
+								_rtfeldman$elm_css$Css_Structure$StyleBlockDeclaration,
+								update(_p18._0._0));
+						case 'MediaRule':
+							if (_p18._0._1.ctor === '::') {
+								if (_p18._0._1._1.ctor === '[]') {
+									return {
+										ctor: '::',
+										_0: A2(
+											_rtfeldman$elm_css$Css_Structure$MediaRule,
+											_p18._0._0,
+											update(_p18._0._1._0)),
+										_1: {ctor: '[]'}
+									};
+								} else {
+									var _p19 = A2(
+										_rtfeldman$elm_css$Css_Structure$concatMapLastStyleBlock,
+										update,
+										{
+											ctor: '::',
+											_0: A2(_rtfeldman$elm_css$Css_Structure$MediaRule, _p18._0._0, _p18._0._1._1),
+											_1: {ctor: '[]'}
+										});
+									if (((_p19.ctor === '::') && (_p19._0.ctor === 'MediaRule')) && (_p19._1.ctor === '[]')) {
+										return {
+											ctor: '::',
+											_0: A2(
+												_rtfeldman$elm_css$Css_Structure$MediaRule,
+												_p19._0._0,
+												{ctor: '::', _0: _p18._0._1._0, _1: _p19._0._1}),
+											_1: {ctor: '[]'}
+										};
+									} else {
+										return _p19;
+									}
+								}
+							} else {
+								break _v15_12;
+							}
+						case 'SupportsRule':
+							return {
+								ctor: '::',
+								_0: A2(
+									_rtfeldman$elm_css$Css_Structure$SupportsRule,
+									_p18._0._0,
+									A2(_rtfeldman$elm_css$Css_Structure$concatMapLastStyleBlock, update, _p18._0._1)),
+								_1: {ctor: '[]'}
+							};
+						case 'DocumentRule':
+							return A2(
+								_elm_lang$core$List$map,
+								A4(_rtfeldman$elm_css$Css_Structure$DocumentRule, _p18._0._0, _p18._0._1, _p18._0._2, _p18._0._3),
+								update(_p18._0._4));
+						case 'PageRule':
+							return declarations;
+						case 'FontFace':
+							return declarations;
+						case 'Keyframes':
+							return declarations;
+						case 'Viewport':
+							return declarations;
+						case 'CounterStyle':
+							return declarations;
+						default:
+							return declarations;
+					}
+				} else {
+					break _v15_12;
+				}
+			}
+		} while(false);
+		return {
+			ctor: '::',
+			_0: _p18._0,
+			_1: A2(_rtfeldman$elm_css$Css_Structure$concatMapLastStyleBlock, update, _p18._1)
+		};
+	});
+var _rtfeldman$elm_css$Css_Structure$StyleBlock = F3(
+	function (a, b, c) {
+		return {ctor: 'StyleBlock', _0: a, _1: b, _2: c};
+	});
+var _rtfeldman$elm_css$Css_Structure$withPropertyAppended = F2(
+	function (property, _p20) {
+		var _p21 = _p20;
+		return A3(
+			_rtfeldman$elm_css$Css_Structure$StyleBlock,
+			_p21._0,
+			_p21._1,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_p21._2,
+				{
+					ctor: '::',
+					_0: property,
+					_1: {ctor: '[]'}
+				}));
+	});
+var _rtfeldman$elm_css$Css_Structure$appendProperty = F2(
+	function (property, declarations) {
+		var _p22 = declarations;
+		if (_p22.ctor === '[]') {
+			return declarations;
+		} else {
+			if (_p22._1.ctor === '[]') {
+				switch (_p22._0.ctor) {
+					case 'StyleBlockDeclaration':
+						return {
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css_Structure$StyleBlockDeclaration(
+								A2(_rtfeldman$elm_css$Css_Structure$withPropertyAppended, property, _p22._0._0)),
+							_1: {ctor: '[]'}
+						};
+					case 'MediaRule':
+						return {
+							ctor: '::',
+							_0: A2(
+								_rtfeldman$elm_css$Css_Structure$MediaRule,
+								_p22._0._0,
+								A2(
+									_rtfeldman$elm_css$Css_Structure$mapLast,
+									_rtfeldman$elm_css$Css_Structure$withPropertyAppended(property),
+									_p22._0._1)),
+							_1: {ctor: '[]'}
+						};
+					default:
+						return declarations;
+				}
+			} else {
+				return {
+					ctor: '::',
+					_0: _p22._0,
+					_1: A2(_rtfeldman$elm_css$Css_Structure$appendProperty, property, _p22._1)
+				};
+			}
+		}
+	});
+var _rtfeldman$elm_css$Css_Structure$appendToLastSelector = F2(
+	function (f, styleBlock) {
+		var _p23 = styleBlock;
+		if (_p23._1.ctor === '[]') {
+			var _p24 = _p23._0;
+			return {
+				ctor: '::',
+				_0: A3(
+					_rtfeldman$elm_css$Css_Structure$StyleBlock,
+					_p24,
+					{ctor: '[]'},
+					_p23._2),
+				_1: {
+					ctor: '::',
+					_0: A3(
+						_rtfeldman$elm_css$Css_Structure$StyleBlock,
+						f(_p24),
+						{ctor: '[]'},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			};
+		} else {
+			var _p26 = _p23._1;
+			var _p25 = _p23._0;
+			var newFirst = f(_p25);
+			var newRest = A2(_elm_lang$core$List$map, f, _p26);
+			return {
+				ctor: '::',
+				_0: A3(_rtfeldman$elm_css$Css_Structure$StyleBlock, _p25, _p26, _p23._2),
+				_1: {
+					ctor: '::',
+					_0: A3(
+						_rtfeldman$elm_css$Css_Structure$StyleBlock,
+						newFirst,
+						newRest,
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			};
+		}
+	});
+var _rtfeldman$elm_css$Css_Structure$MediaQuery = function (a) {
+	return {ctor: 'MediaQuery', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$Selector = F3(
+	function (a, b, c) {
+		return {ctor: 'Selector', _0: a, _1: b, _2: c};
+	});
+var _rtfeldman$elm_css$Css_Structure$applyPseudoElement = F2(
+	function (pseudo, _p27) {
+		var _p28 = _p27;
+		return A3(
+			_rtfeldman$elm_css$Css_Structure$Selector,
+			_p28._0,
+			_p28._1,
+			_elm_lang$core$Maybe$Just(pseudo));
+	});
+var _rtfeldman$elm_css$Css_Structure$appendPseudoElementToLastSelector = F2(
+	function (pseudo, styleBlock) {
+		return A2(
+			_rtfeldman$elm_css$Css_Structure$appendToLastSelector,
+			_rtfeldman$elm_css$Css_Structure$applyPseudoElement(pseudo),
+			styleBlock);
+	});
+var _rtfeldman$elm_css$Css_Structure$CustomSelector = F2(
+	function (a, b) {
+		return {ctor: 'CustomSelector', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Structure$UniversalSelectorSequence = function (a) {
+	return {ctor: 'UniversalSelectorSequence', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$TypeSelectorSequence = F2(
+	function (a, b) {
+		return {ctor: 'TypeSelectorSequence', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Structure$appendRepeatable = F2(
+	function (selector, sequence) {
+		var _p29 = sequence;
+		switch (_p29.ctor) {
+			case 'TypeSelectorSequence':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$TypeSelectorSequence,
+					_p29._0,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p29._1,
+						{
+							ctor: '::',
+							_0: selector,
+							_1: {ctor: '[]'}
+						}));
+			case 'UniversalSelectorSequence':
+				return _rtfeldman$elm_css$Css_Structure$UniversalSelectorSequence(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p29._0,
+						{
+							ctor: '::',
+							_0: selector,
+							_1: {ctor: '[]'}
+						}));
+			default:
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$CustomSelector,
+					_p29._0,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p29._1,
+						{
+							ctor: '::',
+							_0: selector,
+							_1: {ctor: '[]'}
+						}));
+		}
+	});
+var _rtfeldman$elm_css$Css_Structure$appendRepeatableWithCombinator = F2(
+	function (selector, list) {
+		var _p30 = list;
+		if (_p30.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			if ((_p30._0.ctor === '_Tuple2') && (_p30._1.ctor === '[]')) {
+				return {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: _p30._0._0,
+						_1: A2(_rtfeldman$elm_css$Css_Structure$appendRepeatable, selector, _p30._0._1)
+					},
+					_1: {ctor: '[]'}
+				};
+			} else {
+				return {
+					ctor: '::',
+					_0: _p30._0,
+					_1: A2(_rtfeldman$elm_css$Css_Structure$appendRepeatableWithCombinator, selector, _p30._1)
+				};
+			}
+		}
+	});
+var _rtfeldman$elm_css$Css_Structure$appendRepeatableSelector = F2(
+	function (repeatableSimpleSelector, selector) {
+		var _p31 = selector;
+		if (_p31._1.ctor === '[]') {
+			return A3(
+				_rtfeldman$elm_css$Css_Structure$Selector,
+				A2(_rtfeldman$elm_css$Css_Structure$appendRepeatable, repeatableSimpleSelector, _p31._0),
+				{ctor: '[]'},
+				_p31._2);
+		} else {
+			return A3(
+				_rtfeldman$elm_css$Css_Structure$Selector,
+				_p31._0,
+				A2(_rtfeldman$elm_css$Css_Structure$appendRepeatableWithCombinator, repeatableSimpleSelector, _p31._1),
+				_p31._2);
+		}
+	});
+var _rtfeldman$elm_css$Css_Structure$extendLastSelector = F2(
+	function (selector, declarations) {
+		var _p32 = declarations;
+		_v24_15:
+		do {
+			if (_p32.ctor === '[]') {
+				return declarations;
+			} else {
+				if (_p32._1.ctor === '[]') {
+					switch (_p32._0.ctor) {
+						case 'StyleBlockDeclaration':
+							if (_p32._0._0._1.ctor === '[]') {
+								return {
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css_Structure$StyleBlockDeclaration(
+										A3(
+											_rtfeldman$elm_css$Css_Structure$StyleBlock,
+											A2(_rtfeldman$elm_css$Css_Structure$appendRepeatableSelector, selector, _p32._0._0._0),
+											{ctor: '[]'},
+											_p32._0._0._2)),
+									_1: {ctor: '[]'}
+								};
+							} else {
+								var newRest = A2(
+									_rtfeldman$elm_css$Css_Structure$mapLast,
+									_rtfeldman$elm_css$Css_Structure$appendRepeatableSelector(selector),
+									_p32._0._0._1);
+								return {
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css_Structure$StyleBlockDeclaration(
+										A3(_rtfeldman$elm_css$Css_Structure$StyleBlock, _p32._0._0._0, newRest, _p32._0._0._2)),
+									_1: {ctor: '[]'}
+								};
+							}
+						case 'MediaRule':
+							if (_p32._0._1.ctor === '::') {
+								if (_p32._0._1._1.ctor === '[]') {
+									if (_p32._0._1._0._1.ctor === '[]') {
+										var newStyleBlock = A3(
+											_rtfeldman$elm_css$Css_Structure$StyleBlock,
+											A2(_rtfeldman$elm_css$Css_Structure$appendRepeatableSelector, selector, _p32._0._1._0._0),
+											{ctor: '[]'},
+											_p32._0._1._0._2);
+										return {
+											ctor: '::',
+											_0: A2(
+												_rtfeldman$elm_css$Css_Structure$MediaRule,
+												_p32._0._0,
+												{
+													ctor: '::',
+													_0: newStyleBlock,
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										};
+									} else {
+										var newRest = A2(
+											_rtfeldman$elm_css$Css_Structure$mapLast,
+											_rtfeldman$elm_css$Css_Structure$appendRepeatableSelector(selector),
+											_p32._0._1._0._1);
+										var newStyleBlock = A3(_rtfeldman$elm_css$Css_Structure$StyleBlock, _p32._0._1._0._0, newRest, _p32._0._1._0._2);
+										return {
+											ctor: '::',
+											_0: A2(
+												_rtfeldman$elm_css$Css_Structure$MediaRule,
+												_p32._0._0,
+												{
+													ctor: '::',
+													_0: newStyleBlock,
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										};
+									}
+								} else {
+									var _p33 = A2(
+										_rtfeldman$elm_css$Css_Structure$extendLastSelector,
+										selector,
+										{
+											ctor: '::',
+											_0: A2(_rtfeldman$elm_css$Css_Structure$MediaRule, _p32._0._0, _p32._0._1._1),
+											_1: {ctor: '[]'}
+										});
+									if (((_p33.ctor === '::') && (_p33._0.ctor === 'MediaRule')) && (_p33._1.ctor === '[]')) {
+										return {
+											ctor: '::',
+											_0: A2(
+												_rtfeldman$elm_css$Css_Structure$MediaRule,
+												_p33._0._0,
+												{ctor: '::', _0: _p32._0._1._0, _1: _p33._0._1}),
+											_1: {ctor: '[]'}
+										};
+									} else {
+										return _p33;
+									}
+								}
+							} else {
+								break _v24_15;
+							}
+						case 'SupportsRule':
+							return {
+								ctor: '::',
+								_0: A2(
+									_rtfeldman$elm_css$Css_Structure$SupportsRule,
+									_p32._0._0,
+									A2(_rtfeldman$elm_css$Css_Structure$extendLastSelector, selector, _p32._0._1)),
+								_1: {ctor: '[]'}
+							};
+						case 'DocumentRule':
+							if (_p32._0._4._1.ctor === '[]') {
+								var newStyleBlock = A3(
+									_rtfeldman$elm_css$Css_Structure$StyleBlock,
+									A2(_rtfeldman$elm_css$Css_Structure$appendRepeatableSelector, selector, _p32._0._4._0),
+									{ctor: '[]'},
+									_p32._0._4._2);
+								return {
+									ctor: '::',
+									_0: A5(_rtfeldman$elm_css$Css_Structure$DocumentRule, _p32._0._0, _p32._0._1, _p32._0._2, _p32._0._3, newStyleBlock),
+									_1: {ctor: '[]'}
+								};
+							} else {
+								var newRest = A2(
+									_rtfeldman$elm_css$Css_Structure$mapLast,
+									_rtfeldman$elm_css$Css_Structure$appendRepeatableSelector(selector),
+									_p32._0._4._1);
+								var newStyleBlock = A3(_rtfeldman$elm_css$Css_Structure$StyleBlock, _p32._0._4._0, newRest, _p32._0._4._2);
+								return {
+									ctor: '::',
+									_0: A5(_rtfeldman$elm_css$Css_Structure$DocumentRule, _p32._0._0, _p32._0._1, _p32._0._2, _p32._0._3, newStyleBlock),
+									_1: {ctor: '[]'}
+								};
+							}
+						case 'PageRule':
+							return declarations;
+						case 'FontFace':
+							return declarations;
+						case 'Keyframes':
+							return declarations;
+						case 'Viewport':
+							return declarations;
+						case 'CounterStyle':
+							return declarations;
+						default:
+							return declarations;
+					}
+				} else {
+					break _v24_15;
+				}
+			}
+		} while(false);
+		return {
+			ctor: '::',
+			_0: _p32._0,
+			_1: A2(_rtfeldman$elm_css$Css_Structure$extendLastSelector, selector, _p32._1)
+		};
+	});
+var _rtfeldman$elm_css$Css_Structure$appendRepeatableToLastSelector = F2(
+	function (selector, styleBlock) {
+		return A2(
+			_rtfeldman$elm_css$Css_Structure$appendToLastSelector,
+			_rtfeldman$elm_css$Css_Structure$appendRepeatableSelector(selector),
+			styleBlock);
+	});
+var _rtfeldman$elm_css$Css_Structure$PseudoClassSelector = function (a) {
+	return {ctor: 'PseudoClassSelector', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$IdSelector = function (a) {
+	return {ctor: 'IdSelector', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$ClassSelector = function (a) {
+	return {ctor: 'ClassSelector', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$TypeSelector = function (a) {
+	return {ctor: 'TypeSelector', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$PseudoElement = function (a) {
+	return {ctor: 'PseudoElement', _0: a};
+};
+var _rtfeldman$elm_css$Css_Structure$Descendant = {ctor: 'Descendant'};
+var _rtfeldman$elm_css$Css_Structure$Child = {ctor: 'Child'};
+var _rtfeldman$elm_css$Css_Structure$GeneralSibling = {ctor: 'GeneralSibling'};
+var _rtfeldman$elm_css$Css_Structure$AdjacentSibling = {ctor: 'AdjacentSibling'};
+
+var _rtfeldman$elm_css$Css_Preprocess$propertyToPair = function (property) {
+	var value = property.important ? A2(_elm_lang$core$Basics_ops['++'], property.value, ' !important') : property.value;
+	return {ctor: '_Tuple2', _0: property.key, _1: value};
+};
+var _rtfeldman$elm_css$Css_Preprocess$toPropertyPairs = function (mixins) {
+	toPropertyPairs:
+	while (true) {
+		var _p0 = mixins;
+		if (_p0.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			switch (_p0._0.ctor) {
+				case 'AppendProperty':
+					return {
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css_Preprocess$propertyToPair(_p0._0._0),
+						_1: _rtfeldman$elm_css$Css_Preprocess$toPropertyPairs(_p0._1)
+					};
+				case 'ApplyMixins':
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						_rtfeldman$elm_css$Css_Preprocess$toPropertyPairs(_p0._0._0),
+						_rtfeldman$elm_css$Css_Preprocess$toPropertyPairs(_p0._1));
+				default:
+					var _v1 = _p0._1;
+					mixins = _v1;
+					continue toPropertyPairs;
+			}
+		}
+	}
+};
+var _rtfeldman$elm_css$Css_Preprocess$unwrapSnippet = function (_p1) {
+	var _p2 = _p1;
+	return _p2._0;
+};
+var _rtfeldman$elm_css$Css_Preprocess$toMediaRule = F2(
+	function (mediaQueries, declaration) {
+		var _p3 = declaration;
+		switch (_p3.ctor) {
+			case 'StyleBlockDeclaration':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$MediaRule,
+					mediaQueries,
+					{
+						ctor: '::',
+						_0: _p3._0,
+						_1: {ctor: '[]'}
+					});
+			case 'MediaRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$MediaRule,
+					A2(_elm_lang$core$Basics_ops['++'], mediaQueries, _p3._0),
+					_p3._1);
+			case 'SupportsRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$SupportsRule,
+					_p3._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Preprocess$toMediaRule(mediaQueries),
+						_p3._1));
+			case 'DocumentRule':
+				return A5(_rtfeldman$elm_css$Css_Structure$DocumentRule, _p3._0, _p3._1, _p3._2, _p3._3, _p3._4);
+			case 'PageRule':
+				return declaration;
+			case 'FontFace':
+				return declaration;
+			case 'Keyframes':
+				return declaration;
+			case 'Viewport':
+				return declaration;
+			case 'CounterStyle':
+				return declaration;
+			default:
+				return declaration;
+		}
+	});
+var _rtfeldman$elm_css$Css_Preprocess$stylesheet = function (snippets) {
+	return {
+		charset: _elm_lang$core$Maybe$Nothing,
+		imports: {ctor: '[]'},
+		namespaces: {ctor: '[]'},
+		snippets: snippets
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess$Property = F4(
+	function (a, b, c, d) {
+		return {key: a, value: b, important: c, warnings: d};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$Stylesheet = F4(
+	function (a, b, c, d) {
+		return {charset: a, imports: b, namespaces: c, snippets: d};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$ApplyMixins = function (a) {
+	return {ctor: 'ApplyMixins', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$WithMedia = F2(
+	function (a, b) {
+		return {ctor: 'WithMedia', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$WithPseudoElement = F2(
+	function (a, b) {
+		return {ctor: 'WithPseudoElement', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$NestSnippet = F2(
+	function (a, b) {
+		return {ctor: 'NestSnippet', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$ExtendSelector = F2(
+	function (a, b) {
+		return {ctor: 'ExtendSelector', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$AppendProperty = function (a) {
+	return {ctor: 'AppendProperty', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$mapLastProperty = F2(
+	function (update, mixin) {
+		var _p4 = mixin;
+		switch (_p4.ctor) {
+			case 'AppendProperty':
+				return _rtfeldman$elm_css$Css_Preprocess$AppendProperty(
+					update(_p4._0));
+			case 'ExtendSelector':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$ExtendSelector,
+					_p4._0,
+					A2(_rtfeldman$elm_css$Css_Preprocess$mapAllLastProperty, update, _p4._1));
+			case 'NestSnippet':
+				return mixin;
+			case 'WithPseudoElement':
+				return mixin;
+			case 'WithMedia':
+				return mixin;
+			default:
+				return _rtfeldman$elm_css$Css_Preprocess$ApplyMixins(
+					A2(
+						_rtfeldman$elm_css$Css_Structure$mapLast,
+						_rtfeldman$elm_css$Css_Preprocess$mapLastProperty(update),
+						_p4._0));
+		}
+	});
+var _rtfeldman$elm_css$Css_Preprocess$mapAllLastProperty = F2(
+	function (update, mixins) {
+		var _p5 = mixins;
+		if (_p5.ctor === '[]') {
+			return mixins;
+		} else {
+			if (_p5._1.ctor === '[]') {
+				return {
+					ctor: '::',
+					_0: A2(_rtfeldman$elm_css$Css_Preprocess$mapLastProperty, update, _p5._0),
+					_1: {ctor: '[]'}
+				};
+			} else {
+				return {
+					ctor: '::',
+					_0: _p5._0,
+					_1: A2(_rtfeldman$elm_css$Css_Preprocess$mapAllLastProperty, update, _p5._1)
+				};
+			}
+		}
+	});
+var _rtfeldman$elm_css$Css_Preprocess$Snippet = function (a) {
+	return {ctor: 'Snippet', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$FontFeatureValues = function (a) {
+	return {ctor: 'FontFeatureValues', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$CounterStyle = function (a) {
+	return {ctor: 'CounterStyle', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$Viewport = function (a) {
+	return {ctor: 'Viewport', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$Keyframes = F2(
+	function (a, b) {
+		return {ctor: 'Keyframes', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$FontFace = function (a) {
+	return {ctor: 'FontFace', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$PageRule = F2(
+	function (a, b) {
+		return {ctor: 'PageRule', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$DocumentRule = F5(
+	function (a, b, c, d, e) {
+		return {ctor: 'DocumentRule', _0: a, _1: b, _2: c, _3: d, _4: e};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$SupportsRule = F2(
+	function (a, b) {
+		return {ctor: 'SupportsRule', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$MediaRule = F2(
+	function (a, b) {
+		return {ctor: 'MediaRule', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css_Preprocess$StyleBlockDeclaration = function (a) {
+	return {ctor: 'StyleBlockDeclaration', _0: a};
+};
+var _rtfeldman$elm_css$Css_Preprocess$StyleBlock = F3(
+	function (a, b, c) {
+		return {ctor: 'StyleBlock', _0: a, _1: b, _2: c};
+	});
+
+var _rtfeldman$elm_css$Css_Structure_Output$indent = function (str) {
+	return A2(_elm_lang$core$Basics_ops['++'], '    ', str);
+};
+var _rtfeldman$elm_css$Css_Structure_Output$prettyPrintProperty = function (_p0) {
+	var _p1 = _p0;
+	var suffix = _p1.important ? ' !important;' : ';';
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_p1.key,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			': ',
+			A2(_elm_lang$core$Basics_ops['++'], _p1.value, suffix)));
+};
+var _rtfeldman$elm_css$Css_Structure_Output$prettyPrintProperties = function (properties) {
+	return A2(
+		_elm_lang$core$String$join,
+		'\n',
+		A2(
+			_elm_lang$core$List$map,
+			function (_p2) {
+				return _rtfeldman$elm_css$Css_Structure_Output$indent(
+					_rtfeldman$elm_css$Css_Structure_Output$prettyPrintProperty(_p2));
+			},
+			properties));
+};
+var _rtfeldman$elm_css$Css_Structure_Output$combinatorToString = function (combinator) {
+	var _p3 = combinator;
+	switch (_p3.ctor) {
+		case 'AdjacentSibling':
+			return '+';
+		case 'GeneralSibling':
+			return '~';
+		case 'Child':
+			return '>';
+		default:
+			return '';
+	}
+};
+var _rtfeldman$elm_css$Css_Structure_Output$pseudoElementToString = function (_p4) {
+	var _p5 = _p4;
+	return A2(_elm_lang$core$Basics_ops['++'], '::', _p5._0);
+};
+var _rtfeldman$elm_css$Css_Structure_Output$repeatableSimpleSelectorToString = function (repeatableSimpleSelector) {
+	var _p6 = repeatableSimpleSelector;
+	switch (_p6.ctor) {
+		case 'ClassSelector':
+			return A2(_elm_lang$core$Basics_ops['++'], '.', _p6._0);
+		case 'IdSelector':
+			return A2(_elm_lang$core$Basics_ops['++'], '#', _p6._0);
+		default:
+			return A2(_elm_lang$core$Basics_ops['++'], ':', _p6._0);
+	}
+};
+var _rtfeldman$elm_css$Css_Structure_Output$simpleSelectorSequenceToString = function (simpleSelectorSequence) {
+	var _p7 = simpleSelectorSequence;
+	switch (_p7.ctor) {
+		case 'TypeSelectorSequence':
+			return A2(
+				_elm_lang$core$String$join,
+				'',
+				{
+					ctor: '::',
+					_0: _p7._0._0,
+					_1: A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Structure_Output$repeatableSimpleSelectorToString, _p7._1)
+				});
+		case 'UniversalSelectorSequence':
+			var _p8 = _p7._0;
+			return _elm_lang$core$List$isEmpty(_p8) ? '*' : A2(
+				_elm_lang$core$String$join,
+				'',
+				A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Structure_Output$repeatableSimpleSelectorToString, _p8));
+		default:
+			return A2(
+				_elm_lang$core$String$join,
+				'',
+				{
+					ctor: '::',
+					_0: _p7._0,
+					_1: A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Structure_Output$repeatableSimpleSelectorToString, _p7._1)
+				});
+	}
+};
+var _rtfeldman$elm_css$Css_Structure_Output$selectorChainToString = function (_p9) {
+	var _p10 = _p9;
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		{
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css_Structure_Output$combinatorToString(_p10._0),
+			_1: {
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css_Structure_Output$simpleSelectorSequenceToString(_p10._1),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _rtfeldman$elm_css$Css_Structure_Output$selectorToString = function (_p11) {
+	var _p12 = _p11;
+	var pseudoElementsString = A2(
+		_elm_lang$core$String$join,
+		'',
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Maybe$withDefault,
+				'',
+				A2(_elm_lang$core$Maybe$map, _rtfeldman$elm_css$Css_Structure_Output$pseudoElementToString, _p12._2)),
+			_1: {ctor: '[]'}
+		});
+	var segments = A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css_Structure_Output$simpleSelectorSequenceToString(_p12._0),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Structure_Output$selectorChainToString, _p12._1));
+	return A3(
+		_elm_lang$core$Basics$flip,
+		F2(
+			function (x, y) {
+				return A2(_elm_lang$core$Basics_ops['++'], x, y);
+			}),
+		pseudoElementsString,
+		A2(
+			_elm_lang$core$String$join,
+			' ',
+			A2(
+				_elm_lang$core$List$filter,
+				function (_p13) {
+					return !_elm_lang$core$String$isEmpty(_p13);
+				},
+				segments)));
+};
+var _rtfeldman$elm_css$Css_Structure_Output$prettyPrintStyleBlock = function (_p14) {
+	var _p15 = _p14;
+	var selectorStr = A2(
+		_elm_lang$core$String$join,
+		', ',
+		A2(
+			_elm_lang$core$List$map,
+			_rtfeldman$elm_css$Css_Structure_Output$selectorToString,
+			{ctor: '::', _0: _p15._0, _1: _p15._1}));
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		selectorStr,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' {\n',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rtfeldman$elm_css$Css_Structure_Output$prettyPrintProperties(_p15._2),
+				'\n}')));
+};
+var _rtfeldman$elm_css$Css_Structure_Output$prettyPrintDeclaration = function (declaration) {
+	var _p16 = declaration;
+	switch (_p16.ctor) {
+		case 'StyleBlockDeclaration':
+			return _rtfeldman$elm_css$Css_Structure_Output$prettyPrintStyleBlock(_p16._0);
+		case 'MediaRule':
+			var query = A2(
+				_elm_lang$core$String$join,
+				' ',
+				A2(
+					_elm_lang$core$List$map,
+					function (_p17) {
+						var _p18 = _p17;
+						return _p18._0;
+					},
+					_p16._0));
+			var blocks = A2(
+				_elm_lang$core$String$join,
+				'\n\n',
+				A2(
+					_elm_lang$core$List$map,
+					function (_p19) {
+						return _rtfeldman$elm_css$Css_Structure_Output$indent(
+							_rtfeldman$elm_css$Css_Structure_Output$prettyPrintStyleBlock(_p19));
+					},
+					_p16._1));
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'@media ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					query,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						' {\n',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_rtfeldman$elm_css$Css_Structure_Output$indent(blocks),
+							'\n}'))));
+		default:
+			return _elm_lang$core$Native_Utils.crashCase(
+				'Css.Structure.Output',
+				{
+					start: {line: 56, column: 5},
+					end: {line: 73, column: 49}
+				},
+				_p16)('not yet implemented :x');
+	}
+};
+var _rtfeldman$elm_css$Css_Structure_Output$namespaceToString = function (_p21) {
+	var _p22 = _p21;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'@namespace ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_p22._0,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'\"',
+				A2(_elm_lang$core$Basics_ops['++'], _p22._1, '\"'))));
+};
+var _rtfeldman$elm_css$Css_Structure_Output$importToString = function (_p23) {
+	var _p24 = _p23;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'@import \"',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_p24._0,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(_p24._1),
+				'\"')));
+};
+var _rtfeldman$elm_css$Css_Structure_Output$charsetToString = function (charset) {
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		'',
+		A2(
+			_elm_lang$core$Maybe$map,
+			function (str) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'@charset \"',
+					A2(_elm_lang$core$Basics_ops['++'], str, '\"'));
+			},
+			charset));
+};
+var _rtfeldman$elm_css$Css_Structure_Output$prettyPrint = function (_p25) {
+	var _p26 = _p25;
+	return A2(
+		_elm_lang$core$String$join,
+		'\n\n',
+		A2(
+			_elm_lang$core$List$filter,
+			function (_p27) {
+				return !_elm_lang$core$String$isEmpty(_p27);
+			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class(
-					A2(_elm_lang$core$Basics_ops['++'], 'o-grid__cell ', cls)),
+				_0: _rtfeldman$elm_css$Css_Structure_Output$charsetToString(_p26.charset),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$String$join,
+						'\n',
+						A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Structure_Output$importToString, _p26.imports)),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$String$join,
+							'\n',
+							A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Structure_Output$namespaceToString, _p26.namespaces)),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$String$join,
+								'\n\n',
+								A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Structure_Output$prettyPrintDeclaration, _p26.declarations)),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}));
+};
+
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$oneOf = function (maybes) {
+	oneOf:
+	while (true) {
+		var _p0 = maybes;
+		if (_p0.ctor === '[]') {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			var _p2 = _p0._0;
+			var _p1 = _p2;
+			if (_p1.ctor === 'Nothing') {
+				var _v2 = _p0._1;
+				maybes = _v2;
+				continue oneOf;
+			} else {
+				return _p2;
+			}
+		}
+	}
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$collectSelectors = function (declarations) {
+	collectSelectors:
+	while (true) {
+		var _p3 = declarations;
+		if (_p3.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			if (_p3._0.ctor === 'StyleBlockDeclaration') {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					{ctor: '::', _0: _p3._0._0._0, _1: _p3._0._0._1},
+					_rtfeldman$elm_css$Css_Preprocess_Resolve$collectSelectors(_p3._1));
+			} else {
+				var _v4 = _p3._1;
+				declarations = _v4;
+				continue collectSelectors;
+			}
+		}
+	}
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarning = function (_p4) {
+	var _p5 = _p4;
+	return {
+		ctor: '_Tuple2',
+		_0: _p5.warnings,
+		_1: {key: _p5.key, value: _p5.value, important: _p5.important}
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarnings = function (properties) {
+	return {
+		ctor: '_Tuple2',
+		_0: A2(
+			_elm_lang$core$List$concatMap,
+			function (_) {
+				return _.warnings;
+			},
+			properties),
+		_1: A2(
+			_elm_lang$core$List$map,
+			function (prop) {
+				return _elm_lang$core$Tuple$second(
+					_rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarning(prop));
+			},
+			properties)
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$toDocumentRule = F5(
+	function (str1, str2, str3, str4, declaration) {
+		var _p6 = declaration;
+		if (_p6.ctor === 'StyleBlockDeclaration') {
+			return A5(_rtfeldman$elm_css$Css_Structure$DocumentRule, str1, str2, str3, str4, _p6._0);
+		} else {
+			return declaration;
+		}
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$lastDeclaration = function (declarations) {
+	lastDeclaration:
+	while (true) {
+		var _p7 = declarations;
+		if (_p7.ctor === '[]') {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			if (_p7._1.ctor === '[]') {
+				return _elm_lang$core$Maybe$Just(
+					{
+						ctor: '::',
+						_0: _p7._0,
+						_1: {ctor: '[]'}
+					});
+			} else {
+				var _v8 = _p7._1;
+				declarations = _v8;
+				continue lastDeclaration;
+			}
+		}
+	}
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$concatDeclarationsAndWarnings = function (declarationsAndWarnings) {
+	var _p8 = declarationsAndWarnings;
+	if (_p8.ctor === '[]') {
+		return {
+			declarations: {ctor: '[]'},
+			warnings: {ctor: '[]'}
+		};
+	} else {
+		var result = _rtfeldman$elm_css$Css_Preprocess_Resolve$concatDeclarationsAndWarnings(_p8._1);
+		return {
+			declarations: A2(_elm_lang$core$Basics_ops['++'], _p8._0.declarations, result.declarations),
+			warnings: A2(_elm_lang$core$Basics_ops['++'], _p8._0.warnings, result.warnings)
+		};
+	}
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveFontFeatureValues = function (tuples) {
+	var expandTuples = function (tuplesToExpand) {
+		var _p9 = tuplesToExpand;
+		if (_p9.ctor === '[]') {
+			return {
+				ctor: '_Tuple2',
+				_0: {ctor: '[]'},
+				_1: {ctor: '[]'}
+			};
+		} else {
+			var _p10 = expandTuples(_p9._1);
+			var nextWarnings = _p10._0;
+			var nextTuples = _p10._1;
+			var _p11 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarnings(_p9._0._1);
+			var warnings = _p11._0;
+			var properties = _p11._1;
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_elm_lang$core$Basics_ops['++'], warnings, nextWarnings),
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: _p9._0._0, _1: properties},
+					_1: nextTuples
+				}
+			};
+		}
+	};
+	var _p12 = expandTuples(tuples);
+	var warnings = _p12._0;
+	var newTuples = _p12._1;
+	return {
+		declarations: {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css_Structure$FontFeatureValues(newTuples),
+			_1: {ctor: '[]'}
+		},
+		warnings: warnings
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveCounterStyle = function (counterStyleProperties) {
+	var _p13 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarnings(counterStyleProperties);
+	var warnings = _p13._0;
+	var properties = _p13._1;
+	return {
+		declarations: {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css_Structure$Viewport(properties),
+			_1: {ctor: '[]'}
+		},
+		warnings: warnings
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveViewport = function (viewportProperties) {
+	var _p14 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarnings(viewportProperties);
+	var warnings = _p14._0;
+	var properties = _p14._1;
+	return {
+		declarations: {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css_Structure$Viewport(properties),
+			_1: {ctor: '[]'}
+		},
+		warnings: warnings
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveKeyframes = F2(
+	function (str, properties) {
+		return {
+			declarations: {
+				ctor: '::',
+				_0: A2(_rtfeldman$elm_css$Css_Structure$Keyframes, str, properties),
 				_1: {ctor: '[]'}
 			},
-			contents);
+			warnings: {ctor: '[]'}
+		};
 	});
-var _user$project$BlazeHelpers$defaultCell = function (contents) {
-	return A2(_user$project$BlazeHelpers$defaultCellWithCls, '', contents);
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveFontFace = function (fontFaceProperties) {
+	var _p15 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarnings(fontFaceProperties);
+	var warnings = _p15._0;
+	var properties = _p15._1;
+	return {
+		declarations: {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css_Structure$FontFace(properties),
+			_1: {ctor: '[]'}
+		},
+		warnings: warnings
+	};
 };
-var _user$project$BlazeHelpers$cellWithCls = F3(
-	function (width, cls, contents) {
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolvePageRule = F2(
+	function (str, pageRuleProperties) {
+		var _p16 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarnings(pageRuleProperties);
+		var warnings = _p16._0;
+		var properties = _p16._1;
+		return {
+			declarations: {
+				ctor: '::',
+				_0: A2(_rtfeldman$elm_css$Css_Structure$PageRule, str, properties),
+				_1: {ctor: '[]'}
+			},
+			warnings: warnings
+		};
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$toMediaRule = F2(
+	function (mediaQueries, declaration) {
+		var _p17 = declaration;
+		switch (_p17.ctor) {
+			case 'StyleBlockDeclaration':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$MediaRule,
+					mediaQueries,
+					{
+						ctor: '::',
+						_0: _p17._0,
+						_1: {ctor: '[]'}
+					});
+			case 'MediaRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$MediaRule,
+					A2(_elm_lang$core$Basics_ops['++'], mediaQueries, _p17._0),
+					_p17._1);
+			case 'SupportsRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$SupportsRule,
+					_p17._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Preprocess_Resolve$toMediaRule(mediaQueries),
+						_p17._1));
+			case 'DocumentRule':
+				return A5(_rtfeldman$elm_css$Css_Structure$DocumentRule, _p17._0, _p17._1, _p17._2, _p17._3, _p17._4);
+			case 'PageRule':
+				return declaration;
+			case 'FontFace':
+				return declaration;
+			case 'Keyframes':
+				return declaration;
+			case 'Viewport':
+				return declaration;
+			case 'CounterStyle':
+				return declaration;
+			default:
+				return declaration;
+		}
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveMediaRule = F2(
+	function (mediaQueries, styleBlocks) {
+		var handleStyleBlock = function (styleBlock) {
+			var _p18 = _rtfeldman$elm_css$Css_Preprocess_Resolve$expandStyleBlock(styleBlock);
+			var declarations = _p18.declarations;
+			var warnings = _p18.warnings;
+			return {
+				declarations: A2(
+					_elm_lang$core$List$map,
+					_rtfeldman$elm_css$Css_Preprocess_Resolve$toMediaRule(mediaQueries),
+					declarations),
+				warnings: warnings
+			};
+		};
+		var results = A2(_elm_lang$core$List$map, handleStyleBlock, styleBlocks);
+		return {
+			warnings: A2(
+				_elm_lang$core$List$concatMap,
+				function (_) {
+					return _.warnings;
+				},
+				results),
+			declarations: A2(
+				_elm_lang$core$List$concatMap,
+				function (_) {
+					return _.declarations;
+				},
+				results)
+		};
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$expandStyleBlock = function (_p19) {
+	var _p20 = _p19;
+	return A2(
+		_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins,
+		_p20._2,
+		{
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css_Structure$StyleBlockDeclaration(
+				A3(
+					_rtfeldman$elm_css$Css_Structure$StyleBlock,
+					_p20._0,
+					_p20._1,
+					{ctor: '[]'})),
+			_1: {ctor: '[]'}
+		});
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins = F2(
+	function (mixins, declarations) {
+		applyMixins:
+		while (true) {
+			var _p21 = mixins;
+			if (_p21.ctor === '[]') {
+				return {
+					declarations: declarations,
+					warnings: {ctor: '[]'}
+				};
+			} else {
+				switch (_p21._0.ctor) {
+					case 'AppendProperty':
+						var _p22 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extractWarning(_p21._0._0);
+						var warnings = _p22._0;
+						var property = _p22._1;
+						var result = A2(
+							_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins,
+							_p21._1,
+							A2(_rtfeldman$elm_css$Css_Structure$appendProperty, property, declarations));
+						return {
+							declarations: result.declarations,
+							warnings: A2(_elm_lang$core$Basics_ops['++'], warnings, result.warnings)
+						};
+					case 'ExtendSelector':
+						return A4(
+							_rtfeldman$elm_css$Css_Preprocess_Resolve$applyNestedMixinsToLast,
+							_p21._0._1,
+							_p21._1,
+							_rtfeldman$elm_css$Css_Structure$appendRepeatableToLastSelector(_p21._0._0),
+							declarations);
+					case 'NestSnippet':
+						var chain = F2(
+							function (_p24, _p23) {
+								var _p25 = _p24;
+								var _p26 = _p23;
+								return A3(
+									_rtfeldman$elm_css$Css_Structure$Selector,
+									_p25._0,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_p25._1,
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: _p21._0._0, _1: _p26._0},
+											_1: _p26._1
+										}),
+									_rtfeldman$elm_css$Css_Preprocess_Resolve$oneOf(
+										{
+											ctor: '::',
+											_0: _p26._2,
+											_1: {
+												ctor: '::',
+												_0: _p25._2,
+												_1: {ctor: '[]'}
+											}
+										}));
+							});
+						var expandDeclaration = function (declaration) {
+							var _p27 = declaration;
+							switch (_p27.ctor) {
+								case 'StyleBlockDeclaration':
+									var newSelectors = A2(
+										_elm_lang$core$List$concatMap,
+										function (originalSelector) {
+											return A2(
+												_elm_lang$core$List$map,
+												chain(originalSelector),
+												{ctor: '::', _0: _p27._0._0, _1: _p27._0._1});
+										},
+										_rtfeldman$elm_css$Css_Preprocess_Resolve$collectSelectors(declarations));
+									var newDeclarations = function () {
+										var _p28 = newSelectors;
+										if (_p28.ctor === '[]') {
+											return {ctor: '[]'};
+										} else {
+											return {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css_Structure$StyleBlockDeclaration(
+													A3(
+														_rtfeldman$elm_css$Css_Structure$StyleBlock,
+														_p28._0,
+														_p28._1,
+														{ctor: '[]'})),
+												_1: {ctor: '[]'}
+											};
+										}
+									}();
+									return _rtfeldman$elm_css$Css_Preprocess_Resolve$concatDeclarationsAndWarnings(
+										{
+											ctor: '::',
+											_0: A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins, _p27._0._2, newDeclarations),
+											_1: {ctor: '[]'}
+										});
+								case 'MediaRule':
+									return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveMediaRule, _p27._0, _p27._1);
+								case 'SupportsRule':
+									return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveSupportsRule, _p27._0, _p27._1);
+								case 'DocumentRule':
+									return A5(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveDocumentRule, _p27._0, _p27._1, _p27._2, _p27._3, _p27._4);
+								case 'PageRule':
+									return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolvePageRule, _p27._0, _p27._1);
+								case 'FontFace':
+									return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveFontFace(_p27._0);
+								case 'Keyframes':
+									return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveKeyframes, _p27._0, _p27._1);
+								case 'Viewport':
+									return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveViewport(_p27._0);
+								case 'CounterStyle':
+									return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveCounterStyle(_p27._0);
+								default:
+									return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveFontFeatureValues(_p27._0);
+							}
+						};
+						return _rtfeldman$elm_css$Css_Preprocess_Resolve$concatDeclarationsAndWarnings(
+							A2(
+								F2(
+									function (x, y) {
+										return A2(_elm_lang$core$Basics_ops['++'], x, y);
+									}),
+								{
+									ctor: '::',
+									_0: A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins, _p21._1, declarations),
+									_1: {ctor: '[]'}
+								},
+								A2(
+									_elm_lang$core$List$map,
+									expandDeclaration,
+									A2(_elm_lang$core$List$concatMap, _rtfeldman$elm_css$Css_Preprocess$unwrapSnippet, _p21._0._1))));
+					case 'WithPseudoElement':
+						return A4(
+							_rtfeldman$elm_css$Css_Preprocess_Resolve$applyNestedMixinsToLast,
+							_p21._0._1,
+							_p21._1,
+							_rtfeldman$elm_css$Css_Structure$appendPseudoElementToLastSelector(_p21._0._0),
+							declarations);
+					case 'WithMedia':
+						var newDeclarations = function () {
+							var _p29 = _rtfeldman$elm_css$Css_Preprocess_Resolve$collectSelectors(declarations);
+							if (_p29.ctor === '[]') {
+								return {ctor: '[]'};
+							} else {
+								return {
+									ctor: '::',
+									_0: A2(
+										_rtfeldman$elm_css$Css_Structure$MediaRule,
+										_p21._0._0,
+										{
+											ctor: '::',
+											_0: A3(
+												_rtfeldman$elm_css$Css_Structure$StyleBlock,
+												_p29._0,
+												_p29._1,
+												{ctor: '[]'}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								};
+							}
+						}();
+						return _rtfeldman$elm_css$Css_Preprocess_Resolve$concatDeclarationsAndWarnings(
+							{
+								ctor: '::',
+								_0: A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins, _p21._1, declarations),
+								_1: {
+									ctor: '::',
+									_0: A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins, _p21._0._1, newDeclarations),
+									_1: {ctor: '[]'}
+								}
+							});
+					default:
+						var _v19 = A2(_elm_lang$core$Basics_ops['++'], _p21._0._0, _p21._1),
+							_v20 = declarations;
+						mixins = _v19;
+						declarations = _v20;
+						continue applyMixins;
+				}
+			}
+		}
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$applyNestedMixinsToLast = F4(
+	function (nestedMixins, rest, f, declarations) {
+		var withoutParent = function (decls) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				{ctor: '[]'},
+				_elm_lang$core$List$tail(decls));
+		};
+		var nextResult = A2(
+			_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins,
+			rest,
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				{ctor: '[]'},
+				_rtfeldman$elm_css$Css_Preprocess_Resolve$lastDeclaration(declarations)));
+		var newDeclarations = function () {
+			var _p30 = {
+				ctor: '_Tuple2',
+				_0: _elm_lang$core$List$head(nextResult.declarations),
+				_1: _elm_lang$core$List$head(
+					_elm_lang$core$List$reverse(declarations))
+			};
+			if (((_p30.ctor === '_Tuple2') && (_p30._0.ctor === 'Just')) && (_p30._1.ctor === 'Just')) {
+				var _p32 = _p30._1._0;
+				var _p31 = _p30._0._0;
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_elm_lang$core$List$take,
+						_elm_lang$core$List$length(declarations) - 1,
+						declarations),
+					{
+						ctor: '::',
+						_0: (!_elm_lang$core$Native_Utils.eq(_p32, _p31)) ? _p31 : _p32,
+						_1: {ctor: '[]'}
+					});
+			} else {
+				return declarations;
+			}
+		}();
+		var handleInitial = function (declarationsAndWarnings) {
+			var result = A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$applyMixins, nestedMixins, declarationsAndWarnings.declarations);
+			return {
+				warnings: A2(_elm_lang$core$Basics_ops['++'], declarationsAndWarnings.warnings, result.warnings),
+				declarations: result.declarations
+			};
+		};
+		var insertMixinsToNestedDecl = function (lastDecl) {
+			return _rtfeldman$elm_css$Css_Preprocess_Resolve$concatDeclarationsAndWarnings(
+				A2(
+					_rtfeldman$elm_css$Css_Structure$mapLast,
+					handleInitial,
+					A2(
+						_elm_lang$core$List$map,
+						function (declaration) {
+							return {
+								declarations: {
+									ctor: '::',
+									_0: declaration,
+									_1: {ctor: '[]'}
+								},
+								warnings: {ctor: '[]'}
+							};
+						},
+						A2(_rtfeldman$elm_css$Css_Structure$concatMapLastStyleBlock, f, lastDecl))));
+		};
+		var initialResult = A2(
+			_elm_lang$core$Maybe$withDefault,
+			{
+				warnings: {ctor: '[]'},
+				declarations: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$Maybe$map,
+				insertMixinsToNestedDecl,
+				_rtfeldman$elm_css$Css_Preprocess_Resolve$lastDeclaration(declarations)));
+		return {
+			warnings: A2(_elm_lang$core$Basics_ops['++'], initialResult.warnings, nextResult.warnings),
+			declarations: A2(
+				_elm_lang$core$Basics_ops['++'],
+				newDeclarations,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					withoutParent(initialResult.declarations),
+					withoutParent(nextResult.declarations)))
+		};
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveDocumentRule = F5(
+	function (str1, str2, str3, str4, styleBlock) {
+		var _p33 = _rtfeldman$elm_css$Css_Preprocess_Resolve$expandStyleBlock(styleBlock);
+		var declarations = _p33.declarations;
+		var warnings = _p33.warnings;
+		return {
+			declarations: A2(
+				_elm_lang$core$List$map,
+				A4(_rtfeldman$elm_css$Css_Preprocess_Resolve$toDocumentRule, str1, str2, str3, str4),
+				declarations),
+			warnings: warnings
+		};
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveSupportsRule = F2(
+	function (str, snippets) {
+		var _p34 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extract(
+			A2(_elm_lang$core$List$concatMap, _rtfeldman$elm_css$Css_Preprocess$unwrapSnippet, snippets));
+		var declarations = _p34.declarations;
+		var warnings = _p34.warnings;
+		return {
+			declarations: {
+				ctor: '::',
+				_0: A2(_rtfeldman$elm_css$Css_Structure$SupportsRule, str, declarations),
+				_1: {ctor: '[]'}
+			},
+			warnings: warnings
+		};
+	});
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$extract = function (snippetDeclarations) {
+	var _p35 = snippetDeclarations;
+	if (_p35.ctor === '[]') {
+		return {
+			declarations: {ctor: '[]'},
+			warnings: {ctor: '[]'}
+		};
+	} else {
+		var _p36 = _rtfeldman$elm_css$Css_Preprocess_Resolve$toDeclarations(_p35._0);
+		var declarations = _p36.declarations;
+		var warnings = _p36.warnings;
+		var nextResult = _rtfeldman$elm_css$Css_Preprocess_Resolve$extract(_p35._1);
+		return {
+			declarations: A2(_elm_lang$core$Basics_ops['++'], declarations, nextResult.declarations),
+			warnings: A2(_elm_lang$core$Basics_ops['++'], warnings, nextResult.warnings)
+		};
+	}
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$toDeclarations = function (snippetDeclaration) {
+	var _p37 = snippetDeclaration;
+	switch (_p37.ctor) {
+		case 'StyleBlockDeclaration':
+			return _rtfeldman$elm_css$Css_Preprocess_Resolve$expandStyleBlock(_p37._0);
+		case 'MediaRule':
+			return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveMediaRule, _p37._0, _p37._1);
+		case 'SupportsRule':
+			return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveSupportsRule, _p37._0, _p37._1);
+		case 'DocumentRule':
+			return A5(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveDocumentRule, _p37._0, _p37._1, _p37._2, _p37._3, _p37._4);
+		case 'PageRule':
+			return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolvePageRule, _p37._0, _p37._1);
+		case 'FontFace':
+			return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveFontFace(_p37._0);
+		case 'Keyframes':
+			return A2(_rtfeldman$elm_css$Css_Preprocess_Resolve$resolveKeyframes, _p37._0, _p37._1);
+		case 'Viewport':
+			return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveViewport(_p37._0);
+		case 'CounterStyle':
+			return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveCounterStyle(_p37._0);
+		default:
+			return _rtfeldman$elm_css$Css_Preprocess_Resolve$resolveFontFeatureValues(_p37._0);
+	}
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$toStructure = function (_p38) {
+	var _p39 = _p38;
+	var _p40 = _rtfeldman$elm_css$Css_Preprocess_Resolve$extract(
+		A2(_elm_lang$core$List$concatMap, _rtfeldman$elm_css$Css_Preprocess$unwrapSnippet, _p39.snippets));
+	var warnings = _p40.warnings;
+	var declarations = _p40.declarations;
+	return {
+		ctor: '_Tuple2',
+		_0: {charset: _p39.charset, imports: _p39.imports, namespaces: _p39.namespaces, declarations: declarations},
+		_1: warnings
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$compile1 = function (sheet) {
+	var _p41 = _rtfeldman$elm_css$Css_Preprocess_Resolve$toStructure(sheet);
+	var structureStylesheet = _p41._0;
+	var warnings = _p41._1;
+	return {
+		warnings: warnings,
+		css: _rtfeldman$elm_css$Css_Structure_Output$prettyPrint(
+			_rtfeldman$elm_css$Css_Structure$dropEmpty(structureStylesheet))
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$compile = function (styles) {
+	var results = A2(_elm_lang$core$List$map, _rtfeldman$elm_css$Css_Preprocess_Resolve$compile1, styles);
+	return {
+		warnings: A2(
+			_elm_lang$core$List$concatMap,
+			function (_) {
+				return _.warnings;
+			},
+			results),
+		css: A2(
+			_elm_lang$core$String$join,
+			'\n\n',
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.css;
+				},
+				results))
+	};
+};
+var _rtfeldman$elm_css$Css_Preprocess_Resolve$DeclarationsAndWarnings = F2(
+	function (a, b) {
+		return {declarations: a, warnings: b};
+	});
+
+var _rtfeldman$hex$Hex$toString = function (num) {
+	return _elm_lang$core$String$fromList(
+		(_elm_lang$core$Native_Utils.cmp(num, 0) < 0) ? {
+			ctor: '::',
+			_0: _elm_lang$core$Native_Utils.chr('-'),
+			_1: A2(
+				_rtfeldman$hex$Hex$unsafePositiveToDigits,
+				{ctor: '[]'},
+				_elm_lang$core$Basics$negate(num))
+		} : A2(
+			_rtfeldman$hex$Hex$unsafePositiveToDigits,
+			{ctor: '[]'},
+			num));
+};
+var _rtfeldman$hex$Hex$unsafePositiveToDigits = F2(
+	function (digits, num) {
+		unsafePositiveToDigits:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(num, 16) < 0) {
+				return {
+					ctor: '::',
+					_0: _rtfeldman$hex$Hex$unsafeToDigit(num),
+					_1: digits
+				};
+			} else {
+				var _v0 = {
+					ctor: '::',
+					_0: _rtfeldman$hex$Hex$unsafeToDigit(
+						A2(_elm_lang$core$Basics_ops['%'], num, 16)),
+					_1: digits
+				},
+					_v1 = (num / 16) | 0;
+				digits = _v0;
+				num = _v1;
+				continue unsafePositiveToDigits;
+			}
+		}
+	});
+var _rtfeldman$hex$Hex$unsafeToDigit = function (num) {
+	var _p0 = num;
+	switch (_p0) {
+		case 0:
+			return _elm_lang$core$Native_Utils.chr('0');
+		case 1:
+			return _elm_lang$core$Native_Utils.chr('1');
+		case 2:
+			return _elm_lang$core$Native_Utils.chr('2');
+		case 3:
+			return _elm_lang$core$Native_Utils.chr('3');
+		case 4:
+			return _elm_lang$core$Native_Utils.chr('4');
+		case 5:
+			return _elm_lang$core$Native_Utils.chr('5');
+		case 6:
+			return _elm_lang$core$Native_Utils.chr('6');
+		case 7:
+			return _elm_lang$core$Native_Utils.chr('7');
+		case 8:
+			return _elm_lang$core$Native_Utils.chr('8');
+		case 9:
+			return _elm_lang$core$Native_Utils.chr('9');
+		case 10:
+			return _elm_lang$core$Native_Utils.chr('a');
+		case 11:
+			return _elm_lang$core$Native_Utils.chr('b');
+		case 12:
+			return _elm_lang$core$Native_Utils.chr('c');
+		case 13:
+			return _elm_lang$core$Native_Utils.chr('d');
+		case 14:
+			return _elm_lang$core$Native_Utils.chr('e');
+		case 15:
+			return _elm_lang$core$Native_Utils.chr('f');
+		default:
+			return _elm_lang$core$Native_Utils.crashCase(
+				'Hex',
+				{
+					start: {line: 138, column: 5},
+					end: {line: 188, column: 84}
+				},
+				_p0)(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Tried to convert ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_rtfeldman$hex$Hex$toString(num),
+						' to hexadecimal.')));
+	}
+};
+var _rtfeldman$hex$Hex$fromStringHelp = F3(
+	function (position, chars, accumulated) {
+		var _p2 = chars;
+		if (_p2.ctor === '[]') {
+			return _elm_lang$core$Result$Ok(accumulated);
+		} else {
+			var recurse = function (additional) {
+				return A3(
+					_rtfeldman$hex$Hex$fromStringHelp,
+					position - 1,
+					_p2._1,
+					accumulated + (additional * Math.pow(16, position)));
+			};
+			var _p3 = _p2._0;
+			switch (_p3.valueOf()) {
+				case '0':
+					return recurse(0);
+				case '1':
+					return recurse(1);
+				case '2':
+					return recurse(2);
+				case '3':
+					return recurse(3);
+				case '4':
+					return recurse(4);
+				case '5':
+					return recurse(5);
+				case '6':
+					return recurse(6);
+				case '7':
+					return recurse(7);
+				case '8':
+					return recurse(8);
+				case '9':
+					return recurse(9);
+				case 'a':
+					return recurse(10);
+				case 'b':
+					return recurse(11);
+				case 'c':
+					return recurse(12);
+				case 'd':
+					return recurse(13);
+				case 'e':
+					return recurse(14);
+				case 'f':
+					return recurse(15);
+				default:
+					return _elm_lang$core$Result$Err(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(_p3),
+							' is not a valid hexadecimal character.'));
+			}
+		}
+	});
+var _rtfeldman$hex$Hex$fromString = function (str) {
+	if (_elm_lang$core$String$isEmpty(str)) {
+		return _elm_lang$core$Result$Err('Empty strings are not valid hexadecimal strings.');
+	} else {
+		var formatError = function (err) {
+			return A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: _elm_lang$core$Basics$toString(str),
+					_1: {
+						ctor: '::',
+						_0: 'is not a valid hexadecimal string because',
+						_1: {
+							ctor: '::',
+							_0: err,
+							_1: {ctor: '[]'}
+						}
+					}
+				});
+		};
+		var result = function () {
+			if (A2(_elm_lang$core$String$startsWith, '-', str)) {
+				var list = A2(
+					_elm_lang$core$Maybe$withDefault,
+					{ctor: '[]'},
+					_elm_lang$core$List$tail(
+						_elm_lang$core$String$toList(str)));
+				return A2(
+					_elm_lang$core$Result$map,
+					_elm_lang$core$Basics$negate,
+					A3(
+						_rtfeldman$hex$Hex$fromStringHelp,
+						_elm_lang$core$List$length(list) - 1,
+						list,
+						0));
+			} else {
+				return A3(
+					_rtfeldman$hex$Hex$fromStringHelp,
+					_elm_lang$core$String$length(str) - 1,
+					_elm_lang$core$String$toList(str),
+					0);
+			}
+		}();
+		return A2(_elm_lang$core$Result$mapError, formatError, result);
+	}
+};
+
+var _rtfeldman$elm_css$Css$asPairs = _rtfeldman$elm_css$Css_Preprocess$toPropertyPairs;
+var _rtfeldman$elm_css$Css$collectSelectors = function (declarations) {
+	collectSelectors:
+	while (true) {
+		var _p0 = declarations;
+		if (_p0.ctor === '[]') {
+			return {ctor: '[]'};
+		} else {
+			if (_p0._0.ctor === 'StyleBlockDeclaration') {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					{ctor: '::', _0: _p0._0._0._0, _1: _p0._0._0._1},
+					_rtfeldman$elm_css$Css$collectSelectors(_p0._1));
+			} else {
+				var _v1 = _p0._1;
+				declarations = _v1;
+				continue collectSelectors;
+			}
+		}
+	}
+};
+var _rtfeldman$elm_css$Css$compile = _rtfeldman$elm_css$Css_Preprocess_Resolve$compile;
+var _rtfeldman$elm_css$Css$stringsToValue = function (list) {
+	return _elm_lang$core$List$isEmpty(list) ? {value: 'none'} : {
+		value: A2(
+			_elm_lang$core$String$join,
+			', ',
+			A2(
+				_elm_lang$core$List$map,
+				function (s) {
+					return s;
+				},
+				list))
+	};
+};
+var _rtfeldman$elm_css$Css$valuesOrNone = function (list) {
+	return _elm_lang$core$List$isEmpty(list) ? {value: 'none'} : {
+		value: A2(
+			_elm_lang$core$String$join,
+			' ',
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.value;
+				},
+				list))
+	};
+};
+var _rtfeldman$elm_css$Css$stringToInt = function (str) {
+	return A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(str));
+};
+var _rtfeldman$elm_css$Css$numberToString = function (num) {
+	return _elm_lang$core$Basics$toString(num + 0);
+};
+var _rtfeldman$elm_css$Css$numericalPercentageToString = function (value) {
+	return A3(
+		_elm_lang$core$Basics$flip,
+		F2(
+			function (x, y) {
+				return A2(_elm_lang$core$Basics_ops['++'], x, y);
+			}),
+		'%',
+		_rtfeldman$elm_css$Css$numberToString(
+			A2(
+				F2(
+					function (x, y) {
+						return x * y;
+					}),
+				100,
+				value)));
+};
+var _rtfeldman$elm_css$Css$each = F2(
+	function (snippetCreators, mixins) {
+		var selectorsToSnippet = function (selectors) {
+			var _p1 = selectors;
+			if (_p1.ctor === '[]') {
+				return _rtfeldman$elm_css$Css_Preprocess$Snippet(
+					{ctor: '[]'});
+			} else {
+				return _rtfeldman$elm_css$Css_Preprocess$Snippet(
+					{
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css_Preprocess$StyleBlockDeclaration(
+							A3(_rtfeldman$elm_css$Css_Preprocess$StyleBlock, _p1._0, _p1._1, mixins)),
+						_1: {ctor: '[]'}
+					});
+			}
+		};
+		return selectorsToSnippet(
+			_rtfeldman$elm_css$Css$collectSelectors(
+				A2(
+					_elm_lang$core$List$concatMap,
+					_rtfeldman$elm_css$Css_Preprocess$unwrapSnippet,
+					A2(
+						_elm_lang$core$List$map,
+						F2(
+							function (x, y) {
+								return y(x);
+							})(
+							{ctor: '[]'}),
+						snippetCreators))));
+	});
+var _rtfeldman$elm_css$Css$generalSiblings = _rtfeldman$elm_css$Css_Preprocess$NestSnippet(_rtfeldman$elm_css$Css_Structure$GeneralSibling);
+var _rtfeldman$elm_css$Css$adjacentSiblings = _rtfeldman$elm_css$Css_Preprocess$NestSnippet(_rtfeldman$elm_css$Css_Structure$AdjacentSibling);
+var _rtfeldman$elm_css$Css$descendants = _rtfeldman$elm_css$Css_Preprocess$NestSnippet(_rtfeldman$elm_css$Css_Structure$Descendant);
+var _rtfeldman$elm_css$Css$withClass = function ($class) {
+	return _rtfeldman$elm_css$Css_Preprocess$ExtendSelector(
+		_rtfeldman$elm_css$Css_Structure$ClassSelector(
+			A2(_rtfeldman$elm_css_util$Css_Helpers$identifierToString, '', $class)));
+};
+var _rtfeldman$elm_css$Css$children = _rtfeldman$elm_css$Css_Preprocess$NestSnippet(_rtfeldman$elm_css$Css_Structure$Child);
+var _rtfeldman$elm_css$Css$pseudoElement = function (element) {
+	return _rtfeldman$elm_css$Css_Preprocess$WithPseudoElement(
+		_rtfeldman$elm_css$Css_Structure$PseudoElement(element));
+};
+var _rtfeldman$elm_css$Css$after = _rtfeldman$elm_css$Css$pseudoElement('after');
+var _rtfeldman$elm_css$Css$before = _rtfeldman$elm_css$Css$pseudoElement('before');
+var _rtfeldman$elm_css$Css$firstLetter = _rtfeldman$elm_css$Css$pseudoElement('first-letter');
+var _rtfeldman$elm_css$Css$firstLine = _rtfeldman$elm_css$Css$pseudoElement('first-line');
+var _rtfeldman$elm_css$Css$selection = _rtfeldman$elm_css$Css$pseudoElement('selection');
+var _rtfeldman$elm_css$Css$pseudoClass = function ($class) {
+	return _rtfeldman$elm_css$Css_Preprocess$ExtendSelector(
+		_rtfeldman$elm_css$Css_Structure$PseudoClassSelector($class));
+};
+var _rtfeldman$elm_css$Css$active = _rtfeldman$elm_css$Css$pseudoClass('active');
+var _rtfeldman$elm_css$Css$any = function (str) {
+	return _rtfeldman$elm_css$Css$pseudoClass(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'any(',
+			A2(_elm_lang$core$Basics_ops['++'], str, ')')));
+};
+var _rtfeldman$elm_css$Css$checked = _rtfeldman$elm_css$Css$pseudoClass('checked');
+var _rtfeldman$elm_css$Css$disabled = _rtfeldman$elm_css$Css$pseudoClass('disabled');
+var _rtfeldman$elm_css$Css$empty = _rtfeldman$elm_css$Css$pseudoClass('empty');
+var _rtfeldman$elm_css$Css$enabled = _rtfeldman$elm_css$Css$pseudoClass('enabled');
+var _rtfeldman$elm_css$Css$first = _rtfeldman$elm_css$Css$pseudoClass('first');
+var _rtfeldman$elm_css$Css$firstChild = _rtfeldman$elm_css$Css$pseudoClass('first-child');
+var _rtfeldman$elm_css$Css$firstOfType = _rtfeldman$elm_css$Css$pseudoClass('first-of-type');
+var _rtfeldman$elm_css$Css$fullscreen = _rtfeldman$elm_css$Css$pseudoClass('fullscreen');
+var _rtfeldman$elm_css$Css$focus = _rtfeldman$elm_css$Css$pseudoClass('focus');
+var _rtfeldman$elm_css$Css$hover = _rtfeldman$elm_css$Css$pseudoClass('hover');
+var _rtfeldman$elm_css$Css$visited = _rtfeldman$elm_css$Css$pseudoClass('visited');
+var _rtfeldman$elm_css$Css$indeterminate = _rtfeldman$elm_css$Css$pseudoClass('indeterminate');
+var _rtfeldman$elm_css$Css$invalid = _rtfeldman$elm_css$Css$pseudoClass('invalid');
+var _rtfeldman$elm_css$Css$lang = function (str) {
+	return _rtfeldman$elm_css$Css$pseudoClass(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'lang(',
+			A2(_elm_lang$core$Basics_ops['++'], str, ')')));
+};
+var _rtfeldman$elm_css$Css$lastChild = _rtfeldman$elm_css$Css$pseudoClass('last-child');
+var _rtfeldman$elm_css$Css$lastOfType = _rtfeldman$elm_css$Css$pseudoClass('last-of-type');
+var _rtfeldman$elm_css$Css$link = _rtfeldman$elm_css$Css$pseudoClass('link');
+var _rtfeldman$elm_css$Css$nthChild = function (str) {
+	return _rtfeldman$elm_css$Css$pseudoClass(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'nth-child(',
+			A2(_elm_lang$core$Basics_ops['++'], str, ')')));
+};
+var _rtfeldman$elm_css$Css$nthLastChild = function (str) {
+	return _rtfeldman$elm_css$Css$pseudoClass(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'nth-last-child(',
+			A2(_elm_lang$core$Basics_ops['++'], str, ')')));
+};
+var _rtfeldman$elm_css$Css$nthLastOfType = function (str) {
+	return _rtfeldman$elm_css$Css$pseudoClass(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'nth-last-of-type(',
+			A2(_elm_lang$core$Basics_ops['++'], str, ')')));
+};
+var _rtfeldman$elm_css$Css$nthOfType = function (str) {
+	return _rtfeldman$elm_css$Css$pseudoClass(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'nth-of-type(',
+			A2(_elm_lang$core$Basics_ops['++'], str, ')')));
+};
+var _rtfeldman$elm_css$Css$onlyChild = _rtfeldman$elm_css$Css$pseudoClass('only-child');
+var _rtfeldman$elm_css$Css$onlyOfType = _rtfeldman$elm_css$Css$pseudoClass('only-of-type');
+var _rtfeldman$elm_css$Css$optional = _rtfeldman$elm_css$Css$pseudoClass('optional');
+var _rtfeldman$elm_css$Css$outOfRange = _rtfeldman$elm_css$Css$pseudoClass('out-of-range');
+var _rtfeldman$elm_css$Css$readWrite = _rtfeldman$elm_css$Css$pseudoClass('read-write');
+var _rtfeldman$elm_css$Css$required = _rtfeldman$elm_css$Css$pseudoClass('required');
+var _rtfeldman$elm_css$Css$root = _rtfeldman$elm_css$Css$pseudoClass('root');
+var _rtfeldman$elm_css$Css$scope = _rtfeldman$elm_css$Css$pseudoClass('scope');
+var _rtfeldman$elm_css$Css$target = _rtfeldman$elm_css$Css$pseudoClass('target');
+var _rtfeldman$elm_css$Css$valid = _rtfeldman$elm_css$Css$pseudoClass('valid');
+var _rtfeldman$elm_css$Css$directionalityToString = function (directionality) {
+	var _p2 = directionality;
+	if (_p2.ctor === 'Ltr') {
+		return 'ltr';
+	} else {
+		return 'rtl';
+	}
+};
+var _rtfeldman$elm_css$Css$dir = function (directionality) {
+	return _rtfeldman$elm_css$Css$pseudoClass(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'dir(',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rtfeldman$elm_css$Css$directionalityToString(directionality),
+				')')));
+};
+var _rtfeldman$elm_css$Css$propertyWithWarnings = F3(
+	function (warnings, key, value) {
+		return _rtfeldman$elm_css$Css_Preprocess$AppendProperty(
+			{key: key, value: value, important: false, warnings: warnings});
+	});
+var _rtfeldman$elm_css$Css$property = _rtfeldman$elm_css$Css$propertyWithWarnings(
+	{ctor: '[]'});
+var _rtfeldman$elm_css$Css$makeSnippet = F2(
+	function (mixins, sequence) {
+		var selector = A3(
+			_rtfeldman$elm_css$Css_Structure$Selector,
+			sequence,
+			{ctor: '[]'},
+			_elm_lang$core$Maybe$Nothing);
+		return _rtfeldman$elm_css$Css_Preprocess$Snippet(
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css_Preprocess$StyleBlockDeclaration(
+					A3(
+						_rtfeldman$elm_css$Css_Preprocess$StyleBlock,
+						selector,
+						{ctor: '[]'},
+						mixins)),
+				_1: {ctor: '[]'}
+			});
+	});
+var _rtfeldman$elm_css$Css$class = F2(
+	function ($class, mixins) {
+		return A2(
+			_rtfeldman$elm_css$Css$makeSnippet,
+			mixins,
+			_rtfeldman$elm_css$Css_Structure$UniversalSelectorSequence(
+				{
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css_Structure$ClassSelector(
+						A2(_rtfeldman$elm_css_util$Css_Helpers$identifierToString, '', $class)),
+					_1: {ctor: '[]'}
+				}));
+	});
+var _rtfeldman$elm_css$Css$selector = F2(
+	function (selectorStr, mixins) {
+		return A2(
+			_rtfeldman$elm_css$Css$makeSnippet,
+			mixins,
+			A2(
+				_rtfeldman$elm_css$Css_Structure$CustomSelector,
+				selectorStr,
+				{ctor: '[]'}));
+	});
+var _rtfeldman$elm_css$Css$everything = function (mixins) {
+	return A2(
+		_rtfeldman$elm_css$Css$makeSnippet,
+		mixins,
+		_rtfeldman$elm_css$Css_Structure$UniversalSelectorSequence(
+			{ctor: '[]'}));
+};
+var _rtfeldman$elm_css$Css$id = F2(
+	function (identifier, mixins) {
+		return A2(
+			_rtfeldman$elm_css$Css$makeSnippet,
+			mixins,
+			_rtfeldman$elm_css$Css_Structure$UniversalSelectorSequence(
+				{
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css_Structure$IdSelector(
+						A2(_rtfeldman$elm_css_util$Css_Helpers$identifierToString, '', identifier)),
+					_1: {ctor: '[]'}
+				}));
+	});
+var _rtfeldman$elm_css$Css$mixin = _rtfeldman$elm_css$Css_Preprocess$ApplyMixins;
+var _rtfeldman$elm_css$Css$stylesheet = _rtfeldman$elm_css$Css_Preprocess$stylesheet;
+var _rtfeldman$elm_css$Css$animationNames = function (identifiers) {
+	var value = A2(
+		_elm_lang$core$String$join,
+		', ',
+		A2(
+			_elm_lang$core$List$map,
+			_rtfeldman$elm_css_util$Css_Helpers$identifierToString(''),
+			identifiers));
+	return A2(_rtfeldman$elm_css$Css$property, 'animation-name', value);
+};
+var _rtfeldman$elm_css$Css$animationName = function (identifier) {
+	return _rtfeldman$elm_css$Css$animationNames(
+		{
+			ctor: '::',
+			_0: identifier,
+			_1: {ctor: '[]'}
+		});
+};
+var _rtfeldman$elm_css$Css$fontWeight = function (_p3) {
+	var _p4 = _p3;
+	var _p5 = _p4.value;
+	var validWeight = function (weight) {
+		return (!_elm_lang$core$Native_Utils.eq(
+			_p5,
+			_elm_lang$core$Basics$toString(weight))) ? true : A2(
+			_elm_lang$core$List$member,
+			weight,
+			A2(
+				_elm_lang$core$List$map,
+				F2(
+					function (x, y) {
+						return x * y;
+					})(100),
+				A2(_elm_lang$core$List$range, 1, 9)));
+	};
+	var warnings = validWeight(
+		_rtfeldman$elm_css$Css$stringToInt(_p5)) ? {ctor: '[]'} : {
+		ctor: '::',
+		_0: A2(
+			_elm_lang$core$Basics_ops['++'],
+			'fontWeight ',
+			A2(_elm_lang$core$Basics_ops['++'], _p5, ' is invalid. Valid weights are: 100, 200, 300, 400, 500, 600, 700, 800, 900. Please see https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Values')),
+		_1: {ctor: '[]'}
+	};
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, warnings, 'font-weight', _p5);
+};
+var _rtfeldman$elm_css$Css$fontFeatureSettingsList = function (featureTagValues) {
+	var warnings = _elm_lang$core$List$concat(
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.warnings;
+			},
+			featureTagValues));
+	var value = A2(
+		_elm_lang$core$String$join,
+		', ',
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.value;
+			},
+			featureTagValues));
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, warnings, 'font-feature-settings', value);
+};
+var _rtfeldman$elm_css$Css$fontFeatureSettings = function (_p6) {
+	var _p7 = _p6;
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, _p7.warnings, 'font-feature-settings', _p7.value);
+};
+var _rtfeldman$elm_css$Css$qt = function (str) {
+	return _elm_lang$core$Basics$toString(str);
+};
+var _rtfeldman$elm_css$Css$fontFace = function (value) {
+	return A2(_elm_lang$core$Basics_ops['++'], 'font-face ', value);
+};
+var _rtfeldman$elm_css$Css$src = function (value) {
+	return _elm_lang$core$Basics$toString(value.value);
+};
+var _rtfeldman$elm_css$Css$withMedia = _rtfeldman$elm_css$Css_Preprocess$WithMedia;
+var _rtfeldman$elm_css$Css$media = F2(
+	function (mediaQueries, snippets) {
+		var nestedMediaRules = function (declarations) {
+			nestedMediaRules:
+			while (true) {
+				var _p8 = declarations;
+				if (_p8.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					switch (_p8._0.ctor) {
+						case 'StyleBlockDeclaration':
+							var _v7 = _p8._1;
+							declarations = _v7;
+							continue nestedMediaRules;
+						case 'MediaRule':
+							return {
+								ctor: '::',
+								_0: A2(
+									_rtfeldman$elm_css$Css_Preprocess$MediaRule,
+									A2(_elm_lang$core$Basics_ops['++'], mediaQueries, _p8._0._0),
+									_p8._0._1),
+								_1: nestedMediaRules(_p8._1)
+							};
+						default:
+							return {
+								ctor: '::',
+								_0: _p8._0,
+								_1: nestedMediaRules(_p8._1)
+							};
+					}
+				}
+			}
+		};
+		var extractStyleBlocks = function (declarations) {
+			extractStyleBlocks:
+			while (true) {
+				var _p9 = declarations;
+				if (_p9.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					if (_p9._0.ctor === 'StyleBlockDeclaration') {
+						return {
+							ctor: '::',
+							_0: _p9._0._0,
+							_1: extractStyleBlocks(_p9._1)
+						};
+					} else {
+						var _v9 = _p9._1;
+						declarations = _v9;
+						continue extractStyleBlocks;
+					}
+				}
+			}
+		};
+		var snippetDeclarations = A2(_elm_lang$core$List$concatMap, _rtfeldman$elm_css$Css_Preprocess$unwrapSnippet, snippets);
+		var mediaRuleFromStyleBlocks = A2(
+			_rtfeldman$elm_css$Css_Preprocess$MediaRule,
+			mediaQueries,
+			extractStyleBlocks(snippetDeclarations));
+		return _rtfeldman$elm_css$Css_Preprocess$Snippet(
+			{
+				ctor: '::',
+				_0: mediaRuleFromStyleBlocks,
+				_1: nestedMediaRules(snippetDeclarations)
+			});
+	});
+var _rtfeldman$elm_css$Css$mediaQuery = F2(
+	function (queryString, snippets) {
+		return A2(
+			_rtfeldman$elm_css$Css$media,
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css_Structure$MediaQuery(queryString),
+				_1: {ctor: '[]'}
+			},
+			snippets);
+	});
+var _rtfeldman$elm_css$Css$color = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'color', c.value);
+};
+var _rtfeldman$elm_css$Css$backgroundColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'background-color', c.value);
+};
+var _rtfeldman$elm_css$Css$outlineColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'outline-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderColor4 = F4(
+	function (c1, c2, c3, c4) {
+		var value = A2(
+			_elm_lang$core$String$join,
+			' ',
+			{
+				ctor: '::',
+				_0: c1.value,
+				_1: {
+					ctor: '::',
+					_0: c2.value,
+					_1: {
+						ctor: '::',
+						_0: c3.value,
+						_1: {
+							ctor: '::',
+							_0: c4.value,
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			});
+		var warnings = A2(
+			_elm_lang$core$Basics_ops['++'],
+			c1.warnings,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				c2.warnings,
+				A2(_elm_lang$core$Basics_ops['++'], c3.warnings, c4.warnings)));
+		return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, warnings, 'border-color', value);
+	});
+var _rtfeldman$elm_css$Css$borderColor3 = F3(
+	function (c1, c2, c3) {
+		var value = A2(
+			_elm_lang$core$String$join,
+			' ',
+			{
+				ctor: '::',
+				_0: c1.value,
+				_1: {
+					ctor: '::',
+					_0: c2.value,
+					_1: {
+						ctor: '::',
+						_0: c3.value,
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+		var warnings = A2(
+			_elm_lang$core$Basics_ops['++'],
+			c1.warnings,
+			A2(_elm_lang$core$Basics_ops['++'], c2.warnings, c3.warnings));
+		return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, warnings, 'border-color', value);
+	});
+var _rtfeldman$elm_css$Css$borderColor2 = F2(
+	function (c1, c2) {
+		var value = A2(
+			_elm_lang$core$String$join,
+			' ',
+			{
+				ctor: '::',
+				_0: c1.value,
+				_1: {
+					ctor: '::',
+					_0: c2.value,
+					_1: {ctor: '[]'}
+				}
+			});
+		var warnings = A2(_elm_lang$core$Basics_ops['++'], c1.warnings, c2.warnings);
+		return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, warnings, 'border-color', value);
+	});
+var _rtfeldman$elm_css$Css$borderColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderBlockEndColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-block-end-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderTopColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-top-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderRightColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-right-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderLeftColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-left-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderInlineEndColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-inline-end-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderInlineStartColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-inline-start-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderBottomColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-bottom-color', c.value);
+};
+var _rtfeldman$elm_css$Css$borderBlockStartColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'border-block-start-color', c.value);
+};
+var _rtfeldman$elm_css$Css$featureOff = 0;
+var _rtfeldman$elm_css$Css$featureOn = 1;
+var _rtfeldman$elm_css$Css$displayFlex = A2(_rtfeldman$elm_css$Css$property, 'display', 'flex');
+var _rtfeldman$elm_css$Css$textEmphasisColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'text-emphasis-color', c.value);
+};
+var _rtfeldman$elm_css$Css$textDecorationColor = function (c) {
+	return A3(_rtfeldman$elm_css$Css$propertyWithWarnings, c.warnings, 'text-decoration-color', c.value);
+};
+var _rtfeldman$elm_css$Css$prop6 = F7(
+	function (key, argA, argB, argC, argD, argE, argF) {
+		return A2(
+			_rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: argA.value,
+					_1: {
+						ctor: '::',
+						_0: argB.value,
+						_1: {
+							ctor: '::',
+							_0: argC.value,
+							_1: {
+								ctor: '::',
+								_0: argD.value,
+								_1: {
+									ctor: '::',
+									_0: argE.value,
+									_1: {
+										ctor: '::',
+										_0: argF.value,
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}));
+	});
+var _rtfeldman$elm_css$Css$boxShadow6 = _rtfeldman$elm_css$Css$prop6('box-shadow');
+var _rtfeldman$elm_css$Css$prop5 = F6(
+	function (key, argA, argB, argC, argD, argE) {
+		return A2(
+			_rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: argA.value,
+					_1: {
+						ctor: '::',
+						_0: argB.value,
+						_1: {
+							ctor: '::',
+							_0: argC.value,
+							_1: {
+								ctor: '::',
+								_0: argD.value,
+								_1: {
+									ctor: '::',
+									_0: argE.value,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}));
+	});
+var _rtfeldman$elm_css$Css$boxShadow5 = _rtfeldman$elm_css$Css$prop5('box-shadow');
+var _rtfeldman$elm_css$Css$prop4 = F5(
+	function (key, argA, argB, argC, argD) {
+		return A2(
+			_rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: argA.value,
+					_1: {
+						ctor: '::',
+						_0: argB.value,
+						_1: {
+							ctor: '::',
+							_0: argC.value,
+							_1: {
+								ctor: '::',
+								_0: argD.value,
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}));
+	});
+var _rtfeldman$elm_css$Css$textShadow4 = _rtfeldman$elm_css$Css$prop4('text-shadow');
+var _rtfeldman$elm_css$Css$boxShadow4 = _rtfeldman$elm_css$Css$prop4('box-shadow');
+var _rtfeldman$elm_css$Css$padding4 = _rtfeldman$elm_css$Css$prop4('padding');
+var _rtfeldman$elm_css$Css$margin4 = _rtfeldman$elm_css$Css$prop4('margin');
+var _rtfeldman$elm_css$Css$borderImageOutset4 = _rtfeldman$elm_css$Css$prop4('border-image-outset');
+var _rtfeldman$elm_css$Css$borderImageWidth4 = _rtfeldman$elm_css$Css$prop4('border-image-width');
+var _rtfeldman$elm_css$Css$borderRadius4 = _rtfeldman$elm_css$Css$prop4('border-radius');
+var _rtfeldman$elm_css$Css$prop3 = F4(
+	function (key, argA, argB, argC) {
+		return A2(
+			_rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: argA.value,
+					_1: {
+						ctor: '::',
+						_0: argB.value,
+						_1: {
+							ctor: '::',
+							_0: argC.value,
+							_1: {ctor: '[]'}
+						}
+					}
+				}));
+	});
+var _rtfeldman$elm_css$Css$textShadow3 = _rtfeldman$elm_css$Css$prop3('text-shadow');
+var _rtfeldman$elm_css$Css$boxShadow3 = _rtfeldman$elm_css$Css$prop3('box-shadow');
+var _rtfeldman$elm_css$Css$textIndent3 = _rtfeldman$elm_css$Css$prop3('text-indent');
+var _rtfeldman$elm_css$Css$padding3 = _rtfeldman$elm_css$Css$prop3('padding');
+var _rtfeldman$elm_css$Css$margin3 = _rtfeldman$elm_css$Css$prop3('margin');
+var _rtfeldman$elm_css$Css$border3 = _rtfeldman$elm_css$Css$prop3('border');
+var _rtfeldman$elm_css$Css$borderTop3 = _rtfeldman$elm_css$Css$prop3('border-top');
+var _rtfeldman$elm_css$Css$borderBottom3 = _rtfeldman$elm_css$Css$prop3('border-bottom');
+var _rtfeldman$elm_css$Css$borderLeft3 = _rtfeldman$elm_css$Css$prop3('border-left');
+var _rtfeldman$elm_css$Css$borderRight3 = _rtfeldman$elm_css$Css$prop3('border-right');
+var _rtfeldman$elm_css$Css$borderBlockStart3 = _rtfeldman$elm_css$Css$prop3('border-block-start');
+var _rtfeldman$elm_css$Css$borderBlockEnd3 = _rtfeldman$elm_css$Css$prop3('border-block-end');
+var _rtfeldman$elm_css$Css$borderInlineStart3 = _rtfeldman$elm_css$Css$prop3('border-block-start');
+var _rtfeldman$elm_css$Css$borderInlineEnd3 = _rtfeldman$elm_css$Css$prop3('border-block-end');
+var _rtfeldman$elm_css$Css$borderImageOutset3 = _rtfeldman$elm_css$Css$prop3('border-image-outset');
+var _rtfeldman$elm_css$Css$borderImageWidth3 = _rtfeldman$elm_css$Css$prop3('border-image-width');
+var _rtfeldman$elm_css$Css$borderRadius3 = _rtfeldman$elm_css$Css$prop3('border-radius');
+var _rtfeldman$elm_css$Css$outline3 = _rtfeldman$elm_css$Css$prop3('outline');
+var _rtfeldman$elm_css$Css$fontVariant3 = _rtfeldman$elm_css$Css$prop3('font-variant');
+var _rtfeldman$elm_css$Css$fontVariantNumeric3 = _rtfeldman$elm_css$Css$prop3('font-variant-numeric');
+var _rtfeldman$elm_css$Css$textDecoration3 = _rtfeldman$elm_css$Css$prop3('text-decoration');
+var _rtfeldman$elm_css$Css$textDecorations3 = function (_p10) {
+	return A2(
+		_rtfeldman$elm_css$Css$prop3,
+		'text-decoration',
+		_rtfeldman$elm_css$Css$valuesOrNone(_p10));
+};
+var _rtfeldman$elm_css$Css$prop2 = F3(
+	function (key, argA, argB) {
+		return A2(
+			_rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: argA.value,
+					_1: {
+						ctor: '::',
+						_0: argB.value,
+						_1: {ctor: '[]'}
+					}
+				}));
+	});
+var _rtfeldman$elm_css$Css$textShadow2 = _rtfeldman$elm_css$Css$prop2('text-shadow');
+var _rtfeldman$elm_css$Css$boxShadow2 = _rtfeldman$elm_css$Css$prop2('box-shadow');
+var _rtfeldman$elm_css$Css$textIndent2 = _rtfeldman$elm_css$Css$prop2('text-indent');
+var _rtfeldman$elm_css$Css$padding2 = _rtfeldman$elm_css$Css$prop2('padding');
+var _rtfeldman$elm_css$Css$margin2 = _rtfeldman$elm_css$Css$prop2('margin');
+var _rtfeldman$elm_css$Css$border2 = _rtfeldman$elm_css$Css$prop2('border');
+var _rtfeldman$elm_css$Css$borderTop2 = _rtfeldman$elm_css$Css$prop2('border-top');
+var _rtfeldman$elm_css$Css$borderBottom2 = _rtfeldman$elm_css$Css$prop2('border-bottom');
+var _rtfeldman$elm_css$Css$borderLeft2 = _rtfeldman$elm_css$Css$prop2('border-left');
+var _rtfeldman$elm_css$Css$borderRight2 = _rtfeldman$elm_css$Css$prop2('border-right');
+var _rtfeldman$elm_css$Css$borderBlockStart2 = _rtfeldman$elm_css$Css$prop2('border-block-start');
+var _rtfeldman$elm_css$Css$borderBlockEnd2 = _rtfeldman$elm_css$Css$prop2('border-block-end');
+var _rtfeldman$elm_css$Css$borderInlineStart2 = _rtfeldman$elm_css$Css$prop2('border-block-start');
+var _rtfeldman$elm_css$Css$borderInlineEnd2 = _rtfeldman$elm_css$Css$prop2('border-block-end');
+var _rtfeldman$elm_css$Css$borderImageOutset2 = _rtfeldman$elm_css$Css$prop2('border-image-outset');
+var _rtfeldman$elm_css$Css$borderImageWidth2 = _rtfeldman$elm_css$Css$prop2('border-image-width');
+var _rtfeldman$elm_css$Css$borderTopWidth2 = _rtfeldman$elm_css$Css$prop2('border-top-width');
+var _rtfeldman$elm_css$Css$borderBottomLeftRadius2 = _rtfeldman$elm_css$Css$prop2('border-bottom-left-radius');
+var _rtfeldman$elm_css$Css$borderBottomRightRadius2 = _rtfeldman$elm_css$Css$prop2('border-bottom-right-radius');
+var _rtfeldman$elm_css$Css$borderTopLeftRadius2 = _rtfeldman$elm_css$Css$prop2('border-top-left-radius');
+var _rtfeldman$elm_css$Css$borderTopRightRadius2 = _rtfeldman$elm_css$Css$prop2('border-top-right-radius');
+var _rtfeldman$elm_css$Css$borderRadius2 = _rtfeldman$elm_css$Css$prop2('border-radius');
+var _rtfeldman$elm_css$Css$borderSpacing2 = _rtfeldman$elm_css$Css$prop2('border-spacing');
+var _rtfeldman$elm_css$Css$backgroundRepeat2 = _rtfeldman$elm_css$Css$prop2('background-repeat');
+var _rtfeldman$elm_css$Css$backgroundPosition2 = _rtfeldman$elm_css$Css$prop2('background-position');
+var _rtfeldman$elm_css$Css$backgroundSize2 = _rtfeldman$elm_css$Css$prop2('background-size');
+var _rtfeldman$elm_css$Css$fontVariant2 = _rtfeldman$elm_css$Css$prop2('font-variant');
+var _rtfeldman$elm_css$Css$fontVariantNumeric2 = _rtfeldman$elm_css$Css$prop2('font-variant-numeric');
+var _rtfeldman$elm_css$Css$textDecoration2 = _rtfeldman$elm_css$Css$prop2('text-decoration');
+var _rtfeldman$elm_css$Css$textDecorations2 = function (_p11) {
+	return A2(
+		_rtfeldman$elm_css$Css$prop2,
+		'text-decoration',
+		_rtfeldman$elm_css$Css$valuesOrNone(_p11));
+};
+var _rtfeldman$elm_css$Css$prop1 = F2(
+	function (key, arg) {
+		return A2(_rtfeldman$elm_css$Css$property, key, arg.value);
+	});
+var _rtfeldman$elm_css$Css$textRendering = _rtfeldman$elm_css$Css$prop1('text-rendering');
+var _rtfeldman$elm_css$Css$textOrientation = _rtfeldman$elm_css$Css$prop1('text-orientation');
+var _rtfeldman$elm_css$Css$textOverflow = _rtfeldman$elm_css$Css$prop1('text-overflow');
+var _rtfeldman$elm_css$Css$textShadow = _rtfeldman$elm_css$Css$prop1('text-shadow');
+var _rtfeldman$elm_css$Css$boxShadow = _rtfeldman$elm_css$Css$prop1('box-shadow');
+var _rtfeldman$elm_css$Css$textIndent = _rtfeldman$elm_css$Css$prop1('text-indent');
+var _rtfeldman$elm_css$Css$textTransform = _rtfeldman$elm_css$Css$prop1('text-transform');
+var _rtfeldman$elm_css$Css$display = _rtfeldman$elm_css$Css$prop1('display');
+var _rtfeldman$elm_css$Css$opacity = _rtfeldman$elm_css$Css$prop1('opacity');
+var _rtfeldman$elm_css$Css$width = _rtfeldman$elm_css$Css$prop1('width');
+var _rtfeldman$elm_css$Css$maxWidth = _rtfeldman$elm_css$Css$prop1('max-width');
+var _rtfeldman$elm_css$Css$minWidth = _rtfeldman$elm_css$Css$prop1('min-width');
+var _rtfeldman$elm_css$Css$height = _rtfeldman$elm_css$Css$prop1('height');
+var _rtfeldman$elm_css$Css$minHeight = _rtfeldman$elm_css$Css$prop1('min-height');
+var _rtfeldman$elm_css$Css$maxHeight = _rtfeldman$elm_css$Css$prop1('max-height');
+var _rtfeldman$elm_css$Css$padding = _rtfeldman$elm_css$Css$prop1('padding');
+var _rtfeldman$elm_css$Css$paddingBlockStart = _rtfeldman$elm_css$Css$prop1('padding-block-start');
+var _rtfeldman$elm_css$Css$paddingBlockEnd = _rtfeldman$elm_css$Css$prop1('padding-block-end');
+var _rtfeldman$elm_css$Css$paddingInlineStart = _rtfeldman$elm_css$Css$prop1('padding-inline-start');
+var _rtfeldman$elm_css$Css$paddingInlineEnd = _rtfeldman$elm_css$Css$prop1('padding-inline-end');
+var _rtfeldman$elm_css$Css$paddingTop = _rtfeldman$elm_css$Css$prop1('padding-top');
+var _rtfeldman$elm_css$Css$paddingBottom = _rtfeldman$elm_css$Css$prop1('padding-bottom');
+var _rtfeldman$elm_css$Css$paddingRight = _rtfeldman$elm_css$Css$prop1('padding-right');
+var _rtfeldman$elm_css$Css$paddingLeft = _rtfeldman$elm_css$Css$prop1('padding-left');
+var _rtfeldman$elm_css$Css$margin = _rtfeldman$elm_css$Css$prop1('margin');
+var _rtfeldman$elm_css$Css$marginTop = _rtfeldman$elm_css$Css$prop1('margin-top');
+var _rtfeldman$elm_css$Css$marginBottom = _rtfeldman$elm_css$Css$prop1('margin-bottom');
+var _rtfeldman$elm_css$Css$marginRight = _rtfeldman$elm_css$Css$prop1('margin-right');
+var _rtfeldman$elm_css$Css$marginLeft = _rtfeldman$elm_css$Css$prop1('margin-left');
+var _rtfeldman$elm_css$Css$marginBlockStart = _rtfeldman$elm_css$Css$prop1('margin-block-start');
+var _rtfeldman$elm_css$Css$marginBlockEnd = _rtfeldman$elm_css$Css$prop1('margin-block-end');
+var _rtfeldman$elm_css$Css$marginInlineStart = _rtfeldman$elm_css$Css$prop1('margin-inline-start');
+var _rtfeldman$elm_css$Css$marginInlineEnd = _rtfeldman$elm_css$Css$prop1('margin-inline-end');
+var _rtfeldman$elm_css$Css$top = _rtfeldman$elm_css$Css$prop1('top');
+var _rtfeldman$elm_css$Css$bottom = _rtfeldman$elm_css$Css$prop1('bottom');
+var _rtfeldman$elm_css$Css$left = _rtfeldman$elm_css$Css$prop1('left');
+var _rtfeldman$elm_css$Css$right = _rtfeldman$elm_css$Css$prop1('right');
+var _rtfeldman$elm_css$Css$border = _rtfeldman$elm_css$Css$prop1('border');
+var _rtfeldman$elm_css$Css$borderTop = _rtfeldman$elm_css$Css$prop1('border-top');
+var _rtfeldman$elm_css$Css$borderBottom = _rtfeldman$elm_css$Css$prop1('border-bottom');
+var _rtfeldman$elm_css$Css$borderLeft = _rtfeldman$elm_css$Css$prop1('border-left');
+var _rtfeldman$elm_css$Css$borderRight = _rtfeldman$elm_css$Css$prop1('border-right');
+var _rtfeldman$elm_css$Css$borderBlockStart = _rtfeldman$elm_css$Css$prop1('border-block-start');
+var _rtfeldman$elm_css$Css$borderBlockEnd = _rtfeldman$elm_css$Css$prop1('border-block-end');
+var _rtfeldman$elm_css$Css$borderInlineStart = _rtfeldman$elm_css$Css$prop1('border-block-start');
+var _rtfeldman$elm_css$Css$borderInlineEnd = _rtfeldman$elm_css$Css$prop1('border-block-end');
+var _rtfeldman$elm_css$Css$borderImageOutset = _rtfeldman$elm_css$Css$prop1('border-image-outset');
+var _rtfeldman$elm_css$Css$borderImageWidth = _rtfeldman$elm_css$Css$prop1('border-image-width');
+var _rtfeldman$elm_css$Css$borderBlockEndStyle = _rtfeldman$elm_css$Css$prop1('border-block-end-style');
+var _rtfeldman$elm_css$Css$borderBlockStartStyle = _rtfeldman$elm_css$Css$prop1('border-block-start-style');
+var _rtfeldman$elm_css$Css$borderInlineEndStyle = _rtfeldman$elm_css$Css$prop1('border-inline-end-style');
+var _rtfeldman$elm_css$Css$borderBottomStyle = _rtfeldman$elm_css$Css$prop1('border-bottom-style');
+var _rtfeldman$elm_css$Css$borderInlineStartStyle = _rtfeldman$elm_css$Css$prop1('border-inline-start-style');
+var _rtfeldman$elm_css$Css$borderLeftStyle = _rtfeldman$elm_css$Css$prop1('border-left-style');
+var _rtfeldman$elm_css$Css$borderRightStyle = _rtfeldman$elm_css$Css$prop1('border-right-style');
+var _rtfeldman$elm_css$Css$borderTopStyle = _rtfeldman$elm_css$Css$prop1('border-top-style');
+var _rtfeldman$elm_css$Css$borderStyle = _rtfeldman$elm_css$Css$prop1('border-style');
+var _rtfeldman$elm_css$Css$borderCollapse = _rtfeldman$elm_css$Css$prop1('border-collapse');
+var _rtfeldman$elm_css$Css$borderBottomWidth = _rtfeldman$elm_css$Css$prop1('border-bottom-width');
+var _rtfeldman$elm_css$Css$borderInlineEndWidth = _rtfeldman$elm_css$Css$prop1('border-inline-end-width');
+var _rtfeldman$elm_css$Css$borderLeftWidth = _rtfeldman$elm_css$Css$prop1('border-left-width');
+var _rtfeldman$elm_css$Css$borderRightWidth = _rtfeldman$elm_css$Css$prop1('border-right-width');
+var _rtfeldman$elm_css$Css$borderTopWidth = _rtfeldman$elm_css$Css$prop1('border-top-width');
+var _rtfeldman$elm_css$Css$borderBottomLeftRadius = _rtfeldman$elm_css$Css$prop1('border-bottom-left-radius');
+var _rtfeldman$elm_css$Css$borderBottomRightRadius = _rtfeldman$elm_css$Css$prop1('border-bottom-right-radius');
+var _rtfeldman$elm_css$Css$borderTopLeftRadius = _rtfeldman$elm_css$Css$prop1('border-top-left-radius');
+var _rtfeldman$elm_css$Css$borderTopRightRadius = _rtfeldman$elm_css$Css$prop1('border-top-right-radius');
+var _rtfeldman$elm_css$Css$borderRadius = _rtfeldman$elm_css$Css$prop1('border-radius');
+var _rtfeldman$elm_css$Css$borderSpacing = _rtfeldman$elm_css$Css$prop1('border-spacing');
+var _rtfeldman$elm_css$Css$outline = _rtfeldman$elm_css$Css$prop1('outline');
+var _rtfeldman$elm_css$Css$outlineWidth = _rtfeldman$elm_css$Css$prop1('outline-width');
+var _rtfeldman$elm_css$Css$outlineStyle = _rtfeldman$elm_css$Css$prop1('outline-style');
+var _rtfeldman$elm_css$Css$outlineOffset = _rtfeldman$elm_css$Css$prop1('outline-offset');
+var _rtfeldman$elm_css$Css$resize = _rtfeldman$elm_css$Css$prop1('resize');
+var _rtfeldman$elm_css$Css$fill = _rtfeldman$elm_css$Css$prop1('fill');
+var _rtfeldman$elm_css$Css$overflow = _rtfeldman$elm_css$Css$prop1('overflow');
+var _rtfeldman$elm_css$Css$overflowX = _rtfeldman$elm_css$Css$prop1('overflow-x');
+var _rtfeldman$elm_css$Css$overflowY = _rtfeldman$elm_css$Css$prop1('overflow-y');
+var _rtfeldman$elm_css$Css$overflowWrap = _rtfeldman$elm_css$Css$prop1('overflow-wrap');
+var _rtfeldman$elm_css$Css$whiteSpace = _rtfeldman$elm_css$Css$prop1('white-space');
+var _rtfeldman$elm_css$Css$backgroundRepeat = _rtfeldman$elm_css$Css$prop1('background-repeat');
+var _rtfeldman$elm_css$Css$backgroundAttachment = _rtfeldman$elm_css$Css$prop1('background-attachment');
+var _rtfeldman$elm_css$Css$backgroundClip = _rtfeldman$elm_css$Css$prop1('background-clip');
+var _rtfeldman$elm_css$Css$backgroundOrigin = _rtfeldman$elm_css$Css$prop1('background-origin');
+var _rtfeldman$elm_css$Css$backgroundImage = _rtfeldman$elm_css$Css$prop1('background-image');
+var _rtfeldman$elm_css$Css$backgroundSize = _rtfeldman$elm_css$Css$prop1('background-size');
+var _rtfeldman$elm_css$Css$lineHeight = _rtfeldman$elm_css$Css$prop1('line-height');
+var _rtfeldman$elm_css$Css$letterSpacing = _rtfeldman$elm_css$Css$prop1('letter-spacing');
+var _rtfeldman$elm_css$Css$fontFamily = _rtfeldman$elm_css$Css$prop1('font-family');
+var _rtfeldman$elm_css$Css$fontFamilies = function (_p12) {
+	return A2(
+		_rtfeldman$elm_css$Css$prop1,
+		'font-family',
+		_rtfeldman$elm_css$Css$stringsToValue(_p12));
+};
+var _rtfeldman$elm_css$Css$fontSize = _rtfeldman$elm_css$Css$prop1('font-size');
+var _rtfeldman$elm_css$Css$fontStyle = _rtfeldman$elm_css$Css$prop1('font-style');
+var _rtfeldman$elm_css$Css$fontVariant = _rtfeldman$elm_css$Css$prop1('font-variant');
+var _rtfeldman$elm_css$Css$fontVariantLigatures = _rtfeldman$elm_css$Css$prop1('font-variant-ligatures');
+var _rtfeldman$elm_css$Css$fontVariantCaps = _rtfeldman$elm_css$Css$prop1('font-variant-caps');
+var _rtfeldman$elm_css$Css$fontVariantNumeric = _rtfeldman$elm_css$Css$prop1('font-variant-numeric');
+var _rtfeldman$elm_css$Css$fontVariantNumerics = function (_p13) {
+	return A2(
+		_rtfeldman$elm_css$Css$prop1,
+		'font-variant-numeric',
+		_rtfeldman$elm_css$Css$valuesOrNone(_p13));
+};
+var _rtfeldman$elm_css$Css$cursor = _rtfeldman$elm_css$Css$prop1('cursor');
+var _rtfeldman$elm_css$Css$textDecoration = _rtfeldman$elm_css$Css$prop1('text-decoration');
+var _rtfeldman$elm_css$Css$textDecorations = function (_p14) {
+	return A2(
+		_rtfeldman$elm_css$Css$prop1,
+		'text-decoration',
+		_rtfeldman$elm_css$Css$valuesOrNone(_p14));
+};
+var _rtfeldman$elm_css$Css$textDecorationLine = _rtfeldman$elm_css$Css$prop1('text-decoration-line');
+var _rtfeldman$elm_css$Css$textDecorationLines = function (_p15) {
+	return A2(
+		_rtfeldman$elm_css$Css$prop1,
+		'text-decoration-line',
+		_rtfeldman$elm_css$Css$valuesOrNone(_p15));
+};
+var _rtfeldman$elm_css$Css$textDecorationStyle = _rtfeldman$elm_css$Css$prop1('text-decoration-style');
+var _rtfeldman$elm_css$Css$zIndex = _rtfeldman$elm_css$Css$prop1('z-index');
+var _rtfeldman$elm_css$Css$position = _rtfeldman$elm_css$Css$prop1('position');
+var _rtfeldman$elm_css$Css$textBottom = _rtfeldman$elm_css$Css$prop1('text-bottom');
+var _rtfeldman$elm_css$Css$textTop = _rtfeldman$elm_css$Css$prop1('text-top');
+var _rtfeldman$elm_css$Css$super = _rtfeldman$elm_css$Css$prop1('super');
+var _rtfeldman$elm_css$Css$sub = _rtfeldman$elm_css$Css$prop1('sub');
+var _rtfeldman$elm_css$Css$baseline = _rtfeldman$elm_css$Css$prop1('baseline');
+var _rtfeldman$elm_css$Css$middle = _rtfeldman$elm_css$Css$prop1('middle');
+var _rtfeldman$elm_css$Css$stretch = _rtfeldman$elm_css$Css$prop1('stretch');
+var _rtfeldman$elm_css$Css$spaceBetween = _rtfeldman$elm_css$Css$prop1('space-between');
+var _rtfeldman$elm_css$Css$spaceAround = _rtfeldman$elm_css$Css$prop1('space-around');
+var _rtfeldman$elm_css$Css$flexEnd = _rtfeldman$elm_css$Css$prop1('flex-end');
+var _rtfeldman$elm_css$Css$flexStart = _rtfeldman$elm_css$Css$prop1('flex-start');
+var _rtfeldman$elm_css$Css$order = _rtfeldman$elm_css$Css$prop1('order');
+var _rtfeldman$elm_css$Css$flexFlow2 = _rtfeldman$elm_css$Css$prop2('flex-flow');
+var _rtfeldman$elm_css$Css$flexFlow1 = _rtfeldman$elm_css$Css$prop1('flex-flow');
+var _rtfeldman$elm_css$Css$flexDirection = _rtfeldman$elm_css$Css$prop1('flex-direction');
+var _rtfeldman$elm_css$Css$flexWrap = _rtfeldman$elm_css$Css$prop1('flex-wrap');
+var _rtfeldman$elm_css$Css$flexShrink = _rtfeldman$elm_css$Css$prop1('flex-shrink');
+var _rtfeldman$elm_css$Css$flexGrow = _rtfeldman$elm_css$Css$prop1('flex-grow');
+var _rtfeldman$elm_css$Css$flexBasis = _rtfeldman$elm_css$Css$prop1('flex-basis');
+var _rtfeldman$elm_css$Css$flex3 = _rtfeldman$elm_css$Css$prop3('flex');
+var _rtfeldman$elm_css$Css$flex2 = _rtfeldman$elm_css$Css$prop2('flex');
+var _rtfeldman$elm_css$Css$flex = _rtfeldman$elm_css$Css$prop1('flex');
+var _rtfeldman$elm_css$Css$listStyle3 = _rtfeldman$elm_css$Css$prop3('list-style');
+var _rtfeldman$elm_css$Css$listStyle2 = _rtfeldman$elm_css$Css$prop2('list-style');
+var _rtfeldman$elm_css$Css$listStyle = _rtfeldman$elm_css$Css$prop1('list-style');
+var _rtfeldman$elm_css$Css$listStyleType = _rtfeldman$elm_css$Css$prop1('list-style-type');
+var _rtfeldman$elm_css$Css$listStylePosition = _rtfeldman$elm_css$Css$prop1('list-style-position');
+var _rtfeldman$elm_css$Css$transformStyle = _rtfeldman$elm_css$Css$prop1('transform-style');
+var _rtfeldman$elm_css$Css$boxSizing = _rtfeldman$elm_css$Css$prop1('box-sizing');
+var _rtfeldman$elm_css$Css$transformBox = _rtfeldman$elm_css$Css$prop1('transform-box');
+var _rtfeldman$elm_css$Css$transforms = function (_p16) {
+	return A2(
+		_rtfeldman$elm_css$Css$prop1,
+		'transform',
+		_rtfeldman$elm_css$Css$valuesOrNone(_p16));
+};
+var _rtfeldman$elm_css$Css$transform = function (only) {
+	return _rtfeldman$elm_css$Css$transforms(
+		{
+			ctor: '::',
+			_0: only,
+			_1: {ctor: '[]'}
+		});
+};
+var _rtfeldman$elm_css$Css$true = _rtfeldman$elm_css$Css$prop1('true');
+var _rtfeldman$elm_css$Css$matchParent = _rtfeldman$elm_css$Css$prop1('match-parent');
+var _rtfeldman$elm_css$Css$end = _rtfeldman$elm_css$Css$prop1('end');
+var _rtfeldman$elm_css$Css$start = _rtfeldman$elm_css$Css$prop1('start');
+var _rtfeldman$elm_css$Css$justifyAll = _rtfeldman$elm_css$Css$prop1('justify-all');
+var _rtfeldman$elm_css$Css$textJustify = _rtfeldman$elm_css$Css$prop1('text-justify');
+var _rtfeldman$elm_css$Css$center = _rtfeldman$elm_css$Css$prop1('center');
+var _rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
+	return A2(_elm_lang$core$String$startsWith, '#', str) ? str : A2(
+		_elm_lang$core$String$cons,
+		_elm_lang$core$Native_Utils.chr('#'),
+		str);
+};
+var _rtfeldman$elm_css$Css$luminosity = _rtfeldman$elm_css$Css$prop1('luminosity');
+var _rtfeldman$elm_css$Css$saturation = _rtfeldman$elm_css$Css$prop1('saturation');
+var _rtfeldman$elm_css$Css$hue = _rtfeldman$elm_css$Css$prop1('hue');
+var _rtfeldman$elm_css$Css$exclusion = _rtfeldman$elm_css$Css$prop1('exclusion');
+var _rtfeldman$elm_css$Css$difference = _rtfeldman$elm_css$Css$prop1('difference');
+var _rtfeldman$elm_css$Css$softLight = _rtfeldman$elm_css$Css$prop1('soft-light');
+var _rtfeldman$elm_css$Css$hardLight = _rtfeldman$elm_css$Css$prop1('hard-light');
+var _rtfeldman$elm_css$Css$colorBurn = _rtfeldman$elm_css$Css$prop1('color-burn');
+var _rtfeldman$elm_css$Css$colorDodge = _rtfeldman$elm_css$Css$prop1('color-dodge');
+var _rtfeldman$elm_css$Css$lighten = _rtfeldman$elm_css$Css$prop1('lighten');
+var _rtfeldman$elm_css$Css$darken = _rtfeldman$elm_css$Css$prop1('darken');
+var _rtfeldman$elm_css$Css$overlay = _rtfeldman$elm_css$Css$prop1('overlay');
+var _rtfeldman$elm_css$Css$screenBlendMode = _rtfeldman$elm_css$Css$prop1('screen');
+var _rtfeldman$elm_css$Css$multiply = _rtfeldman$elm_css$Css$prop1('multiply');
+var _rtfeldman$elm_css$Css$important = _rtfeldman$elm_css$Css_Preprocess$mapLastProperty(
+	function (property) {
+		return _elm_lang$core$Native_Utils.update(
+			property,
+			{important: true});
+	});
+var _rtfeldman$elm_css$Css$all = _rtfeldman$elm_css$Css$prop1('all');
+var _rtfeldman$elm_css$Css$combineLengths = F3(
+	function (operation, first, second) {
+		var numericValue = A2(operation, first.numericValue, second.numericValue);
+		var value = A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$filter,
+				function (_p17) {
+					return !_elm_lang$core$String$isEmpty(_p17);
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$core$Basics$toString(numericValue),
+					_1: {
+						ctor: '::',
+						_0: first.unitLabel,
+						_1: {ctor: '[]'}
+					}
+				}));
+		return _elm_lang$core$Native_Utils.update(
+			first,
+			{value: value, numericValue: numericValue});
+	});
+var _rtfeldman$elm_css$Css_ops = _rtfeldman$elm_css$Css_ops || {};
+_rtfeldman$elm_css$Css_ops['|*|'] = _rtfeldman$elm_css$Css$combineLengths(
+	F2(
+		function (x, y) {
+			return x * y;
+		}));
+var _rtfeldman$elm_css$Css_ops = _rtfeldman$elm_css$Css_ops || {};
+_rtfeldman$elm_css$Css_ops['|/|'] = _rtfeldman$elm_css$Css$combineLengths(
+	F2(
+		function (x, y) {
+			return x / y;
+		}));
+var _rtfeldman$elm_css$Css_ops = _rtfeldman$elm_css$Css_ops || {};
+_rtfeldman$elm_css$Css_ops['|-|'] = _rtfeldman$elm_css$Css$combineLengths(
+	F2(
+		function (x, y) {
+			return x - y;
+		}));
+var _rtfeldman$elm_css$Css_ops = _rtfeldman$elm_css$Css_ops || {};
+_rtfeldman$elm_css$Css_ops['|+|'] = _rtfeldman$elm_css$Css$combineLengths(
+	F2(
+		function (x, y) {
+			return x + y;
+		}));
+var _rtfeldman$elm_css$Css$getOverloadedProperty = F3(
+	function (functionName, desiredKey, mixin) {
+		getOverloadedProperty:
+		while (true) {
+			var _p18 = mixin;
+			switch (_p18.ctor) {
+				case 'AppendProperty':
+					return A2(_rtfeldman$elm_css$Css$property, desiredKey, _p18._0.key);
+				case 'ExtendSelector':
+					return A3(
+						_rtfeldman$elm_css$Css$propertyWithWarnings,
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Cannot apply ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									functionName,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										' with inapplicable mixin for selector ',
+										_elm_lang$core$Basics$toString(_p18._0)))),
+							_1: {ctor: '[]'}
+						},
+						desiredKey,
+						'');
+				case 'NestSnippet':
+					return A3(
+						_rtfeldman$elm_css$Css$propertyWithWarnings,
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Cannot apply ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									functionName,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										' with inapplicable mixin for combinator ',
+										_elm_lang$core$Basics$toString(_p18._0)))),
+							_1: {ctor: '[]'}
+						},
+						desiredKey,
+						'');
+				case 'WithPseudoElement':
+					return A3(
+						_rtfeldman$elm_css$Css$propertyWithWarnings,
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Cannot apply ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									functionName,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										' with inapplicable mixin for pseudo-element setter ',
+										_elm_lang$core$Basics$toString(_p18._0)))),
+							_1: {ctor: '[]'}
+						},
+						desiredKey,
+						'');
+				case 'WithMedia':
+					return A3(
+						_rtfeldman$elm_css$Css$propertyWithWarnings,
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Cannot apply ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									functionName,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										' with inapplicable mixin for media query ',
+										_elm_lang$core$Basics$toString(_p18._0)))),
+							_1: {ctor: '[]'}
+						},
+						desiredKey,
+						'');
+				default:
+					if (_p18._0.ctor === '[]') {
+						return A3(
+							_rtfeldman$elm_css$Css$propertyWithWarnings,
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'Cannot apply ',
+									A2(_elm_lang$core$Basics_ops['++'], functionName, ' with empty mixin. ')),
+								_1: {ctor: '[]'}
+							},
+							desiredKey,
+							'');
+					} else {
+						if (_p18._0._1.ctor === '[]') {
+							var _v11 = functionName,
+								_v12 = desiredKey,
+								_v13 = _p18._0._0;
+							functionName = _v11;
+							desiredKey = _v12;
+							mixin = _v13;
+							continue getOverloadedProperty;
+						} else {
+							var _v14 = functionName,
+								_v15 = desiredKey,
+								_v16 = _rtfeldman$elm_css$Css_Preprocess$ApplyMixins(_p18._0._1);
+							functionName = _v14;
+							desiredKey = _v15;
+							mixin = _v16;
+							continue getOverloadedProperty;
+						}
+					}
+			}
+		}
+	});
+var _rtfeldman$elm_css$Css$cssFunction = F2(
+	function (funcName, args) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			funcName,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(_elm_lang$core$String$join, ', ', args),
+					')')));
+	});
+var _rtfeldman$elm_css$Css$tv = _rtfeldman$elm_css$Css_Structure$MediaQuery('tv');
+var _rtfeldman$elm_css$Css$projection = _rtfeldman$elm_css$Css_Structure$MediaQuery('projection');
+var _rtfeldman$elm_css$Css$print = _rtfeldman$elm_css$Css_Structure$MediaQuery('print');
+var _rtfeldman$elm_css$Css$screen = _rtfeldman$elm_css$Css_Structure$MediaQuery('screen');
+var _rtfeldman$elm_css$Css$ExplicitLength = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return function (m) {
+													return function (n) {
+														return function (o) {
+															return {value: a, numericValue: b, units: c, unitLabel: d, length: e, lengthOrAuto: f, lengthOrNumber: g, lengthOrNone: h, lengthOrMinMaxDimension: i, lengthOrNoneOrMinMaxDimension: j, textIndent: k, flexBasis: l, lengthOrNumberOrAutoOrNoneOrContent: m, fontSize: n, lengthOrAutoOrCoverOrContain: o};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _rtfeldman$elm_css$Css$NonMixable = {};
+var _rtfeldman$elm_css$Css$BasicProperty = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return function (m) {
+													return function (n) {
+														return function (o) {
+															return function (p) {
+																return function (q) {
+																	return function (r) {
+																		return function (s) {
+																			return function (t) {
+																				return function (u) {
+																					return function (v) {
+																						return function (w) {
+																							return function (x) {
+																								return function (y) {
+																									return function (z) {
+																										return function (_1) {
+																											return function (_2) {
+																												return function (_3) {
+																													return function (_4) {
+																														return function (_5) {
+																															return function (_6) {
+																																return function (_7) {
+																																	return function (_8) {
+																																		return function (_9) {
+																																			return function (_10) {
+																																				return function (_11) {
+																																					return function (_12) {
+																																						return function (_13) {
+																																							return function (_14) {
+																																								return function (_15) {
+																																									return function (_16) {
+																																										return function (_17) {
+																																											return function (_18) {
+																																												return function (_19) {
+																																													return function (_20) {
+																																														return function (_21) {
+																																															return function (_22) {
+																																																return {value: a, all: b, alignItems: c, borderStyle: d, boxSizing: e, color: f, cursor: g, display: h, flexBasis: i, flexWrap: j, flexDirection: k, flexDirectionOrWrap: l, justifyContent: m, none: n, number: o, outline: p, overflow: q, textDecorationLine: r, textRendering: s, textIndent: t, textDecorationStyle: u, length: v, lengthOrAuto: w, lengthOrNone: x, lengthOrNumber: y, lengthOrMinMaxDimension: z, lengthOrNoneOrMinMaxDimension: _1, lengthOrNumberOrAutoOrNoneOrContent: _2, listStyleType: _3, listStylePosition: _4, listStyleTypeOrPositionOrImage: _5, fontFamily: _6, fontSize: _7, fontStyle: _8, fontWeight: _9, fontVariant: _10, units: _11, numericValue: _12, unitLabel: _13, warnings: _14, backgroundRepeat: _15, backgroundRepeatShorthand: _16, backgroundAttachment: _17, backgroundBlendMode: _18, backgroundOrigin: _19, backgroundImage: _20, lengthOrAutoOrCoverOrContain: _21, intOrAuto: _22};
+																																															};
+																																														};
+																																													};
+																																												};
+																																											};
+																																										};
+																																									};
+																																								};
+																																							};
+																																						};
+																																					};
+																																				};
+																																			};
+																																		};
+																																	};
+																																};
+																															};
+																														};
+																													};
+																												};
+																											};
+																										};
+																									};
+																								};
+																							};
+																						};
+																					};
+																				};
+																			};
+																		};
+																	};
+																};
+															};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _rtfeldman$elm_css$Css$Compatible = {ctor: 'Compatible'};
+var _rtfeldman$elm_css$Css$transparent = {
+	value: 'transparent',
+	color: _rtfeldman$elm_css$Css$Compatible,
+	warnings: {ctor: '[]'}
+};
+var _rtfeldman$elm_css$Css$colorValueForOverloadedProperty = _rtfeldman$elm_css$Css$transparent;
+var _rtfeldman$elm_css$Css$backgroundBlendMode = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'backgroundBlendMode',
+		'background-blend-mode',
+		fn(_rtfeldman$elm_css$Css$colorValueForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$currentColor = {
+	value: 'currentColor',
+	color: _rtfeldman$elm_css$Css$Compatible,
+	warnings: {ctor: '[]'}
+};
+var _rtfeldman$elm_css$Css$visible = {value: 'visible', overflow: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$scroll = {value: 'scroll', overflow: _rtfeldman$elm_css$Css$Compatible, backgroundAttachment: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$breakWord = {value: 'break-word', overflowWrap: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$both = {value: 'both', resize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$horizontal = {value: 'horizontal', resize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$vertical = {value: 'vertical', resize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$paddingBox = {value: 'padding-box', backgroundClip: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$url = function (urlValue) {
+	return {
+		value: A2(
+			_elm_lang$core$Basics_ops['++'],
+			'url(',
+			A2(_elm_lang$core$Basics_ops['++'], urlValue, ')')),
+		backgroundImage: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$cover = {value: 'cover', lengthOrAutoOrCoverOrContain: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$contain = {value: 'contain', lengthOrAutoOrCoverOrContain: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$hidden = {value: 'hidden', overflow: _rtfeldman$elm_css$Css$Compatible, borderStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$rgb = F3(
+	function (red, green, blue) {
+		var warnings = ((_elm_lang$core$Native_Utils.cmp(red, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(red, 255) > 0) || ((_elm_lang$core$Native_Utils.cmp(green, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(green, 255) > 0) || ((_elm_lang$core$Native_Utils.cmp(blue, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(blue, 255) > 0)))))) ? {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Basics_ops['++'],
+				'RGB color values must be between 0 and 255. rgb(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(red),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						', ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(green),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								', ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(blue),
+									') is not valid.')))))),
+			_1: {ctor: '[]'}
+		} : {ctor: '[]'};
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'rgb',
+				A2(
+					_elm_lang$core$List$map,
+					_rtfeldman$elm_css$Css$numberToString,
+					{
+						ctor: '::',
+						_0: red,
+						_1: {
+							ctor: '::',
+							_0: green,
+							_1: {
+								ctor: '::',
+								_0: blue,
+								_1: {ctor: '[]'}
+							}
+						}
+					})),
+			color: _rtfeldman$elm_css$Css$Compatible,
+			warnings: warnings,
+			red: red,
+			green: green,
+			blue: blue,
+			alpha: 1
+		};
+	});
+var _rtfeldman$elm_css$Css$rgba = F4(
+	function (red, green, blue, alpha) {
+		var warnings = ((_elm_lang$core$Native_Utils.cmp(red, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(red, 255) > 0) || ((_elm_lang$core$Native_Utils.cmp(green, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(green, 255) > 0) || ((_elm_lang$core$Native_Utils.cmp(blue, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(blue, 255) > 0) || ((_elm_lang$core$Native_Utils.cmp(alpha, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(alpha, 1) > 0)))))))) ? {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Basics_ops['++'],
+				'RGB color values must be between 0 and 255, and the alpha in RGBA must be between 0 and 1. rgba(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(red),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						', ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(green),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								', ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(blue),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										', ',
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(alpha),
+											') is not valid.')))))))),
+			_1: {ctor: '[]'}
+		} : {ctor: '[]'};
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'rgba',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css$numberToString,
+						{
+							ctor: '::',
+							_0: red,
+							_1: {
+								ctor: '::',
+								_0: green,
+								_1: {
+									ctor: '::',
+									_0: blue,
+									_1: {ctor: '[]'}
+								}
+							}
+						}),
+					{
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css$numberToString(alpha),
+						_1: {ctor: '[]'}
+					})),
+			color: _rtfeldman$elm_css$Css$Compatible,
+			warnings: warnings,
+			red: red,
+			green: green,
+			blue: blue,
+			alpha: alpha
+		};
+	});
+var _rtfeldman$elm_css$Css$erroneousHex = function (str) {
+	return {
+		value: _rtfeldman$elm_css$Css$withPrecedingHash(str),
+		color: _rtfeldman$elm_css$Css$Compatible,
+		red: 0,
+		green: 0,
+		blue: 0,
+		alpha: 1,
+		warnings: _elm_lang$core$List$singleton(
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: 'Hex color strings must contain exactly 3, 4, 6, or 8 hexadecimal digits, optionally preceded by \"#\".',
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Basics$toString(str),
+						_1: {
+							ctor: '::',
+							_0: 'is an invalid hex color string.',
+							_1: {
+								ctor: '::',
+								_0: 'Please see: https://drafts.csswg.org/css-color/#hex-notation',
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}))
+	};
+};
+var _rtfeldman$elm_css$Css$validHex = F5(
+	function (str, _p22, _p21, _p20, _p19) {
+		var _p23 = _p22;
+		var _p24 = _p21;
+		var _p25 = _p20;
+		var _p26 = _p19;
+		var toResult = function (_p27) {
+			return _rtfeldman$hex$Hex$fromString(
+				_elm_lang$core$String$toLower(
+					_elm_lang$core$String$fromList(_p27)));
+		};
+		var results = {
+			ctor: '_Tuple4',
+			_0: toResult(
+				{
+					ctor: '::',
+					_0: _p23._0,
+					_1: {
+						ctor: '::',
+						_0: _p23._1,
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: toResult(
+				{
+					ctor: '::',
+					_0: _p24._0,
+					_1: {
+						ctor: '::',
+						_0: _p24._1,
+						_1: {ctor: '[]'}
+					}
+				}),
+			_2: toResult(
+				{
+					ctor: '::',
+					_0: _p25._0,
+					_1: {
+						ctor: '::',
+						_0: _p25._1,
+						_1: {ctor: '[]'}
+					}
+				}),
+			_3: toResult(
+				{
+					ctor: '::',
+					_0: _p26._0,
+					_1: {
+						ctor: '::',
+						_0: _p26._1,
+						_1: {ctor: '[]'}
+					}
+				})
+		};
+		var _p28 = results;
+		if (((((_p28.ctor === '_Tuple4') && (_p28._0.ctor === 'Ok')) && (_p28._1.ctor === 'Ok')) && (_p28._2.ctor === 'Ok')) && (_p28._3.ctor === 'Ok')) {
+			return {
+				value: _rtfeldman$elm_css$Css$withPrecedingHash(str),
+				color: _rtfeldman$elm_css$Css$Compatible,
+				red: _p28._0._0,
+				green: _p28._1._0,
+				blue: _p28._2._0,
+				alpha: _elm_lang$core$Basics$toFloat(_p28._3._0) / 255,
+				warnings: {ctor: '[]'}
+			};
+		} else {
+			return _rtfeldman$elm_css$Css$erroneousHex(str);
+		}
+	});
+var _rtfeldman$elm_css$Css$hex = function (str) {
+	var withoutHash = A2(_elm_lang$core$String$startsWith, '#', str) ? A2(_elm_lang$core$String$dropLeft, 1, str) : str;
+	var _p29 = _elm_lang$core$String$toList(withoutHash);
+	_v22_4:
+	do {
+		if (((_p29.ctor === '::') && (_p29._1.ctor === '::')) && (_p29._1._1.ctor === '::')) {
+			if (_p29._1._1._1.ctor === '[]') {
+				var _p32 = _p29._0;
+				var _p31 = _p29._1._0;
+				var _p30 = _p29._1._1._0;
+				return A5(
+					_rtfeldman$elm_css$Css$validHex,
+					str,
+					{ctor: '_Tuple2', _0: _p32, _1: _p32},
+					{ctor: '_Tuple2', _0: _p31, _1: _p31},
+					{ctor: '_Tuple2', _0: _p30, _1: _p30},
+					{
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.chr('f'),
+						_1: _elm_lang$core$Native_Utils.chr('f')
+					});
+			} else {
+				if (_p29._1._1._1._1.ctor === '[]') {
+					var _p36 = _p29._0;
+					var _p35 = _p29._1._0;
+					var _p34 = _p29._1._1._0;
+					var _p33 = _p29._1._1._1._0;
+					return A5(
+						_rtfeldman$elm_css$Css$validHex,
+						str,
+						{ctor: '_Tuple2', _0: _p36, _1: _p36},
+						{ctor: '_Tuple2', _0: _p35, _1: _p35},
+						{ctor: '_Tuple2', _0: _p34, _1: _p34},
+						{ctor: '_Tuple2', _0: _p33, _1: _p33});
+				} else {
+					if (_p29._1._1._1._1._1.ctor === '::') {
+						if (_p29._1._1._1._1._1._1.ctor === '[]') {
+							return A5(
+								_rtfeldman$elm_css$Css$validHex,
+								str,
+								{ctor: '_Tuple2', _0: _p29._0, _1: _p29._1._0},
+								{ctor: '_Tuple2', _0: _p29._1._1._0, _1: _p29._1._1._1._0},
+								{ctor: '_Tuple2', _0: _p29._1._1._1._1._0, _1: _p29._1._1._1._1._1._0},
+								{
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Native_Utils.chr('f'),
+									_1: _elm_lang$core$Native_Utils.chr('f')
+								});
+						} else {
+							if ((_p29._1._1._1._1._1._1._1.ctor === '::') && (_p29._1._1._1._1._1._1._1._1.ctor === '[]')) {
+								return A5(
+									_rtfeldman$elm_css$Css$validHex,
+									str,
+									{ctor: '_Tuple2', _0: _p29._0, _1: _p29._1._0},
+									{ctor: '_Tuple2', _0: _p29._1._1._0, _1: _p29._1._1._1._0},
+									{ctor: '_Tuple2', _0: _p29._1._1._1._1._0, _1: _p29._1._1._1._1._1._0},
+									{ctor: '_Tuple2', _0: _p29._1._1._1._1._1._1._0, _1: _p29._1._1._1._1._1._1._1._0});
+							} else {
+								break _v22_4;
+							}
+						}
+					} else {
+						break _v22_4;
+					}
+				}
+			}
+		} else {
+			break _v22_4;
+		}
+	} while(false);
+	return _rtfeldman$elm_css$Css$erroneousHex(str);
+};
+var _rtfeldman$elm_css$Css$hslaToRgba = F6(
+	function (value, warnings, hue, saturation, lightness, hslAlpha) {
+		var _p37 = _elm_lang$core$Color$toRgb(
+			A4(_elm_lang$core$Color$hsla, hue, saturation, lightness, hslAlpha));
+		var red = _p37.red;
+		var green = _p37.green;
+		var blue = _p37.blue;
+		var alpha = _p37.alpha;
+		return {value: value, color: _rtfeldman$elm_css$Css$Compatible, red: red, green: green, blue: blue, alpha: alpha, warnings: warnings};
+	});
+var _rtfeldman$elm_css$Css$hsl = F3(
+	function (hue, saturation, lightness) {
+		var valuesList = {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css$numberToString(hue),
+			_1: {
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$numericalPercentageToString(saturation),
+				_1: {
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css$numericalPercentageToString(lightness),
+					_1: {ctor: '[]'}
+				}
+			}
+		};
+		var value = A2(_rtfeldman$elm_css$Css$cssFunction, 'hsl', valuesList);
+		var warnings = ((_elm_lang$core$Native_Utils.cmp(hue, 360) > 0) || ((_elm_lang$core$Native_Utils.cmp(hue, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(saturation, 1) > 0) || ((_elm_lang$core$Native_Utils.cmp(saturation, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(lightness, 1) > 0) || (_elm_lang$core$Native_Utils.cmp(lightness, 0) < 0)))))) ? {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Basics_ops['++'],
+				'HSL color values must have an H value between 0 and 360 (as in degrees) and S and L values between 0 and 1. ',
+				A2(_elm_lang$core$Basics_ops['++'], value, ' is not valid.')),
+			_1: {ctor: '[]'}
+		} : {ctor: '[]'};
+		return A6(_rtfeldman$elm_css$Css$hslaToRgba, value, warnings, hue, saturation, lightness, 1);
+	});
+var _rtfeldman$elm_css$Css$hsla = F4(
+	function (hue, saturation, lightness, alpha) {
+		var valuesList = {
+			ctor: '::',
+			_0: _rtfeldman$elm_css$Css$numberToString(hue),
+			_1: {
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$numericalPercentageToString(saturation),
+				_1: {
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css$numericalPercentageToString(lightness),
+					_1: {
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css$numberToString(alpha),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		};
+		var value = A2(_rtfeldman$elm_css$Css$cssFunction, 'hsla', valuesList);
+		var warnings = ((_elm_lang$core$Native_Utils.cmp(hue, 360) > 0) || ((_elm_lang$core$Native_Utils.cmp(hue, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(saturation, 1) > 0) || ((_elm_lang$core$Native_Utils.cmp(saturation, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(lightness, 1) > 0) || ((_elm_lang$core$Native_Utils.cmp(lightness, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(alpha, 1) > 0) || (_elm_lang$core$Native_Utils.cmp(alpha, 0) < 0)))))))) ? {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Basics_ops['++'],
+				'HSLA color values must have an H value between 0 and 360 (as in degrees) and S, L, and A values between 0 and 1. ',
+				A2(_elm_lang$core$Basics_ops['++'], value, ' is not valid.')),
+			_1: {ctor: '[]'}
+		} : {ctor: '[]'};
+		return A6(_rtfeldman$elm_css$Css$hslaToRgba, value, warnings, hue, saturation, lightness, alpha);
+	});
+var _rtfeldman$elm_css$Css$optimizeSpeed = {value: 'optimizeSpeed', textRendering: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$optimizeLegibility = {value: 'optimizeLegibility', textRendering: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$geometricPrecision = {value: 'geometricPrecision', textRendering: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$hanging = {value: 'hanging', textIndent: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$eachLine = {value: 'each-line', textIndent: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$mixed = {value: 'mixed', textOrientation: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$upright = {value: 'upright', textOrientation: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$sideways = {value: 'sideways', textOrientation: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$capitalize = {value: 'capitalize', textTransform: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$uppercase = {value: 'uppercase', textTransform: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lowercase = {value: 'lowercase', textTransform: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$fullWidth = {value: 'full-width', textTransform: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$ellipsis = {value: 'ellipsis', textOverflow: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$clip = {value: 'clip', textOverflow: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$wavy = {value: 'wavy', textDecorationStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$dotted = {value: 'dotted', borderStyle: _rtfeldman$elm_css$Css$Compatible, textDecorationStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$dashed = {value: 'dashed', borderStyle: _rtfeldman$elm_css$Css$Compatible, textDecorationStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$solid = {value: 'solid', borderStyle: _rtfeldman$elm_css$Css$Compatible, textDecorationStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$double = {value: 'double', borderStyle: _rtfeldman$elm_css$Css$Compatible, textDecorationStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$groove = {value: 'groove', borderStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$ridge = {value: 'ridge', borderStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$inset = {value: 'inset', borderStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$outset = {value: 'outset', borderStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$separate = {value: 'separate', borderCollapse: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$collapse = {value: 'collapse', borderCollapse: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lengthConverter = F3(
+	function (units, unitLabel, numericValue) {
+		return {
+			value: A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rtfeldman$elm_css$Css$numberToString(numericValue),
+				unitLabel),
+			numericValue: numericValue,
+			units: units,
+			unitLabel: unitLabel,
+			length: _rtfeldman$elm_css$Css$Compatible,
+			lengthOrAuto: _rtfeldman$elm_css$Css$Compatible,
+			lengthOrNumber: _rtfeldman$elm_css$Css$Compatible,
+			lengthOrNone: _rtfeldman$elm_css$Css$Compatible,
+			lengthOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible,
+			lengthOrNoneOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible,
+			textIndent: _rtfeldman$elm_css$Css$Compatible,
+			flexBasis: _rtfeldman$elm_css$Css$Compatible,
+			lengthOrNumberOrAutoOrNoneOrContent: _rtfeldman$elm_css$Css$Compatible,
+			fontSize: _rtfeldman$elm_css$Css$Compatible,
+			lengthOrAutoOrCoverOrContain: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$angleConverter = F2(
+	function (suffix, num) {
+		return {
+			value: A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rtfeldman$elm_css$Css$numberToString(num),
+				suffix),
+			angle: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$deg = _rtfeldman$elm_css$Css$angleConverter('deg');
+var _rtfeldman$elm_css$Css$grad = _rtfeldman$elm_css$Css$angleConverter('grad');
+var _rtfeldman$elm_css$Css$rad = _rtfeldman$elm_css$Css$angleConverter('rad');
+var _rtfeldman$elm_css$Css$turn = _rtfeldman$elm_css$Css$angleConverter('turn');
+var _rtfeldman$elm_css$Css$matrix = F6(
+	function (a, b, c, d, tx, ty) {
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'matrix',
+				A2(
+					_elm_lang$core$List$map,
+					_rtfeldman$elm_css$Css$numberToString,
+					{
+						ctor: '::',
+						_0: a,
+						_1: {
+							ctor: '::',
+							_0: b,
+							_1: {
+								ctor: '::',
+								_0: c,
+								_1: {
+									ctor: '::',
+									_0: d,
+									_1: {
+										ctor: '::',
+										_0: tx,
+										_1: {
+											ctor: '::',
+											_0: ty,
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					})),
+			transform: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$matrix3d = function (a1) {
+	return function (a2) {
+		return function (a3) {
+			return function (a4) {
+				return function (b1) {
+					return function (b2) {
+						return function (b3) {
+							return function (b4) {
+								return function (c1) {
+									return function (c2) {
+										return function (c3) {
+											return function (c4) {
+												return function (d1) {
+													return function (d2) {
+														return function (d3) {
+															return function (d4) {
+																return {
+																	value: A2(
+																		_rtfeldman$elm_css$Css$cssFunction,
+																		'matrix3d',
+																		A2(
+																			_elm_lang$core$List$map,
+																			_rtfeldman$elm_css$Css$numberToString,
+																			{
+																				ctor: '::',
+																				_0: a1,
+																				_1: {
+																					ctor: '::',
+																					_0: a2,
+																					_1: {
+																						ctor: '::',
+																						_0: a3,
+																						_1: {
+																							ctor: '::',
+																							_0: a4,
+																							_1: {
+																								ctor: '::',
+																								_0: b1,
+																								_1: {
+																									ctor: '::',
+																									_0: b2,
+																									_1: {
+																										ctor: '::',
+																										_0: b3,
+																										_1: {
+																											ctor: '::',
+																											_0: b4,
+																											_1: {
+																												ctor: '::',
+																												_0: c1,
+																												_1: {
+																													ctor: '::',
+																													_0: c2,
+																													_1: {
+																														ctor: '::',
+																														_0: c3,
+																														_1: {
+																															ctor: '::',
+																															_0: c4,
+																															_1: {
+																																ctor: '::',
+																																_0: d1,
+																																_1: {
+																																	ctor: '::',
+																																	_0: d2,
+																																	_1: {
+																																		ctor: '::',
+																																		_0: d3,
+																																		_1: {
+																																			ctor: '::',
+																																			_0: d4,
+																																			_1: {ctor: '[]'}
+																																		}
+																																	}
+																																}
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			})),
+																	transform: _rtfeldman$elm_css$Css$Compatible
+																};
+															};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _rtfeldman$elm_css$Css$perspective = function (l) {
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'perspective',
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$numberToString(l),
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$rotate = function (_p38) {
+	var _p39 = _p38;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'rotate',
+			{
+				ctor: '::',
+				_0: _p39.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$rotateX = function (_p40) {
+	var _p41 = _p40;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'rotateX',
+			{
+				ctor: '::',
+				_0: _p41.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$rotateY = function (_p42) {
+	var _p43 = _p42;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'rotateY',
+			{
+				ctor: '::',
+				_0: _p43.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$rotateZ = function (_p44) {
+	var _p45 = _p44;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'rotateZ',
+			{
+				ctor: '::',
+				_0: _p45.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$rotate3d = F4(
+	function (x, y, z, _p46) {
+		var _p47 = _p46;
+		var coordsAsStrings = A2(
+			_elm_lang$core$List$map,
+			_rtfeldman$elm_css$Css$numberToString,
+			{
+				ctor: '::',
+				_0: x,
+				_1: {
+					ctor: '::',
+					_0: y,
+					_1: {
+						ctor: '::',
+						_0: z,
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'rotate3d',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					coordsAsStrings,
+					{
+						ctor: '::',
+						_0: _p47.value,
+						_1: {ctor: '[]'}
+					})),
+			transform: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$scale = function (x) {
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'scale',
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$numberToString(x),
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$scale2 = F2(
+	function (x, y) {
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'scale',
+				A2(
+					_elm_lang$core$List$map,
+					_rtfeldman$elm_css$Css$numberToString,
+					{
+						ctor: '::',
+						_0: x,
+						_1: {
+							ctor: '::',
+							_0: y,
+							_1: {ctor: '[]'}
+						}
+					})),
+			transform: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$scaleX = function (x) {
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'scaleX',
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$numberToString(x),
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$scaleY = function (y) {
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'scaleY',
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$numberToString(y),
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$scale3d = F3(
+	function (x, y, z) {
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'scale3d',
+				A2(
+					_elm_lang$core$List$map,
+					_rtfeldman$elm_css$Css$numberToString,
+					{
+						ctor: '::',
+						_0: x,
+						_1: {
+							ctor: '::',
+							_0: y,
+							_1: {
+								ctor: '::',
+								_0: z,
+								_1: {ctor: '[]'}
+							}
+						}
+					})),
+			transform: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$skew = function (_p48) {
+	var _p49 = _p48;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'skew',
+			{
+				ctor: '::',
+				_0: _p49.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$skew2 = F2(
+	function (ax, ay) {
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'skew',
+				{
+					ctor: '::',
+					_0: ax.value,
+					_1: {
+						ctor: '::',
+						_0: ay.value,
+						_1: {ctor: '[]'}
+					}
+				}),
+			transform: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$skewX = function (_p50) {
+	var _p51 = _p50;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'skewX',
+			{
+				ctor: '::',
+				_0: _p51.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$skewY = function (_p52) {
+	var _p53 = _p52;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'skewY',
+			{
+				ctor: '::',
+				_0: _p53.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$translate = function (_p54) {
+	var _p55 = _p54;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'translate',
+			{
+				ctor: '::',
+				_0: _p55.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$translate2 = F2(
+	function (tx, ty) {
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'translate',
+				{
+					ctor: '::',
+					_0: tx.value,
+					_1: {
+						ctor: '::',
+						_0: ty.value,
+						_1: {ctor: '[]'}
+					}
+				}),
+			transform: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$translateX = function (_p56) {
+	var _p57 = _p56;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'translateX',
+			{
+				ctor: '::',
+				_0: _p57.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$translateY = function (_p58) {
+	var _p59 = _p58;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'translateY',
+			{
+				ctor: '::',
+				_0: _p59.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$translateZ = function (_p60) {
+	var _p61 = _p60;
+	return {
+		value: A2(
+			_rtfeldman$elm_css$Css$cssFunction,
+			'translateZ',
+			{
+				ctor: '::',
+				_0: _p61.value,
+				_1: {ctor: '[]'}
+			}),
+		transform: _rtfeldman$elm_css$Css$Compatible
+	};
+};
+var _rtfeldman$elm_css$Css$translate3d = F3(
+	function (tx, ty, tz) {
+		return {
+			value: A2(
+				_rtfeldman$elm_css$Css$cssFunction,
+				'translate3d',
+				{
+					ctor: '::',
+					_0: tx.value,
+					_1: {
+						ctor: '::',
+						_0: ty.value,
+						_1: {
+							ctor: '::',
+							_0: tz.value,
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			transform: _rtfeldman$elm_css$Css$Compatible
+		};
+	});
+var _rtfeldman$elm_css$Css$fillBox = {value: 'fill-box', transformBox: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$contentBox = {value: 'content-box', boxSizing: _rtfeldman$elm_css$Css$Compatible, backgroundClip: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$borderBox = {value: 'border-box', boxSizing: _rtfeldman$elm_css$Css$Compatible, backgroundClip: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$viewBox = {value: 'view-box', transformBox: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$preserve3d = {value: 'preserve-3d', transformStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$flat = {value: 'flat', transformStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$inside = {value: 'inside', listStylePosition: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$outside = {value: 'outside', listStylePosition: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$disc = {value: 'disc', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$circle = {value: 'circle', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$square = {value: 'square', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$decimal = {value: 'decimal', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$decimalLeadingZero = {value: 'decimal-leading-zero', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lowerRoman = {value: 'lower-roman', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$upperRoman = {value: 'upper-roman', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lowerGreek = {value: 'lower-greek', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$upperGreek = {value: 'upper-greek', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lowerAlpha = {value: 'lower-alpha', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$upperAlpha = {value: 'upper-alpha', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lowerLatin = {value: 'lower-latin', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$upperLatin = {value: 'upper-latin', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$arabicIndic = {value: 'arabic-indic', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$armenian = {value: 'armenian', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$bengali = {value: 'bengali', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$cjkEarthlyBranch = {value: 'cjk-earthly-branch', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$cjkHeavenlyStem = {value: 'cjk-heavenly-stem', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$devanagari = {value: 'devanagari', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$georgian = {value: 'georgian', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$gujarati = {value: 'gujarati', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$gurmukhi = {value: 'gurmukhi', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$kannada = {value: 'kannada', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$khmer = {value: 'khmer', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lao = {value: 'lao', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$malayalam = {value: 'malayalam', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$myanmar = {value: 'myanmar', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$oriya = {value: 'oriya', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$telugu = {value: 'telugu', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$thai = {value: 'thai', listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$content = {value: 'content', flexBasis: _rtfeldman$elm_css$Css$Compatible, lengthOrNumberOrAutoOrNoneOrContent: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$wrap = {value: 'wrap', flexWrap: _rtfeldman$elm_css$Css$Compatible, flexDirectionOrWrap: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$wrapReverse = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$wrap,
+	{value: 'wrap-reverse'});
+var _rtfeldman$elm_css$Css$row = {value: 'row', flexDirection: _rtfeldman$elm_css$Css$Compatible, flexDirectionOrWrap: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$rowReverse = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$row,
+	{value: 'row-reverse'});
+var _rtfeldman$elm_css$Css$column = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$row,
+	{value: 'column'});
+var _rtfeldman$elm_css$Css$columnReverse = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$row,
+	{value: 'column-reverse'});
+var _rtfeldman$elm_css$Css$underline = {value: 'underline', textDecorationLine: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$overline = {value: 'overline', textDecorationLine: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lineThrough = {value: 'line-through', textDecorationLine: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$repeatX = {value: 'repeat-x', backgroundRepeatShorthand: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$repeatY = {value: 'repeat-y', backgroundRepeatShorthand: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$repeat = {value: 'repeat', backgroundRepeat: _rtfeldman$elm_css$Css$Compatible, backgroundRepeatShorthand: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$space = {value: 'space', backgroundRepeat: _rtfeldman$elm_css$Css$Compatible, backgroundRepeatShorthand: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$round = {value: 'round', backgroundRepeat: _rtfeldman$elm_css$Css$Compatible, backgroundRepeatShorthand: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$noRepeat = {value: 'no-repeat', backgroundRepeat: _rtfeldman$elm_css$Css$Compatible, backgroundRepeatShorthand: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$local = {value: 'local', backgroundAttachment: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$block = {value: 'block', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$inlineBlock = {value: 'inline-block', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$inline = {value: 'inline', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$table = {value: 'table', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$inlineTable = {value: 'inline-table', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableRow = {value: 'table-row', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableCell = {value: 'table-cell', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableColumn = {value: 'table-column', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableCaption = {value: 'table-caption', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableRowGroup = {value: 'table-row-group', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableColumnGroup = {value: 'table-column-group', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableHeaderGroup = {value: 'table-header-group', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tableFooterGroup = {value: 'table-footer-group', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$listItem = {value: 'list-item', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$inlineListItem = {value: 'inline-list-item', display: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$none = {value: 'none', cursor: _rtfeldman$elm_css$Css$Compatible, none: _rtfeldman$elm_css$Css$Compatible, lengthOrNone: _rtfeldman$elm_css$Css$Compatible, lengthOrNoneOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible, lengthOrNumberOrAutoOrNoneOrContent: _rtfeldman$elm_css$Css$Compatible, textDecorationLine: _rtfeldman$elm_css$Css$Compatible, listStyleType: _rtfeldman$elm_css$Css$Compatible, listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible, display: _rtfeldman$elm_css$Css$Compatible, outline: _rtfeldman$elm_css$Css$Compatible, resize: _rtfeldman$elm_css$Css$Compatible, transform: _rtfeldman$elm_css$Css$Compatible, borderStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$auto = {value: 'auto', cursor: _rtfeldman$elm_css$Css$Compatible, flexBasis: _rtfeldman$elm_css$Css$Compatible, overflow: _rtfeldman$elm_css$Css$Compatible, textRendering: _rtfeldman$elm_css$Css$Compatible, lengthOrAuto: _rtfeldman$elm_css$Css$Compatible, lengthOrNumberOrAutoOrNoneOrContent: _rtfeldman$elm_css$Css$Compatible, alignItemsOrAuto: _rtfeldman$elm_css$Css$Compatible, lengthOrAutoOrCoverOrContain: _rtfeldman$elm_css$Css$Compatible, justifyContentOrAuto: _rtfeldman$elm_css$Css$Compatible, intOrAuto: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$noWrap = {value: 'nowrap', whiteSpace: _rtfeldman$elm_css$Css$Compatible, flexWrap: _rtfeldman$elm_css$Css$Compatible, flexDirectionOrWrap: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$fillAvailable = {value: 'fill-available', minMaxDimension: _rtfeldman$elm_css$Css$Compatible, lengthOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible, lengthOrNoneOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$maxContent = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$fillAvailable,
+	{value: 'max-content'});
+var _rtfeldman$elm_css$Css$minContent = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$fillAvailable,
+	{value: 'min-content'});
+var _rtfeldman$elm_css$Css$fitContent = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$fillAvailable,
+	{value: 'fit-content'});
+var _rtfeldman$elm_css$Css$static = {value: 'static', position: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$fixed = {value: 'fixed', position: _rtfeldman$elm_css$Css$Compatible, backgroundAttachment: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$sticky = {value: 'sticky', position: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$relative = {value: 'relative', position: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$absolute = {value: 'absolute', position: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$serif = {value: 'serif', fontFamily: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$sansSerif = {value: 'sans-serif', fontFamily: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$monospace = {value: 'monospace', fontFamily: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$cursive = {value: 'cursive', fontFamily: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$fantasy = {value: 'fantasy', fontFamily: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$xxSmall = {value: 'xx-small', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$xSmall = {value: 'x-small', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$small = {value: 'small', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$medium = {value: 'medium', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$large = {value: 'large', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$xLarge = {value: 'x-large', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$xxLarge = {value: 'xx-large', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$smaller = {value: 'smaller', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$larger = {value: 'larger', fontSize: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$normal = {
+	value: 'normal',
+	warnings: {ctor: '[]'},
+	fontStyle: _rtfeldman$elm_css$Css$Compatible,
+	fontWeight: _rtfeldman$elm_css$Css$Compatible,
+	featureTagValue: _rtfeldman$elm_css$Css$Compatible,
+	overflowWrap: _rtfeldman$elm_css$Css$Compatible
+};
+var _rtfeldman$elm_css$Css$italic = {value: 'italic', fontStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$oblique = {value: 'oblique', fontStyle: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$bold = {value: 'bold', fontWeight: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$lighter = {value: 'lighter', fontWeight: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$bolder = {value: 'bolder', fontWeight: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$smallCaps = {value: 'small-caps', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantCaps: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$allSmallCaps = {value: 'all-small-caps', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantCaps: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$petiteCaps = {value: 'petite-caps', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantCaps: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$allPetiteCaps = {value: 'all-petite-caps', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantCaps: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$unicase = {value: 'unicase', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantCaps: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$titlingCaps = {value: 'titling-caps', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantCaps: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$commonLigatures = {value: 'common-ligatures', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$noCommonLigatures = {value: 'no-common-ligatures', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$discretionaryLigatures = {value: 'discretionary-ligatures', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$noDiscretionaryLigatures = {value: 'no-discretionary-ligatures', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$historicalLigatures = {value: 'historical-ligatures', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$noHistoricalLigatures = {value: 'no-historical-ligatures', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$contextual = {value: 'context', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$noContextual = {value: 'no-contextual', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantLigatures: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$liningNums = {value: 'lining-nums', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$oldstyleNums = {value: 'oldstyle-nums', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$proportionalNums = {value: 'proportional-nums', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$tabularNums = {value: 'tabular-nums', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$diagonalFractions = {value: 'diagonal-fractions', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$stackedFractions = {value: 'stacked-fractions', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$ordinal = {value: 'ordinal', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$slashedZero = {value: 'slashed-zero', fontVariant: _rtfeldman$elm_css$Css$Compatible, fontVariantNumeric: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$featureTag2 = F2(
+	function (tag, value) {
+		var potentialWarnings = {
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: !_elm_lang$core$Native_Utils.eq(
+					_elm_lang$core$String$length(tag),
+					4),
+				_1: A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Feature tags must be exactly 4 characters long. ',
+					A2(_elm_lang$core$Basics_ops['++'], tag, ' is invalid.'))
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.cmp(value, 0) < 0,
+					_1: A2(
+						_elm_lang$core$Basics_ops['++'],
+						'Feature values cannot be negative. ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(value),
+							' is invalid.'))
+				},
+				_1: {ctor: '[]'}
+			}
+		};
+		var warnings = A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Tuple$second,
+			A2(_elm_lang$core$List$filter, _elm_lang$core$Tuple$first, potentialWarnings));
+		return {
+			value: A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(tag),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' ',
+					_elm_lang$core$Basics$toString(value))),
+			featureTagValue: _rtfeldman$elm_css$Css$Compatible,
+			warnings: warnings
+		};
+	});
+var _rtfeldman$elm_css$Css$featureTag = function (tag) {
+	return A2(_rtfeldman$elm_css$Css$featureTag2, tag, 1);
+};
+var _rtfeldman$elm_css$Css$default = {value: 'default', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$crosshair = {value: 'crosshair', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$contextMenu = {value: 'context-menu', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$help = {value: 'help', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$pointer = {value: 'pointer', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$progress = {value: 'progress', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$wait = {value: 'wait', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$cell = {value: 'cell', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$text = {value: 'text', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$verticalText = {value: 'vertical-text', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$cursorAlias = {value: 'alias', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$copy = {value: 'copy', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$move = {value: 'move', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$noDrop = {value: 'no-drop', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$notAllowed = {value: 'not-allowed', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$eResize = {value: 'e-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$nResize = {value: 'n-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$neResize = {value: 'ne-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$nwResize = {value: 'nw-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$sResize = {value: 's-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$seResize = {value: 'se-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$swResize = {value: 'sw-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$wResize = {value: 'w-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$ewResize = {value: 'ew-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$nsResize = {value: 'ns-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$neswResize = {value: 'nesw-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$nwseResize = {value: 'nwse-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$colResize = {value: 'col-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$rowResize = {value: 'row-resize', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$allScroll = {value: 'all-scroll', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$zoomIn = {value: 'zoom-in', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$zoomOut = {value: 'zoom-out', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$grab = {value: 'grab', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$grabbing = {value: 'grabbing', cursor: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$PseudoClass = F2(
+	function (a, b) {
+		return {ctor: 'PseudoClass', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css$PseudoElement = F2(
+	function (a, b) {
+		return {ctor: 'PseudoElement', _0: a, _1: b};
+	});
+var _rtfeldman$elm_css$Css$PercentageUnits = {ctor: 'PercentageUnits'};
+var _rtfeldman$elm_css$Css$pct = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$PercentageUnits, '%');
+var _rtfeldman$elm_css$Css$EmUnits = {ctor: 'EmUnits'};
+var _rtfeldman$elm_css$Css$em = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$EmUnits, 'em');
+var _rtfeldman$elm_css$Css$ExUnits = {ctor: 'ExUnits'};
+var _rtfeldman$elm_css$Css$ex = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$ExUnits, 'ex');
+var _rtfeldman$elm_css$Css$ChUnits = {ctor: 'ChUnits'};
+var _rtfeldman$elm_css$Css$ch = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$ChUnits, 'ch');
+var _rtfeldman$elm_css$Css$RemUnits = {ctor: 'RemUnits'};
+var _rtfeldman$elm_css$Css$rem = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$RemUnits, 'rem');
+var _rtfeldman$elm_css$Css$VhUnits = {ctor: 'VhUnits'};
+var _rtfeldman$elm_css$Css$vh = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$VhUnits, 'vh');
+var _rtfeldman$elm_css$Css$VwUnits = {ctor: 'VwUnits'};
+var _rtfeldman$elm_css$Css$vw = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$VwUnits, 'vw');
+var _rtfeldman$elm_css$Css$VMinUnits = {ctor: 'VMinUnits'};
+var _rtfeldman$elm_css$Css$vmin = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$VMinUnits, 'vmin');
+var _rtfeldman$elm_css$Css$VMaxUnits = {ctor: 'VMaxUnits'};
+var _rtfeldman$elm_css$Css$vmax = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$VMaxUnits, 'vmax');
+var _rtfeldman$elm_css$Css$PxUnits = {ctor: 'PxUnits'};
+var _rtfeldman$elm_css$Css$px = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$PxUnits, 'px');
+var _rtfeldman$elm_css$Css$MMUnits = {ctor: 'MMUnits'};
+var _rtfeldman$elm_css$Css$mm = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$MMUnits, 'mm');
+var _rtfeldman$elm_css$Css$CMUnits = {ctor: 'CMUnits'};
+var _rtfeldman$elm_css$Css$cm = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$CMUnits, 'cm');
+var _rtfeldman$elm_css$Css$InchUnits = {ctor: 'InchUnits'};
+var _rtfeldman$elm_css$Css$inches = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$InchUnits, 'in');
+var _rtfeldman$elm_css$Css$PtUnits = {ctor: 'PtUnits'};
+var _rtfeldman$elm_css$Css$pt = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$PtUnits, 'pt');
+var _rtfeldman$elm_css$Css$PcUnits = {ctor: 'PcUnits'};
+var _rtfeldman$elm_css$Css$pc = A2(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$PcUnits, 'pc');
+var _rtfeldman$elm_css$Css$UnitlessInteger = {ctor: 'UnitlessInteger'};
+var _rtfeldman$elm_css$Css$zero = {value: '0', length: _rtfeldman$elm_css$Css$Compatible, lengthOrNumber: _rtfeldman$elm_css$Css$Compatible, lengthOrNone: _rtfeldman$elm_css$Css$Compatible, lengthOrAuto: _rtfeldman$elm_css$Css$Compatible, lengthOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible, lengthOrNoneOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible, number: _rtfeldman$elm_css$Css$Compatible, outline: _rtfeldman$elm_css$Css$Compatible, units: _rtfeldman$elm_css$Css$UnitlessInteger, unitLabel: '', numericValue: 0, lengthOrAutoOrCoverOrContain: _rtfeldman$elm_css$Css$Compatible};
+var _rtfeldman$elm_css$Css$int = function (val) {
+	return {
+		value: _rtfeldman$elm_css$Css$numberToString(val),
+		lengthOrNumber: _rtfeldman$elm_css$Css$Compatible,
+		number: _rtfeldman$elm_css$Css$Compatible,
+		fontWeight: _rtfeldman$elm_css$Css$Compatible,
+		lengthOrNumberOrAutoOrNoneOrContent: _rtfeldman$elm_css$Css$Compatible,
+		intOrAuto: _rtfeldman$elm_css$Css$Compatible,
+		numericValue: _elm_lang$core$Basics$toFloat(val),
+		unitLabel: '',
+		units: _rtfeldman$elm_css$Css$UnitlessInteger
+	};
+};
+var _rtfeldman$elm_css$Css$UnitlessFloat = {ctor: 'UnitlessFloat'};
+var _rtfeldman$elm_css$Css$num = function (val) {
+	return {
+		value: _rtfeldman$elm_css$Css$numberToString(val),
+		lengthOrNumber: _rtfeldman$elm_css$Css$Compatible,
+		number: _rtfeldman$elm_css$Css$Compatible,
+		lengthOrNumberOrAutoOrNoneOrContent: _rtfeldman$elm_css$Css$Compatible,
+		numericValue: val,
+		unitLabel: '',
+		units: _rtfeldman$elm_css$Css$UnitlessFloat
+	};
+};
+var _rtfeldman$elm_css$Css$IncompatibleUnits = {ctor: 'IncompatibleUnits'};
+var _rtfeldman$elm_css$Css$initial = {
+	value: 'initial',
+	overflow: _rtfeldman$elm_css$Css$Compatible,
+	none: _rtfeldman$elm_css$Css$Compatible,
+	number: _rtfeldman$elm_css$Css$Compatible,
+	textDecorationLine: _rtfeldman$elm_css$Css$Compatible,
+	textRendering: _rtfeldman$elm_css$Css$Compatible,
+	textIndent: _rtfeldman$elm_css$Css$Compatible,
+	textDecorationStyle: _rtfeldman$elm_css$Css$Compatible,
+	borderStyle: _rtfeldman$elm_css$Css$Compatible,
+	boxSizing: _rtfeldman$elm_css$Css$Compatible,
+	color: _rtfeldman$elm_css$Css$Compatible,
+	cursor: _rtfeldman$elm_css$Css$Compatible,
+	display: _rtfeldman$elm_css$Css$Compatible,
+	all: _rtfeldman$elm_css$Css$Compatible,
+	alignItems: _rtfeldman$elm_css$Css$Compatible,
+	justifyContent: _rtfeldman$elm_css$Css$Compatible,
+	length: _rtfeldman$elm_css$Css$Compatible,
+	lengthOrAuto: _rtfeldman$elm_css$Css$Compatible,
+	lengthOrNone: _rtfeldman$elm_css$Css$Compatible,
+	lengthOrNumber: _rtfeldman$elm_css$Css$Compatible,
+	lengthOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible,
+	lengthOrNoneOrMinMaxDimension: _rtfeldman$elm_css$Css$Compatible,
+	listStyleType: _rtfeldman$elm_css$Css$Compatible,
+	listStylePosition: _rtfeldman$elm_css$Css$Compatible,
+	listStyleTypeOrPositionOrImage: _rtfeldman$elm_css$Css$Compatible,
+	flexBasis: _rtfeldman$elm_css$Css$Compatible,
+	flexWrap: _rtfeldman$elm_css$Css$Compatible,
+	flexDirection: _rtfeldman$elm_css$Css$Compatible,
+	flexDirectionOrWrap: _rtfeldman$elm_css$Css$Compatible,
+	lengthOrNumberOrAutoOrNoneOrContent: _rtfeldman$elm_css$Css$Compatible,
+	fontFamily: _rtfeldman$elm_css$Css$Compatible,
+	fontSize: _rtfeldman$elm_css$Css$Compatible,
+	fontStyle: _rtfeldman$elm_css$Css$Compatible,
+	fontWeight: _rtfeldman$elm_css$Css$Compatible,
+	fontVariant: _rtfeldman$elm_css$Css$Compatible,
+	outline: _rtfeldman$elm_css$Css$Compatible,
+	units: _rtfeldman$elm_css$Css$IncompatibleUnits,
+	numericValue: 0,
+	unitLabel: '',
+	warnings: {ctor: '[]'},
+	backgroundRepeat: _rtfeldman$elm_css$Css$Compatible,
+	backgroundRepeatShorthand: _rtfeldman$elm_css$Css$Compatible,
+	backgroundAttachment: _rtfeldman$elm_css$Css$Compatible,
+	backgroundBlendMode: _rtfeldman$elm_css$Css$Compatible,
+	backgroundOrigin: _rtfeldman$elm_css$Css$Compatible,
+	backgroundImage: _rtfeldman$elm_css$Css$Compatible,
+	lengthOrAutoOrCoverOrContain: _rtfeldman$elm_css$Css$Compatible,
+	intOrAuto: _rtfeldman$elm_css$Css$Compatible
+};
+var _rtfeldman$elm_css$Css$unset = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$initial,
+	{value: 'unset'});
+var _rtfeldman$elm_css$Css$inherit = _elm_lang$core$Native_Utils.update(
+	_rtfeldman$elm_css$Css$initial,
+	{value: 'inherit'});
+var _rtfeldman$elm_css$Css$lengthForOverloadedProperty = A3(_rtfeldman$elm_css$Css$lengthConverter, _rtfeldman$elm_css$Css$IncompatibleUnits, '', 0);
+var _rtfeldman$elm_css$Css$alignItems = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'alignItems',
+		'align-items',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$alignSelf = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'alignSelf',
+		'align-self',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$justifyContent = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'justifyContent',
+		'justify-content',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$float = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'float',
+		'float',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$textAlignLast = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'textAlignLast',
+		'text-align-last',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$textAlign = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'textAlign',
+		'text-align',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$verticalAlign = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'verticalAlign',
+		'vertical-align',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$backgroundPosition = function (fn) {
+	return A3(
+		_rtfeldman$elm_css$Css$getOverloadedProperty,
+		'backgroundPosition',
+		'background-position',
+		fn(_rtfeldman$elm_css$Css$lengthForOverloadedProperty));
+};
+var _rtfeldman$elm_css$Css$Rtl = {ctor: 'Rtl'};
+var _rtfeldman$elm_css$Css$Ltr = {ctor: 'Ltr'};
+var _rtfeldman$elm_css$Css$IntentionallyUnsupportedPleaseSeeDocs = {ctor: 'IntentionallyUnsupportedPleaseSeeDocs'};
+var _rtfeldman$elm_css$Css$thin = _rtfeldman$elm_css$Css$IntentionallyUnsupportedPleaseSeeDocs;
+var _rtfeldman$elm_css$Css$thick = _rtfeldman$elm_css$Css$IntentionallyUnsupportedPleaseSeeDocs;
+var _rtfeldman$elm_css$Css$blink = _rtfeldman$elm_css$Css$IntentionallyUnsupportedPleaseSeeDocs;
+
+var _rtfeldman$elm_css$Css_Elements$typeSelector = F2(
+	function (selectorStr, mixins) {
+		var sequence = A2(
+			_rtfeldman$elm_css$Css_Structure$TypeSelectorSequence,
+			_rtfeldman$elm_css$Css_Structure$TypeSelector(selectorStr),
+			{ctor: '[]'});
+		var selector = A3(
+			_rtfeldman$elm_css$Css_Structure$Selector,
+			sequence,
+			{ctor: '[]'},
+			_elm_lang$core$Maybe$Nothing);
+		return _rtfeldman$elm_css$Css_Preprocess$Snippet(
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css_Preprocess$StyleBlockDeclaration(
+					A3(
+						_rtfeldman$elm_css$Css_Preprocess$StyleBlock,
+						selector,
+						{ctor: '[]'},
+						mixins)),
+				_1: {ctor: '[]'}
+			});
+	});
+var _rtfeldman$elm_css$Css_Elements$html = _rtfeldman$elm_css$Css_Elements$typeSelector('html');
+var _rtfeldman$elm_css$Css_Elements$body = _rtfeldman$elm_css$Css_Elements$typeSelector('body');
+var _rtfeldman$elm_css$Css_Elements$article = _rtfeldman$elm_css$Css_Elements$typeSelector('article');
+var _rtfeldman$elm_css$Css_Elements$header = _rtfeldman$elm_css$Css_Elements$typeSelector('header');
+var _rtfeldman$elm_css$Css_Elements$footer = _rtfeldman$elm_css$Css_Elements$typeSelector('footer');
+var _rtfeldman$elm_css$Css_Elements$h1 = _rtfeldman$elm_css$Css_Elements$typeSelector('h1');
+var _rtfeldman$elm_css$Css_Elements$h2 = _rtfeldman$elm_css$Css_Elements$typeSelector('h2');
+var _rtfeldman$elm_css$Css_Elements$h3 = _rtfeldman$elm_css$Css_Elements$typeSelector('h3');
+var _rtfeldman$elm_css$Css_Elements$h4 = _rtfeldman$elm_css$Css_Elements$typeSelector('h4');
+var _rtfeldman$elm_css$Css_Elements$h5 = _rtfeldman$elm_css$Css_Elements$typeSelector('h5');
+var _rtfeldman$elm_css$Css_Elements$h6 = _rtfeldman$elm_css$Css_Elements$typeSelector('h6');
+var _rtfeldman$elm_css$Css_Elements$nav = _rtfeldman$elm_css$Css_Elements$typeSelector('nav');
+var _rtfeldman$elm_css$Css_Elements$section = _rtfeldman$elm_css$Css_Elements$typeSelector('section');
+var _rtfeldman$elm_css$Css_Elements$div = _rtfeldman$elm_css$Css_Elements$typeSelector('div');
+var _rtfeldman$elm_css$Css_Elements$hr = _rtfeldman$elm_css$Css_Elements$typeSelector('hr');
+var _rtfeldman$elm_css$Css_Elements$li = _rtfeldman$elm_css$Css_Elements$typeSelector('li');
+var _rtfeldman$elm_css$Css_Elements$main_ = _rtfeldman$elm_css$Css_Elements$typeSelector('main');
+var _rtfeldman$elm_css$Css_Elements$ol = _rtfeldman$elm_css$Css_Elements$typeSelector('ol');
+var _rtfeldman$elm_css$Css_Elements$p = _rtfeldman$elm_css$Css_Elements$typeSelector('p');
+var _rtfeldman$elm_css$Css_Elements$ul = _rtfeldman$elm_css$Css_Elements$typeSelector('ul');
+var _rtfeldman$elm_css$Css_Elements$pre = _rtfeldman$elm_css$Css_Elements$typeSelector('pre');
+var _rtfeldman$elm_css$Css_Elements$a = _rtfeldman$elm_css$Css_Elements$typeSelector('a');
+var _rtfeldman$elm_css$Css_Elements$code = _rtfeldman$elm_css$Css_Elements$typeSelector('code');
+var _rtfeldman$elm_css$Css_Elements$small = _rtfeldman$elm_css$Css_Elements$typeSelector('small');
+var _rtfeldman$elm_css$Css_Elements$span = _rtfeldman$elm_css$Css_Elements$typeSelector('span');
+var _rtfeldman$elm_css$Css_Elements$strong = _rtfeldman$elm_css$Css_Elements$typeSelector('strong');
+var _rtfeldman$elm_css$Css_Elements$i = _rtfeldman$elm_css$Css_Elements$typeSelector('i');
+var _rtfeldman$elm_css$Css_Elements$em = _rtfeldman$elm_css$Css_Elements$typeSelector('em');
+var _rtfeldman$elm_css$Css_Elements$img = _rtfeldman$elm_css$Css_Elements$typeSelector('img');
+var _rtfeldman$elm_css$Css_Elements$audio = _rtfeldman$elm_css$Css_Elements$typeSelector('audio');
+var _rtfeldman$elm_css$Css_Elements$video = _rtfeldman$elm_css$Css_Elements$typeSelector('video');
+var _rtfeldman$elm_css$Css_Elements$canvas = _rtfeldman$elm_css$Css_Elements$typeSelector('canvas');
+var _rtfeldman$elm_css$Css_Elements$caption = _rtfeldman$elm_css$Css_Elements$typeSelector('caption');
+var _rtfeldman$elm_css$Css_Elements$col = _rtfeldman$elm_css$Css_Elements$typeSelector('col');
+var _rtfeldman$elm_css$Css_Elements$colgroup = _rtfeldman$elm_css$Css_Elements$typeSelector('colgroup');
+var _rtfeldman$elm_css$Css_Elements$table = _rtfeldman$elm_css$Css_Elements$typeSelector('table');
+var _rtfeldman$elm_css$Css_Elements$tbody = _rtfeldman$elm_css$Css_Elements$typeSelector('tbody');
+var _rtfeldman$elm_css$Css_Elements$td = _rtfeldman$elm_css$Css_Elements$typeSelector('td');
+var _rtfeldman$elm_css$Css_Elements$tfoot = _rtfeldman$elm_css$Css_Elements$typeSelector('tfoot');
+var _rtfeldman$elm_css$Css_Elements$th = _rtfeldman$elm_css$Css_Elements$typeSelector('th');
+var _rtfeldman$elm_css$Css_Elements$thead = _rtfeldman$elm_css$Css_Elements$typeSelector('thead');
+var _rtfeldman$elm_css$Css_Elements$tr = _rtfeldman$elm_css$Css_Elements$typeSelector('tr');
+var _rtfeldman$elm_css$Css_Elements$button = _rtfeldman$elm_css$Css_Elements$typeSelector('button');
+var _rtfeldman$elm_css$Css_Elements$fieldset = _rtfeldman$elm_css$Css_Elements$typeSelector('fieldset');
+var _rtfeldman$elm_css$Css_Elements$form = _rtfeldman$elm_css$Css_Elements$typeSelector('form');
+var _rtfeldman$elm_css$Css_Elements$input = _rtfeldman$elm_css$Css_Elements$typeSelector('input');
+var _rtfeldman$elm_css$Css_Elements$label = _rtfeldman$elm_css$Css_Elements$typeSelector('label');
+var _rtfeldman$elm_css$Css_Elements$legend = _rtfeldman$elm_css$Css_Elements$typeSelector('legend');
+var _rtfeldman$elm_css$Css_Elements$optgroup = _rtfeldman$elm_css$Css_Elements$typeSelector('optgroup');
+var _rtfeldman$elm_css$Css_Elements$option = _rtfeldman$elm_css$Css_Elements$typeSelector('option');
+var _rtfeldman$elm_css$Css_Elements$progress = _rtfeldman$elm_css$Css_Elements$typeSelector('progress');
+var _rtfeldman$elm_css$Css_Elements$select = _rtfeldman$elm_css$Css_Elements$typeSelector('select');
+var _rtfeldman$elm_css$Css_Elements$textarea = _rtfeldman$elm_css$Css_Elements$typeSelector('textarea');
+var _rtfeldman$elm_css$Css_Elements$blockquote = _rtfeldman$elm_css$Css_Elements$typeSelector('blockquote');
+var _rtfeldman$elm_css$Css_Elements$svg = _rtfeldman$elm_css$Css_Elements$typeSelector('svg');
+var _rtfeldman$elm_css$Css_Elements$path = _rtfeldman$elm_css$Css_Elements$typeSelector('path');
+var _rtfeldman$elm_css$Css_Elements$rect = _rtfeldman$elm_css$Css_Elements$typeSelector('rect');
+var _rtfeldman$elm_css$Css_Elements$circle = _rtfeldman$elm_css$Css_Elements$typeSelector('circle');
+var _rtfeldman$elm_css$Css_Elements$ellipse = _rtfeldman$elm_css$Css_Elements$typeSelector('ellipse');
+var _rtfeldman$elm_css$Css_Elements$line = _rtfeldman$elm_css$Css_Elements$typeSelector('line');
+var _rtfeldman$elm_css$Css_Elements$polyline = _rtfeldman$elm_css$Css_Elements$typeSelector('polyline');
+var _rtfeldman$elm_css$Css_Elements$polygon = _rtfeldman$elm_css$Css_Elements$typeSelector('polygon');
+
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToProperty = F2(
+	function (name, property) {
+		var _p0 = property.key;
+		if (_p0 === 'animation-name') {
+			return _elm_lang$core$Native_Utils.update(
+				property,
+				{
+					value: A2(_elm_lang$core$Basics_ops['++'], name, property.value)
+				});
+		} else {
+			return property;
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable = F2(
+	function (name, selector) {
+		var _p1 = selector;
+		switch (_p1.ctor) {
+			case 'ClassSelector':
+				return _rtfeldman$elm_css$Css_Structure$ClassSelector(
+					A2(_elm_lang$core$Basics_ops['++'], name, _p1._0));
+			case 'IdSelector':
+				return _rtfeldman$elm_css$Css_Structure$IdSelector(_p1._0);
+			default:
+				return _rtfeldman$elm_css$Css_Structure$PseudoClassSelector(_p1._0);
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSequence = F2(
+	function (name, sequence) {
+		var _p2 = sequence;
+		switch (_p2.ctor) {
+			case 'TypeSelectorSequence':
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$TypeSelectorSequence,
+					_p2._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable(name),
+						_p2._1));
+			case 'UniversalSelectorSequence':
+				return _rtfeldman$elm_css$Css_Structure$UniversalSelectorSequence(
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable(name),
+						_p2._0));
+			default:
+				return A2(
+					_rtfeldman$elm_css$Css_Structure$CustomSelector,
+					_p2._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable(name),
+						_p2._1));
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSelector = F2(
+	function (name, _p3) {
+		var _p4 = _p3;
+		var apply = _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSequence(name);
+		return A3(
+			_rtfeldman$elm_css$Css_Structure$Selector,
+			apply(_p4._0),
+			A2(
+				_elm_lang$core$List$map,
+				function (_p5) {
+					var _p6 = _p5;
+					return {
+						ctor: '_Tuple2',
+						_0: _p6._0,
+						_1: apply(_p6._1)
+					};
+				},
+				_p4._1),
+			_p4._2);
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin = F2(
+	function (name, mixin) {
+		var _p7 = mixin;
+		switch (_p7.ctor) {
+			case 'AppendProperty':
+				return _rtfeldman$elm_css$Css_Preprocess$AppendProperty(
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToProperty, name, _p7._0));
+			case 'ExtendSelector':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$ExtendSelector,
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToRepeatable, name, _p7._0),
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._1));
+			case 'NestSnippet':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$NestSnippet,
+					_p7._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSnippet(name),
+						_p7._1));
+			case 'WithPseudoElement':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$WithPseudoElement,
+					_p7._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._1));
+			case 'WithMedia':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$WithMedia,
+					_p7._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._1));
+			default:
+				return _rtfeldman$elm_css$Css_Preprocess$ApplyMixins(
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+						_p7._0));
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToSnippet = F2(
+	function (name, _p8) {
+		var _p9 = _p8;
+		return _rtfeldman$elm_css$Css_Preprocess$Snippet(
+			A2(
+				_elm_lang$core$List$map,
+				_rtfeldman$elm_css$Css_Namespace$applyNamespaceToDeclaration(name),
+				_p9._0));
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToDeclaration = F2(
+	function (name, declaration) {
+		var _p10 = declaration;
+		switch (_p10.ctor) {
+			case 'StyleBlockDeclaration':
+				return _rtfeldman$elm_css$Css_Preprocess$StyleBlockDeclaration(
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock, name, _p10._0));
+			case 'MediaRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$MediaRule,
+					_p10._0,
+					A2(
+						_elm_lang$core$List$map,
+						_rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock(name),
+						_p10._1));
+			case 'SupportsRule':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$SupportsRule,
+					_p10._0,
+					function (declarations) {
+						return {
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css_Preprocess$Snippet(declarations),
+							_1: {ctor: '[]'}
+						};
+					}(
+						A2(
+							_elm_lang$core$List$map,
+							_rtfeldman$elm_css$Css_Namespace$applyNamespaceToDeclaration(name),
+							A2(_elm_lang$core$List$concatMap, _rtfeldman$elm_css$Css_Preprocess$unwrapSnippet, _p10._1))));
+			case 'DocumentRule':
+				return A5(
+					_rtfeldman$elm_css$Css_Preprocess$DocumentRule,
+					_p10._0,
+					_p10._1,
+					_p10._2,
+					_p10._3,
+					A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock, name, _p10._4));
+			case 'PageRule':
+				return declaration;
+			case 'FontFace':
+				return declaration;
+			case 'Keyframes':
+				return A2(
+					_rtfeldman$elm_css$Css_Preprocess$Keyframes,
+					A2(_elm_lang$core$Basics_ops['++'], name, _p10._0),
+					_p10._1);
+			case 'Viewport':
+				return declaration;
+			case 'CounterStyle':
+				return declaration;
+			default:
+				return declaration;
+		}
+	});
+var _rtfeldman$elm_css$Css_Namespace$applyNamespaceToStyleBlock = F2(
+	function (name, _p11) {
+		var _p12 = _p11;
+		return A3(
+			_rtfeldman$elm_css$Css_Preprocess$StyleBlock,
+			A2(_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSelector, name, _p12._0),
+			A2(
+				_elm_lang$core$List$map,
+				_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSelector(name),
+				_p12._1),
+			A2(
+				_elm_lang$core$List$map,
+				_rtfeldman$elm_css$Css_Namespace$applyNamespaceToMixin(name),
+				_p12._2));
+	});
+var _rtfeldman$elm_css$Css_Namespace$namespace = F2(
+	function (rawIdentifier, snippets) {
+		return A2(
+			_elm_lang$core$List$map,
+			_rtfeldman$elm_css$Css_Namespace$applyNamespaceToSnippet(
+				_rtfeldman$elm_css_util$Css_Helpers$toCssIdentifier(rawIdentifier)),
+			snippets);
+	});
+
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$horizontalAlignOption = function (align) {
+	var _p0 = align;
+	switch (_p0.ctor) {
+		case 'Left':
+			return 'start';
+		case 'Center':
+			return 'center';
+		case 'Right':
+			return 'end';
+		case 'Around':
+			return 'around';
+		default:
+			return 'between';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$verticalAlignOption = function (align) {
+	var _p1 = align;
+	switch (_p1.ctor) {
+		case 'Top':
+			return 'start';
+		case 'Middle':
+			return 'center';
+		default:
+			return 'end';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$moveCountOption = function (size) {
+	var _p2 = size;
+	switch (_p2.ctor) {
+		case 'Move0':
+			return '0';
+		case 'Move1':
+			return '1';
+		case 'Move2':
+			return '2';
+		case 'Move3':
+			return '3';
+		case 'Move4':
+			return '4';
+		case 'Move5':
+			return '5';
+		case 'Move6':
+			return '6';
+		case 'Move7':
+			return '7';
+		case 'Move8':
+			return '8';
+		case 'Move9':
+			return '9';
+		case 'Move10':
+			return '10';
+		case 'Move11':
+			return '11';
+		default:
+			return '12';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$offsetCountOption = function (size) {
+	var _p3 = size;
+	switch (_p3.ctor) {
+		case 'Offset0':
+			return '0';
+		case 'Offset1':
+			return '1';
+		case 'Offset2':
+			return '2';
+		case 'Offset3':
+			return '3';
+		case 'Offset4':
+			return '4';
+		case 'Offset5':
+			return '5';
+		case 'Offset6':
+			return '6';
+		case 'Offset7':
+			return '7';
+		case 'Offset8':
+			return '8';
+		case 'Offset9':
+			return '9';
+		case 'Offset10':
+			return '10';
+		default:
+			return '11';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$columnCountOption = function (size) {
+	var _p4 = size;
+	switch (_p4.ctor) {
+		case 'Col':
+			return _elm_lang$core$Maybe$Nothing;
+		case 'Col1':
+			return _elm_lang$core$Maybe$Just('1');
+		case 'Col2':
+			return _elm_lang$core$Maybe$Just('2');
+		case 'Col3':
+			return _elm_lang$core$Maybe$Just('3');
+		case 'Col4':
+			return _elm_lang$core$Maybe$Just('4');
+		case 'Col5':
+			return _elm_lang$core$Maybe$Just('5');
+		case 'Col6':
+			return _elm_lang$core$Maybe$Just('6');
+		case 'Col7':
+			return _elm_lang$core$Maybe$Just('7');
+		case 'Col8':
+			return _elm_lang$core$Maybe$Just('8');
+		case 'Col9':
+			return _elm_lang$core$Maybe$Just('9');
+		case 'Col10':
+			return _elm_lang$core$Maybe$Just('10');
+		case 'Col11':
+			return _elm_lang$core$Maybe$Just('11');
+		case 'Col12':
+			return _elm_lang$core$Maybe$Just('12');
+		default:
+			return _elm_lang$core$Maybe$Just('auto');
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption = function (size) {
+	var _p5 = size;
+	switch (_p5.ctor) {
+		case 'XS':
+			return _elm_lang$core$Maybe$Nothing;
+		case 'SM':
+			return _elm_lang$core$Maybe$Just('sm');
+		case 'MD':
+			return _elm_lang$core$Maybe$Just('md');
+		case 'LG':
+			return _elm_lang$core$Maybe$Just('lg');
+		default:
+			return _elm_lang$core$Maybe$Just('xl');
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeToPartialString = function (screenSize) {
+	var _p6 = _rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(screenSize);
+	if (_p6.ctor === 'Just') {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'-',
+			A2(_elm_lang$core$Basics_ops['++'], _p6._0, '-'));
+	} else {
+		return '-';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$hAlignClass = function (_p7) {
+	var _p8 = _p7;
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'justify-content-',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					'',
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (v) {
+							return A2(_elm_lang$core$Basics_ops['++'], v, '-');
+						},
+						_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(_p8.screenSize))),
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$horizontalAlignOption(_p8.align))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$hAlignsToAttributes = function (aligns) {
+	var align = function (a) {
+		return A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$hAlignClass, a);
+	};
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_elm_lang$core$Basics$identity,
+		A2(_elm_lang$core$List$map, align, aligns));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$vAlignClass = F2(
+	function (prefix, _p9) {
+		var _p10 = _p9;
+		return _elm_lang$html$Html_Attributes$class(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				prefix,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_elm_lang$core$Maybe$withDefault,
+						'',
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (v) {
+								return A2(_elm_lang$core$Basics_ops['++'], v, '-');
+							},
+							_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(_p10.screenSize))),
+					_rundis$elm_bootstrap$Bootstrap_Grid_Internal$verticalAlignOption(_p10.align))));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$vAlignsToAttributes = F2(
+	function (prefix, aligns) {
+		var align = function (a) {
+			return A2(
+				_elm_lang$core$Maybe$map,
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$vAlignClass(prefix),
+				a);
+		};
+		return A2(
+			_elm_lang$core$List$filterMap,
+			_elm_lang$core$Basics$identity,
+			A2(_elm_lang$core$List$map, align, aligns));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$pushesToAttributes = function (pushes) {
+	var push = function (m) {
+		var _p11 = m;
+		if (_p11.ctor === 'Just') {
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'push',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeToPartialString(_p11._0.screenSize),
+							_rundis$elm_bootstrap$Bootstrap_Grid_Internal$moveCountOption(_p11._0.moveCount)))));
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	};
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_elm_lang$core$Basics$identity,
+		A2(_elm_lang$core$List$map, push, pushes));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$pullsToAttributes = function (pulls) {
+	var pull = function (m) {
+		var _p12 = m;
+		if (_p12.ctor === 'Just') {
+			return _elm_lang$core$Maybe$Just(
+				_elm_lang$html$Html_Attributes$class(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'pull',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeToPartialString(_p12._0.screenSize),
+							_rundis$elm_bootstrap$Bootstrap_Grid_Internal$moveCountOption(_p12._0.moveCount)))));
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	};
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_elm_lang$core$Basics$identity,
+		A2(_elm_lang$core$List$map, pull, pulls));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$offsetClass = function (_p13) {
+	var _p14 = _p13;
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'offset',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeToPartialString(_p14.screenSize),
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offsetCountOption(_p14.offsetCount))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$offsetsToAttributes = function (offsets) {
+	var offset = function (m) {
+		return A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$offsetClass, m);
+	};
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_elm_lang$core$Basics$identity,
+		A2(_elm_lang$core$List$map, offset, offsets));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$colWidthClass = function (_p15) {
+	var _p16 = _p15;
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'col',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					'',
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (v) {
+							return A2(_elm_lang$core$Basics_ops['++'], '-', v);
+						},
+						_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(_p16.screenSize))),
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					'',
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (v) {
+							return A2(_elm_lang$core$Basics_ops['++'], '-', v);
+						},
+						_rundis$elm_bootstrap$Bootstrap_Grid_Internal$columnCountOption(_p16.columnCount))))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$colWidthsToAttributes = function (widths) {
+	var width = function (w) {
+		return A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$colWidthClass, w);
+	};
+	return A2(
+		_elm_lang$core$List$filterMap,
+		_elm_lang$core$Basics$identity,
+		A2(_elm_lang$core$List$map, width, widths));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$defaultRowOptions = {
+	attributes: {ctor: '[]'},
+	vAlignXs: _elm_lang$core$Maybe$Nothing,
+	vAlignSm: _elm_lang$core$Maybe$Nothing,
+	vAlignMd: _elm_lang$core$Maybe$Nothing,
+	vAlignLg: _elm_lang$core$Maybe$Nothing,
+	vAlignXl: _elm_lang$core$Maybe$Nothing,
+	hAlignXs: _elm_lang$core$Maybe$Nothing,
+	hAlignSm: _elm_lang$core$Maybe$Nothing,
+	hAlignMd: _elm_lang$core$Maybe$Nothing,
+	hAlignLg: _elm_lang$core$Maybe$Nothing,
+	hAlignXl: _elm_lang$core$Maybe$Nothing
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$defaultColOptions = {
+	attributes: {ctor: '[]'},
+	widthXs: _elm_lang$core$Maybe$Nothing,
+	widthSm: _elm_lang$core$Maybe$Nothing,
+	widthMd: _elm_lang$core$Maybe$Nothing,
+	widthLg: _elm_lang$core$Maybe$Nothing,
+	widthXl: _elm_lang$core$Maybe$Nothing,
+	offsetXs: _elm_lang$core$Maybe$Nothing,
+	offsetSm: _elm_lang$core$Maybe$Nothing,
+	offsetMd: _elm_lang$core$Maybe$Nothing,
+	offsetLg: _elm_lang$core$Maybe$Nothing,
+	offsetXl: _elm_lang$core$Maybe$Nothing,
+	pullXs: _elm_lang$core$Maybe$Nothing,
+	pullSm: _elm_lang$core$Maybe$Nothing,
+	pullMd: _elm_lang$core$Maybe$Nothing,
+	pullLg: _elm_lang$core$Maybe$Nothing,
+	pullXl: _elm_lang$core$Maybe$Nothing,
+	pushXs: _elm_lang$core$Maybe$Nothing,
+	pushSm: _elm_lang$core$Maybe$Nothing,
+	pushMd: _elm_lang$core$Maybe$Nothing,
+	pushLg: _elm_lang$core$Maybe$Nothing,
+	pushXl: _elm_lang$core$Maybe$Nothing,
+	alignXs: _elm_lang$core$Maybe$Nothing,
+	alignSm: _elm_lang$core$Maybe$Nothing,
+	alignMd: _elm_lang$core$Maybe$Nothing,
+	alignLg: _elm_lang$core$Maybe$Nothing,
+	alignXl: _elm_lang$core$Maybe$Nothing
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyRowHAlign = F2(
+	function (align, options) {
+		var _p17 = align.screenSize;
+		switch (_p17.ctor) {
+			case 'XS':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						hAlignXs: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'SM':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						hAlignSm: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'MD':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						hAlignMd: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'LG':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						hAlignLg: _elm_lang$core$Maybe$Just(align)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						hAlignXl: _elm_lang$core$Maybe$Just(align)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyRowVAlign = F2(
+	function (align, options) {
+		var _p18 = align.screenSize;
+		switch (_p18.ctor) {
+			case 'XS':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						vAlignXs: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'SM':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						vAlignSm: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'MD':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						vAlignMd: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'LG':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						vAlignLg: _elm_lang$core$Maybe$Just(align)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						vAlignXl: _elm_lang$core$Maybe$Just(align)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyRowOption = F2(
+	function (modifier, options) {
+		var _p19 = modifier;
+		switch (_p19.ctor) {
+			case 'RowAttrs':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p19._0)
+					});
+			case 'RowVAlign':
+				return A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyRowVAlign, _p19._0, options);
+			default:
+				return A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyRowHAlign, _p19._0, options);
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColAlign = F2(
+	function (align, options) {
+		var _p20 = align.screenSize;
+		switch (_p20.ctor) {
+			case 'XS':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						alignXs: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'SM':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						alignSm: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'MD':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						alignMd: _elm_lang$core$Maybe$Just(align)
+					});
+			case 'LG':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						alignLg: _elm_lang$core$Maybe$Just(align)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						alignXl: _elm_lang$core$Maybe$Just(align)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColPush = F2(
+	function (push, options) {
+		var _p21 = push.screenSize;
+		switch (_p21.ctor) {
+			case 'XS':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pushXs: _elm_lang$core$Maybe$Just(push)
+					});
+			case 'SM':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pushSm: _elm_lang$core$Maybe$Just(push)
+					});
+			case 'MD':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pushMd: _elm_lang$core$Maybe$Just(push)
+					});
+			case 'LG':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pushLg: _elm_lang$core$Maybe$Just(push)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pushXl: _elm_lang$core$Maybe$Just(push)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColPull = F2(
+	function (pull, options) {
+		var _p22 = pull.screenSize;
+		switch (_p22.ctor) {
+			case 'XS':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pullXs: _elm_lang$core$Maybe$Just(pull)
+					});
+			case 'SM':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pullSm: _elm_lang$core$Maybe$Just(pull)
+					});
+			case 'MD':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pullMd: _elm_lang$core$Maybe$Just(pull)
+					});
+			case 'LG':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pullLg: _elm_lang$core$Maybe$Just(pull)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						pullXl: _elm_lang$core$Maybe$Just(pull)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColOffset = F2(
+	function (offset, options) {
+		var _p23 = offset.screenSize;
+		switch (_p23.ctor) {
+			case 'XS':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						offsetXs: _elm_lang$core$Maybe$Just(offset)
+					});
+			case 'SM':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						offsetSm: _elm_lang$core$Maybe$Just(offset)
+					});
+			case 'MD':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						offsetMd: _elm_lang$core$Maybe$Just(offset)
+					});
+			case 'LG':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						offsetLg: _elm_lang$core$Maybe$Just(offset)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						offsetXl: _elm_lang$core$Maybe$Just(offset)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColWidth = F2(
+	function (width, options) {
+		var _p24 = width.screenSize;
+		switch (_p24.ctor) {
+			case 'XS':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						widthXs: _elm_lang$core$Maybe$Just(width)
+					});
+			case 'SM':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						widthSm: _elm_lang$core$Maybe$Just(width)
+					});
+			case 'MD':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						widthMd: _elm_lang$core$Maybe$Just(width)
+					});
+			case 'LG':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						widthLg: _elm_lang$core$Maybe$Just(width)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						widthXl: _elm_lang$core$Maybe$Just(width)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColOption = F2(
+	function (modifier, options) {
+		var _p25 = modifier;
+		switch (_p25.ctor) {
+			case 'ColAttrs':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p25._0)
+					});
+			case 'ColWidth':
+				return A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColWidth, _p25._0, options);
+			case 'ColOffset':
+				return A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColOffset, _p25._0, options);
+			case 'ColPull':
+				return A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColPull, _p25._0, options);
+			case 'ColPush':
+				return A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColPush, _p25._0, options);
+			default:
+				return A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColAlign, _p25._0, options);
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyRowOption, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$defaultRowOptions, modifiers);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('row'),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$vAlignsToAttributes,
+				'align-items-',
+				{
+					ctor: '::',
+					_0: options.vAlignXs,
+					_1: {
+						ctor: '::',
+						_0: options.vAlignSm,
+						_1: {
+							ctor: '::',
+							_0: options.vAlignMd,
+							_1: {
+								ctor: '::',
+								_0: options.vAlignLg,
+								_1: {
+									ctor: '::',
+									_0: options.vAlignXl,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$hAlignsToAttributes(
+					{
+						ctor: '::',
+						_0: options.hAlignXs,
+						_1: {
+							ctor: '::',
+							_0: options.hAlignSm,
+							_1: {
+								ctor: '::',
+								_0: options.hAlignMd,
+								_1: {
+									ctor: '::',
+									_0: options.hAlignLg,
+									_1: {
+										ctor: '::',
+										_0: options.hAlignXl,
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}),
+				options.attributes)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Width = F2(
+	function (a, b) {
+		return {screenSize: a, columnCount: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset = F2(
+	function (a, b) {
+		return {screenSize: a, offsetCount: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Pull = F2(
+	function (a, b) {
+		return {screenSize: a, moveCount: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Push = F2(
+	function (a, b) {
+		return {screenSize: a, moveCount: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$VAlign = F2(
+	function (a, b) {
+		return {screenSize: a, align: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$HAlign = F2(
+	function (a, b) {
+		return {screenSize: a, align: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColOptions = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return function (m) {
+													return function (n) {
+														return function (o) {
+															return function (p) {
+																return function (q) {
+																	return function (r) {
+																		return function (s) {
+																			return function (t) {
+																				return function (u) {
+																					return function (v) {
+																						return function (w) {
+																							return function (x) {
+																								return function (y) {
+																									return function (z) {
+																										return {attributes: a, widthXs: b, widthSm: c, widthMd: d, widthLg: e, widthXl: f, offsetXs: g, offsetSm: h, offsetMd: i, offsetLg: j, offsetXl: k, pullXs: l, pullSm: m, pullMd: n, pullLg: o, pullXl: p, pushXs: q, pushSm: r, pushMd: s, pushLg: t, pushXl: u, alignXs: v, alignSm: w, alignMd: x, alignLg: y, alignXl: z};
+																									};
+																								};
+																							};
+																						};
+																					};
+																				};
+																			};
+																		};
+																	};
+																};
+															};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$RowOptions = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return {attributes: a, vAlignXs: b, vAlignSm: c, vAlignMd: d, vAlignLg: e, vAlignXl: f, hAlignXs: g, hAlignSm: h, hAlignMd: i, hAlignLg: j, hAlignXl: k};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAttrs = function (a) {
+	return {ctor: 'ColAttrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAlign = function (a) {
+	return {ctor: 'ColAlign', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign = F2(
+	function (size, align) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAlign(
+			A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$VAlign, size, align));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColPush = function (a) {
+	return {ctor: 'ColPush', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$push = F2(
+	function (size, count) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColPush(
+			A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$Push, size, count));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColPull = function (a) {
+	return {ctor: 'ColPull', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull = F2(
+	function (size, count) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColPull(
+			A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$Pull, size, count));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColOffset = function (a) {
+	return {ctor: 'ColOffset', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset = F2(
+	function (size, count) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColOffset(
+			A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset, size, count));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColWidth = function (a) {
+	return {ctor: 'ColWidth', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$width = F2(
+	function (size, count) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColWidth(
+			A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$Width, size, count));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$RowAttrs = function (a) {
+	return {ctor: 'RowAttrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$RowHAlign = function (a) {
+	return {ctor: 'RowHAlign', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign = F2(
+	function (size, align) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$RowHAlign(
+			A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$HAlign, size, align));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$RowVAlign = function (a) {
+	return {ctor: 'RowVAlign', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign = F2(
+	function (size, align) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$RowVAlign(
+			A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$VAlign, size, align));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL = {ctor: 'XL'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG = {ctor: 'LG'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD = {ctor: 'MD'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM = {ctor: 'SM'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS = {ctor: 'XS'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAuto = {ctor: 'ColAuto'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col12 = {ctor: 'Col12'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col11 = {ctor: 'Col11'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col10 = {ctor: 'Col10'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col9 = {ctor: 'Col9'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col8 = {ctor: 'Col8'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col7 = {ctor: 'Col7'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col6 = {ctor: 'Col6'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col5 = {ctor: 'Col5'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col4 = {ctor: 'Col4'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col3 = {ctor: 'Col3'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col2 = {ctor: 'Col2'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col1 = {ctor: 'Col1'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col = {ctor: 'Col'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$colAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$applyColOption, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$defaultColOptions, modifiers);
+	var shouldAddDefaultXs = _elm_lang$core$Native_Utils.eq(
+		_elm_lang$core$List$length(
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: options.widthXs,
+					_1: {
+						ctor: '::',
+						_0: options.widthSm,
+						_1: {
+							ctor: '::',
+							_0: options.widthMd,
+							_1: {
+								ctor: '::',
+								_0: options.widthLg,
+								_1: {
+									ctor: '::',
+									_0: options.widthXl,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				})),
+		0);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colWidthsToAttributes(
+			{
+				ctor: '::',
+				_0: shouldAddDefaultXs ? _elm_lang$core$Maybe$Just(
+					A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$Width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col)) : options.widthXs,
+				_1: {
+					ctor: '::',
+					_0: options.widthSm,
+					_1: {
+						ctor: '::',
+						_0: options.widthMd,
+						_1: {
+							ctor: '::',
+							_0: options.widthLg,
+							_1: {
+								ctor: '::',
+								_0: options.widthXl,
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offsetsToAttributes(
+				{
+					ctor: '::',
+					_0: options.offsetXs,
+					_1: {
+						ctor: '::',
+						_0: options.offsetSm,
+						_1: {
+							ctor: '::',
+							_0: options.offsetMd,
+							_1: {
+								ctor: '::',
+								_0: options.offsetLg,
+								_1: {
+									ctor: '::',
+									_0: options.offsetXl,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pullsToAttributes(
+					{
+						ctor: '::',
+						_0: options.pullXs,
+						_1: {
+							ctor: '::',
+							_0: options.pullSm,
+							_1: {
+								ctor: '::',
+								_0: options.pullMd,
+								_1: {
+									ctor: '::',
+									_0: options.pullLg,
+									_1: {
+										ctor: '::',
+										_0: options.pullXl,
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pushesToAttributes(
+						{
+							ctor: '::',
+							_0: options.pushXs,
+							_1: {
+								ctor: '::',
+								_0: options.pushSm,
+								_1: {
+									ctor: '::',
+									_0: options.pushMd,
+									_1: {
+										ctor: '::',
+										_0: options.pushLg,
+										_1: {
+											ctor: '::',
+											_0: options.pushXl,
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid_Internal$vAlignsToAttributes,
+							'align-self-',
+							{
+								ctor: '::',
+								_0: options.alignXs,
+								_1: {
+									ctor: '::',
+									_0: options.alignSm,
+									_1: {
+										ctor: '::',
+										_0: options.alignMd,
+										_1: {
+											ctor: '::',
+											_0: options.alignLg,
+											_1: {
+												ctor: '::',
+												_0: options.alignXl,
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}),
+						options.attributes)))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset11 = {ctor: 'Offset11'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset10 = {ctor: 'Offset10'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset9 = {ctor: 'Offset9'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset8 = {ctor: 'Offset8'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset7 = {ctor: 'Offset7'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset6 = {ctor: 'Offset6'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset5 = {ctor: 'Offset5'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset4 = {ctor: 'Offset4'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset3 = {ctor: 'Offset3'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset2 = {ctor: 'Offset2'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset1 = {ctor: 'Offset1'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset0 = {ctor: 'Offset0'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12 = {ctor: 'Move12'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11 = {ctor: 'Move11'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10 = {ctor: 'Move10'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9 = {ctor: 'Move9'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8 = {ctor: 'Move8'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7 = {ctor: 'Move7'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6 = {ctor: 'Move6'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5 = {ctor: 'Move5'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4 = {ctor: 'Move4'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3 = {ctor: 'Move3'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2 = {ctor: 'Move2'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1 = {ctor: 'Move1'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0 = {ctor: 'Move0'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom = {ctor: 'Bottom'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle = {ctor: 'Middle'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top = {ctor: 'Top'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Between = {ctor: 'Between'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Around = {ctor: 'Around'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Right = {ctor: 'Right'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Center = {ctor: 'Center'};
+var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Left = {ctor: 'Left'};
+
+var _rundis$elm_bootstrap$Bootstrap_Internal_Text$textAlignDirOption = function (dir) {
+	var _p0 = dir;
+	switch (_p0.ctor) {
+		case 'Center':
+			return 'center';
+		case 'Left':
+			return 'left';
+		default:
+			return 'right';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Text$textAlignClass = function (_p1) {
+	var _p2 = _p1;
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'text',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					'-',
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (s) {
+							return A2(
+								_elm_lang$core$Basics_ops['++'],
+								'-',
+								A2(_elm_lang$core$Basics_ops['++'], s, '-'));
+						},
+						_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(_p2.size))),
+				_rundis$elm_bootstrap$Bootstrap_Internal_Text$textAlignDirOption(_p2.dir))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Text$HAlign = F2(
+	function (a, b) {
+		return {dir: a, size: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_Text$Right = {ctor: 'Right'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Text$Center = {ctor: 'Center'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Text$Left = {ctor: 'Left'};
+
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXl = function (dir) {
+	return {dir: dir, size: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL};
+};
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXlRight = _rundis$elm_bootstrap$Bootstrap_Text$alignXl(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Right);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXlCenter = _rundis$elm_bootstrap$Bootstrap_Text$alignXl(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Center);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXlLeft = _rundis$elm_bootstrap$Bootstrap_Text$alignXl(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Left);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignLg = function (dir) {
+	return {dir: dir, size: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG};
+};
+var _rundis$elm_bootstrap$Bootstrap_Text$alignLgRight = _rundis$elm_bootstrap$Bootstrap_Text$alignLg(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Right);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignLgCenter = _rundis$elm_bootstrap$Bootstrap_Text$alignLg(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Center);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignLgLeft = _rundis$elm_bootstrap$Bootstrap_Text$alignLg(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Left);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignMd = function (dir) {
+	return {dir: dir, size: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD};
+};
+var _rundis$elm_bootstrap$Bootstrap_Text$alignMdRight = _rundis$elm_bootstrap$Bootstrap_Text$alignMd(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Right);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignMdCenter = _rundis$elm_bootstrap$Bootstrap_Text$alignMd(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Center);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignMdLeft = _rundis$elm_bootstrap$Bootstrap_Text$alignMd(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Left);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignSm = function (dir) {
+	return {dir: dir, size: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM};
+};
+var _rundis$elm_bootstrap$Bootstrap_Text$alignSmRight = _rundis$elm_bootstrap$Bootstrap_Text$alignSm(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Right);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignSmCenter = _rundis$elm_bootstrap$Bootstrap_Text$alignSm(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Center);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignSmLeft = _rundis$elm_bootstrap$Bootstrap_Text$alignSm(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Left);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXs = function (dir) {
+	return {dir: dir, size: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM};
+};
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXsRight = _rundis$elm_bootstrap$Bootstrap_Text$alignXs(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Right);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXsCenter = _rundis$elm_bootstrap$Bootstrap_Text$alignXs(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Center);
+var _rundis$elm_bootstrap$Bootstrap_Text$alignXsLeft = _rundis$elm_bootstrap$Bootstrap_Text$alignXs(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Left);
+
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$roleClass = function (role) {
+	return _elm_lang$html$Html_Attributes$class(
+		function () {
+			var _p0 = role;
+			switch (_p0.ctor) {
+				case 'Success':
+					return 'list-group-item-success';
+				case 'Info':
+					return 'list-group-item-info';
+				case 'Warning':
+					return 'list-group-item-warning';
+				default:
+					return 'list-group-item-danger';
+			}
+		}());
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$itemAttributes = function (options) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$classList(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'list-group-item', _1: true},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'disabled', _1: options.disabled},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'active', _1: options.active},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'list-group-item-action', _1: options.action},
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$disabled(options.disabled),
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_elm_lang$core$Maybe$withDefault,
+					{ctor: '[]'},
+					A2(
+						_elm_lang$core$Maybe$map,
+						function (r) {
+							return {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$roleClass(r),
+								_1: {ctor: '[]'}
+							};
+						},
+						options.role)),
+				options.attributes)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$preventClick = A2(_elm_lang$html$Html_Attributes$attribute, 'onclick', 'var event = arguments[0] || window.event; event.preventDefault();');
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$applyModifier = F2(
+	function (modifier, options) {
+		var _p1 = modifier;
+		switch (_p1.ctor) {
+			case 'Roled':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						role: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Action':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{action: true});
+			case 'Disabled':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{disabled: true});
+			case 'Active':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{active: true});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p1._0)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$defaultOptions = {
+	role: _elm_lang$core$Maybe$Nothing,
+	active: false,
+	disabled: false,
+	action: false,
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderCustomItem = function (_p2) {
+	var _p3 = _p2;
+	return A2(
+		_p3._0.itemFn,
+		_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$itemAttributes(
+			A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$applyModifier, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$defaultOptions, _p3._0.options)),
+		_p3._0.children);
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem = function (_p4) {
+	var _p5 = _p4;
+	return A2(
+		_p5._0.itemFn,
+		_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$itemAttributes(
+			A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$applyModifier, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$defaultOptions, _p5._0.options)),
+		_p5._0.children);
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$ItemOptions = F5(
+	function (a, b, c, d, e) {
+		return {role: a, active: b, disabled: c, action: d, attributes: e};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs = function (a) {
+	return {ctor: 'Attrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Action = {ctor: 'Action'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Disabled = {ctor: 'Disabled'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Active = {ctor: 'Active'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled = function (a) {
+	return {ctor: 'Roled', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Danger = {ctor: 'Danger'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Warning = {ctor: 'Warning'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Info = {ctor: 'Info'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Success = {ctor: 'Success'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Item = function (a) {
+	return {ctor: 'Item', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$CustomItem = function (a) {
+	return {ctor: 'CustomItem', _0: a};
+};
+
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$disabled = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Disabled;
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$active = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Active;
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$danger = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Danger);
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$warning = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Warning);
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$info = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Info);
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$success = _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Success);
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$button = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$CustomItem(
+			{
+				itemFn: _elm_lang$html$Html$button,
+				children: children,
+				options: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Action,
+					_1: A2(
+						_elm_lang$core$Basics_ops['++'],
+						options,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs(
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$type_('button'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						})
+				}
+			});
+	});
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$anchor = F2(
+	function (options, children) {
+		var updOptions = A2(
+			_elm_lang$core$List$any,
+			F2(
+				function (x, y) {
+					return _elm_lang$core$Native_Utils.eq(x, y);
+				})(_rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Disabled),
+			options) ? A2(
+			_elm_lang$core$Basics_ops['++'],
+			options,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Attrs(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$preventClick,
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}) : options;
+		return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$CustomItem(
+			{
+				itemFn: _elm_lang$html$Html$a,
+				children: children,
+				options: {ctor: '::', _0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Action, _1: updOptions}
+			});
+	});
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$custom = function (items) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('list-group'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderCustomItem, items));
+};
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$li = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Item(
+			{itemFn: _elm_lang$html$Html$li, children: children, options: options});
+	});
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$ul = function (items) {
+	return A2(
+		_elm_lang$html$Html$ul,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('list-group'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem, items));
+};
+
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$toRGBString = function (color) {
+	var _p0 = _elm_lang$core$Color$toRgb(color);
+	var red = _p0.red;
+	var green = _p0.green;
+	var blue = _p0.blue;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'RGB(',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(red),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				',',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(green),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						',',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(blue),
+							')'))))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$roleOption = function (role) {
+	var _p1 = role;
+	switch (_p1.ctor) {
+		case 'Primary':
+			return 'primary';
+		case 'Success':
+			return 'success';
+		case 'Info':
+			return 'info';
+		case 'Warning':
+			return 'warning';
+		default:
+			return 'danger';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$applyModifier = F2(
+	function (option, options) {
+		var _p2 = option;
+		switch (_p2.ctor) {
+			case 'Aligned':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						aligned: _elm_lang$core$Maybe$Just(_p2._0)
+					});
+			case 'Coloring':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						coloring: _elm_lang$core$Maybe$Just(_p2._0)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p2._0)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$defaultOptions = {
+	aligned: _elm_lang$core$Maybe$Nothing,
+	coloring: _elm_lang$core$Maybe$Nothing,
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$cardAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Internal_Card$applyModifier, _rundis$elm_bootstrap$Bootstrap_Internal_Card$defaultOptions, modifiers);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('card'),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			function () {
+				var _p3 = options.coloring;
+				if (_p3.ctor === 'Just') {
+					switch (_p3._0.ctor) {
+						case 'Roled':
+							return {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'card-inverse card-',
+										_rundis$elm_bootstrap$Bootstrap_Internal_Card$roleOption(_p3._0._0))),
+								_1: {ctor: '[]'}
+							};
+						case 'Outlined':
+							return {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class(
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										'card-outline-',
+										_rundis$elm_bootstrap$Bootstrap_Internal_Card$roleOption(_p3._0._0))),
+								_1: {ctor: '[]'}
+							};
+						default:
+							var _p4 = _p3._0._0;
+							return {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('card-inverse'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {
+												ctor: '_Tuple2',
+												_0: 'background-color',
+												_1: _rundis$elm_bootstrap$Bootstrap_Internal_Card$toRGBString(_p4)
+											},
+											_1: {
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple2',
+													_0: 'border-color',
+													_1: _rundis$elm_bootstrap$Bootstrap_Internal_Card$toRGBString(_p4)
+												},
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}
+							};
+					}
+				} else {
+					return {ctor: '[]'};
+				}
+			}(),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				function () {
+					var _p5 = options.aligned;
+					if (_p5.ctor === 'Just') {
+						return {
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Internal_Text$textAlignClass(_p5._0),
+							_1: {ctor: '[]'}
+						};
+					} else {
+						return {ctor: '[]'};
+					}
+				}(),
+				options.attributes)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$applyBlockModifier = F2(
+	function (option, options) {
+		var _p6 = option;
+		if (_p6.ctor === 'AlignedBlock') {
+			return _elm_lang$core$Native_Utils.update(
+				options,
+				{
+					aligned: _elm_lang$core$Maybe$Just(_p6._0)
+				});
+		} else {
+			return _elm_lang$core$Native_Utils.update(
+				options,
+				{
+					attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p6._0)
+				});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$defaultBlockOptions = {
+	aligned: _elm_lang$core$Maybe$Nothing,
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$blockAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Internal_Card$applyBlockModifier, _rundis$elm_bootstrap$Bootstrap_Internal_Card$defaultBlockOptions, modifiers);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('card-block'),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			function () {
+				var _p7 = options.aligned;
+				if (_p7.ctor === 'Just') {
+					return {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Internal_Text$textAlignClass(_p7._0),
+						_1: {ctor: '[]'}
+					};
+				} else {
+					return {ctor: '[]'};
+				}
+			}(),
+			options.attributes));
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$renderBlock = function (block) {
+	var _p8 = block;
+	if (_p8.ctor === 'CardBlock') {
+		return _p8._0;
+	} else {
+		return _p8._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$renderBlocks = function (blocks) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (block) {
+			var _p9 = block;
+			if (_p9.ctor === 'CardBlock') {
+				return _p9._0;
+			} else {
+				return _p9._0;
+			}
+		},
+		blocks);
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$CardOptions = F3(
+	function (a, b, c) {
+		return {aligned: a, coloring: b, attributes: c};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockOptions = F2(
+	function (a, b) {
+		return {aligned: a, attributes: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Attrs = function (a) {
+	return {ctor: 'Attrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring = function (a) {
+	return {ctor: 'Coloring', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Aligned = function (a) {
+	return {ctor: 'Aligned', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Inverted = function (a) {
+	return {ctor: 'Inverted', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Outlined = function (a) {
+	return {ctor: 'Outlined', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Roled = function (a) {
+	return {ctor: 'Roled', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Danger = {ctor: 'Danger'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Warning = {ctor: 'Warning'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Info = {ctor: 'Info'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Success = {ctor: 'Success'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$Primary = {ctor: 'Primary'};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockAttrs = function (a) {
+	return {ctor: 'BlockAttrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$AlignedBlock = function (a) {
+	return {ctor: 'AlignedBlock', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$ListGroup = function (a) {
+	return {ctor: 'ListGroup', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$listGroup = function (items) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$ListGroup(
+		A2(
+			_elm_lang$html$Html$ul,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('list-group list-group-flush'),
+				_1: {ctor: '[]'}
+			},
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem, items)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$CardBlock = function (a) {
+	return {ctor: 'CardBlock', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$block = F2(
+	function (options, items) {
+		return _rundis$elm_bootstrap$Bootstrap_Internal_Card$CardBlock(
+			A2(
+				_elm_lang$html$Html$div,
+				_rundis$elm_bootstrap$Bootstrap_Internal_Card$blockAttributes(options),
+				A2(
+					_elm_lang$core$List$map,
+					function (_p10) {
+						var _p11 = _p10;
+						return _p11._0;
+					},
+					items)));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockItem = function (a) {
+	return {ctor: 'BlockItem', _0: a};
+};
+
+var _rundis$elm_bootstrap$Bootstrap_Card$title = F3(
+	function (elemFn, attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockItem(
+			A2(
+				elemFn,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('card-title'),
+					_1: attributes
+				},
+				children));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$titleH6 = _rundis$elm_bootstrap$Bootstrap_Card$title(_elm_lang$html$Html$h6);
+var _rundis$elm_bootstrap$Bootstrap_Card$titleH5 = _rundis$elm_bootstrap$Bootstrap_Card$title(_elm_lang$html$Html$h5);
+var _rundis$elm_bootstrap$Bootstrap_Card$titleH4 = _rundis$elm_bootstrap$Bootstrap_Card$title(_elm_lang$html$Html$h4);
+var _rundis$elm_bootstrap$Bootstrap_Card$titleH3 = _rundis$elm_bootstrap$Bootstrap_Card$title(_elm_lang$html$Html$h3);
+var _rundis$elm_bootstrap$Bootstrap_Card$titleH2 = _rundis$elm_bootstrap$Bootstrap_Card$title(_elm_lang$html$Html$h2);
+var _rundis$elm_bootstrap$Bootstrap_Card$titleH1 = _rundis$elm_bootstrap$Bootstrap_Card$title(_elm_lang$html$Html$h1);
+var _rundis$elm_bootstrap$Bootstrap_Card$blockQuote = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockItem(
+			A2(
+				_elm_lang$html$Html$blockquote,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('card-blockquote'),
+						_1: {ctor: '[]'}
+					},
+					attributes),
+				children));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$custom = function (element) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockItem(element);
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$text = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockItem(
+			A2(
+				_elm_lang$html$Html$p,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('card-text'),
+						_1: {ctor: '[]'}
+					},
+					attributes),
+				children));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$link = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockItem(
+			A2(
+				_elm_lang$html$Html$a,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('card-link'),
+						_1: {ctor: '[]'}
+					},
+					attributes),
+				children));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$blockAttrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$BlockAttrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$blockAlign = function (align) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$AlignedBlock(align);
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$view = function (_p0) {
+	var _p1 = _p0;
+	return A2(
+		_elm_lang$html$Html$div,
+		_rundis$elm_bootstrap$Bootstrap_Internal_Card$cardAttributes(_p1._0.options),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Maybe$map,
+						function (_p2) {
+							var _p3 = _p2;
+							return _p3._0;
+						},
+						_p1._0.header),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$Maybe$map,
+							function (_p4) {
+								var _p5 = _p4;
+								return _p5._0;
+							},
+							_p1._0.imgTop),
+						_1: {ctor: '[]'}
+					}
+				}),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_rundis$elm_bootstrap$Bootstrap_Internal_Card$renderBlocks(_p1._0.blocks),
+				A2(
+					_elm_lang$core$List$filterMap,
+					_elm_lang$core$Basics$identity,
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$Maybe$map,
+							function (_p6) {
+								var _p7 = _p6;
+								return _p7._0;
+							},
+							_p1._0.footer),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Maybe$map,
+								function (_p8) {
+									var _p9 = _p8;
+									return _p9._0;
+								},
+								_p1._0.imgBottom),
+							_1: {ctor: '[]'}
+						}
+					}))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$group = function (cards) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('card-group'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Card$view, cards));
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$deck = function (cards) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('card-deck'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Card$view, cards));
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$columns = function (cards) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('card-columns'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Card$view, cards));
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$Attrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$inverted = function (color) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+		_rundis$elm_bootstrap$Bootstrap_Internal_Card$Inverted(color));
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$outlineDanger = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Danger));
+var _rundis$elm_bootstrap$Bootstrap_Card$outlineWarning = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Warning));
+var _rundis$elm_bootstrap$Bootstrap_Card$outlineInfo = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Info));
+var _rundis$elm_bootstrap$Bootstrap_Card$outlineSuccess = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Success));
+var _rundis$elm_bootstrap$Bootstrap_Card$outlinePrimary = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Outlined(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Primary));
+var _rundis$elm_bootstrap$Bootstrap_Card$danger = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Danger));
+var _rundis$elm_bootstrap$Bootstrap_Card$warning = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Warning));
+var _rundis$elm_bootstrap$Bootstrap_Card$info = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Info));
+var _rundis$elm_bootstrap$Bootstrap_Card$success = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Success));
+var _rundis$elm_bootstrap$Bootstrap_Card$primary = _rundis$elm_bootstrap$Bootstrap_Internal_Card$Coloring(
+	_rundis$elm_bootstrap$Bootstrap_Internal_Card$Roled(_rundis$elm_bootstrap$Bootstrap_Internal_Card$Primary));
+var _rundis$elm_bootstrap$Bootstrap_Card$align = function (align) {
+	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$Aligned(align);
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$Config = function (a) {
+	return {ctor: 'Config', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$config = function (options) {
+	return _rundis$elm_bootstrap$Bootstrap_Card$Config(
+		{
+			options: options,
+			header: _elm_lang$core$Maybe$Nothing,
+			footer: _elm_lang$core$Maybe$Nothing,
+			imgTop: _elm_lang$core$Maybe$Nothing,
+			imgBottom: _elm_lang$core$Maybe$Nothing,
+			blocks: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$block = F3(
+	function (options, items, _p10) {
+		var _p11 = _p10;
+		var _p12 = _p11._0;
+		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p12,
+				{
+					blocks: A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p12.blocks,
+						{
+							ctor: '::',
+							_0: A2(_rundis$elm_bootstrap$Bootstrap_Internal_Card$block, options, items),
+							_1: {ctor: '[]'}
+						})
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$listGroup = F2(
+	function (items, _p13) {
+		var _p14 = _p13;
+		var _p15 = _p14._0;
+		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p15,
+				{
+					blocks: A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p15.blocks,
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Internal_Card$listGroup(items),
+							_1: {ctor: '[]'}
+						})
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$CardHeader = function (a) {
+	return {ctor: 'CardHeader', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate = F4(
+	function (elemFn, attributes, children, _p16) {
+		var _p17 = _p16;
+		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p17._0,
+				{
+					header: _elm_lang$core$Maybe$Just(
+						_rundis$elm_bootstrap$Bootstrap_Card$CardHeader(
+							A2(
+								elemFn,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('card-header'),
+									_1: attributes
+								},
+								children)))
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$header = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$div);
+var _rundis$elm_bootstrap$Bootstrap_Card$headerH1 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h1);
+var _rundis$elm_bootstrap$Bootstrap_Card$headerH2 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h2);
+var _rundis$elm_bootstrap$Bootstrap_Card$headerH3 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h3);
+var _rundis$elm_bootstrap$Bootstrap_Card$headerH4 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h4);
+var _rundis$elm_bootstrap$Bootstrap_Card$headerH5 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h5);
+var _rundis$elm_bootstrap$Bootstrap_Card$headerH6 = _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate(_elm_lang$html$Html$h6);
+var _rundis$elm_bootstrap$Bootstrap_Card$CardFooter = function (a) {
+	return {ctor: 'CardFooter', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$footer = F3(
+	function (attributes, children, _p18) {
+		var _p19 = _p18;
+		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p19._0,
+				{
+					footer: _elm_lang$core$Maybe$Just(
+						_rundis$elm_bootstrap$Bootstrap_Card$CardFooter(
+							A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('card-footer'),
+									_1: attributes
+								},
+								children)))
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$CardImageTop = function (a) {
+	return {ctor: 'CardImageTop', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$imgTop = F3(
+	function (attributes, children, _p20) {
+		var _p21 = _p20;
+		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p21._0,
+				{
+					imgTop: _elm_lang$core$Maybe$Just(
+						_rundis$elm_bootstrap$Bootstrap_Card$CardImageTop(
+							A2(
+								_elm_lang$html$Html$img,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('card-img-top'),
+										_1: {ctor: '[]'}
+									},
+									attributes),
+								children)))
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$CardImageBottom = function (a) {
+	return {ctor: 'CardImageBottom', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$imgBottom = F3(
+	function (attributes, children, _p22) {
+		var _p23 = _p22;
+		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p23._0,
+				{
+					imgBottom: _elm_lang$core$Maybe$Just(
+						_rundis$elm_bootstrap$Bootstrap_Card$CardImageBottom(
+							A2(
+								_elm_lang$html$Html$img,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('card-img-bottom'),
+										_1: {ctor: '[]'}
+									},
+									attributes),
+								children)))
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$ListGroup = function (a) {
+	return {ctor: 'ListGroup', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Card$CardBlock = function (a) {
+	return {ctor: 'CardBlock', _0: a};
+};
+
+var _rundis$elm_bootstrap$Bootstrap_CDN$fontAwesome = A3(
+	_elm_lang$html$Html$node,
+	'link',
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$rel('stylesheet'),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$href('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'),
+			_1: {ctor: '[]'}
+		}
+	},
+	{ctor: '[]'});
+var _rundis$elm_bootstrap$Bootstrap_CDN$stylesheet = A3(
+	_elm_lang$html$Html$node,
+	'link',
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$rel('stylesheet'),
+		_1: {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$href('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'),
+			_1: {ctor: '[]'}
+		}
+	},
+	{ctor: '[]'});
+
+var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationToString = function (validation) {
+	var _p0 = validation;
+	switch (_p0.ctor) {
+		case 'Success':
+			return 'success';
+		case 'Warning':
+			return 'warning';
+		default:
+			return 'danger';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationWrapperAttribute = function (validation) {
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'has-',
+			_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationToString(validation)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Danger = {ctor: 'Danger'};
+var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Warning = {ctor: 'Warning'};
+var _rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Success = {ctor: 'Success'};
+
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Between);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Between);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Between);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Between);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$betweenXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Between);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$aroundXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Around);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$aroundLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Around);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$aroundMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Around);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$aroundSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Around);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$aroundXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Around);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$rightXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Right);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$rightLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Right);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$rightMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Right);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$rightSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Right);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$rightXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Right);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Center);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Center);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Center);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Center);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$centerXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Center);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$leftXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Left);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$leftLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Left);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$leftMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Left);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$leftSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Left);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$leftXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowHAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Left);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$bottomXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$bottomLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$bottomMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$bottomSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$bottomXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$middleXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$middleLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$middleMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$middleSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$middleXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$topXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$topLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$topMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$topSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$topXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$RowAttrs(attrs);
+};
+
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXl0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushLg0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushMd0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushSm0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pushXs0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$push, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXl0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullLg0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullMd0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullSm0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$pullXs0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$pull, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Move0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXl0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetLg0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetMd0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetSm0 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset0);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$offsetXs1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$offset, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Offset1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xlAuto = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAuto);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lgAuto = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAuto);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$lg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$mdAuto = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAuto);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$md = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$smAuto = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAuto);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xsAuto = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAuto);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col12);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs11 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col11);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs10 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col10);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs9 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col9);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs8 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col8);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs7 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col7);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs6 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col6);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs5 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col5);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs4 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col4);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs3 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col3);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs2 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col2);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs1 = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col1);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$width, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Col);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$bottomXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$bottomLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$bottomMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$bottomSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$bottomXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Bottom);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$middleXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Middle);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$topXl = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$topLg = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$topMd = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$topSm = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$topXs = A2(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colVAlign, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS, _rundis$elm_bootstrap$Bootstrap_Grid_Internal$Top);
+var _rundis$elm_bootstrap$Bootstrap_Grid_Col$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$ColAttrs(attrs);
+};
+
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$validationAttribute = function (validation) {
+	return _elm_lang$html$Html_Attributes$class(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'form-control-',
+			_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$validationToString(validation)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$typeAttribute = function (inputType) {
+	return _elm_lang$html$Html_Attributes$type_(
+		function () {
+			var _p0 = inputType;
+			switch (_p0.ctor) {
+				case 'Text':
+					return 'text';
+				case 'Password':
+					return 'password';
+				case 'DatetimeLocal':
+					return 'datetime-local';
+				case 'Date':
+					return 'date';
+				case 'Month':
+					return 'month';
+				case 'Time':
+					return 'time';
+				case 'Week':
+					return 'week';
+				case 'Number':
+					return 'number';
+				case 'Email':
+					return 'email';
+				case 'Url':
+					return 'url';
+				case 'Search':
+					return 'search';
+				case 'Tel':
+					return 'tel';
+				default:
+					return 'color';
+			}
+		}());
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$sizeAttribute = function (size) {
+	return A2(
+		_elm_lang$core$Maybe$map,
+		function (s) {
+			return _elm_lang$html$Html_Attributes$class(
+				A2(_elm_lang$core$Basics_ops['++'], 'form-control-', s));
+		},
+		_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(size));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$applyModifier = F2(
+	function (modifier, options) {
+		var _p1 = modifier;
+		switch (_p1.ctor) {
+			case 'Size':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						size: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Id':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						id: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Type':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{tipe: _p1._0});
+			case 'Disabled':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{disabled: _p1._0});
+			case 'Value':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						value: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'DefaultValue':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						defaultValue: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'OnInput':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						onInput: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			case 'Validation':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						validation: _elm_lang$core$Maybe$Just(_p1._0)
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], options.attributes, _p1._0)
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Options = F9(
+	function (a, b, c, d, e, f, g, h, i) {
+		return {tipe: a, id: b, size: c, disabled: d, value: e, defaultValue: f, onInput: g, validation: h, attributes: i};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Input = function (a) {
+	return {ctor: 'Input', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Attrs = function (a) {
+	return {ctor: 'Attrs', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs = function (attrs) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Attrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation = function (a) {
+	return {ctor: 'Validation', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$success = _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Success);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$warning = _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Warning);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$danger = _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation(_rundis$elm_bootstrap$Bootstrap_Form_FormInternal$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$OnInput = function (a) {
+	return {ctor: 'OnInput', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$onInput = function (toMsg) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$OnInput(toMsg);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$DefaultValue = function (a) {
+	return {ctor: 'DefaultValue', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultValue = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$DefaultValue(value);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Value = function (a) {
+	return {ctor: 'Value', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$value = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Value(value);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Disabled = function (a) {
+	return {ctor: 'Disabled', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$disabled = function (disabled) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Disabled(disabled);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Type = function (a) {
+	return {ctor: 'Type', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$create = F2(
+	function (tipe, options) {
+		return _rundis$elm_bootstrap$Bootstrap_Form_Input$Input(
+			{
+				options: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$Type(tipe),
+					_1: options
+				}
+			});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Id = function (a) {
+	return {ctor: 'Id', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$id = function (id) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Id(id);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Size = function (a) {
+	return {ctor: 'Size', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$small = _rundis$elm_bootstrap$Bootstrap_Form_Input$Size(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$large = _rundis$elm_bootstrap$Bootstrap_Form_Input$Size(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Color = {ctor: 'Color'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Tel = {ctor: 'Tel'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Search = {ctor: 'Search'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Url = {ctor: 'Url'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Email = {ctor: 'Email'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Number = {ctor: 'Number'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Week = {ctor: 'Week'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Time = {ctor: 'Time'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Month = {ctor: 'Month'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Date = {ctor: 'Date'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$DatetimeLocal = {ctor: 'DatetimeLocal'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Password = {ctor: 'Password'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Text = {ctor: 'Text'};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultOptions = {
+	tipe: _rundis$elm_bootstrap$Bootstrap_Form_Input$Text,
+	id: _elm_lang$core$Maybe$Nothing,
+	size: _elm_lang$core$Maybe$Nothing,
+	disabled: false,
+	value: _elm_lang$core$Maybe$Nothing,
+	defaultValue: _elm_lang$core$Maybe$Nothing,
+	onInput: _elm_lang$core$Maybe$Nothing,
+	validation: _elm_lang$core$Maybe$Nothing,
+	attributes: {ctor: '[]'}
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$toAttributes = function (modifiers) {
+	var options = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Form_Input$applyModifier, _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultOptions, modifiers);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('form-control'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$disabled(options.disabled),
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$typeAttribute(options.tipe),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$id, options.id),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$core$Maybe$andThen, _rundis$elm_bootstrap$Bootstrap_Form_Input$sizeAttribute, options.size),
+						_1: {
+							ctor: '::',
+							_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$value, options.value),
+							_1: {
+								ctor: '::',
+								_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$defaultValue, options.defaultValue),
+								_1: {
+									ctor: '::',
+									_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Events$onInput, options.onInput),
+									_1: {
+										ctor: '::',
+										_0: A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Form_Input$validationAttribute, options.validation),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}),
+			options.attributes));
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$view = function (_p2) {
+	var _p3 = _p2;
+	return A2(
+		_elm_lang$html$Html$input,
+		_rundis$elm_bootstrap$Bootstrap_Form_Input$toAttributes(_p3._0.options),
+		{ctor: '[]'});
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$input = F2(
+	function (tipe, options) {
+		return _rundis$elm_bootstrap$Bootstrap_Form_Input$view(
+			A2(_rundis$elm_bootstrap$Bootstrap_Form_Input$create, tipe, options));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$text = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Text);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$password = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Password);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$datetimeLocal = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$DatetimeLocal);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$date = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Date);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$month = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Month);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$time = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Time);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$week = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Week);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$number = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Number);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$email = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Email);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$url = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Url);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$search = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Search);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$tel = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Tel);
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$color = _rundis$elm_bootstrap$Bootstrap_Form_Input$input(_rundis$elm_bootstrap$Bootstrap_Form_Input$Color);
+
+var _rundis$elm_bootstrap$Bootstrap_Grid$renderCol = function (column) {
+	var _p0 = column;
+	if (_p0.ctor === 'Column') {
 		return A2(
 			_elm_lang$html$Html$div,
-			{
+			_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colAttributes(_p0._0.options),
+			_p0._0.children);
+	} else {
+		return _p0._0;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid$row = F2(
+	function (options, cols) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowAttributes(options),
+			A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Grid$renderCol, cols));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid$simpleRow = function (cols) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Grid$row,
+		{ctor: '[]'},
+		cols);
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid$containerFluid = F2(
+	function (attributes, children) {
+		return A2(
+			_elm_lang$html$Html$div,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('container-fluid'),
+					_1: {ctor: '[]'}
+				},
+				attributes),
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid$container = F2(
+	function (attributes, children) {
+		return A2(
+			_elm_lang$html$Html$div,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('container'),
+					_1: {ctor: '[]'}
+				},
+				attributes),
+			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid$ColBreak = function (a) {
+	return {ctor: 'ColBreak', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid$colBreak = function (attributes) {
+	return _rundis$elm_bootstrap$Bootstrap_Grid$ColBreak(
+		A2(
+			_elm_lang$html$Html$div,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('w-100'),
+					_1: {ctor: '[]'}
+				},
+				attributes),
+			{ctor: '[]'}));
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid$Column = function (a) {
+	return {ctor: 'Column', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid$col = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid$Column(
+			{options: options, children: children});
+	});
+
+var _rundis$elm_bootstrap$Bootstrap_Navbar$toRGBString = function (color) {
+	var _p0 = _elm_lang$core$Color$toRgb(color);
+	var red = _p0.red;
+	var green = _p0.green;
+	var blue = _p0.blue;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'RGB(',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(red),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				',',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(green),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						',',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(blue),
+							')'))))));
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$backgroundColorOption = function (bgClass) {
+	var _p1 = bgClass;
+	switch (_p1.ctor) {
+		case 'Faded':
+			return _elm_lang$html$Html_Attributes$class('bg-faded');
+		case 'Primary':
+			return _elm_lang$html$Html_Attributes$class('bg-primary');
+		case 'Success':
+			return _elm_lang$html$Html_Attributes$class('bg-success');
+		case 'Info':
+			return _elm_lang$html$Html_Attributes$class('bg-info');
+		case 'Warning':
+			return _elm_lang$html$Html_Attributes$class('bg-warning');
+		case 'Danger':
+			return _elm_lang$html$Html_Attributes$class('bg-danger');
+		case 'Inverse':
+			return _elm_lang$html$Html_Attributes$class('bg-inverse');
+		case 'Custom':
+			return _elm_lang$html$Html_Attributes$style(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'background-color',
+						_1: _rundis$elm_bootstrap$Bootstrap_Navbar$toRGBString(_p1._0)
+					},
+					_1: {ctor: '[]'}
+				});
+		default:
+			return _elm_lang$html$Html_Attributes$class(_p1._0);
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$linkModifierClass = function (modifier) {
+	return _elm_lang$html$Html_Attributes$class(
+		function () {
+			var _p2 = modifier;
+			if (_p2.ctor === 'Dark') {
+				return 'navbar-inverse';
+			} else {
+				return 'navbar-light';
+			}
+		}());
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$schemeAttributes = function (_p3) {
+	var _p4 = _p3;
+	return {
+		ctor: '::',
+		_0: _rundis$elm_bootstrap$Bootstrap_Navbar$linkModifierClass(_p4.modifier),
+		_1: {
+			ctor: '::',
+			_0: _rundis$elm_bootstrap$Bootstrap_Navbar$backgroundColorOption(_p4.bgColor),
+			_1: {ctor: '[]'}
+		}
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$fixOption = function (fix) {
+	var _p5 = fix;
+	if (_p5.ctor === 'Top') {
+		return 'fixed-top';
+	} else {
+		return 'fixed-bottom';
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$navbarAttributes = function (options) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$classList(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'navbar', _1: true},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'container', _1: options.isContainer},
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html_Attributes$class(
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						'o-grid__cell o-grid__cell--width-',
+						'navbar-toggleable',
 						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(width),
-							A2(_elm_lang$core$Basics_ops['++'], ' ', cls)))),
+							_elm_lang$core$Maybe$withDefault,
+							'',
+							A2(
+								_elm_lang$core$Maybe$map,
+								function (s) {
+									return A2(_elm_lang$core$Basics_ops['++'], '-', s);
+								},
+								_rundis$elm_bootstrap$Bootstrap_Grid_Internal$screenSizeOption(options.toggleAt))))),
 				_1: {ctor: '[]'}
-			},
-			contents);
-	});
-var _user$project$BlazeHelpers$cell = F2(
-	function (width, contents) {
-		return A3(_user$project$BlazeHelpers$cellWithCls, width, '', contents);
-	});
-var _user$project$BlazeHelpers$fullCell = function (contents) {
-	return A2(_user$project$BlazeHelpers$cell, 100, contents);
+			}
+		},
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			function () {
+				var _p6 = options.scheme;
+				if (_p6.ctor === 'Just') {
+					return _rundis$elm_bootstrap$Bootstrap_Navbar$schemeAttributes(_p6._0);
+				} else {
+					return {ctor: '[]'};
+				}
+			}(),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				function () {
+					var _p7 = options.fix;
+					if (_p7.ctor === 'Just') {
+						return {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class(
+								_rundis$elm_bootstrap$Bootstrap_Navbar$fixOption(_p7._0)),
+							_1: {ctor: '[]'}
+						};
+					} else {
+						return {ctor: '[]'};
+					}
+				}(),
+				options.attributes)));
 };
-var _user$project$BlazeHelpers$gridWithCls = F2(
-	function (cls, contents) {
+var _rundis$elm_bootstrap$Bootstrap_Navbar$renderCustom = function (items) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (_p8) {
+			var _p9 = _p8;
+			return _p9._0;
+		},
+		items);
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$renderItemLink = function (_p10) {
+	var _p11 = _p10;
+	return A2(
+		_elm_lang$html$Html$li,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('nav-item'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$a,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('nav-link'),
+						_1: {ctor: '[]'}
+					},
+					_p11.attributes),
+				_p11.children),
+			_1: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$maybeBrand = function (brand) {
+	var _p12 = brand;
+	if (_p12.ctor === 'Just') {
+		return {
+			ctor: '::',
+			_0: _p12._0._0,
+			_1: {ctor: '[]'}
+		};
+	} else {
+		return {ctor: '[]'};
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$transitionStyle = function (maybeHeight) {
+	var pixelHeight = A2(
+		_elm_lang$core$Maybe$withDefault,
+		'0',
+		A2(
+			_elm_lang$core$Maybe$map,
+			function (v) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(v),
+					'px');
+			},
+			maybeHeight));
+	return _elm_lang$html$Html_Attributes$style(
+		{
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'position', _1: 'relative'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'height', _1: pixelHeight},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'overflow', _1: 'hidden'},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: '-webkit-transition-timing-function', _1: 'ease'},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: '-o-transition-timing-function', _1: 'ease'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'transition-timing-function', _1: 'ease'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: '-webkit-transition-duration', _1: '0.35s'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: '-o-transition-duration', _1: '0.35s'},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'transition-duration', _1: '0.35s'},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: '-webkit-transition-property', _1: 'height'},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: '-o-transition-property', _1: 'height'},
+													_1: {
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: 'transition-property', _1: 'height'},
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$toScreenSize = function (_p13) {
+	var _p14 = _p13;
+	var _p15 = _p14.width;
+	return (_elm_lang$core$Native_Utils.cmp(_p15, 576) < 1) ? _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS : ((_elm_lang$core$Native_Utils.cmp(_p15, 768) < 1) ? _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM : ((_elm_lang$core$Native_Utils.cmp(_p15, 992) < 1) ? _rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD : ((_elm_lang$core$Native_Utils.cmp(_p15, 1200) < 1) ? _rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG : _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL)));
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$sizeToComparable = function (size) {
+	var _p16 = size;
+	switch (_p16.ctor) {
+		case 'XS':
+			return 1;
+		case 'SM':
+			return 2;
+		case 'MD':
+			return 3;
+		case 'LG':
+			return 4;
+		default:
+			return 5;
+	}
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$shouldHideMenu = F2(
+	function (_p18, _p17) {
+		var _p19 = _p18;
+		var _p20 = _p17;
+		var winMedia = function () {
+			var _p21 = _p19._0.windowSize;
+			if (_p21.ctor === 'Just') {
+				return _rundis$elm_bootstrap$Bootstrap_Navbar$toScreenSize(_p21._0);
+			} else {
+				return _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS;
+			}
+		}();
+		return _elm_lang$core$Native_Utils.cmp(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$sizeToComparable(winMedia),
+			_rundis$elm_bootstrap$Bootstrap_Navbar$sizeToComparable(_p20._0.options.toggleAt)) > 0;
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$menuWrapperAttributes = F2(
+	function (_p23, _p22) {
+		var _p24 = _p23;
+		var _p30 = _p24;
+		var _p25 = _p22;
+		var _p29 = _p25._0.withAnimation;
+		var _p28 = _p25;
+		var display = function () {
+			var _p26 = _p24._0.height;
+			if (_p26.ctor === 'Nothing') {
+				return ((!_p29) || A2(_rundis$elm_bootstrap$Bootstrap_Navbar$shouldHideMenu, _p30, _p28)) ? 'flex' : 'block';
+			} else {
+				return 'flex';
+			}
+		}();
+		var styleBlock = {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		};
+		var _p27 = _p24._0.visibility;
+		switch (_p27.ctor) {
+			case 'Hidden':
+				return {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'display', _1: display},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'width', _1: '100%'},
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				};
+			case 'StartDown':
+				return styleBlock;
+			case 'AnimatingDown':
+				return styleBlock;
+			case 'AnimatingUp':
+				return styleBlock;
+			case 'StartUp':
+				return styleBlock;
+			default:
+				return ((!_p29) || A2(_rundis$elm_bootstrap$Bootstrap_Navbar$shouldHideMenu, _p30, _p28)) ? {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('collapse navbar-collapse show'),
+					_1: {ctor: '[]'}
+				} : {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				};
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$heightDecoder = function () {
+	var resToDec = function (res) {
+		var _p31 = res;
+		if (_p31.ctor === 'Ok') {
+			return _elm_lang$core$Json_Decode$succeed(_p31._0);
+		} else {
+			return _elm_lang$core$Json_Decode$fail(_p31._0);
+		}
+	};
+	var fromNavDec = _elm_lang$core$Json_Decode$oneOf(
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Json_Decode$at,
+				{
+					ctor: '::',
+					_0: 'childNodes',
+					_1: {
+						ctor: '::',
+						_0: '2',
+						_1: {
+							ctor: '::',
+							_0: 'childNodes',
+							_1: {
+								ctor: '::',
+								_0: '0',
+								_1: {
+									ctor: '::',
+									_0: 'offsetHeight',
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				},
+				_elm_lang$core$Json_Decode$float),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$Json_Decode$at,
+					{
+						ctor: '::',
+						_0: 'childNodes',
+						_1: {
+							ctor: '::',
+							_0: '1',
+							_1: {
+								ctor: '::',
+								_0: 'childNodes',
+								_1: {
+									ctor: '::',
+									_0: '0',
+									_1: {
+										ctor: '::',
+										_0: 'offsetHeight',
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					},
+					_elm_lang$core$Json_Decode$float),
+				_1: {ctor: '[]'}
+			}
+		});
+	var fromButtonDec = _debois$elm_dom$DOM$parentElement(fromNavDec);
+	var tagDecoder = A3(
+		_elm_lang$core$Json_Decode$map2,
+		F2(
+			function (tag, val) {
+				return {ctor: '_Tuple2', _0: tag, _1: val};
+			}),
+		A2(_elm_lang$core$Json_Decode$field, 'tagName', _elm_lang$core$Json_Decode$string),
+		_elm_lang$core$Json_Decode$value);
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (_p32) {
+			var _p33 = _p32;
+			var _p35 = _p33._1;
+			var _p34 = _p33._0;
+			switch (_p34) {
+				case 'NAV':
+					return resToDec(
+						A2(_elm_lang$core$Json_Decode$decodeValue, fromNavDec, _p35));
+				case 'BUTTON':
+					return resToDec(
+						A2(_elm_lang$core$Json_Decode$decodeValue, fromButtonDec, _p35));
+				default:
+					return _elm_lang$core$Json_Decode$succeed(0);
+			}
+		},
+		_debois$elm_dom$DOM$target(
+			_debois$elm_dom$DOM$parentElement(tagDecoder)));
+}();
+var _rundis$elm_bootstrap$Bootstrap_Navbar$VisibilityState = F4(
+	function (a, b, c, d) {
+		return {visibility: a, height: b, windowSize: c, dropdowns: d};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$ConfigRec = F6(
+	function (a, b, c, d, e, f) {
+		return {options: a, toMsg: b, withAnimation: c, brand: d, items: e, customItems: f};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Options = F5(
+	function (a, b, c, d, e) {
+		return {fix: a, isContainer: b, scheme: c, toggleAt: d, attributes: e};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Scheme = F2(
+	function (a, b) {
+		return {modifier: a, bgColor: b};
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$State = function (a) {
+	return {ctor: 'State', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$mapState = F2(
+	function (mapper, _p36) {
+		var _p37 = _p36;
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$State(
+			mapper(_p37._0));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$initWindowSize = F2(
+	function (toMsg, state) {
 		return A2(
-			_elm_lang$html$Html$div,
+			_elm_lang$core$Task$perform,
+			function (size) {
+				return toMsg(
+					A2(
+						_rundis$elm_bootstrap$Bootstrap_Navbar$mapState,
+						function (s) {
+							return _elm_lang$core$Native_Utils.update(
+								s,
+								{
+									windowSize: _elm_lang$core$Maybe$Just(size)
+								});
+						},
+						state));
+			},
+			_elm_lang$window$Window$size);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Shown = {ctor: 'Shown'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$AnimatingUp = {ctor: 'AnimatingUp'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$StartUp = {ctor: 'StartUp'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$AnimatingDown = {ctor: 'AnimatingDown'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$StartDown = {ctor: 'StartDown'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Hidden = {ctor: 'Hidden'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$initialState = function (toMsg) {
+	var state = _rundis$elm_bootstrap$Bootstrap_Navbar$State(
+		{visibility: _rundis$elm_bootstrap$Bootstrap_Navbar$Hidden, height: _elm_lang$core$Maybe$Nothing, windowSize: _elm_lang$core$Maybe$Nothing, dropdowns: _elm_lang$core$Dict$empty});
+	return {
+		ctor: '_Tuple2',
+		_0: state,
+		_1: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$initWindowSize, toMsg, state)
+	};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$visibilityTransition = F2(
+	function (withAnimation, visibility) {
+		var _p38 = {ctor: '_Tuple2', _0: withAnimation, _1: visibility};
+		_v22_8:
+		do {
+			if (_p38.ctor === '_Tuple2') {
+				if (_p38._0 === true) {
+					switch (_p38._1.ctor) {
+						case 'Hidden':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$StartDown;
+						case 'StartDown':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$AnimatingDown;
+						case 'AnimatingDown':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$Shown;
+						case 'Shown':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$StartUp;
+						case 'StartUp':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$AnimatingUp;
+						default:
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$Hidden;
+					}
+				} else {
+					switch (_p38._1.ctor) {
+						case 'Hidden':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$Shown;
+						case 'Shown':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$Hidden;
+						default:
+							break _v22_8;
+					}
+				}
+			} else {
+				break _v22_8;
+			}
+		} while(false);
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$Hidden;
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$toggleHandler = F2(
+	function (_p40, _p39) {
+		var _p41 = _p40;
+		var _p42 = _p39;
+		var updState = function (h) {
+			return A2(
+				_rundis$elm_bootstrap$Bootstrap_Navbar$mapState,
+				function (s) {
+					return _elm_lang$core$Native_Utils.update(
+						s,
+						{
+							height: _elm_lang$core$Maybe$Just(h),
+							visibility: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$visibilityTransition, _p42._0.withAnimation, s.visibility)
+						});
+				},
+				_p41);
+		};
+		return A2(
+			_elm_lang$html$Html_Events$on,
+			'click',
+			A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (v) {
+					return _elm_lang$core$Json_Decode$succeed(
+						_p42._0.toMsg(
+							(_elm_lang$core$Native_Utils.cmp(v, 0) > 0) ? updState(v) : updState(
+								A2(_elm_lang$core$Maybe$withDefault, 0, _p41._0.height))));
+				},
+				_rundis$elm_bootstrap$Bootstrap_Navbar$heightDecoder));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$transitionHandler = F2(
+	function (state, _p43) {
+		var _p44 = _p43;
+		return _elm_lang$core$Json_Decode$succeed(
+			_p44._0.toMsg(
+				A2(
+					_rundis$elm_bootstrap$Bootstrap_Navbar$mapState,
+					function (s) {
+						return _elm_lang$core$Native_Utils.update(
+							s,
+							{
+								visibility: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$visibilityTransition, _p44._0.withAnimation, s.visibility)
+							});
+					},
+					state)));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$menuAttributes = F2(
+	function (_p46, _p45) {
+		var _p47 = _p46;
+		var _p53 = _p47;
+		var _p52 = _p47._0.height;
+		var _p48 = _p45;
+		var _p51 = _p48;
+		var defaults = {
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('collapse navbar-collapse'),
+			_1: {ctor: '[]'}
+		};
+		var _p49 = _p47._0.visibility;
+		switch (_p49.ctor) {
+			case 'Hidden':
+				var _p50 = _p52;
+				if (_p50.ctor === 'Nothing') {
+					return ((!_p48._0.withAnimation) || A2(_rundis$elm_bootstrap$Bootstrap_Navbar$shouldHideMenu, _p53, _p51)) ? defaults : {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'height', _1: '0'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'overflow', _1: 'hidden'},
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					};
+				} else {
+					return defaults;
+				}
+			case 'StartDown':
+				return {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Navbar$transitionStyle(_elm_lang$core$Maybe$Nothing),
+					_1: {ctor: '[]'}
+				};
+			case 'AnimatingDown':
+				return {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Navbar$transitionStyle(_p52),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html_Events$on,
+							'transitionend',
+							A2(_rundis$elm_bootstrap$Bootstrap_Navbar$transitionHandler, _p53, _p51)),
+						_1: {ctor: '[]'}
+					}
+				};
+			case 'AnimatingUp':
+				return {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Navbar$transitionStyle(_elm_lang$core$Maybe$Nothing),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html_Events$on,
+							'transitionend',
+							A2(_rundis$elm_bootstrap$Bootstrap_Navbar$transitionHandler, _p53, _p51)),
+						_1: {ctor: '[]'}
+					}
+				};
+			case 'StartUp':
+				return {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Navbar$transitionStyle(_p52),
+					_1: {ctor: '[]'}
+				};
+			default:
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					defaults,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('show'),
+						_1: {ctor: '[]'}
+					});
+		}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Closed = {ctor: 'Closed'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$getOrInitDropdownStatus = F2(
+	function (id, _p54) {
+		var _p55 = _p54;
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			_rundis$elm_bootstrap$Bootstrap_Navbar$Closed,
+			A2(_elm_lang$core$Dict$get, id, _p55._0.dropdowns));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$ListenClicks = {ctor: 'ListenClicks'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Open = {ctor: 'Open'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownSubscriptions = F2(
+	function (_p56, toMsg) {
+		var _p57 = _p56;
+		var _p64 = _p57._0.dropdowns;
+		var needsSub = function (s) {
+			return A2(
+				_elm_lang$core$List$any,
+				function (_p58) {
+					var _p59 = _p58;
+					return _elm_lang$core$Native_Utils.eq(_p59._1, s);
+				},
+				_elm_lang$core$Dict$toList(_p64));
+		};
+		var updDropdowns = A2(
+			_elm_lang$core$Dict$map,
+			F2(
+				function (_p60, status) {
+					var _p61 = status;
+					switch (_p61.ctor) {
+						case 'Open':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$ListenClicks;
+						case 'ListenClicks':
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$Closed;
+						default:
+							return _rundis$elm_bootstrap$Bootstrap_Navbar$Closed;
+					}
+				}),
+			_p64);
+		var updState = A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$mapState,
+			function (s) {
+				return _elm_lang$core$Native_Utils.update(
+					s,
+					{dropdowns: updDropdowns});
+			},
+			_p57);
+		return _elm_lang$core$Platform_Sub$batch(
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class(
-					A2(_elm_lang$core$Basics_ops['++'], 'o-grid o-grid--wrap ', cls)),
+				_0: needsSub(_rundis$elm_bootstrap$Bootstrap_Navbar$Open) ? _elm_lang$animation_frame$AnimationFrame$times(
+					function (_p62) {
+						return toMsg(updState);
+					}) : _elm_lang$core$Platform_Sub$none,
+				_1: {
+					ctor: '::',
+					_0: needsSub(_rundis$elm_bootstrap$Bootstrap_Navbar$ListenClicks) ? _elm_lang$mouse$Mouse$clicks(
+						function (_p63) {
+							return toMsg(updState);
+						}) : _elm_lang$core$Platform_Sub$none,
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$subscriptions = F2(
+	function (_p65, toMsg) {
+		var _p66 = _p65;
+		var _p70 = _p66;
+		var updState = function (v) {
+			return A2(
+				_rundis$elm_bootstrap$Bootstrap_Navbar$mapState,
+				function (s) {
+					return _elm_lang$core$Native_Utils.update(
+						s,
+						{visibility: v});
+				},
+				_p70);
+		};
+		return _elm_lang$core$Platform_Sub$batch(
+			{
+				ctor: '::',
+				_0: function () {
+					var _p67 = _p66._0.visibility;
+					switch (_p67.ctor) {
+						case 'StartDown':
+							return _elm_lang$animation_frame$AnimationFrame$times(
+								function (_p68) {
+									return toMsg(
+										updState(_rundis$elm_bootstrap$Bootstrap_Navbar$AnimatingDown));
+								});
+						case 'StartUp':
+							return _elm_lang$animation_frame$AnimationFrame$times(
+								function (_p69) {
+									return toMsg(
+										updState(_rundis$elm_bootstrap$Bootstrap_Navbar$AnimatingUp));
+								});
+						default:
+							return _elm_lang$core$Platform_Sub$none;
+					}
+				}(),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$window$Window$resizes(
+						function (size) {
+							return toMsg(
+								A2(
+									_rundis$elm_bootstrap$Bootstrap_Navbar$mapState,
+									function (s) {
+										return _elm_lang$core$Native_Utils.update(
+											s,
+											{
+												windowSize: _elm_lang$core$Maybe$Just(size)
+											});
+									},
+									_p70));
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$dropdownSubscriptions, _p70, toMsg),
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$toggleOpen = F3(
+	function (state, id, _p71) {
+		var _p72 = _p71;
+		var currStatus = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$getOrInitDropdownStatus, id, state);
+		var newStatus = function () {
+			var _p73 = currStatus;
+			switch (_p73.ctor) {
+				case 'Open':
+					return _rundis$elm_bootstrap$Bootstrap_Navbar$Closed;
+				case 'ListenClicks':
+					return _rundis$elm_bootstrap$Bootstrap_Navbar$Closed;
+				default:
+					return _rundis$elm_bootstrap$Bootstrap_Navbar$Open;
+			}
+		}();
+		return _p72._0.toMsg(
+			A2(
+				_rundis$elm_bootstrap$Bootstrap_Navbar$mapState,
+				function (s) {
+					return _elm_lang$core$Native_Utils.update(
+						s,
+						{
+							dropdowns: A3(_elm_lang$core$Dict$insert, id, newStatus, s.dropdowns)
+						});
+				},
+				state));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$renderDropdownToggle = F4(
+	function (state, id, config, _p74) {
+		var _p75 = _p74;
+		return A2(
+			_elm_lang$html$Html$a,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('nav-link dropdown-toggle'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$href('#'),
+						_1: {
+							ctor: '::',
+							_0: A3(
+								_elm_lang$html$Html_Events$onWithOptions,
+								'click',
+								{stopPropagation: false, preventDefault: true},
+								_elm_lang$core$Json_Decode$succeed(
+									A3(_rundis$elm_bootstrap$Bootstrap_Navbar$toggleOpen, state, id, config))),
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				_p75._0.attributes),
+			_p75._0.children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$renderDropdown = F3(
+	function (state, _p77, _p76) {
+		var _p78 = _p77;
+		var _p79 = _p76;
+		var _p83 = _p79._0.id;
+		var needsDropup = A2(
+			_elm_lang$core$Maybe$withDefault,
+			false,
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (fix) {
+					var _p80 = fix;
+					if (_p80.ctor === 'Bottom') {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				_p78._0.options.fix));
+		return A2(
+			_elm_lang$html$Html$li,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$classList(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'nav-item', _1: true},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'dropdown', _1: true},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'dropup', _1: needsDropup},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'show',
+										_1: !_elm_lang$core$Native_Utils.eq(
+											A2(_rundis$elm_bootstrap$Bootstrap_Navbar$getOrInitDropdownStatus, _p83, state),
+											_rundis$elm_bootstrap$Bootstrap_Navbar$Closed)
+									},
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
 				_1: {ctor: '[]'}
 			},
-			contents);
+			{
+				ctor: '::',
+				_0: A4(_rundis$elm_bootstrap$Bootstrap_Navbar$renderDropdownToggle, state, _p83, _p78, _p79._0.toggle),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('dropdown-menu'),
+							_1: {ctor: '[]'}
+						},
+						A2(
+							_elm_lang$core$List$map,
+							function (_p81) {
+								var _p82 = _p81;
+								return _p82._0;
+							},
+							_p79._0.items)),
+					_1: {ctor: '[]'}
+				}
+			});
 	});
-var _user$project$BlazeHelpers$grid = function (contents) {
-	return A2(_user$project$BlazeHelpers$gridWithCls, '', contents);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$renderNav = F3(
+	function (state, config, navItems) {
+		return A2(
+			_elm_lang$html$Html$ul,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('navbar-nav mr-auto'),
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$List$map,
+				function (item) {
+					var _p84 = item;
+					if (_p84.ctor === 'Item') {
+						return _rundis$elm_bootstrap$Bootstrap_Navbar$renderItemLink(_p84._0);
+					} else {
+						return A3(_rundis$elm_bootstrap$Bootstrap_Navbar$renderDropdown, state, config, _p84._0);
+					}
+				},
+				navItems));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$view = F2(
+	function (state, _p85) {
+		var _p86 = _p85;
+		var _p89 = _p86;
+		var _p88 = _p86._0.brand;
+		return A2(
+			_elm_lang$html$Html$nav,
+			_rundis$elm_bootstrap$Bootstrap_Navbar$navbarAttributes(_p86._0.options),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'navbar-toggler',
+									A2(
+										_elm_lang$core$Maybe$withDefault,
+										'',
+										A2(
+											_elm_lang$core$Maybe$map,
+											function (_p87) {
+												return ' navbar-toggler-right';
+											},
+											_p88)))),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('button'),
+								_1: {
+									ctor: '::',
+									_0: A2(_rundis$elm_bootstrap$Bootstrap_Navbar$toggleHandler, state, _p89),
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$span,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('navbar-toggler-icon'),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				},
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_rundis$elm_bootstrap$Bootstrap_Navbar$maybeBrand(_p88),
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							A2(_rundis$elm_bootstrap$Bootstrap_Navbar$menuAttributes, state, _p89),
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									A2(_rundis$elm_bootstrap$Bootstrap_Navbar$menuWrapperAttributes, state, _p89),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										{
+											ctor: '::',
+											_0: A3(_rundis$elm_bootstrap$Bootstrap_Navbar$renderNav, state, _p89, _p86._0.items),
+											_1: {ctor: '[]'}
+										},
+										_rundis$elm_bootstrap$Bootstrap_Navbar$renderCustom(_p86._0.customItems))),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					})));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Config = function (a) {
+	return {ctor: 'Config', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$updateConfig = F2(
+	function (mapper, _p90) {
+		var _p91 = _p90;
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$Config(
+			mapper(_p91._0));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$withAnimation = function (config) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$updateConfig,
+		function (conf) {
+			return _elm_lang$core$Native_Utils.update(
+				conf,
+				{withAnimation: true});
+		},
+		config);
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$items = F2(
+	function (items, config) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$updateConfig,
+			function (conf) {
+				return _elm_lang$core$Native_Utils.update(
+					conf,
+					{items: items});
+			},
+			config);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$customItems = F2(
+	function (items, config) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$updateConfig,
+			function (conf) {
+				return _elm_lang$core$Native_Utils.update(
+					conf,
+					{customItems: items});
+			},
+			config);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$updateOptions = F2(
+	function (mapper, _p92) {
+		var _p93 = _p92;
+		var _p94 = _p93._0;
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$Config(
+			_elm_lang$core$Native_Utils.update(
+				_p94,
+				{
+					options: mapper(_p94.options)
+				}));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$container = function (config) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$updateOptions,
+		function (opts) {
+			return _elm_lang$core$Native_Utils.update(
+				opts,
+				{isContainer: true});
+		},
+		config);
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$scheme = F3(
+	function (modifier, bgColor, config) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$updateOptions,
+			function (opt) {
+				return _elm_lang$core$Native_Utils.update(
+					opt,
+					{
+						scheme: _elm_lang$core$Maybe$Just(
+							{modifier: modifier, bgColor: bgColor})
+					});
+			},
+			config);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$toggleAt = F2(
+	function (size, config) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$updateOptions,
+			function (opt) {
+				return _elm_lang$core$Native_Utils.update(
+					opt,
+					{toggleAt: size});
+			},
+			config);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$collapseSmall = _rundis$elm_bootstrap$Bootstrap_Navbar$toggleAt(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$collapseMedium = _rundis$elm_bootstrap$Bootstrap_Navbar$toggleAt(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$MD);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$collapseLarge = _rundis$elm_bootstrap$Bootstrap_Navbar$toggleAt(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$LG);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$collapseExtraLarge = _rundis$elm_bootstrap$Bootstrap_Navbar$toggleAt(_rundis$elm_bootstrap$Bootstrap_Grid_Internal$XL);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$attrs = F2(
+	function (attrs, config) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$updateOptions,
+			function (opt) {
+				return _elm_lang$core$Native_Utils.update(
+					opt,
+					{
+						attributes: A2(_elm_lang$core$Basics_ops['++'], opt.attributes, attrs)
+					});
+			},
+			config);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Bottom = {ctor: 'Bottom'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$fixBottom = function (config) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$updateOptions,
+		function (opts) {
+			return _elm_lang$core$Native_Utils.update(
+				opts,
+				{
+					fix: _elm_lang$core$Maybe$Just(_rundis$elm_bootstrap$Bootstrap_Navbar$Bottom)
+				});
+		},
+		config);
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Top = {ctor: 'Top'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$fixTop = function (config) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$updateOptions,
+		function (opts) {
+			return _elm_lang$core$Native_Utils.update(
+				opts,
+				{
+					fix: _elm_lang$core$Maybe$Just(_rundis$elm_bootstrap$Bootstrap_Navbar$Top)
+				});
+		},
+		config);
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Light = {ctor: 'Light'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Dark = {ctor: 'Dark'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Class = function (a) {
+	return {ctor: 'Class', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$darkCustomClass = function (classString) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$scheme,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Dark,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Class(classString));
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$lightCustomClass = function (classString) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$scheme,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Light,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Class(classString));
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Custom = function (a) {
+	return {ctor: 'Custom', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$darkCustom = function (color) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$scheme,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Dark,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Custom(color));
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$lightCustom = function (color) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$scheme,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Light,
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Custom(color));
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Inverse = {ctor: 'Inverse'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$inverse = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$scheme, _rundis$elm_bootstrap$Bootstrap_Navbar$Dark, _rundis$elm_bootstrap$Bootstrap_Navbar$Inverse);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Danger = {ctor: 'Danger'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$danger = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$scheme, _rundis$elm_bootstrap$Bootstrap_Navbar$Dark, _rundis$elm_bootstrap$Bootstrap_Navbar$Danger);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Warning = {ctor: 'Warning'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$warning = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$scheme, _rundis$elm_bootstrap$Bootstrap_Navbar$Dark, _rundis$elm_bootstrap$Bootstrap_Navbar$Warning);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Info = {ctor: 'Info'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$info = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$scheme, _rundis$elm_bootstrap$Bootstrap_Navbar$Dark, _rundis$elm_bootstrap$Bootstrap_Navbar$Info);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Success = {ctor: 'Success'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$success = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$scheme, _rundis$elm_bootstrap$Bootstrap_Navbar$Dark, _rundis$elm_bootstrap$Bootstrap_Navbar$Success);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Primary = {ctor: 'Primary'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$primary = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$scheme, _rundis$elm_bootstrap$Bootstrap_Navbar$Dark, _rundis$elm_bootstrap$Bootstrap_Navbar$Primary);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Faded = {ctor: 'Faded'};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$config = function (toMsg) {
+	return _rundis$elm_bootstrap$Bootstrap_Navbar$Config(
+		{
+			toMsg: toMsg,
+			withAnimation: false,
+			brand: _elm_lang$core$Maybe$Nothing,
+			items: {ctor: '[]'},
+			customItems: {ctor: '[]'},
+			options: {
+				fix: _elm_lang$core$Maybe$Nothing,
+				isContainer: false,
+				scheme: _elm_lang$core$Maybe$Just(
+					{modifier: _rundis$elm_bootstrap$Bootstrap_Navbar$Light, bgColor: _rundis$elm_bootstrap$Bootstrap_Navbar$Faded}),
+				toggleAt: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS,
+				attributes: {ctor: '[]'}
+			}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$faded = A2(_rundis$elm_bootstrap$Bootstrap_Navbar$scheme, _rundis$elm_bootstrap$Bootstrap_Navbar$Light, _rundis$elm_bootstrap$Bootstrap_Navbar$Faded);
+var _rundis$elm_bootstrap$Bootstrap_Navbar$NavDropdown = function (a) {
+	return {ctor: 'NavDropdown', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Item = function (a) {
+	return {ctor: 'Item', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$itemLink = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$Item(
+			{attributes: attributes, children: children});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$itemLinkActive = function (attributes) {
+	return _rundis$elm_bootstrap$Bootstrap_Navbar$itemLink(
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('active'),
+			_1: attributes
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$CustomItem = function (a) {
+	return {ctor: 'CustomItem', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$textItem = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$CustomItem(
+			A2(
+				_elm_lang$html$Html$span,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('navbar-text'),
+					_1: attributes
+				},
+				children));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$formItem = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$CustomItem(
+			A2(
+				_elm_lang$html$Html$form,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('form-inline'),
+					_1: attributes
+				},
+				children));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$customItem = function (elem) {
+	return _rundis$elm_bootstrap$Bootstrap_Navbar$CustomItem(elem);
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Brand = function (a) {
+	return {ctor: 'Brand', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$brand = F3(
+	function (attributes, children, config) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$updateConfig,
+			function (conf) {
+				return _elm_lang$core$Native_Utils.update(
+					conf,
+					{
+						brand: _elm_lang$core$Maybe$Just(
+							_rundis$elm_bootstrap$Bootstrap_Navbar$Brand(
+								A2(
+									_elm_lang$html$Html$a,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('navbar-brand'),
+											_1: {ctor: '[]'}
+										},
+										attributes),
+									children)))
+					});
+			},
+			config);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$Dropdown = function (a) {
+	return {ctor: 'Dropdown', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdown = function (config) {
+	return _rundis$elm_bootstrap$Bootstrap_Navbar$NavDropdown(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$Dropdown(config));
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$DropdownToggle = function (a) {
+	return {ctor: 'DropdownToggle', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownToggle = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$DropdownToggle(
+			{attributes: attributes, children: children});
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$DropdownItem = function (a) {
+	return {ctor: 'DropdownItem', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownItem = F2(
+	function (attributes, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Navbar$DropdownItem(
+			A2(
+				_elm_lang$html$Html$a,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('dropdown-item'),
+						_1: {ctor: '[]'}
+					},
+					attributes),
+				children));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownDivider = _rundis$elm_bootstrap$Bootstrap_Navbar$DropdownItem(
+	A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('dropdown-divider'),
+			_1: {ctor: '[]'}
+		},
+		{ctor: '[]'}));
+var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownHeader = function (children) {
+	return _rundis$elm_bootstrap$Bootstrap_Navbar$DropdownItem(
+		A2(
+			_elm_lang$html$Html$h6,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('dropdown-header'),
+				_1: {ctor: '[]'}
+			},
+			children));
 };
 
 var _user$project$Connection_Models$emptyListIfNotLoaded = function (loadStateEntity) {
@@ -9260,11 +19402,7 @@ var _user$project$Connection_View$connectionError = F2(
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-overlay'),
-								_1: {ctor: '[]'}
-							},
+							{ctor: '[]'},
 							{ctor: '[]'}),
 						_1: {
 							ctor: '::',
@@ -9272,42 +19410,30 @@ var _user$project$Connection_View$connectionError = F2(
 								_elm_lang$html$Html$div,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('o-modal connection-error'),
+									_0: _elm_lang$html$Html_Attributes$class('connection-error'),
 									_1: {ctor: '[]'}
 								},
 								{
 									ctor: '::',
 									_0: A2(
 										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('c-card'),
-											_1: {ctor: '[]'}
-										},
+										{ctor: '[]'},
 										{
 											ctor: '::',
 											_0: A2(
 												_elm_lang$html$Html$header,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('c-card__header'),
-													_1: {ctor: '[]'}
-												},
+												{ctor: '[]'},
 												{
 													ctor: '::',
 													_0: A2(
 														_elm_lang$html$Html$button,
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('c-button c-button--close'),
+															_0: _elm_lang$html$Html_Attributes$type_('button'),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$type_('button'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onClick(config.onClose),
-																	_1: {ctor: '[]'}
-																}
+																_0: _elm_lang$html$Html_Events$onClick(config.onClose),
+																_1: {ctor: '[]'}
 															}
 														},
 														{
@@ -9319,11 +19445,7 @@ var _user$project$Connection_View$connectionError = F2(
 														ctor: '::',
 														_0: A2(
 															_elm_lang$html$Html$h2,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('c-heading'),
-																_1: {ctor: '[]'}
-															},
+															{ctor: '[]'},
 															{
 																ctor: '::',
 																_0: _elm_lang$html$Html$text('Oh no!'),
@@ -9336,11 +19458,7 @@ var _user$project$Connection_View$connectionError = F2(
 												ctor: '::',
 												_0: A2(
 													_elm_lang$html$Html$div,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$class('c-card__body'),
-														_1: {ctor: '[]'}
-													},
+													{ctor: '[]'},
 													{
 														ctor: '::',
 														_0: _elm_lang$html$Html$text('There was a connection error. Please ensure you are connected to the internet and try again.'),
@@ -9350,26 +19468,18 @@ var _user$project$Connection_View$connectionError = F2(
 													ctor: '::',
 													_0: A2(
 														_elm_lang$html$Html$footer,
-														{
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$class('c-card__footer'),
-															_1: {ctor: '[]'}
-														},
+														{ctor: '[]'},
 														{
 															ctor: '::',
 															_0: A2(
 																_elm_lang$html$Html$button,
 																{
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$class('c-button c-button--brand'),
+																	_0: _elm_lang$html$Html_Attributes$type_('button'),
 																	_1: {
 																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$type_('button'),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onClick(config.onClose),
-																			_1: {ctor: '[]'}
-																		}
+																		_0: _elm_lang$html$Html_Events$onClick(config.onClose),
+																		_1: {ctor: '[]'}
 																	}
 																},
 																{
@@ -9574,7 +19684,7 @@ var _user$project$Food_View$recommendedFoodRow = F2(
 			_elm_lang$html$Html$li,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('c-card__item recommended-food-item'),
+				_0: _elm_lang$html$Html_Attributes$class('recommended-food-item'),
 				_1: {ctor: '[]'}
 			},
 			{
@@ -9613,20 +19723,12 @@ var _user$project$Food_View$recommendedFoodRow = F2(
 var _user$project$Food_View$listWithOneItem = function (item) {
 	return A2(
 		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('c-card list-empty'),
-			_1: {ctor: '[]'}
-		},
+		{ctor: '[]'},
 		{
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('c-card-item list-empty-text'),
-					_1: {ctor: '[]'}
-				},
+				{ctor: '[]'},
 				{
 					ctor: '::',
 					_0: item,
@@ -9661,10 +19763,14 @@ var _user$project$Food_View$recommendedFoodSection = F2(
 							_p1));
 			}
 		}();
-		return _user$project$BlazeHelpers$grid(
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _user$project$BlazeHelpers$fullCell(
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{ctor: '[]'},
 					{
 						ctor: '::',
 						_0: A2(
@@ -9683,7 +19789,9 @@ var _user$project$Food_View$recommendedFoodSection = F2(
 					}),
 				_1: {
 					ctor: '::',
-					_0: _user$project$BlazeHelpers$fullCell(
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{ctor: '[]'},
 						{
 							ctor: '::',
 							_0: recommendedFoodDisplay,
@@ -9711,7 +19819,7 @@ var _user$project$Food_View$foodRow = F2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('c-card__item c-field c-field--choice food-item'),
+				_0: _elm_lang$html$Html_Attributes$class('food-item'),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Events$onMouseOver(
@@ -9893,30 +20001,26 @@ var _user$project$Food_View$selectedFoodSection = F3(
 					var _p7 = _p6._0;
 					return _elm_lang$core$Dict$isEmpty(_p7) ? pleaseSearchFoodText : A2(
 						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('c-card c-card--menu food-menu'),
-							_1: {ctor: '[]'}
-						},
+						{ctor: '[]'},
 						A2(
 							_elm_lang$core$List$map,
 							_user$project$Food_View$foodRow(foodRowConfig),
 							_elm_lang$core$Dict$values(_p7)));
 			}
 		}();
-		return _user$project$BlazeHelpers$grid(
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _user$project$BlazeHelpers$fullCell(
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{ctor: '[]'},
 					{
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$h2,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-heading u-center-block smaller-tooltip'),
-								_1: {ctor: '[]'}
-							},
+							{ctor: '[]'},
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text('Selected Food'),
@@ -9926,7 +20030,7 @@ var _user$project$Food_View$selectedFoodSection = F3(
 										_elm_lang$html$Html$a,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('selected-food-button c-tooltip c-tooltip--top'),
+											_0: _elm_lang$html$Html_Attributes$class('selected-food-button'),
 											_1: {
 												ctor: '::',
 												_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-label', 'Clear all food'),
@@ -9956,7 +20060,9 @@ var _user$project$Food_View$selectedFoodSection = F3(
 					}),
 				_1: {
 					ctor: '::',
-					_0: _user$project$BlazeHelpers$fullCell(
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$col,
+						{ctor: '[]'},
 						{
 							ctor: '::',
 							_0: selectedFoodDisplay,
@@ -10004,187 +20110,6 @@ var _user$project$Nutrient_Models$Nutrient = function (a) {
 };
 var _user$project$Nutrient_Models$Mineral = {ctor: 'Mineral'};
 var _user$project$Nutrient_Models$Vitamin = {ctor: 'Vitamin'};
-
-var _user$project$Nutrient_View$getPercentageColour = function (percentage) {
-	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? '#FF3D7F' : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? '#FFAB2E' : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? '#7FC7AF' : '#6ABE6E'));
-};
-var _user$project$Nutrient_View$nutrientProgress = F3(
-	function (config, isHovered, nutrient) {
-		var percentage = A2(_user$project$Helpers$getPercentage, nutrient.amount, nutrient.dailyIntake);
-		var percentageColour = isHovered ? 'lightgray' : _user$project$Nutrient_View$getPercentageColour(percentage);
-		var hoverPercentage = A2(_user$project$Helpers$getPercentage, nutrient.hoveredAmount, nutrient.dailyIntake);
-		var percentageToDisplay = (_elm_lang$core$Native_Utils.cmp(hoverPercentage, 0) > 0) ? hoverPercentage : percentage;
-		var hoverWidth = (_elm_lang$core$Native_Utils.cmp(hoverPercentage, 100) > 0) ? 100 : hoverPercentage;
-		var percentageWidth = (_elm_lang$core$Native_Utils.cmp(percentage, 100) > 0) ? (100 - hoverWidth) : (percentage - hoverWidth);
-		var displayColour = (_elm_lang$core$Native_Utils.cmp(hoverWidth, 0) > 0) ? '#b13fb8' : (isHovered ? 'lightgray' : percentageColour);
-		var label = nutrient.name;
-		return A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('o-grid__cell o-grid__cell--width-100 nutrient-progress'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onMouseOver(
-						config.mouseOver(nutrient)),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onMouseLeave(config.mouseLeave),
-						_1: {ctor: '[]'}
-					}
-				}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('progress-label'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$span,
-							{ctor: '[]'},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text(label),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$span,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('progress-percentage'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 'color', _1: displayColour},
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_elm_lang$core$Basics$toString(percentageToDisplay),
-											'%')),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('c-progress u-medium progress'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-progress__bar'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {
-													ctor: '_Tuple2',
-													_0: 'width',
-													_1: A2(
-														_elm_lang$core$Basics_ops['++'],
-														_elm_lang$core$Basics$toString(hoverWidth),
-														'%')
-												},
-												_1: {
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#b13fb8'},
-													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {ctor: '[]'}
-									}
-								},
-								{ctor: '[]'}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('c-progress__bar'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(
-												{
-													ctor: '::',
-													_0: {
-														ctor: '_Tuple2',
-														_0: 'width',
-														_1: A2(
-															_elm_lang$core$Basics_ops['++'],
-															_elm_lang$core$Basics$toString(percentageWidth),
-															'%')
-													},
-													_1: {
-														ctor: '::',
-														_0: {ctor: '_Tuple2', _0: 'background-color', _1: percentageColour},
-														_1: {ctor: '[]'}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}
-									},
-									{ctor: '[]'}),
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
-var _user$project$Nutrient_View$nutrientSection = F4(
-	function (config, category, foodIsHovered, nutrients) {
-		return A2(
-			_user$project$BlazeHelpers$gridWithCls,
-			'large-fit',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				{
-					ctor: '::',
-					_0: _user$project$BlazeHelpers$fullCell(
-						{
-							ctor: '::',
-							_0: _user$project$BlazeHelpers$heading2(category),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				},
-				A2(
-					_elm_lang$core$List$map,
-					A2(_user$project$Nutrient_View$nutrientProgress, config, foodIsHovered),
-					nutrients)));
-	});
-var _user$project$Nutrient_View$NutrientProgressConfig = F2(
-	function (a, b) {
-		return {mouseOver: a, mouseLeave: b};
-	});
 
 var _user$project$Nutrient_Api$stringToNutrientType = function (str) {
 	var _p0 = str;
@@ -10262,6 +20187,247 @@ var _user$project$Nutrient_Api$getAllNutrients = function (msg) {
 	return A2(_elm_lang$http$Http$send, msg, request);
 };
 
+var _user$project$MainCss$nutrientFull = '6ABE6E';
+var _user$project$MainCss$nutrientHigh = '7FC7AF';
+var _user$project$MainCss$nutrientMedium = 'FFAB2E';
+var _user$project$MainCss$nutrientLow = 'FF3D7F';
+var _user$project$MainCss$NutrientFull = {ctor: 'NutrientFull'};
+var _user$project$MainCss$NutrientHigh = {ctor: 'NutrientHigh'};
+var _user$project$MainCss$NutrientMedium = {ctor: 'NutrientMedium'};
+var _user$project$MainCss$NutrientLow = {ctor: 'NutrientLow'};
+var _user$project$MainCss$css = _rtfeldman$elm_css$Css$stylesheet(
+	{
+		ctor: '::',
+		_0: A2(
+			_rtfeldman$elm_css$Css$class,
+			_user$project$MainCss$NutrientLow,
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$color(
+					_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientLow)),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_rtfeldman$elm_css$Css$class,
+				_user$project$MainCss$NutrientMedium,
+				{
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css$color(
+						_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientMedium)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rtfeldman$elm_css$Css$class,
+					_user$project$MainCss$NutrientHigh,
+					{
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css$color(
+							_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientHigh)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rtfeldman$elm_css$Css$class,
+						_user$project$MainCss$NutrientFull,
+						{
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css$color(
+								_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientFull)),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	});
+
+var _user$project$Nutrient_View$getPercentageColour = function (percentage) {
+	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? _user$project$MainCss$nutrientLow : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? _user$project$MainCss$nutrientMedium : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? _user$project$MainCss$nutrientHigh : _user$project$MainCss$nutrientFull));
+};
+var _user$project$Nutrient_View$nutrientProgress = F3(
+	function (config, isHovered, nutrient) {
+		var percentage = A2(_user$project$Helpers$getPercentage, nutrient.amount, nutrient.dailyIntake);
+		var percentageColour = isHovered ? 'lightgray' : _user$project$Nutrient_View$getPercentageColour(percentage);
+		var hoverPercentage = A2(_user$project$Helpers$getPercentage, nutrient.hoveredAmount, nutrient.dailyIntake);
+		var percentageToDisplay = (_elm_lang$core$Native_Utils.cmp(hoverPercentage, 0) > 0) ? hoverPercentage : percentage;
+		var hoverWidth = (_elm_lang$core$Native_Utils.cmp(hoverPercentage, 100) > 0) ? 100 : hoverPercentage;
+		var percentageWidth = (_elm_lang$core$Native_Utils.cmp(percentage, 100) > 0) ? (100 - hoverWidth) : (percentage - hoverWidth);
+		var displayColour = (_elm_lang$core$Native_Utils.cmp(hoverWidth, 0) > 0) ? '#b13fb8' : (isHovered ? 'lightgray' : percentageColour);
+		var label = nutrient.name;
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('nutrient-progress'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onMouseOver(
+						config.mouseOver(nutrient)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onMouseLeave(config.mouseLeave),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('progress-label'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(label),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$span,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('progress-percentage'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'color', _1: displayColour},
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(percentageToDisplay),
+											'%')),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('u-medium progress'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {
+												ctor: '_Tuple2',
+												_0: 'width',
+												_1: A2(
+													_elm_lang$core$Basics_ops['++'],
+													_elm_lang$core$Basics$toString(hoverWidth),
+													'%')
+											},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#b13fb8'},
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple2',
+													_0: 'width',
+													_1: A2(
+														_elm_lang$core$Basics_ops['++'],
+														_elm_lang$core$Basics$toString(percentageWidth),
+														'%')
+												},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'background-color', _1: percentageColour},
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Nutrient_View$nutrientSection = F4(
+	function (config, category, foodIsHovered, nutrients) {
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{ctor: '[]'},
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h2,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(category),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
+						A2(
+							_elm_lang$core$List$map,
+							A2(_user$project$Nutrient_View$nutrientProgress, config, foodIsHovered),
+							nutrients))),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Nutrient_View$NutrientProgressConfig = F2(
+	function (a, b) {
+		return {mouseOver: a, mouseLeave: b};
+	});
+
 var _user$project$Navigation_View$banner = A2(
 	_elm_lang$html$Html$div,
 	{
@@ -10300,10 +20466,14 @@ var _user$project$Navigation_View$banner = A2(
 			_1: {ctor: '[]'}
 		}
 	});
-var _user$project$Navigation_View$topSection = _user$project$BlazeHelpers$grid(
+var _user$project$Navigation_View$topSection = A2(
+	_rundis$elm_bootstrap$Bootstrap_Grid$row,
+	{ctor: '[]'},
 	{
 		ctor: '::',
-		_0: _user$project$BlazeHelpers$defaultCell(
+		_0: A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$col,
+			{ctor: '[]'},
 			{
 				ctor: '::',
 				_0: _user$project$Navigation_View$banner,
@@ -10312,12 +20482,8 @@ var _user$project$Navigation_View$topSection = _user$project$BlazeHelpers$grid(
 		_1: {
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('o-grid__cell--offset'),
-					_1: {ctor: '[]'}
-				},
+				_rundis$elm_bootstrap$Bootstrap_Grid$col,
+				{ctor: '[]'},
 				{
 					ctor: '::',
 					_0: A2(
@@ -10527,27 +20693,43 @@ var _user$project$Main$informationSection = F2(
 					}
 			}
 		}();
-		return _user$project$BlazeHelpers$grid(
+		return A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$row,
+			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _user$project$BlazeHelpers$fullCell(
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{ctor: '[]'},
 					{
 						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-card info-panel'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
+						_0: _rundis$elm_bootstrap$Bootstrap_Card$view(
+							A3(
+								_rundis$elm_bootstrap$Bootstrap_Card$footer,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(sideHeader),
+									_1: {ctor: '[]'}
+								},
+								A3(
+									_rundis$elm_bootstrap$Bootstrap_Card$block,
+									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('c-card__item info-panel-header'),
-										_1: {
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Card$text,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(info),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									},
+									A3(
+										_rundis$elm_bootstrap$Bootstrap_Card$header,
+										{
 											ctor: '::',
 											_0: _elm_lang$html$Html_Attributes$style(
 												{
@@ -10556,67 +20738,14 @@ var _user$project$Main$informationSection = F2(
 													_1: {ctor: '[]'}
 												}),
 											_1: {ctor: '[]'}
-										}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$div,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('info-panel-header-text'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(header),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('info-panel-side-header'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(sideHeader),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$div,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
-											_1: {ctor: '[]'}
 										},
 										{
 											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('c-paragraph info-panel-text'),
-													_1: {ctor: '[]'}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(info),
-													_1: {ctor: '[]'}
-												}),
+											_0: _elm_lang$html$Html$text(header),
 											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}),
+										},
+										_rundis$elm_bootstrap$Bootstrap_Card$config(
+											{ctor: '[]'}))))),
 						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
@@ -10896,20 +21025,9 @@ var _user$project$Main$UpdateSearchText = function (a) {
 var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
 var _user$project$Main$searchBar = F2(
 	function (searchText, potentialFoods) {
-		var ulStyle = function () {
+		var content = function () {
 			var _p17 = potentialFoods;
 			switch (_p17.ctor) {
-				case 'NotLoaded':
-					return 'c-card search-bar-ul u-high';
-				case 'Loading':
-					return 'c-card search-bar-ul u-high';
-				default:
-					return _elm_lang$core$List$isEmpty(_p17._0) ? 'c-card search-bar-ul u-high' : 'c-card c-card--menu search-bar-ul u-high';
-			}
-		}();
-		var content = function () {
-			var _p18 = potentialFoods;
-			switch (_p18.ctor) {
 				case 'NotLoaded':
 					return {ctor: '[]'};
 				case 'Loading':
@@ -10919,16 +21037,12 @@ var _user$project$Main$searchBar = F2(
 						_1: {ctor: '[]'}
 					};
 				default:
-					var _p19 = _p18._0;
-					return _elm_lang$core$List$isEmpty(_p19) ? {
+					var _p18 = _p17._0;
+					return _elm_lang$core$List$isEmpty(_p18) ? {
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$li,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('c-card__item no-results'),
-								_1: {ctor: '[]'}
-							},
+							{ctor: '[]'},
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text('No Results'),
@@ -10942,13 +21056,9 @@ var _user$project$Main$searchBar = F2(
 								_elm_lang$html$Html$li,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('c-card__item'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onMouseDown(
-											_user$project$Main$SelectFood(food)),
-										_1: {ctor: '[]'}
-									}
+									_0: _elm_lang$html$Html_Events$onMouseDown(
+										_user$project$Main$SelectFood(food)),
+									_1: {ctor: '[]'}
 								},
 								{
 									ctor: '::',
@@ -10956,89 +21066,32 @@ var _user$project$Main$searchBar = F2(
 									_1: {ctor: '[]'}
 								});
 						},
-						_p19);
+						_p18);
 			}
 		}();
-		return A2(
-			_elm_lang$html$Html$div,
+		return _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('search-holder'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _user$project$BlazeHelpers$fullCell(
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$div,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('o-field o-field--icon-right'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$input,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('c-field'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$value(searchText),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}
-									},
-									{ctor: '[]'}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$i,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('a fa fa-search c-icon'),
-											_1: {ctor: '[]'}
-										},
-										{ctor: '[]'}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}),
+				_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$large,
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
+					_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('search-dropdown u-pillar-box--large'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$ul,
-								{
+							_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$value(searchText),
+								_1: {
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class(ulStyle),
-									_1: {ctor: '[]'}
-								},
-								content),
-							_1: {ctor: '[]'}
+									_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
 						}),
 					_1: {ctor: '[]'}
 				}
@@ -11046,145 +21099,176 @@ var _user$project$Main$searchBar = F2(
 	});
 var _user$project$Main$view = function (model) {
 	return A2(
-		_elm_lang$html$Html$div,
+		_rundis$elm_bootstrap$Bootstrap_Grid$container,
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _user$project$Navigation_View$topSection,
+			_0: _rundis$elm_bootstrap$Bootstrap_CDN$stylesheet,
 			_1: {
 				ctor: '::',
-				_0: _user$project$BlazeHelpers$grid(
-					{
-						ctor: '::',
-						_0: A2(
-							_user$project$BlazeHelpers$cell,
-							50,
-							{
-								ctor: '::',
-								_0: A2(
-									_user$project$BlazeHelpers$defaultCellWithCls,
-									'u-letter-box--small',
-									{
-										ctor: '::',
-										_0: A2(_user$project$Main$searchBar, model.searchText, model.potentialFoods),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: _user$project$BlazeHelpers$grid(
-										{
-											ctor: '::',
-											_0: A2(
-												_user$project$BlazeHelpers$cell,
-												60,
-												{
-													ctor: '::',
-													_0: A3(_user$project$Food_View$selectedFoodSection, _user$project$Main$selectedFoodSectionConfig, _user$project$Main$foodRowConfig, model.selectedFoods),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_user$project$BlazeHelpers$cell,
-													40,
-													{
-														ctor: '::',
-														_0: A2(_user$project$Food_View$recommendedFoodSection, _user$project$Main$recommendedFoodRowConfig, model.recommendedFoods),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {
-							ctor: '::',
-							_0: _user$project$BlazeHelpers$defaultCell(
-								{
-									ctor: '::',
-									_0: _user$project$BlazeHelpers$grid(
-										{
-											ctor: '::',
-											_0: _user$project$BlazeHelpers$fullCell(
-												{
-													ctor: '::',
-													_0: A2(
-														_user$project$Main$informationSection,
-														model.hoverItem,
-														_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)),
-													_1: {ctor: '[]'}
-												}),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													_user$project$BlazeHelpers$cell,
-													50,
-													{
-														ctor: '::',
-														_0: A4(
-															_user$project$Nutrient_View$nutrientSection,
-															{
-																mouseOver: function (_p20) {
-																	return _user$project$Main$Hover(
-																		_user$project$Main$Nutrient(_p20));
-																},
-																mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
-															},
-															'Vitamins (DI%)',
-															_user$project$Main$hoverItemIsFood(model.hoverItem),
-															_elm_lang$core$Dict$values(
-																A3(
-																	_user$project$Main$calculateNutrientPercentageFromFoods,
-																	_user$project$Main$getFoodFromHoverItem(model.hoverItem),
-																	_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
-																	A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Vitamin, model.nutrients)))),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_user$project$BlazeHelpers$cell,
-														50,
-														{
-															ctor: '::',
-															_0: A4(
-																_user$project$Nutrient_View$nutrientSection,
-																{
-																	mouseOver: function (_p21) {
-																		return _user$project$Main$Hover(
-																			_user$project$Main$Nutrient(_p21));
-																	},
-																	mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
-																},
-																'Minerals (DI%)',
-																_user$project$Main$hoverItemIsFood(model.hoverItem),
-																_elm_lang$core$Dict$values(
-																	A3(
-																		_user$project$Main$calculateNutrientPercentageFromFoods,
-																		_user$project$Main$getFoodFromHoverItem(model.hoverItem),
-																		_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
-																		A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Mineral, model.nutrients)))),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
+				_0: _user$project$Navigation_View$topSection,
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_user$project$Connection_View$connectionError,
+						_rundis$elm_bootstrap$Bootstrap_Grid$row,
+						{ctor: '[]'},
 						{
-							onClose: _user$project$Main$ConnectionModal(_user$project$Connection_Models$Hide)
-						},
-						model.connectionModalState),
-					_1: {ctor: '[]'}
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Grid$col,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Grid$row,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_rundis$elm_bootstrap$Bootstrap_Grid$col,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: A2(_user$project$Main$searchBar, model.searchText, model.potentialFoods),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Grid$row,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Grid$col,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A3(_user$project$Food_View$selectedFoodSection, _user$project$Main$selectedFoodSectionConfig, _user$project$Main$foodRowConfig, model.selectedFoods),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Grid$col,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_rundis$elm_bootstrap$Bootstrap_Grid$row,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_rundis$elm_bootstrap$Bootstrap_Grid$col,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A2(
+															_rundis$elm_bootstrap$Bootstrap_Grid$row,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: A2(
+																	_rundis$elm_bootstrap$Bootstrap_Grid$col,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: A2(
+																			_user$project$Main$informationSection,
+																			model.hoverItem,
+																			_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_rundis$elm_bootstrap$Bootstrap_Grid$row,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: A2(
+																		_rundis$elm_bootstrap$Bootstrap_Grid$col,
+																		{ctor: '[]'},
+																		{
+																			ctor: '::',
+																			_0: A4(
+																				_user$project$Nutrient_View$nutrientSection,
+																				{
+																					mouseOver: function (_p19) {
+																						return _user$project$Main$Hover(
+																							_user$project$Main$Nutrient(_p19));
+																					},
+																					mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
+																				},
+																				'Vitamins (DI%)',
+																				_user$project$Main$hoverItemIsFood(model.hoverItem),
+																				_elm_lang$core$Dict$values(
+																					A3(
+																						_user$project$Main$calculateNutrientPercentageFromFoods,
+																						_user$project$Main$getFoodFromHoverItem(model.hoverItem),
+																						_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
+																						A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Vitamin, model.nutrients)))),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: A2(
+																			_rundis$elm_bootstrap$Bootstrap_Grid$col,
+																			{ctor: '[]'},
+																			{
+																				ctor: '::',
+																				_0: A4(
+																					_user$project$Nutrient_View$nutrientSection,
+																					{
+																						mouseOver: function (_p20) {
+																							return _user$project$Main$Hover(
+																								_user$project$Main$Nutrient(_p20));
+																						},
+																						mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
+																					},
+																					'Minerals (DI%)',
+																					_user$project$Main$hoverItemIsFood(model.hoverItem),
+																					_elm_lang$core$Dict$values(
+																						A3(
+																							_user$project$Main$calculateNutrientPercentageFromFoods,
+																							_user$project$Main$getFoodFromHoverItem(model.hoverItem),
+																							_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
+																							A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Mineral, model.nutrients)))),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_user$project$Connection_View$connectionError,
+							{
+								onClose: _user$project$Main$ConnectionModal(_user$project$Connection_Models$Hide)
+							},
+							model.connectionModalState),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});

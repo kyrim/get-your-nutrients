@@ -12,21 +12,22 @@ type alias ConnectionErrorConfig msg =
 
 
 loadingImage : Html msg
-loadingImage = 
-    li [class "c-card__item"] [
-        div [ class "spinner" ]
-        [ div [ class "rect1" ]
-            []
-        , div [ class "rect2" ]
-            []
-        , div [ class "rect3" ]
-            []
-        , div [ class "rect4" ]
-            []
-        , div [ class "rect5" ]
-            []
+loadingImage =
+    li [ class "c-card__item" ]
+        [ div [ class "spinner" ]
+            [ div [ class "rect1" ]
+                []
+            , div [ class "rect2" ]
+                []
+            , div [ class "rect3" ]
+                []
+            , div [ class "rect4" ]
+                []
+            , div [ class "rect5" ]
+                []
+            ]
         ]
-    ]
+
 
 connectionError : ConnectionErrorConfig msg -> ModalState -> Html msg
 connectionError config state =
@@ -38,20 +39,20 @@ connectionError config state =
 
                 Show ->
                     div []
-                        [ div [ class "c-overlay" ]
+                        [ div []
                             []
-                        , div [ class "o-modal connection-error" ]
-                            [ div [ class "c-card" ]
-                                [ Html.header [ class "c-card__header" ]
-                                    [ button [ class "c-button c-button--close", type_ "button", onClick config.onClose ]
+                        , div [ class "connection-error" ]
+                            [ div []
+                                [ Html.header []
+                                    [ button [ type_ "button", onClick config.onClose ]
                                         [ text "×" ]
-                                    , h2 [ class "c-heading" ]
+                                    , h2 []
                                         [ text "Oh no!" ]
                                     ]
-                                , div [ class "c-card__body" ]
+                                , div []
                                     [ text "There was a connection error. Please ensure you are connected to the internet and try again." ]
-                                , footer [ class "c-card__footer" ]
-                                    [ button [ class "c-button c-button--brand", type_ "button", onClick config.onClose ]
+                                , footer []
+                                    [ button [ type_ "button", onClick config.onClose ]
                                         [ text "Close" ]
                                     ]
                                 ]

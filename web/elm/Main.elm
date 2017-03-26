@@ -7,17 +7,32 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (..)
-import BlazeHelpers exposing (..)
 import Helpers exposing (..)
-import Nutrient.View exposing (..)
-import Nutrient.Models exposing (..)
+
+
+-- API Imports
+
 import Nutrient.Api exposing (..)
-import Food.View exposing (..)
-import Food.Models exposing (..)
 import Food.Api exposing (..)
+
+
+-- Model Imports
+
+import Nutrient.Models exposing (..)
+import Food.Models exposing (..)
+import Connection.Models exposing (..)
+
+
+-- View imports
+
+import Bootstrap.CDN as CDN
+import Bootstrap.Grid as Grid
+import Bootstrap.Card as Card
+import Bootstrap.Form.Input as Input
+import Nutrient.View exposing (..)
+import Food.View exposing (..)
 import Navigation.View exposing (..)
 import Connection.View exposing (..)
-import Connection.Models exposing (..)
 
 
 -- Model
@@ -116,25 +131,16 @@ informationSection hoverItem foodDict =
                 Food food ->
                     "#b13fb8"
     in
-        grid
-            [ fullCell
-                [ div
-                    [ class "c-card info-panel" ]
-                    [ div
-                        [ class "c-card__item info-panel-header"
-                        , style
-                            [ ( "background-color", colour )
-                            ]
+        Grid.row []
+            [ Grid.col []
+                [ Card.config []
+                    |> Card.header [ style [ ( "background-color", colour ) ] ]
+                        [ text header
                         ]
-                        [ div [ class "info-panel-header-text" ] [ text header ]
-                        , div [ class "info-panel-side-header" ] [ text sideHeader ]
-                        ]
-                    , div [ class "c-card__item" ]
-                        [ div [ class "c-paragraph info-panel-text" ]
-                            [ text info
-                            ]
-                        ]
-                    ]
+                    |> Card.block []
+                        [ Card.text [] [ text info ] ]
+                    |> Card.footer [] [ text sideHeader ]
+                    |> Card.view
                 ]
             ]
 
@@ -152,47 +158,22 @@ searchBar searchText potentialFoods =
 
                 Loaded foods ->
                     if List.isEmpty foods then
-                        [ li [ class "c-card__item no-results" ] [ text "No Results" ] ]
+                        [ li [] [ text "No Results" ] ]
                     else
                         List.map
                             (\food ->
-                                li [ class "c-card__item", onMouseDown (SelectFood food) ]
+                                li [ onMouseDown (SelectFood food) ]
                                     [ text food.name ]
                             )
                             foods
-
-        ulStyle =
-            case potentialFoods of
-                NotLoaded ->
-                    "c-card search-bar-ul u-high"
-
-                Loading previousFoods ->
-                    "c-card search-bar-ul u-high"
-
-                Loaded foods ->
-                    if (List.isEmpty foods) then
-                        "c-card search-bar-ul u-high"
-                    else
-                        "c-card c-card--menu search-bar-ul u-high"
     in
-        div [ class "search-holder" ]
-            [ fullCell
-                [ div [ class "o-field o-field--icon-right" ]
-                    [ input
-                        [ class "c-field"
-                        , placeholder "Search for food here and add to calculate nutrients"
-                        , value searchText
-                        , onInput UpdateSearchText
-                        , onBlur ClearSearch
-                        ]
-                        []
-                    , i [ class "a fa fa-search c-icon" ] []
-                    ]
-                ]
-            , div
-                [ class "search-dropdown u-pillar-box--large" ]
-                [ ul [ class ulStyle ]
-                    content
+        Input.text
+            [ Input.large
+            , Input.attrs
+                [ placeholder "Search for food here and add to calculate nutrients"
+                , value searchText
+                , onInput UpdateSearchText
+                , onBlur ClearSearch
                 ]
             ]
 
@@ -253,40 +234,45 @@ recommendedFoodRowConfig =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ topSection
-        , grid
-            [ cell 50
-                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods ]
-                , grid
-                    [ cell 60 [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
-                    , cell 40 [ recommendedFoodSection recommendedFoodRowConfig model.recommendedFoods ]
+    Grid.container []
+        -- For bootstrap
+        [ CDN.stylesheet
+        , topSection
+        , Grid.row []
+            [ Grid.col []
+                [ Grid.row [] [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
+                , Grid.row []
+                    [ Grid.col [] [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
                     ]
                 ]
-            , defaultCell
-                [ grid
-                    [ fullCell [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ]
-                    , cell 50
-                        [ nutrientSection
-                            { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                            "Vitamins (DI%)"
-                            (hoverItemIsFood model.hoverItem)
-                            (model.nutrients
-                                |> filterNutrient Vitamin
-                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
-                                |> Dict.values
-                            )
-                        ]
-                    , cell 50
-                        [ nutrientSection
-                            { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                            "Minerals (DI%)"
-                            (hoverItemIsFood model.hoverItem)
-                            (model.nutrients
-                                |> filterNutrient Mineral
-                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
-                                |> Dict.values
-                            )
+            , Grid.col []
+                [ Grid.row []
+                    [ Grid.col []
+                        [ Grid.row [] [ Grid.col [] [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ] ]
+                        , Grid.row []
+                            [ Grid.col []
+                                [ nutrientSection
+                                    { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
+                                    "Vitamins (DI%)"
+                                    (hoverItemIsFood model.hoverItem)
+                                    (model.nutrients
+                                        |> filterNutrient Vitamin
+                                        |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
+                                        |> Dict.values
+                                    )
+                                ]
+                            , Grid.col []
+                                [ nutrientSection
+                                    { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
+                                    "Minerals (DI%)"
+                                    (hoverItemIsFood model.hoverItem)
+                                    (model.nutrients
+                                        |> filterNutrient Mineral
+                                        |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
+                                        |> Dict.values
+                                    )
+                                ]
+                            ]
                         ]
                     ]
                 ]

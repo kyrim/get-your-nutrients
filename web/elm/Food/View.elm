@@ -2,12 +2,12 @@ module Food.View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import BlazeHelpers exposing (..)
 import Html.Events exposing (..)
 import Food.Models exposing (..)
 import Connection.Models exposing (..)
 import Connection.View exposing (..)
 import Dict exposing (..)
+import Bootstrap.Grid as Grid
 
 
 type alias FoodRowConfig msg =
@@ -37,7 +37,7 @@ onInputToInt food default onFunction =
 foodRow : FoodRowConfig msg -> Food -> Html msg
 foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
     div
-        [ class "c-card__item c-field c-field--choice food-item"
+        [ class "food-item"
         , onMouseOver (onFocus food.id)
         , onMouseLeave onBlur
         ]
@@ -78,8 +78,8 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
 
 listWithOneItem : Html msg -> Html msg
 listWithOneItem item =
-    div [ class "c-card list-empty" ]
-        [ div [ class "c-card-item list-empty-text" ]
+    div []
+        [ div []
             [ item
             ]
         ]
@@ -103,18 +103,18 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
                     if Dict.isEmpty loadedFoods then
                         pleaseSearchFoodText
                     else
-                        div [ class "c-card c-card--menu food-menu" ]
+                        div []
                             (List.map
                                 (foodRow foodRowConfig)
                                 (Dict.values loadedFoods)
                             )
     in
-        grid
-            [ fullCell
-                [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
+        Grid.row []
+            [ Grid.col []
+                [ h2 []
                     [ text "Selected Food"
                     , a
-                        [ class "selected-food-button c-tooltip c-tooltip--top"
+                        [ class "selected-food-button"
                         , attribute "aria-label" "Clear all food"
                         , onClick onClearAll
                         ]
@@ -122,7 +122,7 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
                         ]
                     ]
                 ]
-            , fullCell
+            , Grid.col []
                 [ selectedFoodDisplay
                 ]
             ]
@@ -130,7 +130,7 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
 
 recommendedFoodRow : RecommendedFoodRowConfig msg -> Food -> Html msg
 recommendedFoodRow config food =
-    li [ class "c-card__item recommended-food-item" ]
+    li [ class "recommended-food-item" ]
         [ i [ class "fa fa-arrow-left recommended-icon" ]
             []
         , div [ class "recommended-text", onClick (config.onClick food) ] [ text food.name ]
@@ -161,12 +161,12 @@ recommendedFoodSection config recommendedFoods =
                                 loadedFoods
                             )
     in
-        grid
-            [ fullCell
+        Grid.row []
+            [ Grid.col []
                 [ h2 [ class "c-heading u-center-block smaller-tooltip" ]
                     [ text "Recommended" ]
                 ]
-            , fullCell
+            , Grid.col []
                 [ recommendedFoodDisplay
                 ]
             ]

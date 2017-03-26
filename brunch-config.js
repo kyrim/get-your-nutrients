@@ -1,3 +1,5 @@
+var cwd = process.cwd();
+
 exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
@@ -22,7 +24,7 @@ exports.config = {
     stylesheets: {
       joinTo: "css/app.css",
       order: {
-        after: ["web/static/css/app.css"] // concat app.css last
+        after: ["web/static/css/main.css", "web/static/css/app.css"] // concat app.css last
       }
     },
     templates: {
@@ -60,7 +62,12 @@ exports.config = {
       elmFolder: 'web/elm',
       mainModules: ['Main.elm'],
       outputFolder: '../static/js',
-    }
+    },
+    elmCssBrunch: {
+        root: process.cwd() + '/web/elm',
+        output: process.cwd() + '/web/static/css',
+        sourcePath: 'Stylesheets.elm'
+      }
   },
 
   modules: {
