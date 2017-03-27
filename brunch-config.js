@@ -1,5 +1,3 @@
-var cwd = process.cwd();
-
 exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
@@ -37,13 +35,12 @@ exports.config = {
     // By default, we set this to "/web/static/assets". Files in this directory
     // will be copied to `paths.public`, which is "priv/static" by default.
     assets: /^(web\/static\/assets)/
-  },
+  }, 
 
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
     watched: [
-      "web/static",
       "test/static",
       'web/elm'
     ],
@@ -56,17 +53,19 @@ exports.config = {
   plugins: {
     babel: {
       // Do not use ES6 compiler in vendor code
-      ignore: [/web\/static\/vendor/]
+      ignore: [/web\/static\/vendor/, /web\/elm/],
+      compact: false
     },
     elmBrunch: {
       elmFolder: 'web/elm',
       mainModules: ['Main.elm'],
-      outputFolder: '../static/js',
+      outputFolder: '../static/js'
     },
-    elmCssBrunch: {
-        root: process.cwd() + '/web/elm',
-        output: process.cwd() + '/web/static/css',
-        sourcePath: 'Stylesheets.elm'
+      elmCss: {
+        projectDir: 'web/elm',
+        sourcePath: 'Stylesheets.elm',
+        moduleName: 'Stylesheets',
+        outputDir: '../static/css'
       }
   },
 
