@@ -1,3 +1,5 @@
+
+var cwd = process.cwd();
 exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
@@ -62,9 +64,8 @@ exports.config = {
       outputFolder: '../static/js'
     },
       elmCss: {
-        projectDir: 'web/elm',
-        sourcePath: 'Stylesheets.elm',
-        moduleName: 'Stylesheets',
+        projectDir:'web/elm',
+        sourcePath:  'Stylesheets.elm',
         outputDir: '../static/css'
       }
   },
