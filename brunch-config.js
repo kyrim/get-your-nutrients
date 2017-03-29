@@ -36,7 +36,8 @@ exports.config = {
     // This option sets where we should place non-css and non-js assets in.
     // By default, we set this to "/web/static/assets". Files in this directory
     // will be copied to `paths.public`, which is "priv/static" by default.
-    assets: /^(web\/static\/assets)/
+    assets: /^(web\/static\/assets)/,
+    ignored: (path) => path.includes("web/elm") && !path.includes("web/elm/Main.elm") && !path.includes("web/elm/Stylesheets.elm"),
   }, 
 
   // Phoenix paths configuration
@@ -44,6 +45,7 @@ exports.config = {
     // Dependencies and current project directories to watch
     watched: [
       "test/static",
+      "web/static",
       'web/elm'
     ],
 
@@ -59,15 +61,16 @@ exports.config = {
       compact: false
     },
     elmBrunch: {
-      elmFolder: 'web/elm',
-      mainModules: ['Main.elm'],
+      mainModules: [cwd + '/web/elm/Main.elm'],
       outputFolder: '../static/js'
     },
-      elmCss: {
-        projectDir:'web/elm',
-        sourcePath:  'Stylesheets.elm',
-        outputDir: '../static/css'
-      }
+    elmCssBrunch: {
+      root: `${cwd}/web/elm`
+    , output: `${cwd}/web/static/css`
+    , sourcePath: 'Stylesheets.elm'
+    , port: 'files'
+    , module: 'Stylesheets'
+    }
   },
 
   modules: {
@@ -77,6 +80,6 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: false
   }
 };
