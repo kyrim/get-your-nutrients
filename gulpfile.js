@@ -22,7 +22,10 @@ gulp.task('elm', ['elm-init'], function() {
 
 gulp.task('browserify', function() {
     return browserify('web/static/js/app.js', {debug: true})
-      .transform(babel, {presets: ["es2015"]})
+      .transform(babel, {
+          ignore: ['web/static/js/Main.js'],
+          presets: ["es2015"]
+        })
       .bundle()
       .pipe(source("app.js"))
       .pipe(gulp.dest('priv/static/js/'));

@@ -20497,7 +20497,7 @@ var _user$project$Navigation_View$banner = A2(
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Get Your Nutrients 3'),
+					_0: _elm_lang$html$Html$text('Get Your Nutrients 4'),
 					_1: {ctor: '[]'}
 				}),
 			_1: {ctor: '[]'}

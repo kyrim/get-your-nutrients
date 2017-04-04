@@ -10,7 +10,7 @@ banner : Html msg
 banner =
     div [ class "Header" ]
         [ img [ src "images/logo.png" ] []
-        , h1 [] [ text "Get Your Nutrients 3" ]
+        , h1 [] [ text "Get Your Nutrients 4" ]
         ]
 
 
