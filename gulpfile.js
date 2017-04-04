@@ -1,27 +1,35 @@
 var gulp = require('gulp');
 var elm = require('gulp-elm');
-var plumber = require('gulp-plumber');
-var merge = require('gulp-merge');
-var concat = require('gulp-concat');
-const babel = require('gulp-babel');
+var browserify = require('browserify');
+var babel = require('babelify');
+var runSequence = require('run-sequence');
+var source = require('vinyl-source-stream');
 
 var elmMain = 'web/elm/Main.elm'
+
+var phoenixPaths = [
+    'deps/phoenix/priv/static/phoenix.js', 
+    'deps/phoenix_html/priv/static/phoenix_html.js'
+];
 
 gulp.task('elm-init', elm.init);
 
 gulp.task('elm', ['elm-init'], function() {
-    var phoenixJs = gulp.src([
-        'deps/phoenix/priv/static/phoenix.js', 
-        'deps/phoenix_html/priv/static/phoenix_html.js'
-    ]);    
+    return gulp.src(elmMain)
+        .pipe(elm())
+        .pipe(gulp.dest('web/static/js/'));
+});
 
-    var elmJs = gulp.src(elmMain).pipe(elm());
-    var appJs = gulp.src("web/static/js/app.js").pipe(babel());
-    var socketJs = gulp.src("web/static/js/socket.js").pipe(babel());
+gulp.task('browserify', function() {
+    return browserify('web/static/js/app.js', {debug: true})
+      .transform(babel, {presets: ["es2015"]})
+      .bundle()
+      .pipe(source("app.js"))
+      .pipe(gulp.dest('priv/static/js/'));
+});
 
-    return merge(phoenixJs, elmJs, socketJs, appJs)
-        .pipe(concat('app.js'))
-        .pipe(gulp.dest('priv/static/js/'));
+gulp.task('build', function(callback) {
+  runSequence('elm', 'browserify', callback);
 });
 
 //==================WATCHERS=====================
@@ -30,7 +38,7 @@ var elmWatchPaths = [
  'web/elm/**/*.elm'
 ];
 
-gulp.task('watch', ['elm'], function() {
+gulp.task('watch', ['build'], function() {
   // ELM
-  gulp.watch(elmWatchPaths, ['elm']);
+  gulp.watch(elmWatchPaths, ['build']);
 });
