@@ -2,46 +2,61 @@ var gulp = require('gulp');
 var elm = require('gulp-elm');
 var browserify = require('browserify');
 var babel = require('babelify');
-var runSequence = require('run-sequence');
 var source = require('vinyl-source-stream');
 
-var elmMain = 'web/elm/Main.elm'
+var tasks = {
+  elmInit: 'elm-init',
+  elmCompile: 'elm-compile',
+  browserify: 'browserify',
+  static: 'static',
+  watch: 'watch'
+}
 
-var phoenixPaths = [
-    'deps/phoenix/priv/static/phoenix.js', 
+var paths = {
+  sourceJsFolder: 'web/static/js/',
+  destinationJsFolder: 'priv/static/js/',
+
+  sourceAssetsFolder: 'web/static/assets/**/*.*',
+  destinationAssetsFolder: 'priv/static/assets/',
+
+  elmWatchPath: 'web/elm/**/*.elm',
+  elmEntryFile: 'web/elm/Main.elm',
+  elmOutputFile: 'web/static/js/Main.js',
+
+  appEntryFile: 'web/static/js/app.js',
+  appOutputFile: 'app.js',
+
+  phoenixPaths: [
+    'deps/phoenix/priv/static/phoenix.js',
     'deps/phoenix_html/priv/static/phoenix_html.js'
-];
+  ]
+}
 
-gulp.task('elm-init', elm.init);
+gulp.task(tasks.elmInit, elm.init);
 
-gulp.task('elm', ['elm-init'], function() {
-    return gulp.src(elmMain)
-        .pipe(elm())
-        .pipe(gulp.dest('web/static/js/'));
+gulp.task(tasks.elmCompile, [tasks.elmInit], function () {
+  return gulp.src(paths.elmEntryFile)
+    .pipe(elm())
+    .pipe(gulp.dest(paths.sourceJsFolder));
 });
 
-gulp.task('browserify', function() {
-    return browserify('web/static/js/app.js', {debug: true})
-      .transform(babel, {
-          ignore: ['web/static/js/Main.js'],
-          presets: ["es2015"]
-        })
-      .bundle()
-      .pipe(source("app.js"))
-      .pipe(gulp.dest('priv/static/js/'));
+gulp.task(tasks.browserify, [tasks.elmCompile], function () {
+  return browserify(paths.appEntryFile, { debug: true })
+    .transform(babel, {
+      ignore: [paths.elmOutputFile],
+      presets: ["es2015"]
+    })
+    .bundle()
+    .pipe(source(appOutputFile))
+    .pipe(gulp.dest(paths.destinationJsFolder));
 });
 
-gulp.task('build', function(callback) {
-  runSequence('elm', 'browserify', callback);
+gulp.task(tasks.static, function () {
+  return gulp.src(paths.sourceAssetsFolder)
+    .pipe(gulp.dest(paths.destinationAssetsFolder));
 });
 
 //==================WATCHERS=====================
-
-var elmWatchPaths = [
- 'web/elm/**/*.elm'
-];
-
-gulp.task('watch', ['build'], function() {
-  // ELM
-  gulp.watch(elmWatchPaths, ['build']);
+gulp.task(tasks.watch, [tasks.static, tasks.browserify], function () {
+  gulp.watch(paths.elmWatchPath, [tasks.browserify]);
 });
