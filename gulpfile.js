@@ -17,7 +17,7 @@ var paths = {
   destinationJsFolder: 'priv/static/js/',
 
   sourceAssetsFolder: 'web/static/assets/**/*.*',
-  destinationAssetsFolder: 'priv/static/assets/',
+  destinationAssetsFolder: 'priv/static/',
 
   elmWatchPath: 'web/elm/**/*.elm',
   elmEntryFile: 'web/elm/Main.elm',
@@ -47,7 +47,7 @@ gulp.task(tasks.browserify, [tasks.elmCompile], function () {
       presets: ["es2015"]
     })
     .bundle()
-    .pipe(source(appOutputFile))
+    .pipe(source(paths.appOutputFile))
     .pipe(gulp.dest(paths.destinationJsFolder));
 });
 
