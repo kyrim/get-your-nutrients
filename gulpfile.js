@@ -75,5 +75,6 @@ gulp.task(tasks.static, function () {
 
 //==================WATCHERS=====================
 gulp.task(tasks.watch, [tasks.static, tasks.browserify, tasks.elmCssCompile], function () {
-  gulp.watch(paths.elmWatchPath, [tasks.browserify]);
+  gulp.watch(paths.elmWatchPath, [tasks.browserify, tasks.elmCssCompile]);
+  gulp.watch(paths.sourceAssetsFolder, [tasks.static]);
 });
