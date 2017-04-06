@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var elm = require('gulp-elm');
+var elmCss = require('elm-css');
 var browserify = require('browserify');
 var babel = require('babelify');
 var source = require('vinyl-source-stream');
@@ -7,6 +8,8 @@ var source = require('vinyl-source-stream');
 var tasks = {
   elmInit: 'elm-init',
   elmCompile: 'elm-compile',
+  elmCssCompile: 'elm-css-compile',
+  css: 'css',
   browserify: 'browserify',
   static: 'static',
   watch: 'watch'
@@ -18,6 +21,10 @@ var paths = {
 
   sourceAssetsFolder: 'web/static/assets/**/*.*',
   destinationAssetsFolder: 'priv/static/',
+
+  sourceElmCssFolder: 'web/elm/',
+  sourceElmCssFile: 'Stylesheets.elm',
+  destinationElmCssFile: 'priv/static/css/',
 
   elmWatchPath: 'web/elm/**/*.elm',
   elmEntryFile: 'web/elm/Main.elm',
@@ -51,12 +58,22 @@ gulp.task(tasks.browserify, [tasks.elmCompile], function () {
     .pipe(gulp.dest(paths.destinationJsFolder));
 });
 
+gulp.task(tasks.elmCssCompile, function() {
+  var rootDir = process.cwd() + "/";
+
+  return elmCss(
+      rootDir,
+      rootDir + paths.sourceElmCssFolder + paths.sourceElmCssFile,
+      rootDir + paths.destinationElmCssFile
+    )
+});
+
 gulp.task(tasks.static, function () {
   return gulp.src(paths.sourceAssetsFolder)
     .pipe(gulp.dest(paths.destinationAssetsFolder));
 });
 
 //==================WATCHERS=====================
-gulp.task(tasks.watch, [tasks.static, tasks.browserify], function () {
+gulp.task(tasks.watch, [tasks.static, tasks.browserify, tasks.elmCssCompile], function () {
   gulp.watch(paths.elmWatchPath, [tasks.browserify]);
 });

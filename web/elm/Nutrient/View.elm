@@ -6,19 +6,19 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Bootstrap.Grid as Grid
-import MainCss
+import AppCss
 
 
 getPercentageColour : Int -> String
 getPercentageColour percentage =
     if percentage <= 20 then
-        MainCss.nutrientLow
+        AppCss.nutrientLow
     else if percentage <= 50 then
-        MainCss.nutrientMedium
+        AppCss.nutrientMedium
     else if percentage <= 80 then
-        MainCss.nutrientHigh
+        AppCss.nutrientHigh
     else
-        MainCss.nutrientFull
+        AppCss.nutrientFull
 
 
 type alias NutrientProgressConfig msg =

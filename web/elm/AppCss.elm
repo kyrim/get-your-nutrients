@@ -1,4 +1,4 @@
-module MainCss exposing (..)
+module AppCss exposing (..)
 
 import Css exposing (..)
 import Css.Elements exposing (body, img, li)

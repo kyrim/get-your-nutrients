@@ -19353,6 +19353,114 @@ var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownHeader = function (children) 
 			children));
 };
 
+var _user$project$AppCss$nutrientFull = '#6ABE6E';
+var _user$project$AppCss$nutrientHigh = '#7FC7AF';
+var _user$project$AppCss$nutrientMedium = '#FFAB2E';
+var _user$project$AppCss$nutrientLow = '#FF3D7F';
+var _user$project$AppCss$NutrientFull = {ctor: 'NutrientFull'};
+var _user$project$AppCss$NutrientHigh = {ctor: 'NutrientHigh'};
+var _user$project$AppCss$NutrientMedium = {ctor: 'NutrientMedium'};
+var _user$project$AppCss$NutrientLow = {ctor: 'NutrientLow'};
+var _user$project$AppCss$Header = {ctor: 'Header'};
+var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
+	{
+		ctor: '::',
+		_0: A2(
+			_rtfeldman$elm_css$Css$class,
+			_user$project$AppCss$Header,
+			{
+				ctor: '::',
+				_0: _rtfeldman$elm_css$Css$overflow(_rtfeldman$elm_css$Css$hidden),
+				_1: {
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$table),
+					_1: {
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css$marginTop(
+							_rtfeldman$elm_css$Css$em(1)),
+						_1: {
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css$children(
+								{
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css_Elements$img(
+										{
+											ctor: '::',
+											_0: A2(_rtfeldman$elm_css$Css$margin2, _rtfeldman$elm_css$Css$zero, _rtfeldman$elm_css$Css$auto),
+											_1: {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$left),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$width(
+														_rtfeldman$elm_css$Css$px(100)),
+													_1: {
+														ctor: '::',
+														_0: _rtfeldman$elm_css$Css$height(
+															_rtfeldman$elm_css$Css$px(100)),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_rtfeldman$elm_css$Css$class,
+				_user$project$AppCss$NutrientLow,
+				{
+					ctor: '::',
+					_0: _rtfeldman$elm_css$Css$color(
+						_rtfeldman$elm_css$Css$hex(_user$project$AppCss$nutrientLow)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rtfeldman$elm_css$Css$class,
+					_user$project$AppCss$NutrientMedium,
+					{
+						ctor: '::',
+						_0: _rtfeldman$elm_css$Css$color(
+							_rtfeldman$elm_css$Css$hex(_user$project$AppCss$nutrientMedium)),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rtfeldman$elm_css$Css$class,
+						_user$project$AppCss$NutrientHigh,
+						{
+							ctor: '::',
+							_0: _rtfeldman$elm_css$Css$color(
+								_rtfeldman$elm_css$Css$hex(_user$project$AppCss$nutrientHigh)),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_rtfeldman$elm_css$Css$class,
+							_user$project$AppCss$NutrientFull,
+							{
+								ctor: '::',
+								_0: _rtfeldman$elm_css$Css$color(
+									_rtfeldman$elm_css$Css$hex(_user$project$AppCss$nutrientFull)),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		}
+	});
+
 var _user$project$Connection_Models$emptyListIfNotLoaded = function (loadStateEntity) {
 	var _p0 = loadStateEntity;
 	switch (_p0.ctor) {
@@ -20183,116 +20291,8 @@ var _user$project$Nutrient_Api$getAllNutrients = function (msg) {
 	return A2(_elm_lang$http$Http$send, msg, request);
 };
 
-var _user$project$MainCss$nutrientFull = '#6ABE6E';
-var _user$project$MainCss$nutrientHigh = '#7FC7AF';
-var _user$project$MainCss$nutrientMedium = '#FFAB2E';
-var _user$project$MainCss$nutrientLow = '#FF3D7F';
-var _user$project$MainCss$NutrientFull = {ctor: 'NutrientFull'};
-var _user$project$MainCss$NutrientHigh = {ctor: 'NutrientHigh'};
-var _user$project$MainCss$NutrientMedium = {ctor: 'NutrientMedium'};
-var _user$project$MainCss$NutrientLow = {ctor: 'NutrientLow'};
-var _user$project$MainCss$Header = {ctor: 'Header'};
-var _user$project$MainCss$css = _rtfeldman$elm_css$Css$stylesheet(
-	{
-		ctor: '::',
-		_0: A2(
-			_rtfeldman$elm_css$Css$class,
-			_user$project$MainCss$Header,
-			{
-				ctor: '::',
-				_0: _rtfeldman$elm_css$Css$overflow(_rtfeldman$elm_css$Css$hidden),
-				_1: {
-					ctor: '::',
-					_0: _rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$table),
-					_1: {
-						ctor: '::',
-						_0: _rtfeldman$elm_css$Css$marginTop(
-							_rtfeldman$elm_css$Css$em(1)),
-						_1: {
-							ctor: '::',
-							_0: _rtfeldman$elm_css$Css$children(
-								{
-									ctor: '::',
-									_0: _rtfeldman$elm_css$Css_Elements$img(
-										{
-											ctor: '::',
-											_0: A2(_rtfeldman$elm_css$Css$margin2, _rtfeldman$elm_css$Css$zero, _rtfeldman$elm_css$Css$auto),
-											_1: {
-												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$left),
-												_1: {
-													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$width(
-														_rtfeldman$elm_css$Css$px(100)),
-													_1: {
-														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$height(
-															_rtfeldman$elm_css$Css$px(100)),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_rtfeldman$elm_css$Css$class,
-				_user$project$MainCss$NutrientLow,
-				{
-					ctor: '::',
-					_0: _rtfeldman$elm_css$Css$color(
-						_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientLow)),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_rtfeldman$elm_css$Css$class,
-					_user$project$MainCss$NutrientMedium,
-					{
-						ctor: '::',
-						_0: _rtfeldman$elm_css$Css$color(
-							_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientMedium)),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_rtfeldman$elm_css$Css$class,
-						_user$project$MainCss$NutrientHigh,
-						{
-							ctor: '::',
-							_0: _rtfeldman$elm_css$Css$color(
-								_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientHigh)),
-							_1: {ctor: '[]'}
-						}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_rtfeldman$elm_css$Css$class,
-							_user$project$MainCss$NutrientFull,
-							{
-								ctor: '::',
-								_0: _rtfeldman$elm_css$Css$color(
-									_rtfeldman$elm_css$Css$hex(_user$project$MainCss$nutrientFull)),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		}
-	});
-
 var _user$project$Nutrient_View$getPercentageColour = function (percentage) {
-	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? _user$project$MainCss$nutrientLow : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? _user$project$MainCss$nutrientMedium : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? _user$project$MainCss$nutrientHigh : _user$project$MainCss$nutrientFull));
+	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? _user$project$AppCss$nutrientLow : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? _user$project$AppCss$nutrientMedium : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? _user$project$AppCss$nutrientHigh : _user$project$AppCss$nutrientFull));
 };
 var _user$project$Nutrient_View$nutrientProgress = F3(
 	function (config, isHovered, nutrient) {
