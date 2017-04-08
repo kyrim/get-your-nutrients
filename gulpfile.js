@@ -4,6 +4,7 @@ var elmCss = require('elm-css');
 var browserify = require('browserify');
 var babel = require('babelify');
 var source = require('vinyl-source-stream');
+var plumber = require('gulp-plumber');
 
 var tasks = {
   elmInit: 'elm-init',
@@ -43,6 +44,7 @@ gulp.task(tasks.elmInit, elm.init);
 
 gulp.task(tasks.elmCompile, [tasks.elmInit], function () {
   return gulp.src(paths.elmEntryFile)
+    .pipe(plumber())
     .pipe(elm())
     .pipe(gulp.dest(paths.sourceJsFolder));
 });
