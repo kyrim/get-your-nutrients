@@ -9539,6 +9539,10 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _elm_lang$html$Html_Keyed$node = _elm_lang$virtual_dom$VirtualDom$keyedNode;
+var _elm_lang$html$Html_Keyed$ol = _elm_lang$html$Html_Keyed$node('ol');
+var _elm_lang$html$Html_Keyed$ul = _elm_lang$html$Html_Keyed$node('ul');
+
 var _elm_lang$http$Native_Http = function() {
 
 
@@ -15260,6 +15264,112 @@ var _rtfeldman$elm_css$Css_Namespace$namespace = F2(
 			snippets);
 	});
 
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$stylesheetLink = function (url) {
+	return A3(
+		_elm_lang$html$Html$node,
+		'link',
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html_Attributes$property,
+				'rel',
+				_elm_lang$core$Json_Encode$string('stylesheet')),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html_Attributes$property,
+					'type',
+					_elm_lang$core$Json_Encode$string('text/css')),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html_Attributes$property,
+						'href',
+						_elm_lang$core$Json_Encode$string(url)),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{ctor: '[]'});
+};
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$style = function (text) {
+	return A3(
+		_elm_lang$html$Html$node,
+		'style',
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html_Attributes$property,
+				'textContent',
+				_elm_lang$core$Json_Encode$string(text)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html_Attributes$property,
+					'type',
+					_elm_lang$core$Json_Encode$string('text/css')),
+				_1: {ctor: '[]'}
+			}
+		},
+		{ctor: '[]'});
+};
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$namespacedClass = F2(
+	function (name, list) {
+		return _elm_lang$html$Html_Attributes$class(
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				A2(
+					_elm_lang$core$List$map,
+					_rtfeldman$elm_css_util$Css_Helpers$identifierToString(name),
+					list)));
+	});
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$class = _rtfeldman$elm_css_helpers$Html_CssHelpers$namespacedClass('');
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$classList = function (list) {
+	return _rtfeldman$elm_css_helpers$Html_CssHelpers$class(
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Tuple$first,
+			A2(_elm_lang$core$List$filter, _elm_lang$core$Tuple$second, list)));
+};
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$namespacedClassList = F2(
+	function (name, list) {
+		return A2(
+			_rtfeldman$elm_css_helpers$Html_CssHelpers$namespacedClass,
+			name,
+			A2(
+				_elm_lang$core$List$map,
+				_elm_lang$core$Tuple$first,
+				A2(_elm_lang$core$List$filter, _elm_lang$core$Tuple$second, list)));
+	});
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$helpers = {
+	$class: _rtfeldman$elm_css_helpers$Html_CssHelpers$class,
+	classList: _rtfeldman$elm_css_helpers$Html_CssHelpers$classList,
+	id: function (_p0) {
+		return _elm_lang$html$Html_Attributes$id(
+			_rtfeldman$elm_css_util$Css_Helpers$toCssIdentifier(_p0));
+	}
+};
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace = function (name) {
+	return {
+		$class: _rtfeldman$elm_css_helpers$Html_CssHelpers$namespacedClass(name),
+		classList: _rtfeldman$elm_css_helpers$Html_CssHelpers$namespacedClassList(name),
+		id: function (_p1) {
+			return _elm_lang$html$Html_Attributes$id(
+				_rtfeldman$elm_css_util$Css_Helpers$toCssIdentifier(_p1));
+		},
+		name: name
+	};
+};
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$Helpers = F3(
+	function (a, b, c) {
+		return {$class: a, classList: b, id: c};
+	});
+var _rtfeldman$elm_css_helpers$Html_CssHelpers$Namespace = F4(
+	function (a, b, c, d) {
+		return {$class: a, classList: b, id: c, name: d};
+	});
+
 var _rundis$elm_bootstrap$Bootstrap_Grid_Internal$horizontalAlignOption = function (align) {
 	var _p0 = align;
 	switch (_p0.ctor) {
@@ -16393,7 +16503,7 @@ var _rundis$elm_bootstrap$Bootstrap_Text$alignSmRight = _rundis$elm_bootstrap$Bo
 var _rundis$elm_bootstrap$Bootstrap_Text$alignSmCenter = _rundis$elm_bootstrap$Bootstrap_Text$alignSm(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Center);
 var _rundis$elm_bootstrap$Bootstrap_Text$alignSmLeft = _rundis$elm_bootstrap$Bootstrap_Text$alignSm(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Left);
 var _rundis$elm_bootstrap$Bootstrap_Text$alignXs = function (dir) {
-	return {dir: dir, size: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$SM};
+	return {dir: dir, size: _rundis$elm_bootstrap$Bootstrap_Grid_Internal$XS};
 };
 var _rundis$elm_bootstrap$Bootstrap_Text$alignXsRight = _rundis$elm_bootstrap$Bootstrap_Text$alignXs(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Right);
 var _rundis$elm_bootstrap$Bootstrap_Text$alignXsCenter = _rundis$elm_bootstrap$Bootstrap_Text$alignXs(_rundis$elm_bootstrap$Bootstrap_Internal_Text$Center);
@@ -16604,6 +16714,27 @@ var _rundis$elm_bootstrap$Bootstrap_ListGroup$anchor = F2(
 				options: {ctor: '::', _0: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Action, _1: updOptions}
 			});
 	});
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$keyedCustom = function (items) {
+	return A3(
+		_elm_lang$html$Html_Keyed$node,
+		'div',
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('list-group'),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (_p0) {
+				var _p1 = _p0;
+				return {
+					ctor: '_Tuple2',
+					_0: _p1._0,
+					_1: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderCustomItem(_p1._1)
+				};
+			},
+			items));
+};
 var _rundis$elm_bootstrap$Bootstrap_ListGroup$custom = function (items) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -16619,6 +16750,26 @@ var _rundis$elm_bootstrap$Bootstrap_ListGroup$li = F2(
 		return _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$Item(
 			{itemFn: _elm_lang$html$Html$li, children: children, options: options});
 	});
+var _rundis$elm_bootstrap$Bootstrap_ListGroup$keyedUl = function (keyedItems) {
+	return A2(
+		_elm_lang$html$Html_Keyed$ul,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('list-group'),
+			_1: {ctor: '[]'}
+		},
+		A2(
+			_elm_lang$core$List$map,
+			function (_p2) {
+				var _p3 = _p2;
+				return {
+					ctor: '_Tuple2',
+					_0: _p3._0,
+					_1: _rundis$elm_bootstrap$Bootstrap_Internal_ListGroup$renderItem(_p3._1)
+				};
+			},
+			keyedItems));
+};
 var _rundis$elm_bootstrap$Bootstrap_ListGroup$ul = function (items) {
 	return A2(
 		_elm_lang$html$Html$ul,
@@ -17083,6 +17234,31 @@ var _rundis$elm_bootstrap$Bootstrap_Card$columns = function (cards) {
 		},
 		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Card$view, cards));
 };
+var _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti = F2(
+	function (clazz, keyedCards) {
+		return A3(
+			_elm_lang$html$Html_Keyed$node,
+			'div',
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(clazz),
+				_1: {ctor: '[]'}
+			},
+			A2(
+				_elm_lang$core$List$map,
+				function (_p10) {
+					var _p11 = _p10;
+					return {
+						ctor: '_Tuple2',
+						_0: _p11._0,
+						_1: _rundis$elm_bootstrap$Bootstrap_Card$view(_p11._1)
+					};
+				},
+				keyedCards));
+	});
+var _rundis$elm_bootstrap$Bootstrap_Card$keyedGroup = _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti('card-group');
+var _rundis$elm_bootstrap$Bootstrap_Card$keyedDeck = _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti('card-deck');
+var _rundis$elm_bootstrap$Bootstrap_Card$keyedColumns = _rundis$elm_bootstrap$Bootstrap_Card$keyedMulti('card-columns');
 var _rundis$elm_bootstrap$Bootstrap_Card$attrs = function (attrs) {
 	return _rundis$elm_bootstrap$Bootstrap_Internal_Card$Attrs(attrs);
 };
@@ -17128,16 +17304,16 @@ var _rundis$elm_bootstrap$Bootstrap_Card$config = function (options) {
 		});
 };
 var _rundis$elm_bootstrap$Bootstrap_Card$block = F3(
-	function (options, items, _p10) {
-		var _p11 = _p10;
-		var _p12 = _p11._0;
+	function (options, items, _p12) {
+		var _p13 = _p12;
+		var _p14 = _p13._0;
 		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
 			_elm_lang$core$Native_Utils.update(
-				_p12,
+				_p14,
 				{
 					blocks: A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p12.blocks,
+						_p14.blocks,
 						{
 							ctor: '::',
 							_0: A2(_rundis$elm_bootstrap$Bootstrap_Internal_Card$block, options, items),
@@ -17146,16 +17322,16 @@ var _rundis$elm_bootstrap$Bootstrap_Card$block = F3(
 				}));
 	});
 var _rundis$elm_bootstrap$Bootstrap_Card$listGroup = F2(
-	function (items, _p13) {
-		var _p14 = _p13;
-		var _p15 = _p14._0;
+	function (items, _p15) {
+		var _p16 = _p15;
+		var _p17 = _p16._0;
 		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
 			_elm_lang$core$Native_Utils.update(
-				_p15,
+				_p17,
 				{
 					blocks: A2(
 						_elm_lang$core$Basics_ops['++'],
-						_p15.blocks,
+						_p17.blocks,
 						{
 							ctor: '::',
 							_0: _rundis$elm_bootstrap$Bootstrap_Internal_Card$listGroup(items),
@@ -17167,11 +17343,11 @@ var _rundis$elm_bootstrap$Bootstrap_Card$CardHeader = function (a) {
 	return {ctor: 'CardHeader', _0: a};
 };
 var _rundis$elm_bootstrap$Bootstrap_Card$headerPrivate = F4(
-	function (elemFn, attributes, children, _p16) {
-		var _p17 = _p16;
+	function (elemFn, attributes, children, _p18) {
+		var _p19 = _p18;
 		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
 			_elm_lang$core$Native_Utils.update(
-				_p17._0,
+				_p19._0,
 				{
 					header: _elm_lang$core$Maybe$Just(
 						_rundis$elm_bootstrap$Bootstrap_Card$CardHeader(
@@ -17196,11 +17372,11 @@ var _rundis$elm_bootstrap$Bootstrap_Card$CardFooter = function (a) {
 	return {ctor: 'CardFooter', _0: a};
 };
 var _rundis$elm_bootstrap$Bootstrap_Card$footer = F3(
-	function (attributes, children, _p18) {
-		var _p19 = _p18;
+	function (attributes, children, _p20) {
+		var _p21 = _p20;
 		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
 			_elm_lang$core$Native_Utils.update(
-				_p19._0,
+				_p21._0,
 				{
 					footer: _elm_lang$core$Maybe$Just(
 						_rundis$elm_bootstrap$Bootstrap_Card$CardFooter(
@@ -17218,11 +17394,11 @@ var _rundis$elm_bootstrap$Bootstrap_Card$CardImageTop = function (a) {
 	return {ctor: 'CardImageTop', _0: a};
 };
 var _rundis$elm_bootstrap$Bootstrap_Card$imgTop = F3(
-	function (attributes, children, _p20) {
-		var _p21 = _p20;
+	function (attributes, children, _p22) {
+		var _p23 = _p22;
 		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
 			_elm_lang$core$Native_Utils.update(
-				_p21._0,
+				_p23._0,
 				{
 					imgTop: _elm_lang$core$Maybe$Just(
 						_rundis$elm_bootstrap$Bootstrap_Card$CardImageTop(
@@ -17243,11 +17419,11 @@ var _rundis$elm_bootstrap$Bootstrap_Card$CardImageBottom = function (a) {
 	return {ctor: 'CardImageBottom', _0: a};
 };
 var _rundis$elm_bootstrap$Bootstrap_Card$imgBottom = F3(
-	function (attributes, children, _p22) {
-		var _p23 = _p22;
+	function (attributes, children, _p24) {
+		var _p25 = _p24;
 		return _rundis$elm_bootstrap$Bootstrap_Card$Config(
 			_elm_lang$core$Native_Utils.update(
-				_p23._0,
+				_p25._0,
 				{
 					imgBottom: _elm_lang$core$Maybe$Just(
 						_rundis$elm_bootstrap$Bootstrap_Card$CardImageBottom(
@@ -17264,12 +17440,6 @@ var _rundis$elm_bootstrap$Bootstrap_Card$imgBottom = F3(
 								children)))
 				}));
 	});
-var _rundis$elm_bootstrap$Bootstrap_Card$ListGroup = function (a) {
-	return {ctor: 'ListGroup', _0: a};
-};
-var _rundis$elm_bootstrap$Bootstrap_Card$CardBlock = function (a) {
-	return {ctor: 'CardBlock', _0: a};
-};
 
 var _rundis$elm_bootstrap$Bootstrap_CDN$fontAwesome = A3(
 	_elm_lang$html$Html$node,
@@ -17728,6 +17898,12 @@ var _rundis$elm_bootstrap$Bootstrap_Form_Input$applyModifier = F2(
 					{
 						defaultValue: _elm_lang$core$Maybe$Just(_p1._0)
 					});
+			case 'Placeholder':
+				return _elm_lang$core$Native_Utils.update(
+					options,
+					{
+						placeholder: _elm_lang$core$Maybe$Just(_p1._0)
+					});
 			case 'OnInput':
 				return _elm_lang$core$Native_Utils.update(
 					options,
@@ -17748,10 +17924,27 @@ var _rundis$elm_bootstrap$Bootstrap_Form_Input$applyModifier = F2(
 					});
 		}
 	});
-var _rundis$elm_bootstrap$Bootstrap_Form_Input$Options = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {tipe: a, id: b, size: c, disabled: d, value: e, defaultValue: f, onInput: g, validation: h, attributes: i};
-	});
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Options = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {tipe: a, id: b, size: c, disabled: d, value: e, defaultValue: f, placeholder: g, onInput: h, validation: i, attributes: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
 var _rundis$elm_bootstrap$Bootstrap_Form_Input$Input = function (a) {
 	return {ctor: 'Input', _0: a};
 };
@@ -17760,6 +17953,12 @@ var _rundis$elm_bootstrap$Bootstrap_Form_Input$Attrs = function (a) {
 };
 var _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs = function (attrs) {
 	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Attrs(attrs);
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$Placeholder = function (a) {
+	return {ctor: 'Placeholder', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder = function (value) {
+	return _rundis$elm_bootstrap$Bootstrap_Form_Input$Placeholder(value);
 };
 var _rundis$elm_bootstrap$Bootstrap_Form_Input$Validation = function (a) {
 	return {ctor: 'Validation', _0: a};
@@ -17836,6 +18035,7 @@ var _rundis$elm_bootstrap$Bootstrap_Form_Input$defaultOptions = {
 	disabled: false,
 	value: _elm_lang$core$Maybe$Nothing,
 	defaultValue: _elm_lang$core$Maybe$Nothing,
+	placeholder: _elm_lang$core$Maybe$Nothing,
 	onInput: _elm_lang$core$Maybe$Nothing,
 	validation: _elm_lang$core$Maybe$Nothing,
 	attributes: {ctor: '[]'}
@@ -17876,11 +18076,15 @@ var _rundis$elm_bootstrap$Bootstrap_Form_Input$toAttributes = function (modifier
 								_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$defaultValue, options.defaultValue),
 								_1: {
 									ctor: '::',
-									_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Events$onInput, options.onInput),
+									_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Attributes$placeholder, options.placeholder),
 									_1: {
 										ctor: '::',
-										_0: A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Form_Input$validationAttribute, options.validation),
-										_1: {ctor: '[]'}
+										_0: A2(_elm_lang$core$Maybe$map, _elm_lang$html$Html_Events$onInput, options.onInput),
+										_1: {
+											ctor: '::',
+											_0: A2(_elm_lang$core$Maybe$map, _rundis$elm_bootstrap$Bootstrap_Form_Input$validationAttribute, options.validation),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
@@ -17917,15 +18121,40 @@ var _rundis$elm_bootstrap$Bootstrap_Form_Input$color = _rundis$elm_bootstrap$Boo
 
 var _rundis$elm_bootstrap$Bootstrap_Grid$renderCol = function (column) {
 	var _p0 = column;
-	if (_p0.ctor === 'Column') {
-		return A2(
-			_elm_lang$html$Html$div,
-			_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colAttributes(_p0._0.options),
-			_p0._0.children);
-	} else {
-		return _p0._0;
+	switch (_p0.ctor) {
+		case 'Column':
+			return A2(
+				_elm_lang$html$Html$div,
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colAttributes(_p0._0.options),
+				_p0._0.children);
+		case 'ColBreak':
+			return _p0._0;
+		default:
+			return A3(
+				_elm_lang$html$Html_Keyed$node,
+				'div',
+				_rundis$elm_bootstrap$Bootstrap_Grid_Internal$colAttributes(_p0._0.options),
+				_p0._0.children);
 	}
 };
+var _rundis$elm_bootstrap$Bootstrap_Grid$keyedRow = F2(
+	function (options, keyedCols) {
+		return A3(
+			_elm_lang$html$Html_Keyed$node,
+			'div',
+			_rundis$elm_bootstrap$Bootstrap_Grid_Internal$rowAttributes(options),
+			A2(
+				_elm_lang$core$List$map,
+				function (_p1) {
+					var _p2 = _p1;
+					return {
+						ctor: '_Tuple2',
+						_0: _p2._0,
+						_1: _rundis$elm_bootstrap$Bootstrap_Grid$renderCol(_p2._1)
+					};
+				},
+				keyedCols));
+	});
 var _rundis$elm_bootstrap$Bootstrap_Grid$row = F2(
 	function (options, cols) {
 		return A2(
@@ -17966,6 +18195,14 @@ var _rundis$elm_bootstrap$Bootstrap_Grid$container = F2(
 				},
 				attributes),
 			children);
+	});
+var _rundis$elm_bootstrap$Bootstrap_Grid$KeyedColumn = function (a) {
+	return {ctor: 'KeyedColumn', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Grid$keyedCol = F2(
+	function (options, children) {
+		return _rundis$elm_bootstrap$Bootstrap_Grid$KeyedColumn(
+			{options: options, children: children});
 	});
 var _rundis$elm_bootstrap$Bootstrap_Grid$ColBreak = function (a) {
 	return {ctor: 'ColBreak', _0: a};
@@ -19357,6 +19594,7 @@ var _user$project$AppCss$nutrientFull = '#6ABE6E';
 var _user$project$AppCss$nutrientHigh = '#7FC7AF';
 var _user$project$AppCss$nutrientMedium = '#FFAB2E';
 var _user$project$AppCss$nutrientLow = '#FF3D7F';
+var _user$project$AppCss$RowBuffer = {ctor: 'RowBuffer'};
 var _user$project$AppCss$NutrientFull = {ctor: 'NutrientFull'};
 var _user$project$AppCss$NutrientHigh = {ctor: 'NutrientHigh'};
 var _user$project$AppCss$NutrientMedium = {ctor: 'NutrientMedium'};
@@ -19454,7 +19692,19 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 									_rtfeldman$elm_css$Css$hex(_user$project$AppCss$nutrientFull)),
 								_1: {ctor: '[]'}
 							}),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_rtfeldman$elm_css$Css$class,
+								_user$project$AppCss$RowBuffer,
+								{
+									ctor: '::',
+									_0: _rtfeldman$elm_css$Css$marginTop(
+										_rtfeldman$elm_css$Css$rem(1)),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}
@@ -20663,72 +20913,90 @@ var _user$project$Main$getFoodFromHoverItem = function (item) {
 			return _elm_lang$core$Maybe$Just(_p5._0);
 	}
 };
+var _user$project$Main$_p6 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
+var _user$project$Main$id = _user$project$Main$_p6.id;
+var _user$project$Main$class = _user$project$Main$_p6.$class;
+var _user$project$Main$classList = _user$project$Main$_p6.classList;
 var _user$project$Main$informationSection = F2(
 	function (hoverItem, foodDict) {
 		var colour = function () {
-			var _p6 = hoverItem;
-			switch (_p6.ctor) {
+			var _p7 = hoverItem;
+			switch (_p7.ctor) {
 				case 'NothingHovered':
 					return '#3f9cb8';
 				case 'Nutrient':
-					var _p7 = _p6._0;
+					var _p8 = _p7._0;
 					return _user$project$Nutrient_View$getPercentageColour(
-						A2(_user$project$Helpers$getPercentage, _p7.amount, _p7.dailyIntake));
+						A2(_user$project$Helpers$getPercentage, _p8.amount, _p8.dailyIntake));
 				default:
 					return '#b13fb8';
 			}
 		}();
 		var info = function () {
-			var _p8 = hoverItem;
-			switch (_p8.ctor) {
+			var _p9 = hoverItem;
+			switch (_p9.ctor) {
 				case 'NothingHovered':
 					return 'Please hover over a food or nutrient to view its summary.';
 				case 'Nutrient':
-					return _p8._0.description;
+					return _p9._0.description;
 				default:
 					return 'The purple section on the progress bars below on each nutrient, shows the perentage of nutrients from the food.';
 			}
 		}();
 		var sideHeader = function () {
-			var _p9 = hoverItem;
-			switch (_p9.ctor) {
+			var _p10 = hoverItem;
+			switch (_p10.ctor) {
 				case 'NothingHovered':
 					return '';
 				case 'Nutrient':
-					var _p10 = _p9._0;
+					var _p11 = _p10._0;
 					return A2(
 						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p10.amount),
+						_elm_lang$core$Basics$toString(_p11.amount),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							' / ',
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p10.dailyIntake),
-								A2(_elm_lang$core$Basics_ops['++'], '', _p10.unitOfMeasure))));
+								_elm_lang$core$Basics$toString(_p11.dailyIntake),
+								A2(_elm_lang$core$Basics_ops['++'], '', _p11.unitOfMeasure))));
 				default:
 					return '';
 			}
 		}();
 		var header = function () {
-			var _p11 = hoverItem;
-			switch (_p11.ctor) {
+			var _p12 = hoverItem;
+			switch (_p12.ctor) {
 				case 'NothingHovered':
 					return 'Summary';
 				case 'Nutrient':
-					return _p11._0.name;
+					return _p12._0.name;
 				default:
-					var _p12 = A2(_elm_lang$core$Dict$get, _p11._0, foodDict);
-					if (_p12.ctor === 'Nothing') {
+					var _p13 = A2(_elm_lang$core$Dict$get, _p12._0, foodDict);
+					if (_p13.ctor === 'Nothing') {
 						return '';
 					} else {
-						return _p12._0.name;
+						return _p13._0.name;
 					}
 			}
 		}();
 		return A2(
 			_rundis$elm_bootstrap$Bootstrap_Grid$row,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
+					{
+						ctor: '::',
+						_0: _user$project$Main$class(
+							{
+								ctor: '::',
+								_0: _user$project$AppCss$RowBuffer,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
@@ -20814,9 +21082,9 @@ var _user$project$Main$UpdateFoodQuantity = F2(
 		return {ctor: 'UpdateFoodQuantity', _0: a, _1: b};
 	});
 var _user$project$Main$foodRowConfig = {
-	onFocus: function (_p13) {
+	onFocus: function (_p14) {
 		return _user$project$Main$Hover(
-			_user$project$Main$Food(_p13));
+			_user$project$Main$Food(_p14));
 	},
 	onBlur: _user$project$Main$Hover(_user$project$Main$NothingHovered),
 	onRemove: _user$project$Main$RemoveFood,
@@ -20849,8 +21117,8 @@ var _user$project$Main$FoundFoods = function (a) {
 };
 var _user$project$Main$update = F2(
 	function (message, model) {
-		var _p14 = message;
-		switch (_p14.ctor) {
+		var _p15 = message;
+		switch (_p15.ctor) {
 			case 'ClearSearch':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -20859,27 +21127,27 @@ var _user$project$Main$update = F2(
 						{potentialFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'UpdateSearchText':
-				var _p15 = _p14._0;
+				var _p16 = _p15._0;
 				return (_elm_lang$core$String$isEmpty(
-					_elm_lang$core$String$trim(_p15)) || (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$String$length(_p15),
+					_elm_lang$core$String$trim(_p16)) || (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$String$length(_p16),
 					3) < 0)) ? A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _user$project$Connection_Models$NotLoaded, searchText: _p15}),
+						{potentialFoods: _user$project$Connection_Models$NotLoaded, searchText: _p16}),
 					{ctor: '[]'}) : A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							searchText: _p15,
+							searchText: _p16,
 							potentialFoods: _user$project$Connection_Models$Loading(
 								_user$project$Connection_Models$emptyListIfNotLoaded(model.potentialFoods))
 						}),
 					{
 						ctor: '::',
-						_0: A2(_user$project$Food_Api$searchFoods, _p15, _user$project$Main$FoundFoods),
+						_0: A2(_user$project$Food_Api$searchFoods, _p16, _user$project$Main$FoundFoods),
 						_1: {ctor: '[]'}
 					});
 			case 'ClearAllSelected':
@@ -20890,7 +21158,7 @@ var _user$project$Main$update = F2(
 						{selectedFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'FoundFoods':
-				if (_p14._0.ctor === 'Err') {
+				if (_p15._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(
 						_elm_lang$core$Native_Utils.update(
 							model,
@@ -20901,7 +21169,7 @@ var _user$project$Main$update = F2(
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{
-								potentialFoods: _user$project$Connection_Models$Loaded(_p14._0._0)
+								potentialFoods: _user$project$Connection_Models$Loaded(_p15._0._0)
 							}),
 						{ctor: '[]'});
 				}
@@ -20916,14 +21184,14 @@ var _user$project$Main$update = F2(
 						}),
 					{
 						ctor: '::',
-						_0: A2(_user$project$Food_Api$getFood, _p14._0.id, _user$project$Main$GotFood),
+						_0: A2(_user$project$Food_Api$getFood, _p15._0.id, _user$project$Main$GotFood),
 						_1: {ctor: '[]'}
 					});
 			case 'GotFood':
-				if (_p14._0.ctor === 'Err') {
+				if (_p15._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
-					var _p16 = _p14._0._0;
+					var _p17 = _p15._0._0;
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
@@ -20932,8 +21200,8 @@ var _user$project$Main$update = F2(
 								selectedFoods: _user$project$Connection_Models$Loaded(
 									A3(
 										_elm_lang$core$Dict$insert,
-										_p16.id,
-										_p16,
+										_p17.id,
+										_p17,
 										_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods))),
 								recommendedFoods: _user$project$Connection_Models$Loading(
 									_user$project$Connection_Models$emptyListIfNotLoaded(model.recommendedFoods))
@@ -20949,13 +21217,13 @@ var _user$project$Main$update = F2(
 						});
 				}
 			case 'FoundRecommendedFoods':
-				if (_p14._0.ctor === 'Ok') {
+				if (_p15._0.ctor === 'Ok') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{
-								recommendedFoods: _user$project$Connection_Models$Loaded(_p14._0._0)
+								recommendedFoods: _user$project$Connection_Models$Loaded(_p15._0._0)
 							}),
 						{ctor: '[]'});
 				} else {
@@ -20965,7 +21233,7 @@ var _user$project$Main$update = F2(
 						{ctor: '[]'});
 				}
 			case 'GotNutrients':
-				if (_p14._0.ctor === 'Err') {
+				if (_p15._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
@@ -20979,7 +21247,7 @@ var _user$project$Main$update = F2(
 										function (n) {
 											return {ctor: '_Tuple2', _0: n.id, _1: n};
 										},
-										_p14._0._0))
+										_p15._0._0))
 							}),
 						{ctor: '[]'});
 				}
@@ -20992,12 +21260,12 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A3(
 									_elm_lang$core$Dict$update,
-									_p14._0,
+									_p15._0,
 									_elm_lang$core$Maybe$map(
 										function (food) {
 											return _elm_lang$core$Native_Utils.update(
 												food,
-												{quantity: _p14._1});
+												{quantity: _p15._1});
 										}),
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
@@ -21011,12 +21279,12 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A3(
 									_elm_lang$core$Dict$update,
-									_p14._0,
+									_p15._0,
 									_elm_lang$core$Maybe$map(
 										function (food) {
 											return _elm_lang$core$Native_Utils.update(
 												food,
-												{amount: _p14._1});
+												{amount: _p15._1});
 										}),
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
@@ -21030,7 +21298,7 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A2(
 									_elm_lang$core$Dict$remove,
-									_p14._0,
+									_p15._0,
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
 					{ctor: '[]'});
@@ -21039,14 +21307,14 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{hoverItem: _p14._0}),
+						{hoverItem: _p15._0}),
 					{ctor: '[]'});
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{connectionModalState: _p14._0}),
+						{connectionModalState: _p15._0}),
 					{ctor: '[]'});
 		}
 	});
@@ -21059,8 +21327,8 @@ var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
 var _user$project$Main$searchBar = F2(
 	function (searchText, potentialFoods) {
 		var content = function () {
-			var _p17 = potentialFoods;
-			switch (_p17.ctor) {
+			var _p18 = potentialFoods;
+			switch (_p18.ctor) {
 				case 'NotLoaded':
 					return {ctor: '[]'};
 				case 'Loading':
@@ -21070,8 +21338,8 @@ var _user$project$Main$searchBar = F2(
 						_1: {ctor: '[]'}
 					};
 				default:
-					var _p18 = _p17._0;
-					return _elm_lang$core$List$isEmpty(_p18) ? {
+					var _p19 = _p18._0;
+					return _elm_lang$core$List$isEmpty(_p19) ? {
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$li,
@@ -21099,7 +21367,7 @@ var _user$project$Main$searchBar = F2(
 									_1: {ctor: '[]'}
 								});
 						},
-						_p18);
+						_p19);
 			}
 		}();
 		return _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
@@ -21237,9 +21505,9 @@ var _user$project$Main$view = function (model) {
 																			_0: A4(
 																				_user$project$Nutrient_View$nutrientSection,
 																				{
-																					mouseOver: function (_p19) {
+																					mouseOver: function (_p20) {
 																						return _user$project$Main$Hover(
-																							_user$project$Main$Nutrient(_p19));
+																							_user$project$Main$Nutrient(_p20));
 																					},
 																					mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
 																				},
@@ -21263,9 +21531,9 @@ var _user$project$Main$view = function (model) {
 																				_0: A4(
 																					_user$project$Nutrient_View$nutrientSection,
 																					{
-																						mouseOver: function (_p20) {
+																						mouseOver: function (_p21) {
 																							return _user$project$Main$Hover(
-																								_user$project$Main$Nutrient(_p20));
+																								_user$project$Main$Nutrient(_p21));
 																						},
 																						mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
 																					},

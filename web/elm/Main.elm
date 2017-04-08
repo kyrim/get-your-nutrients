@@ -27,12 +27,16 @@ import Connection.Models exposing (..)
 
 import Bootstrap.CDN as CDN
 import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Col as Col
+import Bootstrap.Grid.Row as Row
 import Bootstrap.Card as Card
 import Bootstrap.Form.Input as Input
 import Nutrient.View exposing (..)
 import Food.View exposing (..)
 import Navigation.View exposing (..)
 import Connection.View exposing (..)
+import Html.CssHelpers
+import AppCss
 
 
 -- Model
@@ -76,7 +80,10 @@ init =
 
 
 -- View
--- Please note, stylesheet is already included.
+
+
+{ id, class, classList } =
+    Html.CssHelpers.withNamespace ""
 
 
 informationSection : HoverItem -> Dict FoodId Food -> Html Msg
@@ -131,7 +138,7 @@ informationSection hoverItem foodDict =
                 Food food ->
                     "#b13fb8"
     in
-        Grid.row []
+        Grid.row [ Row.attrs [ class [ AppCss.RowBuffer ] ] ]
             [ Grid.col []
                 [ Card.config []
                     |> Card.header [ style [ ( "background-color", colour ) ] ]

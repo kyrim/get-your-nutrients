@@ -11,6 +11,7 @@ type CssClasses
     | NutrientMedium
     | NutrientHigh
     | NutrientFull
+    | RowBuffer
 
 
 css =
@@ -32,6 +33,7 @@ css =
         , class NutrientMedium [ color (hex nutrientMedium) ]
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
+        , class RowBuffer [ marginTop (Css.rem 1) ]
         ]
 
 
