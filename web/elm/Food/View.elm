@@ -8,6 +8,9 @@ import Connection.Models exposing (..)
 import Connection.View exposing (..)
 import Dict exposing (..)
 import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Row as Row
+import BootstrapHelper exposing (rowBuffer)
+import AppCss
 
 
 type alias FoodRowConfig msg =
@@ -37,39 +40,36 @@ onInputToInt food default onFunction =
 foodRow : FoodRowConfig msg -> Food -> Html msg
 foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
     div
-        [ class "food-item"
-        , onMouseOver (onFocus food.id)
+        [ onMouseOver (onFocus food.id)
         , onMouseLeave onBlur
         ]
-        [ div [ class "food-item-text" ] [ text food.name ]
+        [ div [] [ text food.name ]
         , div
-            [ class "food-item-weight" ]
-            [ div [ class "food-item-align" ]
+            []
+            [ div []
                 [ input
                     [ type_ "number"
-                    , class "food-item-quantity"
                     , Html.Attributes.min "1"
                     , value (food.quantity |> toString)
                     , onInput (onInputToInt food.id 1 onQuantityChange)
                     ]
                     []
                 , span
-                    [ class "marker" ]
+                    []
                     [ text "x" ]
                 , input
                     [ type_ "number"
-                    , class "food-item-amount"
                     , Html.Attributes.min "1"
                     , value (food.amount |> toString)
                     , onInput (onInputToInt food.id 100 onAmountChange)
                     ]
                     []
                 , span
-                    [ class "marker" ]
+                    []
                     [ text "g" ]
                 , a
-                    [ class "selected-food-button" ]
-                    [ i [ class "fa fa-times", onClick (onRemove food.id) ] []
+                    []
+                    [ i [ onClick (onRemove food.id) ] []
                     ]
                 ]
             ]
@@ -109,16 +109,15 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
                                 (Dict.values loadedFoods)
                             )
     in
-        Grid.row []
+        Grid.row [ rowBuffer ]
             [ Grid.col []
                 [ h2 []
                     [ text "Selected Food"
                     , a
-                        [ class "selected-food-button"
-                        , attribute "aria-label" "Clear all food"
+                        [ attribute "aria-label" "Clear all food"
                         , onClick onClearAll
                         ]
-                        [ i [ class "fa fa-undo" ] []
+                        [ i [] []
                         ]
                     ]
                 ]
@@ -130,10 +129,10 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
 
 recommendedFoodRow : RecommendedFoodRowConfig msg -> Food -> Html msg
 recommendedFoodRow config food =
-    li [ class "recommended-food-item" ]
-        [ i [ class "fa fa-arrow-left recommended-icon" ]
+    li []
+        [ i []
             []
-        , div [ class "recommended-text", onClick (config.onClick food) ] [ text food.name ]
+        , div [ onClick (config.onClick food) ] [ text food.name ]
         ]
 
 
@@ -155,7 +154,7 @@ recommendedFoodSection config recommendedFoods =
                     if List.isEmpty loadedFoods then
                         pleaseSearchFoodText
                     else
-                        div [ class "food-menu" ]
+                        div []
                             (List.map
                                 (recommendedFoodRow config)
                                 loadedFoods
@@ -163,7 +162,7 @@ recommendedFoodSection config recommendedFoods =
     in
         Grid.row []
             [ Grid.col []
-                [ h2 [ class "smaller-tooltip" ]
+                [ h2 []
                     [ text "Recommended" ]
                 ]
             , Grid.col []

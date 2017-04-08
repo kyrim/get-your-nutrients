@@ -35,8 +35,8 @@ import Nutrient.View exposing (..)
 import Food.View exposing (..)
 import Navigation.View exposing (..)
 import Connection.View exposing (..)
-import Html.CssHelpers
 import AppCss
+import BootstrapHelper exposing (rowBuffer)
 
 
 -- Model
@@ -80,10 +80,6 @@ init =
 
 
 -- View
-
-
-{ id, class, classList } =
-    Html.CssHelpers.withNamespace ""
 
 
 informationSection : HoverItem -> Dict FoodId Food -> Html Msg
@@ -138,7 +134,7 @@ informationSection hoverItem foodDict =
                 Food food ->
                     "#b13fb8"
     in
-        Grid.row [ Row.attrs [ class [ AppCss.RowBuffer ] ] ]
+        Grid.row [ rowBuffer ]
             [ Grid.col []
                 [ Card.config []
                     |> Card.header [ style [ ( "background-color", colour ) ] ]
@@ -247,8 +243,8 @@ view model =
         , topSection
         , Grid.row []
             [ Grid.col []
-                [ Grid.row [] [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
-                , Grid.row []
+                [ Grid.row [ rowBuffer ] [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
+                , Grid.row [ rowBuffer ]
                     [ Grid.col [] [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
                     ]
                 ]
@@ -256,7 +252,7 @@ view model =
                 [ Grid.row []
                     [ Grid.col []
                         [ Grid.row [] [ Grid.col [] [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ] ]
-                        , Grid.row []
+                        , Grid.row [ rowBuffer ]
                             [ Grid.col []
                                 [ nutrientSection
                                     { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
