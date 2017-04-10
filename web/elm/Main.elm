@@ -31,6 +31,7 @@ import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
 import Bootstrap.Card as Card
 import Bootstrap.Form.Input as Input
+import Bootstrap.Popover as Popover
 import Nutrient.View exposing (..)
 import Food.View exposing (..)
 import Navigation.View exposing (..)
@@ -238,10 +239,23 @@ recommendedFoodRowConfig =
 view : Model -> Html Msg
 view model =
     let
+        hoverItemFood =
+            getFoodFromHoverItem (model.hoverItem)
+
         calculateNutrients nutrients =
             nutrients
-                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
+                |> calculateNutrientPercentageFromFoods hoverItemFood (emptyDictIfNotLoaded model.selectedFoods)
                 |> Dict.values
+
+        constructNutrientSection text nutrientType =
+            nutrientSection
+                { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
+                text
+                (hoverItemIsFood model.hoverItem)
+                (model.nutrients
+                    |> filterNutrient nutrientType
+                    |> calculateNutrients
+                )
     in
         Grid.container []
             -- For bootstrap
@@ -253,35 +267,16 @@ view model =
                         [ Grid.col [] [ searchBar model.searchText model.potentialFoods ]
                         ]
                     , Grid.row [ rowBuffer ]
-                        [ Grid.col [] [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
+                        [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
                         ]
                     ]
                 , Grid.col []
-                    [ Grid.row []
+                    [ Grid.row [ rowBuffer ]
                         [ Grid.col []
-                            [ -- Grid.row [] [ Grid.col [] [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ] ]
-                              Grid.row [ rowBuffer ]
-                                [ Grid.col []
-                                    [ nutrientSection
-                                        { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                                        "Vitamins (DI%)"
-                                        (hoverItemIsFood model.hoverItem)
-                                        (model.nutrients
-                                            |> filterNutrient Vitamin
-                                            |> calculateNutrients
-                                        )
-                                    ]
-                                , Grid.col []
-                                    [ nutrientSection
-                                        { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                                        "Minerals (DI%)"
-                                        (hoverItemIsFood model.hoverItem)
-                                        (model.nutrients
-                                            |> filterNutrient Mineral
-                                            |> calculateNutrients
-                                        )
-                                    ]
-                                ]
+                            [ constructNutrientSection "Vitamins" Vitamin
+                            ]
+                        , Grid.col []
+                            [ constructNutrientSection "Minerals" Mineral
                             ]
                         ]
                     ]

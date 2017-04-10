@@ -7,6 +7,7 @@ import Html.Attributes exposing (style)
 import Html.Events exposing (..)
 import Bootstrap.Grid as Grid
 import Bootstrap.Progress as Progress
+import Bootstrap.Popover as Popover
 import Html.CssHelpers
 import AppCss
 
@@ -84,11 +85,6 @@ nutrientProgress config isHovered nutrient =
             ]
             [ div []
                 [ span [] [ text label ]
-                  -- , span
-                  --     [ class "progress-percentage"
-                  --     , style [ ( "color", displayColour ) ]
-                  --     ]
-                  --     [ text ((percentageToDisplay |> toString) ++ "%") ]
                 ]
             , Progress.progressMulti
                 [ [ Progress.value hoverWidth, Progress.attr (style [ ( "background-color", "#b13fb8" ) ]) ]
