@@ -121,7 +121,7 @@ informationSection hoverItem foodDict =
                     nutrient.description
 
                 Food food ->
-                    "The purple section on the progress bars below on each nutrient, shows the perentage of nutrients from the food."
+                    "The purple section on the progress bars below on each nutrient, shows the percentage of nutrients from the food."
 
         colour =
             case hoverItem of
@@ -237,51 +237,57 @@ recommendedFoodRowConfig =
 
 view : Model -> Html Msg
 view model =
-    Grid.container []
-        -- For bootstrap
-        [ CDN.stylesheet
-        , topSection
-        , Grid.row []
-            [ Grid.col []
-                [ Grid.row [ rowBuffer ] [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
-                , Grid.row [ rowBuffer ]
-                    [ Grid.col [] [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
+    let
+        calculateNutrients nutrients =
+            nutrients
+                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
+                |> Dict.values
+    in
+        Grid.container []
+            -- For bootstrap
+            [ CDN.stylesheet
+            , topSection
+            , Grid.row []
+                [ Grid.col []
+                    [ Grid.row [ rowBuffer ]
+                        [ Grid.col [] [ searchBar model.searchText model.potentialFoods ]
+                        ]
+                    , Grid.row [ rowBuffer ]
+                        [ Grid.col [] [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
+                        ]
                     ]
-                ]
-            , Grid.col []
-                [ Grid.row []
-                    [ Grid.col []
-                        [ Grid.row [] [ Grid.col [] [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ] ]
-                        , Grid.row [ rowBuffer ]
-                            [ Grid.col []
-                                [ nutrientSection
-                                    { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                                    "Vitamins (DI%)"
-                                    (hoverItemIsFood model.hoverItem)
-                                    (model.nutrients
-                                        |> filterNutrient Vitamin
-                                        |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
-                                        |> Dict.values
-                                    )
-                                ]
-                            , Grid.col []
-                                [ nutrientSection
-                                    { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                                    "Minerals (DI%)"
-                                    (hoverItemIsFood model.hoverItem)
-                                    (model.nutrients
-                                        |> filterNutrient Mineral
-                                        |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
-                                        |> Dict.values
-                                    )
+                , Grid.col []
+                    [ Grid.row []
+                        [ Grid.col []
+                            [ -- Grid.row [] [ Grid.col [] [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ] ]
+                              Grid.row [ rowBuffer ]
+                                [ Grid.col []
+                                    [ nutrientSection
+                                        { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
+                                        "Vitamins (DI%)"
+                                        (hoverItemIsFood model.hoverItem)
+                                        (model.nutrients
+                                            |> filterNutrient Vitamin
+                                            |> calculateNutrients
+                                        )
+                                    ]
+                                , Grid.col []
+                                    [ nutrientSection
+                                        { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
+                                        "Minerals (DI%)"
+                                        (hoverItemIsFood model.hoverItem)
+                                        (model.nutrients
+                                            |> filterNutrient Mineral
+                                            |> calculateNutrients
+                                        )
+                                    ]
                                 ]
                             ]
                         ]
                     ]
                 ]
+            , connectionError { onClose = (ConnectionModal Hide) } model.connectionModalState
             ]
-        , connectionError { onClose = (ConnectionModal Hide) } model.connectionModalState
-        ]
 
 
 hoverItemIsFood : HoverItem -> Bool
@@ -370,7 +376,11 @@ update message model =
             if ((text |> String.trim |> String.isEmpty) || String.length text < 3) then
                 { model | potentialFoods = NotLoaded, searchText = text } ! []
             else
-                { model | searchText = text, potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods) } ! [ searchFoods text FoundFoods ]
+                { model
+                    | searchText = text
+                    , potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods)
+                }
+                    ! [ searchFoods text FoundFoods ]
 
         ClearAllSelected ->
             { model | selectedFoods = NotLoaded } ! []

@@ -19590,10 +19590,295 @@ var _rundis$elm_bootstrap$Bootstrap_Navbar$dropdownHeader = function (children) 
 			children));
 };
 
+var _rundis$elm_bootstrap$Bootstrap_Progress$roleClass = function (role) {
+	return _elm_lang$html$Html_Attributes$class(
+		function () {
+			var _p0 = role;
+			switch (_p0.ctor) {
+				case 'Success':
+					return 'bg-success';
+				case 'Info':
+					return 'bg-info';
+				case 'Warning':
+					return 'bg-warning';
+				default:
+					return 'bg-danger';
+			}
+		}());
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$toAttributes = function (_p1) {
+	var _p2 = _p1;
+	var _p5 = _p2._0;
+	return _elm_lang$core$List$concat(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '::',
+				_0: A2(_elm_lang$html$Html_Attributes$attribute, 'role', 'progressbar'),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html_Attributes$attribute,
+						'aria-value-now',
+						_elm_lang$core$Basics$toString(_p5.value)),
+					_1: {
+						ctor: '::',
+						_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-valuemin', '0'),
+						_1: {
+							ctor: '::',
+							_0: A2(_elm_lang$html$Html_Attributes$attribute, 'aria-valuemax', '100'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'width',
+											_1: A2(
+												_elm_lang$core$Basics_ops['++'],
+												_elm_lang$core$Basics$toString(_p5.value),
+												'%')
+										},
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$classList(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'progress-bar', _1: true},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'progress-bar-striped', _1: _p5.striped || _p5.animated},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'progress-bar-animated', _1: _p5.animated},
+													_1: {ctor: '[]'}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			},
+			_1: {
+				ctor: '::',
+				_0: function () {
+					var _p3 = _p5.height;
+					if (_p3.ctor === 'Just') {
+						return {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$style(
+								{
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'height',
+										_1: A2(
+											_elm_lang$core$Basics_ops['++'],
+											_elm_lang$core$Basics$toString(_p3._0),
+											'px')
+									},
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						};
+					} else {
+						return {ctor: '[]'};
+					}
+				}(),
+				_1: {
+					ctor: '::',
+					_0: function () {
+						var _p4 = _p5.role;
+						if (_p4.ctor === 'Just') {
+							return {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Progress$roleClass(_p4._0),
+								_1: {ctor: '[]'}
+							};
+						} else {
+							return {ctor: '[]'};
+						}
+					}(),
+					_1: {
+						ctor: '::',
+						_0: _p5.attributes,
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$Attr = function (a) {
+	return {ctor: 'Attr', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$attr = function (attr) {
+	return _rundis$elm_bootstrap$Bootstrap_Progress$Attr(attr);
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$Animated = function (a) {
+	return {ctor: 'Animated', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$animated = _rundis$elm_bootstrap$Bootstrap_Progress$Animated(true);
+var _rundis$elm_bootstrap$Bootstrap_Progress$Striped = function (a) {
+	return {ctor: 'Striped', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$striped = _rundis$elm_bootstrap$Bootstrap_Progress$Striped(true);
+var _rundis$elm_bootstrap$Bootstrap_Progress$Roled = function (a) {
+	return {ctor: 'Roled', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$Label = function (a) {
+	return {ctor: 'Label', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$label = function (text) {
+	return _rundis$elm_bootstrap$Bootstrap_Progress$Label(
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(text),
+			_1: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$customLabel = function (children) {
+	return _rundis$elm_bootstrap$Bootstrap_Progress$Label(children);
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$Height = function (a) {
+	return {ctor: 'Height', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$height = function (height) {
+	return _rundis$elm_bootstrap$Bootstrap_Progress$Height(
+		_elm_lang$core$Maybe$Just(height));
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$Value = function (a) {
+	return {ctor: 'Value', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$value = function (val) {
+	return _rundis$elm_bootstrap$Bootstrap_Progress$Value(val);
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$Danger = {ctor: 'Danger'};
+var _rundis$elm_bootstrap$Bootstrap_Progress$danger = _rundis$elm_bootstrap$Bootstrap_Progress$Roled(
+	_elm_lang$core$Maybe$Just(_rundis$elm_bootstrap$Bootstrap_Progress$Danger));
+var _rundis$elm_bootstrap$Bootstrap_Progress$Warning = {ctor: 'Warning'};
+var _rundis$elm_bootstrap$Bootstrap_Progress$warning = _rundis$elm_bootstrap$Bootstrap_Progress$Roled(
+	_elm_lang$core$Maybe$Just(_rundis$elm_bootstrap$Bootstrap_Progress$Warning));
+var _rundis$elm_bootstrap$Bootstrap_Progress$Info = {ctor: 'Info'};
+var _rundis$elm_bootstrap$Bootstrap_Progress$info = _rundis$elm_bootstrap$Bootstrap_Progress$Roled(
+	_elm_lang$core$Maybe$Just(_rundis$elm_bootstrap$Bootstrap_Progress$Info));
+var _rundis$elm_bootstrap$Bootstrap_Progress$Success = {ctor: 'Success'};
+var _rundis$elm_bootstrap$Bootstrap_Progress$success = _rundis$elm_bootstrap$Bootstrap_Progress$Roled(
+	_elm_lang$core$Maybe$Just(_rundis$elm_bootstrap$Bootstrap_Progress$Success));
+var _rundis$elm_bootstrap$Bootstrap_Progress$Options = function (a) {
+	return {ctor: 'Options', _0: a};
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$applyOption = F2(
+	function (modifier, _p6) {
+		var _p7 = _p6;
+		var _p9 = _p7._0;
+		return _rundis$elm_bootstrap$Bootstrap_Progress$Options(
+			function () {
+				var _p8 = modifier;
+				switch (_p8.ctor) {
+					case 'Value':
+						return _elm_lang$core$Native_Utils.update(
+							_p9,
+							{value: _p8._0});
+					case 'Height':
+						return _elm_lang$core$Native_Utils.update(
+							_p9,
+							{height: _p8._0});
+					case 'Label':
+						return _elm_lang$core$Native_Utils.update(
+							_p9,
+							{label: _p8._0});
+					case 'Roled':
+						return _elm_lang$core$Native_Utils.update(
+							_p9,
+							{role: _p8._0});
+					case 'Striped':
+						return _elm_lang$core$Native_Utils.update(
+							_p9,
+							{striped: _p8._0});
+					case 'Animated':
+						return _elm_lang$core$Native_Utils.update(
+							_p9,
+							{animated: _p8._0});
+					default:
+						return _elm_lang$core$Native_Utils.update(
+							_p9,
+							{
+								attributes: {ctor: '::', _0: _p8._0, _1: _p9.attributes}
+							});
+				}
+			}());
+	});
+var _rundis$elm_bootstrap$Bootstrap_Progress$defaultOptions = _rundis$elm_bootstrap$Bootstrap_Progress$Options(
+	{
+		value: 0,
+		height: _elm_lang$core$Maybe$Nothing,
+		label: {ctor: '[]'},
+		role: _elm_lang$core$Maybe$Nothing,
+		striped: false,
+		animated: false,
+		attributes: {ctor: '[]'}
+	});
+var _rundis$elm_bootstrap$Bootstrap_Progress$renderBar = function (modifiers) {
+	var _p10 = A3(_elm_lang$core$List$foldl, _rundis$elm_bootstrap$Bootstrap_Progress$applyOption, _rundis$elm_bootstrap$Bootstrap_Progress$defaultOptions, modifiers);
+	var options = _p10;
+	var opts = _p10._0;
+	return A2(
+		_elm_lang$html$Html$div,
+		_rundis$elm_bootstrap$Bootstrap_Progress$toAttributes(options),
+		opts.label);
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$progress = function (modifiers) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('progress'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _rundis$elm_bootstrap$Bootstrap_Progress$renderBar(modifiers),
+			_1: {ctor: '[]'}
+		});
+};
+var _rundis$elm_bootstrap$Bootstrap_Progress$progressMulti = function (bars) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('progress'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Progress$renderBar, bars));
+};
+
+var _user$project$AppCss$transition = F3(
+	function (first, second, third) {
+		return A2(
+			_rtfeldman$elm_css$Css$property,
+			'transition',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				first,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						second,
+						A2(_elm_lang$core$Basics_ops['++'], ' ', third)))));
+	});
 var _user$project$AppCss$nutrientFull = '#6ABE6E';
 var _user$project$AppCss$nutrientHigh = '#7FC7AF';
 var _user$project$AppCss$nutrientMedium = '#FFAB2E';
 var _user$project$AppCss$nutrientLow = '#FF3D7F';
+var _user$project$AppCss$NutrientProgress = {ctor: 'NutrientProgress'};
 var _user$project$AppCss$RowBuffer = {ctor: 'RowBuffer'};
 var _user$project$AppCss$NutrientFull = {ctor: 'NutrientFull'};
 var _user$project$AppCss$NutrientHigh = {ctor: 'NutrientHigh'};
@@ -19703,7 +19988,47 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 										_rtfeldman$elm_css$Css$rem(1)),
 									_1: {ctor: '[]'}
 								}),
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rtfeldman$elm_css$Css$class,
+									_user$project$AppCss$NutrientProgress,
+									{
+										ctor: '::',
+										_0: _rtfeldman$elm_css$Css$marginBottom(
+											_rtfeldman$elm_css$Css$em(0.5)),
+										_1: {
+											ctor: '::',
+											_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+											_1: {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css$opacity(
+													_rtfeldman$elm_css$Css$num(0.7)),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$hover(
+														{
+															ctor: '::',
+															_0: _rtfeldman$elm_css$Css$opacity(
+																_rtfeldman$elm_css$Css$num(1)),
+															_1: {
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Css$transform(
+																	_rtfeldman$elm_css$Css$scale(1.07)),
+																_1: {
+																	ctor: '::',
+																	_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
+																	_1: {ctor: '[]'}
+																}
+															}
+														}),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}
 						}
 					}
 				}
@@ -20496,6 +20821,10 @@ var _user$project$Nutrient_Api$getAllNutrients = function (msg) {
 var _user$project$Nutrient_View$getPercentageColour = function (percentage) {
 	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? _user$project$AppCss$nutrientLow : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? _user$project$AppCss$nutrientMedium : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? _user$project$AppCss$nutrientHigh : _user$project$AppCss$nutrientFull));
 };
+var _user$project$Nutrient_View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
+var _user$project$Nutrient_View$id = _user$project$Nutrient_View$_p0.id;
+var _user$project$Nutrient_View$class = _user$project$Nutrient_View$_p0.$class;
+var _user$project$Nutrient_View$classList = _user$project$Nutrient_View$_p0.classList;
 var _user$project$Nutrient_View$nutrientProgress = F3(
 	function (config, isHovered, nutrient) {
 		var percentage = A2(_user$project$Helpers$getPercentage, nutrient.amount, nutrient.dailyIntake);
@@ -20510,7 +20839,12 @@ var _user$project$Nutrient_View$nutrientProgress = F3(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('nutrient-progress'),
+				_0: _user$project$Nutrient_View$class(
+					{
+						ctor: '::',
+						_0: _user$project$AppCss$NutrientProgress,
+						_1: {ctor: '[]'}
+					}),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Events$onMouseOver(
@@ -20526,11 +20860,7 @@ var _user$project$Nutrient_View$nutrientProgress = F3(
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('progress-label'),
-						_1: {ctor: '[]'}
-					},
+					{ctor: '[]'},
 					{
 						ctor: '::',
 						_0: A2(
@@ -20541,97 +20871,45 @@ var _user$project$Nutrient_View$nutrientProgress = F3(
 								_0: _elm_lang$html$Html$text(label),
 								_1: {ctor: '[]'}
 							}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$span,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('progress-percentage'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 'color', _1: displayColour},
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(
-										A2(
-											_elm_lang$core$Basics_ops['++'],
-											_elm_lang$core$Basics$toString(percentageToDisplay),
-											'%')),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
+						_1: {ctor: '[]'}
 					}),
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
+					_0: _rundis$elm_bootstrap$Bootstrap_Progress$progressMulti(
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('progress'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
+							_0: {
+								ctor: '::',
+								_0: _rundis$elm_bootstrap$Bootstrap_Progress$value(hoverWidth),
+								_1: {
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$style(
-										{
-											ctor: '::',
-											_0: {
-												ctor: '_Tuple2',
-												_0: 'width',
-												_1: A2(
-													_elm_lang$core$Basics_ops['++'],
-													_elm_lang$core$Basics$toString(hoverWidth),
-													'%')
-											},
-											_1: {
+									_0: _rundis$elm_bootstrap$Bootstrap_Progress$attr(
+										_elm_lang$html$Html_Attributes$style(
+											{
 												ctor: '::',
 												_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#b13fb8'},
 												_1: {ctor: '[]'}
-											}
-										}),
+											})),
 									_1: {ctor: '[]'}
-								},
-								{ctor: '[]'}),
+								}
+							},
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
+								_0: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Progress$value(percentageWidth),
+									_1: {
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {
-													ctor: '_Tuple2',
-													_0: 'width',
-													_1: A2(
-														_elm_lang$core$Basics_ops['++'],
-														_elm_lang$core$Basics$toString(percentageWidth),
-														'%')
-												},
-												_1: {
+										_0: _rundis$elm_bootstrap$Bootstrap_Progress$attr(
+											_elm_lang$html$Html_Attributes$style(
+												{
 													ctor: '::',
 													_0: {ctor: '_Tuple2', _0: 'background-color', _1: percentageColour},
 													_1: {ctor: '[]'}
-												}
-											}),
+												})),
 										_1: {ctor: '[]'}
-									},
-									{ctor: '[]'}),
+									}
+								},
 								_1: {ctor: '[]'}
 							}
 						}),
@@ -20888,7 +21166,7 @@ var _user$project$Main$informationSection = F2(
 				case 'Nutrient':
 					return _p8._0.description;
 				default:
-					return 'The purple section on the progress bars below on each nutrient, shows the perentage of nutrients from the food.';
+					return 'The purple section on the progress bars below on each nutrient, shows the percentage of nutrients from the food.';
 			}
 		}();
 		var sideHeader = function () {
@@ -21337,6 +21615,14 @@ var _user$project$Main$searchBar = F2(
 			});
 	});
 var _user$project$Main$view = function (model) {
+	var calculateNutrients = function (nutrients) {
+		return _elm_lang$core$Dict$values(
+			A3(
+				_user$project$Main$calculateNutrientPercentageFromFoods,
+				_user$project$Main$getFoodFromHoverItem(model.hoverItem),
+				_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
+				nutrients));
+	};
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_Grid$container,
 		{ctor: '[]'},
@@ -21420,7 +21706,11 @@ var _user$project$Main$view = function (model) {
 														ctor: '::',
 														_0: A2(
 															_rundis$elm_bootstrap$Bootstrap_Grid$row,
-															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _user$project$BootstrapHelper$rowBuffer,
+																_1: {ctor: '[]'}
+															},
 															{
 																ctor: '::',
 																_0: A2(
@@ -21428,24 +21718,22 @@ var _user$project$Main$view = function (model) {
 																	{ctor: '[]'},
 																	{
 																		ctor: '::',
-																		_0: A2(
-																			_user$project$Main$informationSection,
-																			model.hoverItem,
-																			_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)),
+																		_0: A4(
+																			_user$project$Nutrient_View$nutrientSection,
+																			{
+																				mouseOver: function (_p19) {
+																					return _user$project$Main$Hover(
+																						_user$project$Main$Nutrient(_p19));
+																				},
+																				mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
+																			},
+																			'Vitamins (DI%)',
+																			_user$project$Main$hoverItemIsFood(model.hoverItem),
+																			calculateNutrients(
+																				A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Vitamin, model.nutrients))),
 																		_1: {ctor: '[]'}
 																	}),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
-															_0: A2(
-																_rundis$elm_bootstrap$Bootstrap_Grid$row,
-																{
-																	ctor: '::',
-																	_0: _user$project$BootstrapHelper$rowBuffer,
-																	_1: {ctor: '[]'}
-																},
-																{
+																_1: {
 																	ctor: '::',
 																	_0: A2(
 																		_rundis$elm_bootstrap$Bootstrap_Grid$col,
@@ -21455,53 +21743,22 @@ var _user$project$Main$view = function (model) {
 																			_0: A4(
 																				_user$project$Nutrient_View$nutrientSection,
 																				{
-																					mouseOver: function (_p19) {
+																					mouseOver: function (_p20) {
 																						return _user$project$Main$Hover(
-																							_user$project$Main$Nutrient(_p19));
+																							_user$project$Main$Nutrient(_p20));
 																					},
 																					mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
 																				},
-																				'Vitamins (DI%)',
+																				'Minerals (DI%)',
 																				_user$project$Main$hoverItemIsFood(model.hoverItem),
-																				_elm_lang$core$Dict$values(
-																					A3(
-																						_user$project$Main$calculateNutrientPercentageFromFoods,
-																						_user$project$Main$getFoodFromHoverItem(model.hoverItem),
-																						_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
-																						A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Vitamin, model.nutrients)))),
+																				calculateNutrients(
+																					A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Mineral, model.nutrients))),
 																			_1: {ctor: '[]'}
 																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: A2(
-																			_rundis$elm_bootstrap$Bootstrap_Grid$col,
-																			{ctor: '[]'},
-																			{
-																				ctor: '::',
-																				_0: A4(
-																					_user$project$Nutrient_View$nutrientSection,
-																					{
-																						mouseOver: function (_p20) {
-																							return _user$project$Main$Hover(
-																								_user$project$Main$Nutrient(_p20));
-																						},
-																						mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
-																					},
-																					'Minerals (DI%)',
-																					_user$project$Main$hoverItemIsFood(model.hoverItem),
-																					_elm_lang$core$Dict$values(
-																						A3(
-																							_user$project$Main$calculateNutrientPercentageFromFoods,
-																							_user$project$Main$getFoodFromHoverItem(model.hoverItem),
-																							_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
-																							A2(_user$project$Main$filterNutrient, _user$project$Nutrient_Models$Mineral, model.nutrients)))),
-																				_1: {ctor: '[]'}
-																			}),
-																		_1: {ctor: '[]'}
-																	}
-																}),
-															_1: {ctor: '[]'}
-														}
+																	_1: {ctor: '[]'}
+																}
+															}),
+														_1: {ctor: '[]'}
 													}),
 												_1: {ctor: '[]'}
 											}),

@@ -12,6 +12,7 @@ type CssClasses
     | NutrientHigh
     | NutrientFull
     | RowBuffer
+    | NutrientProgress
 
 
 css =
@@ -34,6 +35,16 @@ css =
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
         , class RowBuffer [ marginTop (Css.rem 1) ]
+        , class NutrientProgress
+            [ marginBottom (em 0.5)
+            , cursor pointer
+            , opacity (num 0.7)
+            , hover
+                [ opacity (num 1)
+                , transform (scale 1.07)
+                , transition "all" "0.2s" "ease"
+                ]
+            ]
         ]
 
 
@@ -55,3 +66,12 @@ nutrientHigh =
 
 nutrientFull =
     "#6ABE6E"
+
+
+
+-- Custom Properties
+
+
+transition : String -> String -> String -> Mixin
+transition first second third =
+    property "transition" (first ++ " " ++ second ++ " " ++ third)

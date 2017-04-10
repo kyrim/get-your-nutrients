@@ -3,10 +3,16 @@ module Nutrient.View exposing (..)
 import Helpers exposing (getPercentage)
 import Nutrient.Models exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html.Attributes exposing (style)
 import Html.Events exposing (..)
 import Bootstrap.Grid as Grid
+import Bootstrap.Progress as Progress
+import Html.CssHelpers
 import AppCss
+
+
+{ id, class, classList } =
+    Html.CssHelpers.withNamespace ""
 
 
 getPercentageColour : Int -> String
@@ -72,34 +78,21 @@ nutrientProgress config isHovered nutrient =
                 percentageColour
     in
         div
-            [ class "nutrient-progress"
+            [ class [ AppCss.NutrientProgress ]
             , onMouseOver (config.mouseOver nutrient)
             , onMouseLeave config.mouseLeave
             ]
-            [ div [ class "progress-label" ]
+            [ div []
                 [ span [] [ text label ]
-                , span
-                    [ class "progress-percentage"
-                    , style [ ( "color", displayColour ) ]
-                    ]
-                    [ text ((percentageToDisplay |> toString) ++ "%") ]
+                  -- , span
+                  --     [ class "progress-percentage"
+                  --     , style [ ( "color", displayColour ) ]
+                  --     ]
+                  --     [ text ((percentageToDisplay |> toString) ++ "%") ]
                 ]
-            , div
-                [ class "progress" ]
-                [ div
-                    [ style
-                        [ ( "width", (hoverWidth |> toString) ++ "%" )
-                        , ( "background-color", "#b13fb8" )
-                        ]
-                    ]
-                    []
-                , div
-                    [ style
-                        [ ( "width", (percentageWidth |> toString) ++ "%" )
-                        , ( "background-color", percentageColour )
-                        ]
-                    ]
-                    []
+            , Progress.progressMulti
+                [ [ Progress.value hoverWidth, Progress.attr (style [ ( "background-color", "#b13fb8" ) ]) ]
+                , [ Progress.value percentageWidth, Progress.attr (style [ ( "background-color", percentageColour ) ]) ]
                 ]
             ]
 
