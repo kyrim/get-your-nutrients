@@ -9,6 +9,7 @@ import Connection.View exposing (..)
 import Dict exposing (..)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Row as Row
+import Bootstrap.Table as Table
 import BootstrapHelper exposing (rowBuffer)
 import AppCss
 
@@ -37,77 +38,76 @@ onInputToInt food default onFunction =
     (\string -> onFunction food (string |> String.toInt |> Result.toMaybe |> Maybe.withDefault default))
 
 
-foodRow : FoodRowConfig msg -> Food -> Html msg
+foodRow : FoodRowConfig msg -> Food -> Table.Row msg
 foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
-    div
-        [ onMouseOver (onFocus food.id)
-        , onMouseLeave onBlur
-        ]
-        [ div [] [ text food.name ]
-        , div
-            []
-            [ div []
-                [ input
-                    [ type_ "number"
-                    , Html.Attributes.min "1"
-                    , value (food.quantity |> toString)
-                    , onInput (onInputToInt food.id 1 onQuantityChange)
-                    ]
+    Table.tr []
+        [ Table.td []
+            [ div
+                [ onMouseOver (onFocus food.id)
+                , onMouseLeave onBlur
+                ]
+                [ div [] [ text food.name ]
+                , div
                     []
-                , span
-                    []
-                    [ text "x" ]
-                , input
-                    [ type_ "number"
-                    , Html.Attributes.min "1"
-                    , value (food.amount |> toString)
-                    , onInput (onInputToInt food.id 100 onAmountChange)
-                    ]
-                    []
-                , span
-                    []
-                    [ text "g" ]
-                , a
-                    []
-                    [ i [ onClick (onRemove food.id) ] []
+                    [ div []
+                        [ input
+                            [ type_ "number"
+                            , Html.Attributes.min "1"
+                            , value (food.quantity |> toString)
+                            , onInput (onInputToInt food.id 1 onQuantityChange)
+                            ]
+                            []
+                        , span
+                            []
+                            [ text "x" ]
+                        , input
+                            [ type_ "number"
+                            , Html.Attributes.min "1"
+                            , value (food.amount |> toString)
+                            , onInput (onInputToInt food.id 100 onAmountChange)
+                            ]
+                            []
+                        , span
+                            []
+                            [ text "g" ]
+                        , a
+                            []
+                            [ i [ onClick (onRemove food.id) ] []
+                            ]
+                        ]
                     ]
                 ]
             ]
         ]
 
 
-listWithOneItem : Html msg -> Html msg
+listWithOneItem : Html msg -> Table.Row msg
 listWithOneItem item =
-    div []
-        [ div []
-            [ item
-            ]
-        ]
+    Table.tr []
+        [ Table.td [] [ item ] ]
 
 
 selectedFoodSection : SelectedFoodSectionConfig msg -> FoodRowConfig msg -> LoadState (Dict FoodId Food) -> Html msg
 selectedFoodSection { onClearAll } foodRowConfig foods =
     let
         pleaseSearchFoodText =
-            listWithOneItem (text "Please search a food above")
+            listWithOneItem (text "Please search for a food above")
 
         selectedFoodDisplay =
             case foods of
                 NotLoaded ->
-                    pleaseSearchFoodText
+                    [ pleaseSearchFoodText ]
 
                 Loading previousFoods ->
-                    listWithOneItem loadingImage
+                    [ listWithOneItem loadingImage ]
 
                 Loaded loadedFoods ->
                     if Dict.isEmpty loadedFoods then
-                        pleaseSearchFoodText
+                        [ pleaseSearchFoodText ]
                     else
-                        div []
-                            (List.map
-                                (foodRow foodRowConfig)
-                                (Dict.values loadedFoods)
-                            )
+                        List.map
+                            (foodRow foodRowConfig)
+                            (Dict.values loadedFoods)
     in
         Grid.row [ rowBuffer ]
             [ Grid.col []
@@ -120,19 +120,28 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
                         [ i [] []
                         ]
                     ]
-                ]
-            , Grid.col []
-                [ selectedFoodDisplay
+                , Table.table
+                    { options = [ Table.hover ]
+                    , thead = Table.simpleThead []
+                    , tbody =
+                        Table.tbody
+                            []
+                            selectedFoodDisplay
+                    }
                 ]
             ]
 
 
-recommendedFoodRow : RecommendedFoodRowConfig msg -> Food -> Html msg
+recommendedFoodRow : RecommendedFoodRowConfig msg -> Food -> Table.Row msg
 recommendedFoodRow config food =
-    li []
-        [ i []
-            []
-        , div [ onClick (config.onClick food) ] [ text food.name ]
+    Table.tr []
+        [ Table.td []
+            [ div []
+                [ i []
+                    []
+                , div [ onClick (config.onClick food) ] [ text food.name ]
+                ]
+            ]
         ]
 
 
@@ -145,27 +154,31 @@ recommendedFoodSection config recommendedFoods =
         recommendedFoodDisplay =
             case recommendedFoods of
                 NotLoaded ->
-                    pleaseSearchFoodText
+                    [ pleaseSearchFoodText ]
 
                 Loading previousFoods ->
-                    listWithOneItem loadingImage
+                    [ listWithOneItem loadingImage ]
 
                 Loaded loadedFoods ->
                     if List.isEmpty loadedFoods then
-                        pleaseSearchFoodText
+                        [ pleaseSearchFoodText ]
                     else
-                        div []
-                            (List.map
-                                (recommendedFoodRow config)
-                                loadedFoods
-                            )
+                        List.map
+                            (recommendedFoodRow config)
+                            loadedFoods
     in
         Grid.row []
             [ Grid.col []
                 [ h2 []
-                    [ text "Recommended" ]
-                ]
-            , Grid.col []
-                [ recommendedFoodDisplay
+                    [ text "Recommended"
+                    ]
+                , Table.table
+                    { options = [ Table.hover ]
+                    , thead = Table.simpleThead []
+                    , tbody =
+                        Table.tbody
+                            []
+                            recommendedFoodDisplay
+                    }
                 ]
             ]
