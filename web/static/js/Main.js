@@ -21389,7 +21389,6 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 		var hoverWidth = (_elm_lang$core$Native_Utils.cmp(hoverPercentage, 100) > 0) ? 100 : hoverPercentage;
 		var percentageWidth = (_elm_lang$core$Native_Utils.cmp(percentage, 100) > 0) ? (100 - hoverWidth) : (percentage - hoverWidth);
 		var displayColour = (_elm_lang$core$Native_Utils.cmp(hoverWidth, 0) > 0) ? '#b13fb8' : (isHovered ? 'lightgray' : percentageColour);
-		var label = nutrient.name;
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -21452,7 +21451,7 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 														{ctor: '[]'},
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html$text(label),
+															_0: _elm_lang$html$Html$text(nutrient.name),
 															_1: {ctor: '[]'}
 														}),
 													_1: {ctor: '[]'}

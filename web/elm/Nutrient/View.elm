@@ -37,9 +37,6 @@ type alias NutrientProgressConfig msg =
 nutrientProgress : NutrientProgressConfig msg -> Bool -> Dict NutrientId Popover.State -> Nutrient -> Html msg
 nutrientProgress config isHovered nutrientPopovers nutrient =
     let
-        label =
-            nutrient.name
-
         hoverPercentage =
             getPercentage nutrient.hoveredAmount nutrient.dailyIntake
 
@@ -88,7 +85,7 @@ nutrientProgress config isHovered nutrientPopovers nutrient =
                 (div
                     (Popover.onHover nutrientPopover (config.onHover nutrient.id))
                     [ div []
-                        [ span [] [ text label ]
+                        [ span [] [ text nutrient.name ]
                         ]
                     , Progress.progressMulti
                         [ [ Progress.value hoverWidth, Progress.attr (style [ ( "background-color", "#b13fb8" ) ]) ]
