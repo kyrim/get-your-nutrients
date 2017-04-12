@@ -1,7 +1,7 @@
 module AppCss exposing (..)
 
 import Css exposing (..)
-import Css.Elements exposing (body, img, li)
+import Css.Elements exposing (body, img, li, div)
 import Css.Namespace exposing (namespace)
 
 
@@ -13,6 +13,7 @@ type CssClasses
     | NutrientFull
     | RowBuffer
     | NutrientProgress
+    | PopoverNutrient
 
 
 css =
@@ -35,6 +36,9 @@ css =
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
         , class RowBuffer [ marginTop (Css.rem 1) ]
+        , class PopoverNutrient
+            [ width (pct 100)
+            ]
         , class NutrientProgress
             [ marginBottom (em 0.5)
             , cursor pointer
@@ -43,6 +47,12 @@ css =
                 [ opacity (num 1)
                 , transform (scale 1.07)
                 , transition "all" "0.2s" "ease"
+                ]
+            , children
+                -- Doing this to hack the ELM bootstrap popovers to allow full width
+                [ div
+                    [ (display block) |> important
+                    ]
                 ]
             ]
         ]

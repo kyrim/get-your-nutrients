@@ -51,7 +51,10 @@ type HoverItem
 
 type alias Model =
     { searchText : String
-    , nutrients : Dict NutrientId Nutrient
+    , nutrients :
+        Dict NutrientId Nutrient
+        -- Unfortunately, Elm Bootstrap requires state
+    , nutrientPopovers : Dict NutrientId Popover.State
     , selectedFoods : LoadState (Dict FoodId Food)
     , potentialFoods : LoadState (List Food)
     , recommendedFoods : LoadState (List Food)
@@ -61,10 +64,28 @@ type alias Model =
     }
 
 
+type Msg
+    = ClearSearch
+    | UpdateSearchText String
+    | ClearAllSelected
+    | FoundFoods (Result Http.Error (List Food))
+    | SelectFood Food
+    | GotFood (Result Http.Error Food)
+    | FoundRecommendedFoods (Result Http.Error (List Food))
+    | GotNutrients (Result Http.Error (List Nutrient))
+    | UpdateFoodQuantity FoodId Int
+    | UpdateFoodAmount FoodId Int
+    | RemoveFood FoodId
+    | Hover HoverItem
+    | UpdateNutrientPopover NutrientId Popover.State
+    | ConnectionModal ModalState
+
+
 initialModel : Model
 initialModel =
     { searchText = ""
     , nutrients = Dict.empty
+    , nutrientPopovers = Dict.empty
     , selectedFoods = NotLoaded
     , potentialFoods = NotLoaded
     , recommendedFoods = NotLoaded
@@ -195,26 +216,6 @@ getFoodFromHoverItem item =
             Just food
 
 
-
--- MESSAGES
-
-
-type Msg
-    = ClearSearch
-    | UpdateSearchText String
-    | ClearAllSelected
-    | FoundFoods (Result Http.Error (List Food))
-    | SelectFood Food
-    | GotFood (Result Http.Error Food)
-    | FoundRecommendedFoods (Result Http.Error (List Food))
-    | GotNutrients (Result Http.Error (List Nutrient))
-    | UpdateFoodQuantity FoodId Int
-    | UpdateFoodAmount FoodId Int
-    | RemoveFood FoodId
-    | Hover HoverItem
-    | ConnectionModal ModalState
-
-
 selectedFoodSectionConfig : SelectedFoodSectionConfig Msg
 selectedFoodSectionConfig =
     { onClearAll = ClearAllSelected }
@@ -249,9 +250,10 @@ view model =
 
         constructNutrientSection text nutrientType =
             nutrientSection
-                { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
+                { onHover = UpdateNutrientPopover }
                 text
                 (hoverItemIsFood model.hoverItem)
+                model.nutrientPopovers
                 (model.nutrients
                     |> filterNutrient nutrientType
                     |> calculateNutrients
@@ -448,6 +450,14 @@ update message model =
         Hover hoverItem ->
             { model
                 | hoverItem = hoverItem
+            }
+                ! []
+
+        UpdateNutrientPopover nutrientId popoverState ->
+            { model
+                | nutrientPopovers =
+                    model.nutrientPopovers
+                        |> Dict.insert nutrientId popoverState
             }
                 ! []
 

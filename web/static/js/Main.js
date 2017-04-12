@@ -20401,6 +20401,7 @@ var _user$project$AppCss$nutrientFull = '#6ABE6E';
 var _user$project$AppCss$nutrientHigh = '#7FC7AF';
 var _user$project$AppCss$nutrientMedium = '#FFAB2E';
 var _user$project$AppCss$nutrientLow = '#FF3D7F';
+var _user$project$AppCss$PopoverNutrient = {ctor: 'PopoverNutrient'};
 var _user$project$AppCss$NutrientProgress = {ctor: 'NutrientProgress'};
 var _user$project$AppCss$RowBuffer = {ctor: 'RowBuffer'};
 var _user$project$AppCss$NutrientFull = {ctor: 'NutrientFull'};
@@ -20515,42 +20516,69 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 								ctor: '::',
 								_0: A2(
 									_rtfeldman$elm_css$Css$class,
-									_user$project$AppCss$NutrientProgress,
+									_user$project$AppCss$PopoverNutrient,
 									{
 										ctor: '::',
-										_0: _rtfeldman$elm_css$Css$marginBottom(
-											_rtfeldman$elm_css$Css$em(0.5)),
-										_1: {
+										_0: _rtfeldman$elm_css$Css$width(
+											_rtfeldman$elm_css$Css$pct(100)),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_rtfeldman$elm_css$Css$class,
+										_user$project$AppCss$NutrientProgress,
+										{
 											ctor: '::',
-											_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+											_0: _rtfeldman$elm_css$Css$marginBottom(
+												_rtfeldman$elm_css$Css$em(0.5)),
 											_1: {
 												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$opacity(
-													_rtfeldman$elm_css$Css$num(0.7)),
+												_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
 												_1: {
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$hover(
-														{
-															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$opacity(
-																_rtfeldman$elm_css$Css$num(1)),
-															_1: {
+													_0: _rtfeldman$elm_css$Css$opacity(
+														_rtfeldman$elm_css$Css$num(0.7)),
+													_1: {
+														ctor: '::',
+														_0: _rtfeldman$elm_css$Css$hover(
+															{
 																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$transform(
-																	_rtfeldman$elm_css$Css$scale(1.07)),
+																_0: _rtfeldman$elm_css$Css$opacity(
+																	_rtfeldman$elm_css$Css$num(1)),
 																_1: {
 																	ctor: '::',
-																	_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
-																	_1: {ctor: '[]'}
+																	_0: _rtfeldman$elm_css$Css$transform(
+																		_rtfeldman$elm_css$Css$scale(1.07)),
+																	_1: {
+																		ctor: '::',
+																		_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
+																		_1: {ctor: '[]'}
+																	}
 																}
-															}
-														}),
-													_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: _rtfeldman$elm_css$Css$children(
+																{
+																	ctor: '::',
+																	_0: _rtfeldman$elm_css$Css_Elements$div(
+																		{
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Css$important(
+																				_rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$block)),
+																			_1: {ctor: '[]'}
+																		}),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
 												}
 											}
-										}
-									}),
-								_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
 							}
 						}
 					}
@@ -21348,8 +21376,12 @@ var _user$project$Nutrient_View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers
 var _user$project$Nutrient_View$id = _user$project$Nutrient_View$_p0.id;
 var _user$project$Nutrient_View$class = _user$project$Nutrient_View$_p0.$class;
 var _user$project$Nutrient_View$classList = _user$project$Nutrient_View$_p0.classList;
-var _user$project$Nutrient_View$nutrientProgress = F3(
-	function (config, isHovered, nutrient) {
+var _user$project$Nutrient_View$nutrientProgress = F4(
+	function (config, isHovered, nutrientPopovers, nutrient) {
+		var nutrientPopover = A2(
+			_elm_lang$core$Maybe$withDefault,
+			_rundis$elm_bootstrap$Bootstrap_Popover$initialState,
+			A2(_elm_lang$core$Dict$get, nutrient.id, nutrientPopovers));
 		var percentage = A2(_user$project$Helpers$getPercentage, nutrient.amount, nutrient.dailyIntake);
 		var percentageColour = isHovered ? 'lightgray' : _user$project$Nutrient_View$getPercentageColour(percentage);
 		var hoverPercentage = A2(_user$project$Helpers$getPercentage, nutrient.hoveredAmount, nutrient.dailyIntake);
@@ -21368,80 +21400,102 @@ var _user$project$Nutrient_View$nutrientProgress = F3(
 						_0: _user$project$AppCss$NutrientProgress,
 						_1: {ctor: '[]'}
 					}),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onMouseOver(
-						config.mouseOver(nutrient)),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onMouseLeave(config.mouseLeave),
-						_1: {ctor: '[]'}
-					}
-				}
+				_1: {ctor: '[]'}
 			},
 			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$span,
+					_rundis$elm_bootstrap$Bootstrap_Popover$view,
+					nutrientPopover,
+					A3(
+						_rundis$elm_bootstrap$Bootstrap_Popover$content,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(nutrient.description),
+							_1: {ctor: '[]'}
+						},
+						A3(
+							_rundis$elm_bootstrap$Bootstrap_Popover$title,
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(label),
+								_0: _elm_lang$html$Html$text(nutrient.name),
 								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Progress$progressMulti(
-						{
-							ctor: '::',
-							_0: {
-								ctor: '::',
-								_0: _rundis$elm_bootstrap$Bootstrap_Progress$value(hoverWidth),
-								_1: {
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Progress$attr(
-										_elm_lang$html$Html_Attributes$style(
-											{
-												ctor: '::',
-												_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#b13fb8'},
-												_1: {ctor: '[]'}
-											})),
-									_1: {ctor: '[]'}
-								}
 							},
-							_1: {
-								ctor: '::',
-								_0: {
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Progress$value(percentageWidth),
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Progress$attr(
-											_elm_lang$html$Html_Attributes$style(
+							_rundis$elm_bootstrap$Bootstrap_Popover$left(
+								_rundis$elm_bootstrap$Bootstrap_Popover$config(
+									A2(
+										_elm_lang$html$Html$div,
+										A2(
+											_rundis$elm_bootstrap$Bootstrap_Popover$onHover,
+											nutrientPopover,
+											config.onHover(nutrient.id)),
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'background-color', _1: percentageColour},
+													_0: A2(
+														_elm_lang$html$Html$span,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(label),
+															_1: {ctor: '[]'}
+														}),
 													_1: {ctor: '[]'}
-												})),
-										_1: {ctor: '[]'}
-									}
-								},
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {ctor: '[]'}
-				}
+												}),
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Progress$progressMulti(
+													{
+														ctor: '::',
+														_0: {
+															ctor: '::',
+															_0: _rundis$elm_bootstrap$Bootstrap_Progress$value(hoverWidth),
+															_1: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Progress$attr(
+																	_elm_lang$html$Html_Attributes$style(
+																		{
+																			ctor: '::',
+																			_0: {ctor: '_Tuple2', _0: 'background-color', _1: '#b13fb8'},
+																			_1: {ctor: '[]'}
+																		})),
+																_1: {ctor: '[]'}
+															}
+														},
+														_1: {
+															ctor: '::',
+															_0: {
+																ctor: '::',
+																_0: _rundis$elm_bootstrap$Bootstrap_Progress$value(percentageWidth),
+																_1: {
+																	ctor: '::',
+																	_0: _rundis$elm_bootstrap$Bootstrap_Progress$attr(
+																		_elm_lang$html$Html_Attributes$style(
+																			{
+																				ctor: '::',
+																				_0: {ctor: '_Tuple2', _0: 'background-color', _1: percentageColour},
+																				_1: {ctor: '[]'}
+																			})),
+																	_1: {ctor: '[]'}
+																}
+															},
+															_1: {ctor: '[]'}
+														}
+													}),
+												_1: {ctor: '[]'}
+											}
+										})))))),
+				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Nutrient_View$nutrientSection = F4(
-	function (config, category, foodIsHovered, nutrients) {
+var _user$project$Nutrient_View$nutrientSection = F5(
+	function (config, category, foodIsHovered, nutrientPopovers, nutrients) {
 		return A2(
 			_rundis$elm_bootstrap$Bootstrap_Grid$row,
 			{ctor: '[]'},
@@ -21466,15 +21520,14 @@ var _user$project$Nutrient_View$nutrientSection = F4(
 						},
 						A2(
 							_elm_lang$core$List$map,
-							A2(_user$project$Nutrient_View$nutrientProgress, config, foodIsHovered),
+							A3(_user$project$Nutrient_View$nutrientProgress, config, foodIsHovered, nutrientPopovers),
 							nutrients))),
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Nutrient_View$NutrientProgressConfig = F2(
-	function (a, b) {
-		return {mouseOver: a, mouseLeave: b};
-	});
+var _user$project$Nutrient_View$NutrientProgressConfig = function (a) {
+	return {onHover: a};
+};
 
 var _user$project$Navigation_View$banner = A2(
 	_elm_lang$html$Html$div,
@@ -21791,12 +21844,12 @@ var _user$project$Main$informationSection = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Main$Model = F8(
-	function (a, b, c, d, e, f, g, h) {
-		return {searchText: a, nutrients: b, selectedFoods: c, potentialFoods: d, recommendedFoods: e, hoverItem: f, connectionModalState: g, loadingPotentialFoods: h};
+var _user$project$Main$Model = F9(
+	function (a, b, c, d, e, f, g, h, i) {
+		return {searchText: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, potentialFoods: e, recommendedFoods: f, hoverItem: g, connectionModalState: h, loadingPotentialFoods: i};
 	});
 var _user$project$Main$NothingHovered = {ctor: 'NothingHovered'};
-var _user$project$Main$initialModel = {searchText: '', nutrients: _elm_lang$core$Dict$empty, selectedFoods: _user$project$Connection_Models$NotLoaded, potentialFoods: _user$project$Connection_Models$NotLoaded, recommendedFoods: _user$project$Connection_Models$NotLoaded, hoverItem: _user$project$Main$NothingHovered, connectionModalState: _user$project$Connection_Models$Hide, loadingPotentialFoods: true};
+var _user$project$Main$initialModel = {searchText: '', nutrients: _elm_lang$core$Dict$empty, nutrientPopovers: _elm_lang$core$Dict$empty, selectedFoods: _user$project$Connection_Models$NotLoaded, potentialFoods: _user$project$Connection_Models$NotLoaded, recommendedFoods: _user$project$Connection_Models$NotLoaded, hoverItem: _user$project$Main$NothingHovered, connectionModalState: _user$project$Connection_Models$Hide, loadingPotentialFoods: true};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
 };
@@ -21806,6 +21859,10 @@ var _user$project$Main$Nutrient = function (a) {
 var _user$project$Main$ConnectionModal = function (a) {
 	return {ctor: 'ConnectionModal', _0: a};
 };
+var _user$project$Main$UpdateNutrientPopover = F2(
+	function (a, b) {
+		return {ctor: 'UpdateNutrientPopover', _0: a, _1: b};
+	});
 var _user$project$Main$Hover = function (a) {
 	return {ctor: 'Hover', _0: a};
 };
@@ -22048,6 +22105,15 @@ var _user$project$Main$update = F2(
 						model,
 						{hoverItem: _p14._0}),
 					{ctor: '[]'});
+			case 'UpdateNutrientPopover':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							nutrientPopovers: A3(_elm_lang$core$Dict$insert, _p14._0, _p14._1, model.nutrientPopovers)
+						}),
+					{ctor: '[]'});
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -22149,17 +22215,12 @@ var _user$project$Main$view = function (model) {
 	};
 	var constructNutrientSection = F2(
 		function (text, nutrientType) {
-			return A4(
+			return A5(
 				_user$project$Nutrient_View$nutrientSection,
-				{
-					mouseOver: function (_p19) {
-						return _user$project$Main$Hover(
-							_user$project$Main$Nutrient(_p19));
-					},
-					mouseLeave: _user$project$Main$Hover(_user$project$Main$NothingHovered)
-				},
+				{onHover: _user$project$Main$UpdateNutrientPopover},
 				text,
 				_user$project$Main$hoverItemIsFood(model.hoverItem),
+				model.nutrientPopovers,
 				calculateNutrients(
 					A2(_user$project$Main$filterNutrient, nutrientType, model.nutrients)));
 		});
