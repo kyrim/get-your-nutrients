@@ -21417,7 +21417,16 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 						},
 						A3(
 							_rundis$elm_bootstrap$Bootstrap_Popover$title,
-							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'background-color', _1: percentageColour},
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(nutrient.name),
