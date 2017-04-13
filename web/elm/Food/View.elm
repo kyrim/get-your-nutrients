@@ -9,7 +9,7 @@ import Connection.View exposing (..)
 import Dict exposing (..)
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Row as Row
-import Bootstrap.Table as Table
+import Bootstrap.ListGroup as ListGroup
 import BootstrapHelper exposing (rowBuffer)
 import AppCss
 
@@ -38,42 +38,40 @@ onInputToInt food default onFunction =
     (\string -> onFunction food (string |> String.toInt |> Result.toMaybe |> Maybe.withDefault default))
 
 
-foodRow : FoodRowConfig msg -> Food -> Table.Row msg
+foodRow : FoodRowConfig msg -> Food -> ListGroup.CustomItem msg
 foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
-    Table.tr []
-        [ Table.td []
-            [ div
-                [ onMouseOver (onFocus food.id)
-                , onMouseLeave onBlur
-                ]
-                [ div [] [ text food.name ]
-                , div
-                    []
-                    [ div []
-                        [ input
-                            [ type_ "number"
-                            , Html.Attributes.min "1"
-                            , value (food.quantity |> toString)
-                            , onInput (onInputToInt food.id 1 onQuantityChange)
-                            ]
-                            []
-                        , span
-                            []
-                            [ text "x" ]
-                        , input
-                            [ type_ "number"
-                            , Html.Attributes.min "1"
-                            , value (food.amount |> toString)
-                            , onInput (onInputToInt food.id 100 onAmountChange)
-                            ]
-                            []
-                        , span
-                            []
-                            [ text "g" ]
-                        , a
-                            []
-                            [ i [ onClick (onRemove food.id) ] []
-                            ]
+    ListGroup.anchor []
+        [ div
+            [ onMouseOver (onFocus food.id)
+            , onMouseLeave onBlur
+            ]
+            [ div [] [ text food.name ]
+            , div
+                []
+                [ div []
+                    [ input
+                        [ type_ "number"
+                        , Html.Attributes.min "1"
+                        , value (food.quantity |> toString)
+                        , onInput (onInputToInt food.id 1 onQuantityChange)
+                        ]
+                        []
+                    , span
+                        []
+                        [ text "x" ]
+                    , input
+                        [ type_ "number"
+                        , Html.Attributes.min "1"
+                        , value (food.amount |> toString)
+                        , onInput (onInputToInt food.id 100 onAmountChange)
+                        ]
+                        []
+                    , span
+                        []
+                        [ text "g" ]
+                    , a
+                        []
+                        [ i [ onClick (onRemove food.id) ] []
                         ]
                     ]
                 ]
@@ -81,10 +79,9 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
         ]
 
 
-listWithOneItem : Html msg -> Table.Row msg
+listWithOneItem : Html msg -> ListGroup.CustomItem msg
 listWithOneItem item =
-    Table.tr []
-        [ Table.td [] [ item ] ]
+    ListGroup.anchor [] [ item ]
 
 
 selectedFoodSection : SelectedFoodSectionConfig msg -> FoodRowConfig msg -> LoadState (Dict FoodId Food) -> Html msg
@@ -120,27 +117,18 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
                         [ i [] []
                         ]
                     ]
-                , Table.table
-                    { options = [ Table.hover ]
-                    , thead = Table.simpleThead []
-                    , tbody =
-                        Table.tbody
-                            []
-                            selectedFoodDisplay
-                    }
+                , ListGroup.custom selectedFoodDisplay
                 ]
             ]
 
 
-recommendedFoodRow : RecommendedFoodRowConfig msg -> Food -> Table.Row msg
+recommendedFoodRow : RecommendedFoodRowConfig msg -> Food -> ListGroup.CustomItem msg
 recommendedFoodRow config food =
-    Table.tr []
-        [ Table.td []
-            [ div []
-                [ i []
-                    []
-                , div [ onClick (config.onClick food) ] [ text food.name ]
-                ]
+    ListGroup.anchor []
+        [ div []
+            [ i []
+                []
+            , div [ onClick (config.onClick food) ] [ text food.name ]
             ]
         ]
 
@@ -172,13 +160,6 @@ recommendedFoodSection config recommendedFoods =
                 [ h2 []
                     [ text "Recommended"
                     ]
-                , Table.table
-                    { options = [ Table.hover ]
-                    , thead = Table.simpleThead []
-                    , tbody =
-                        Table.tbody
-                            []
-                            recommendedFoodDisplay
-                    }
+                , ListGroup.custom recommendedFoodDisplay
                 ]
             ]
