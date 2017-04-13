@@ -22158,7 +22158,14 @@ var _user$project$Main$searchBar = F2(
 				case 'Loading':
 					return {
 						ctor: '::',
-						_0: _user$project$Connection_View$loadingImage,
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _user$project$Connection_View$loadingImage,
+								_1: {ctor: '[]'}
+							}),
 						_1: {ctor: '[]'}
 					};
 				default:
@@ -22166,7 +22173,7 @@ var _user$project$Main$searchBar = F2(
 					return _elm_lang$core$List$isEmpty(_p18) ? {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$li,
+							_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
 							{ctor: '[]'},
 							{
 								ctor: '::',
@@ -22178,11 +22185,16 @@ var _user$project$Main$searchBar = F2(
 						_elm_lang$core$List$map,
 						function (food) {
 							return A2(
-								_elm_lang$html$Html$li,
+								_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onMouseDown(
-										_user$project$Main$SelectFood(food)),
+									_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs(
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onMouseDown(
+												_user$project$Main$SelectFood(food)),
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
 								},
 								{
@@ -22194,30 +22206,41 @@ var _user$project$Main$searchBar = F2(
 						_p18);
 			}
 		}();
-		return _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$large,
-				_1: {
-					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
-						{
+				_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$text(
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$large,
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$value(searchText),
-								_1: {
+							_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
+								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
+									_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
-										_1: {ctor: '[]'}
+										_0: _elm_lang$html$Html_Attributes$value(searchText),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+												_1: {ctor: '[]'}
+											}
+										}
 									}
-								}
-							}
-						}),
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$custom(content),
 					_1: {ctor: '[]'}
 				}
 			});

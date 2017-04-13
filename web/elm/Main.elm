@@ -32,6 +32,7 @@ import Bootstrap.Grid.Row as Row
 import Bootstrap.Card as Card
 import Bootstrap.Form.Input as Input
 import Bootstrap.Popover as Popover
+import Bootstrap.ListGroup as ListGroup
 import Nutrient.View exposing (..)
 import Food.View exposing (..)
 import Navigation.View exposing (..)
@@ -179,27 +180,30 @@ searchBar searchText potentialFoods =
                     []
 
                 Loading previousFoods ->
-                    [ loadingImage ]
+                    [ ListGroup.anchor [] [ loadingImage ] ]
 
                 Loaded foods ->
                     if List.isEmpty foods then
-                        [ li [] [ text "No Results" ] ]
+                        [ ListGroup.anchor [] [ text "No Results" ] ]
                     else
                         List.map
                             (\food ->
-                                li [ onMouseDown (SelectFood food) ]
+                                ListGroup.anchor [ ListGroup.attrs [ onMouseDown (SelectFood food) ] ]
                                     [ text food.name ]
                             )
                             foods
     in
-        Input.text
-            [ Input.large
-            , Input.attrs
-                [ placeholder "Search for food here and add to calculate nutrients"
-                , value searchText
-                , onInput UpdateSearchText
-                , onBlur ClearSearch
+        div []
+            [ Input.text
+                [ Input.large
+                , Input.attrs
+                    [ placeholder "Search for food here and add to calculate nutrients"
+                    , value searchText
+                    , onInput UpdateSearchText
+                    , onBlur ClearSearch
+                    ]
                 ]
+            , ListGroup.custom content
             ]
 
 
