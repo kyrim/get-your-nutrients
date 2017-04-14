@@ -20381,6 +20381,12 @@ var _rundis$elm_bootstrap$Bootstrap_Progress$progressMulti = function (bars) {
 		A2(_elm_lang$core$List$map, _rundis$elm_bootstrap$Bootstrap_Progress$renderBar, bars));
 };
 
+var _user$project$AppCss$zIndex = function (i) {
+	return A2(
+		_rtfeldman$elm_css$Css$property,
+		'z-index',
+		_elm_lang$core$Basics$toString(i));
+};
 var _user$project$AppCss$transition = F3(
 	function (first, second, third) {
 		return A2(
@@ -20401,6 +20407,7 @@ var _user$project$AppCss$nutrientFull = '#6ABE6E';
 var _user$project$AppCss$nutrientHigh = '#7FC7AF';
 var _user$project$AppCss$nutrientMedium = '#FFAB2E';
 var _user$project$AppCss$nutrientLow = '#FF3D7F';
+var _user$project$AppCss$SearchResults = {ctor: 'SearchResults'};
 var _user$project$AppCss$PopoverNutrient = {ctor: 'PopoverNutrient'};
 var _user$project$AppCss$NutrientProgress = {ctor: 'NutrientProgress'};
 var _user$project$AppCss$RowBuffer = {ctor: 'RowBuffer'};
@@ -20516,68 +20523,88 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 								ctor: '::',
 								_0: A2(
 									_rtfeldman$elm_css$Css$class,
-									_user$project$AppCss$PopoverNutrient,
+									_user$project$AppCss$SearchResults,
 									{
 										ctor: '::',
-										_0: _rtfeldman$elm_css$Css$width(
-											_rtfeldman$elm_css$Css$pct(100)),
-										_1: {ctor: '[]'}
+										_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
+										_1: {
+											ctor: '::',
+											_0: _user$project$AppCss$zIndex(9999),
+											_1: {
+												ctor: '::',
+												_0: _rtfeldman$elm_css$Css$width(
+													_rtfeldman$elm_css$Css$pct(100)),
+												_1: {ctor: '[]'}
+											}
+										}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
 										_rtfeldman$elm_css$Css$class,
-										_user$project$AppCss$NutrientProgress,
+										_user$project$AppCss$PopoverNutrient,
 										{
 											ctor: '::',
-											_0: _rtfeldman$elm_css$Css$marginBottom(
-												_rtfeldman$elm_css$Css$em(0.5)),
-											_1: {
+											_0: _rtfeldman$elm_css$Css$width(
+												_rtfeldman$elm_css$Css$pct(100)),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_rtfeldman$elm_css$Css$class,
+											_user$project$AppCss$NutrientProgress,
+											{
 												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+												_0: _rtfeldman$elm_css$Css$marginBottom(
+													_rtfeldman$elm_css$Css$em(0.5)),
 												_1: {
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$opacity(
-														_rtfeldman$elm_css$Css$num(0.7)),
+													_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
 													_1: {
 														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$hover(
-															{
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$opacity(
-																	_rtfeldman$elm_css$Css$num(1)),
-																_1: {
-																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$transform(
-																		_rtfeldman$elm_css$Css$scale(1.07)),
-																	_1: {
-																		ctor: '::',
-																		_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}),
+														_0: _rtfeldman$elm_css$Css$opacity(
+															_rtfeldman$elm_css$Css$num(0.7)),
 														_1: {
 															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$children(
+															_0: _rtfeldman$elm_css$Css$hover(
 																{
 																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css_Elements$div(
-																		{
+																	_0: _rtfeldman$elm_css$Css$opacity(
+																		_rtfeldman$elm_css$Css$num(1)),
+																	_1: {
+																		ctor: '::',
+																		_0: _rtfeldman$elm_css$Css$transform(
+																			_rtfeldman$elm_css$Css$scale(1.07)),
+																		_1: {
 																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css$important(
-																				_rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$block)),
+																			_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
 																			_1: {ctor: '[]'}
-																		}),
-																	_1: {ctor: '[]'}
+																		}
+																	}
 																}),
-															_1: {ctor: '[]'}
+															_1: {
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Css$children(
+																	{
+																		ctor: '::',
+																		_0: _rtfeldman$elm_css$Css_Elements$div(
+																			{
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$important(
+																					_rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$block)),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
 														}
 													}
 												}
-											}
-										}),
-									_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
@@ -21863,6 +21890,10 @@ var _user$project$Main$informationSection = F2(
 				_1: {ctor: '[]'}
 			});
 	});
+var _user$project$Main$_p13 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
+var _user$project$Main$id = _user$project$Main$_p13.id;
+var _user$project$Main$class = _user$project$Main$_p13.$class;
+var _user$project$Main$classList = _user$project$Main$_p13.classList;
 var _user$project$Main$Model = F9(
 	function (a, b, c, d, e, f, g, h, i) {
 		return {searchText: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, potentialFoods: e, recommendedFoods: f, hoverItem: g, connectionModalState: h, loadingPotentialFoods: i};
@@ -21897,9 +21928,9 @@ var _user$project$Main$UpdateFoodQuantity = F2(
 		return {ctor: 'UpdateFoodQuantity', _0: a, _1: b};
 	});
 var _user$project$Main$foodRowConfig = {
-	onFocus: function (_p13) {
+	onFocus: function (_p14) {
 		return _user$project$Main$Hover(
-			_user$project$Main$Food(_p13));
+			_user$project$Main$Food(_p14));
 	},
 	onBlur: _user$project$Main$Hover(_user$project$Main$NothingHovered),
 	onRemove: _user$project$Main$RemoveFood,
@@ -21932,8 +21963,8 @@ var _user$project$Main$FoundFoods = function (a) {
 };
 var _user$project$Main$update = F2(
 	function (message, model) {
-		var _p14 = message;
-		switch (_p14.ctor) {
+		var _p15 = message;
+		switch (_p15.ctor) {
 			case 'ClearSearch':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -21942,27 +21973,27 @@ var _user$project$Main$update = F2(
 						{potentialFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'UpdateSearchText':
-				var _p15 = _p14._0;
+				var _p16 = _p15._0;
 				return (_elm_lang$core$String$isEmpty(
-					_elm_lang$core$String$trim(_p15)) || (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$String$length(_p15),
+					_elm_lang$core$String$trim(_p16)) || (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$String$length(_p16),
 					3) < 0)) ? A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _user$project$Connection_Models$NotLoaded, searchText: _p15}),
+						{potentialFoods: _user$project$Connection_Models$NotLoaded, searchText: _p16}),
 					{ctor: '[]'}) : A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							searchText: _p15,
+							searchText: _p16,
 							potentialFoods: _user$project$Connection_Models$Loading(
 								_user$project$Connection_Models$emptyListIfNotLoaded(model.potentialFoods))
 						}),
 					{
 						ctor: '::',
-						_0: A2(_user$project$Food_Api$searchFoods, _p15, _user$project$Main$FoundFoods),
+						_0: A2(_user$project$Food_Api$searchFoods, _p16, _user$project$Main$FoundFoods),
 						_1: {ctor: '[]'}
 					});
 			case 'ClearAllSelected':
@@ -21973,7 +22004,7 @@ var _user$project$Main$update = F2(
 						{selectedFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'FoundFoods':
-				if (_p14._0.ctor === 'Err') {
+				if (_p15._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(
 						_elm_lang$core$Native_Utils.update(
 							model,
@@ -21984,7 +22015,7 @@ var _user$project$Main$update = F2(
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{
-								potentialFoods: _user$project$Connection_Models$Loaded(_p14._0._0)
+								potentialFoods: _user$project$Connection_Models$Loaded(_p15._0._0)
 							}),
 						{ctor: '[]'});
 				}
@@ -21999,14 +22030,14 @@ var _user$project$Main$update = F2(
 						}),
 					{
 						ctor: '::',
-						_0: A2(_user$project$Food_Api$getFood, _p14._0.id, _user$project$Main$GotFood),
+						_0: A2(_user$project$Food_Api$getFood, _p15._0.id, _user$project$Main$GotFood),
 						_1: {ctor: '[]'}
 					});
 			case 'GotFood':
-				if (_p14._0.ctor === 'Err') {
+				if (_p15._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
-					var _p16 = _p14._0._0;
+					var _p17 = _p15._0._0;
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
@@ -22015,8 +22046,8 @@ var _user$project$Main$update = F2(
 								selectedFoods: _user$project$Connection_Models$Loaded(
 									A3(
 										_elm_lang$core$Dict$insert,
-										_p16.id,
-										_p16,
+										_p17.id,
+										_p17,
 										_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods))),
 								recommendedFoods: _user$project$Connection_Models$Loading(
 									_user$project$Connection_Models$emptyListIfNotLoaded(model.recommendedFoods))
@@ -22032,13 +22063,13 @@ var _user$project$Main$update = F2(
 						});
 				}
 			case 'FoundRecommendedFoods':
-				if (_p14._0.ctor === 'Ok') {
+				if (_p15._0.ctor === 'Ok') {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
 							{
-								recommendedFoods: _user$project$Connection_Models$Loaded(_p14._0._0)
+								recommendedFoods: _user$project$Connection_Models$Loaded(_p15._0._0)
 							}),
 						{ctor: '[]'});
 				} else {
@@ -22048,7 +22079,7 @@ var _user$project$Main$update = F2(
 						{ctor: '[]'});
 				}
 			case 'GotNutrients':
-				if (_p14._0.ctor === 'Err') {
+				if (_p15._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
 					return A2(
@@ -22062,7 +22093,7 @@ var _user$project$Main$update = F2(
 										function (n) {
 											return {ctor: '_Tuple2', _0: n.id, _1: n};
 										},
-										_p14._0._0))
+										_p15._0._0))
 							}),
 						{ctor: '[]'});
 				}
@@ -22075,12 +22106,12 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A3(
 									_elm_lang$core$Dict$update,
-									_p14._0,
+									_p15._0,
 									_elm_lang$core$Maybe$map(
 										function (food) {
 											return _elm_lang$core$Native_Utils.update(
 												food,
-												{quantity: _p14._1});
+												{quantity: _p15._1});
 										}),
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
@@ -22094,12 +22125,12 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A3(
 									_elm_lang$core$Dict$update,
-									_p14._0,
+									_p15._0,
 									_elm_lang$core$Maybe$map(
 										function (food) {
 											return _elm_lang$core$Native_Utils.update(
 												food,
-												{amount: _p14._1});
+												{amount: _p15._1});
 										}),
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
@@ -22113,7 +22144,7 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A2(
 									_elm_lang$core$Dict$remove,
-									_p14._0,
+									_p15._0,
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
 					{ctor: '[]'});
@@ -22122,7 +22153,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{hoverItem: _p14._0}),
+						{hoverItem: _p15._0}),
 					{ctor: '[]'});
 			case 'UpdateNutrientPopover':
 				return A2(
@@ -22130,7 +22161,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							nutrientPopovers: A3(_elm_lang$core$Dict$insert, _p14._0, _p14._1, model.nutrientPopovers)
+							nutrientPopovers: A3(_elm_lang$core$Dict$insert, _p15._0, _p15._1, model.nutrientPopovers)
 						}),
 					{ctor: '[]'});
 			default:
@@ -22138,7 +22169,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{connectionModalState: _p14._0}),
+						{connectionModalState: _p15._0}),
 					{ctor: '[]'});
 		}
 	});
@@ -22151,8 +22182,8 @@ var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
 var _user$project$Main$searchBar = F2(
 	function (searchText, potentialFoods) {
 		var content = function () {
-			var _p17 = potentialFoods;
-			switch (_p17.ctor) {
+			var _p18 = potentialFoods;
+			switch (_p18.ctor) {
 				case 'NotLoaded':
 					return {ctor: '[]'};
 				case 'Loading':
@@ -22169,8 +22200,8 @@ var _user$project$Main$searchBar = F2(
 						_1: {ctor: '[]'}
 					};
 				default:
-					var _p18 = _p17._0;
-					return _elm_lang$core$List$isEmpty(_p18) ? {
+					var _p19 = _p18._0;
+					return _elm_lang$core$List$isEmpty(_p19) ? {
 						ctor: '::',
 						_0: A2(
 							_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
@@ -22203,7 +22234,7 @@ var _user$project$Main$searchBar = F2(
 									_1: {ctor: '[]'}
 								});
 						},
-						_p18);
+						_p19);
 			}
 		}();
 		return A2(
@@ -22240,7 +22271,23 @@ var _user$project$Main$searchBar = F2(
 					}),
 				_1: {
 					ctor: '::',
-					_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$custom(content),
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _user$project$Main$class(
+								{
+									ctor: '::',
+									_0: _user$project$AppCss$SearchResults,
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$custom(content),
+							_1: {ctor: '[]'}
+						}),
 					_1: {ctor: '[]'}
 				}
 			});

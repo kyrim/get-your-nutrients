@@ -38,10 +38,15 @@ import Food.View exposing (..)
 import Navigation.View exposing (..)
 import Connection.View exposing (..)
 import AppCss
+import Html.CssHelpers
 import BootstrapHelper exposing (rowBuffer)
 
 
 -- Model
+
+
+{ id, class, classList } =
+    Html.CssHelpers.withNamespace ""
 
 
 type HoverItem
@@ -203,7 +208,7 @@ searchBar searchText potentialFoods =
                     , onBlur ClearSearch
                     ]
                 ]
-            , ListGroup.custom content
+            , div [ class [ AppCss.SearchResults ] ] [ ListGroup.custom content ]
             ]
 
 

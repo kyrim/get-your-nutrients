@@ -14,6 +14,7 @@ type CssClasses
     | RowBuffer
     | NutrientProgress
     | PopoverNutrient
+    | SearchResults
 
 
 css =
@@ -36,6 +37,7 @@ css =
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
         , class RowBuffer [ marginTop (Css.rem 1) ]
+        , class SearchResults [ position absolute, zIndex 9999, width (pct 100) ]
         , class PopoverNutrient
             [ width (pct 100)
             ]
@@ -85,3 +87,8 @@ nutrientFull =
 transition : String -> String -> String -> Mixin
 transition first second third =
     property "transition" (first ++ " " ++ second ++ " " ++ third)
+
+
+zIndex : Int -> Mixin
+zIndex i =
+    property "z-index" <| toString i
