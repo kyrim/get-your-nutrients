@@ -1,7 +1,7 @@
 module AppCss exposing (..)
 
 import Css exposing (..)
-import Css.Elements exposing (body, img, li, div)
+import Css.Elements exposing (body, img, li, div, input)
 import Css.Namespace exposing (namespace)
 
 
@@ -15,6 +15,9 @@ type CssClasses
     | NutrientProgress
     | PopoverNutrient
     | SearchResults
+    | FoodDelete
+    | FoodInputs
+    | FoodContainer
 
 
 css =
@@ -57,6 +60,23 @@ css =
                     ]
                 ]
             ]
+        , class FoodDelete
+            [ cursor pointer
+            , marginLeft (em 0.5)
+            ]
+        , class FoodInputs
+            [ marginTop (em 0.5)
+            , paddingTop (em 0.5)
+            , borderTop3 (px 1) solid (rgb 232 232 232)
+            , padding (em 0.5)
+            , width (pct 100)
+            , children
+                [ input [ width (em 4), marginRight (em 0.25) ]
+                ]
+            ]
+        , class FoodContainer
+            [ width (pct 100)
+            ]
         ]
 
 
@@ -65,7 +85,7 @@ css =
 
 
 nutrientLow =
-    "#FF3D7F"
+    "#FF2020"
 
 
 nutrientMedium =

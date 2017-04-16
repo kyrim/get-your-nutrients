@@ -12,6 +12,8 @@ import Bootstrap.Grid.Row as Row
 import Bootstrap.ListGroup as ListGroup
 import BootstrapHelper exposing (rowBuffer)
 import AppCss
+import FontAwesome.Web as Icon
+import Html.CssHelpers
 
 
 type alias FoodRowConfig msg =
@@ -33,6 +35,10 @@ type alias SelectedFoodSectionConfig msg =
     }
 
 
+{ id, class, classList } =
+    Html.CssHelpers.withNamespace ""
+
+
 onInputToInt : FoodId -> Int -> (FoodId -> Int -> msg) -> (String -> msg)
 onInputToInt food default onFunction =
     (\string -> onFunction food (string |> String.toInt |> Result.toMaybe |> Maybe.withDefault default))
@@ -44,11 +50,12 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
         [ div
             [ onMouseOver (onFocus food.id)
             , onMouseLeave onBlur
+            , class [ AppCss.FoodContainer ]
             ]
             [ div [] [ text food.name ]
             , div
                 []
-                [ div []
+                [ div [ class [ AppCss.FoodInputs ] ]
                     [ input
                         [ type_ "number"
                         , Html.Attributes.min "1"
@@ -71,7 +78,7 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
                         [ text "g" ]
                     , a
                         []
-                        [ i [ onClick (onRemove food.id) ] []
+                        [ i [ onClick (onRemove food.id), class [ AppCss.FoodDelete ] ] [ Icon.times ]
                         ]
                     ]
                 ]
