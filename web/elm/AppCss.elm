@@ -66,7 +66,7 @@ css =
             [ height (em 30)
             , maxHeight (em 30)
             , overflowY auto
-            , backgroundColor (rgb 252 252 252)
+            , backgroundColor (rgb 254 254 254)
             , border3 (px 1) solid (rgb 240 240 240)
             , borderRadius (em 0.25)
             ]

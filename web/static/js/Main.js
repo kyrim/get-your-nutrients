@@ -21469,7 +21469,7 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 															_1: {
 																ctor: '::',
 																_0: _rtfeldman$elm_css$Css$backgroundColor(
-																	A3(_rtfeldman$elm_css$Css$rgb, 252, 252, 252)),
+																	A3(_rtfeldman$elm_css$Css$rgb, 254, 254, 254)),
 																_1: {
 																	ctor: '::',
 																	_0: A3(
