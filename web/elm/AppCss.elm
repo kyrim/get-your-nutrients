@@ -15,9 +15,11 @@ type CssClasses
     | NutrientProgress
     | PopoverNutrient
     | SearchResults
+    | FoodList
     | FoodDelete
     | FoodInputs
     | FoodContainer
+    | FoodBottomSection
 
 
 css =
@@ -60,16 +62,26 @@ css =
                     ]
                 ]
             ]
+        , class FoodList
+            [ height (em 30)
+            , maxHeight (em 30)
+            , overflowY auto
+            , backgroundColor (rgb 252 252 252)
+            , border3 (px 1) solid (rgb 240 240 240)
+            , borderRadius (em 0.25)
+            ]
         , class FoodDelete
             [ cursor pointer
             , marginLeft (em 0.5)
             ]
-        , class FoodInputs
-            [ marginTop (em 0.5)
-            , paddingTop (em 0.5)
-            , borderTop3 (px 1) solid (rgb 232 232 232)
-            , padding (em 0.5)
+        , class FoodBottomSection
+            [ borderTop3 (px 1) solid (rgb 232 232 232)
+            , marginTop (em 0.5)
             , width (pct 100)
+            ]
+        , class FoodInputs
+            [ padding (em 0.5)
+            , float right
             , children
                 [ input [ width (em 4), marginRight (em 0.25) ]
                 ]

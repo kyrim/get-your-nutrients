@@ -54,7 +54,7 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
             ]
             [ div [] [ text food.name ]
             , div
-                []
+                [ class [ AppCss.FoodBottomSection ] ]
                 [ div [ class [ AppCss.FoodInputs ] ]
                     [ input
                         [ type_ "number"
@@ -124,7 +124,7 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
                         [ i [] []
                         ]
                     ]
-                , ListGroup.custom selectedFoodDisplay
+                , div [ class [ AppCss.FoodList ] ] [ ListGroup.custom selectedFoodDisplay ]
                 ]
             ]
 
