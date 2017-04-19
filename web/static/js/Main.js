@@ -21262,54 +21262,18 @@ var _user$project$AppCss$NutrientFull = {ctor: 'NutrientFull'};
 var _user$project$AppCss$NutrientHigh = {ctor: 'NutrientHigh'};
 var _user$project$AppCss$NutrientMedium = {ctor: 'NutrientMedium'};
 var _user$project$AppCss$NutrientLow = {ctor: 'NutrientLow'};
-var _user$project$AppCss$Header = {ctor: 'Header'};
+var _user$project$AppCss$Content = {ctor: 'Content'};
 var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 	{
 		ctor: '::',
 		_0: A2(
 			_rtfeldman$elm_css$Css$class,
-			_user$project$AppCss$Header,
+			_user$project$AppCss$Content,
 			{
 				ctor: '::',
-				_0: _rtfeldman$elm_css$Css$overflow(_rtfeldman$elm_css$Css$hidden),
-				_1: {
-					ctor: '::',
-					_0: _rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$table),
-					_1: {
-						ctor: '::',
-						_0: _rtfeldman$elm_css$Css$marginTop(
-							_rtfeldman$elm_css$Css$em(1)),
-						_1: {
-							ctor: '::',
-							_0: _rtfeldman$elm_css$Css$children(
-								{
-									ctor: '::',
-									_0: _rtfeldman$elm_css$Css_Elements$img(
-										{
-											ctor: '::',
-											_0: A2(_rtfeldman$elm_css$Css$margin2, _rtfeldman$elm_css$Css$zero, _rtfeldman$elm_css$Css$auto),
-											_1: {
-												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$left),
-												_1: {
-													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$width(
-														_rtfeldman$elm_css$Css$px(100)),
-													_1: {
-														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$height(
-															_rtfeldman$elm_css$Css$px(100)),
-														_1: {ctor: '[]'}
-													}
-												}
-											}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
+				_0: _rtfeldman$elm_css$Css$marginTop(
+					_rtfeldman$elm_css$Css$px(60)),
+				_1: {ctor: '[]'}
 			}),
 		_1: {
 			ctor: '::',
@@ -22929,12 +22893,28 @@ var _user$project$Main$_p13 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNam
 var _user$project$Main$id = _user$project$Main$_p13.id;
 var _user$project$Main$class = _user$project$Main$_p13.$class;
 var _user$project$Main$classList = _user$project$Main$_p13.classList;
-var _user$project$Main$Model = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {searchText: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, potentialFoods: e, recommendedFoods: f, hoverItem: g, connectionModalState: h, loadingPotentialFoods: i};
-	});
+var _user$project$Main$Model = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {navbarState: a, searchText: b, nutrients: c, nutrientPopovers: d, selectedFoods: e, potentialFoods: f, recommendedFoods: g, hoverItem: h, connectionModalState: i, loadingPotentialFoods: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
 var _user$project$Main$NothingHovered = {ctor: 'NothingHovered'};
-var _user$project$Main$initialModel = {searchText: '', nutrients: _elm_lang$core$Dict$empty, nutrientPopovers: _elm_lang$core$Dict$empty, selectedFoods: _user$project$Connection_Models$NotLoaded, potentialFoods: _user$project$Connection_Models$NotLoaded, recommendedFoods: _user$project$Connection_Models$NotLoaded, hoverItem: _user$project$Main$NothingHovered, connectionModalState: _user$project$Connection_Models$Hide, loadingPotentialFoods: true};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
 };
@@ -22975,14 +22955,6 @@ var _user$project$Main$foodRowConfig = {
 var _user$project$Main$GotNutrients = function (a) {
 	return {ctor: 'GotNutrients', _0: a};
 };
-var _user$project$Main$init = A2(
-	_elm_lang$core$Platform_Cmd_ops['!'],
-	_user$project$Main$initialModel,
-	{
-		ctor: '::',
-		_0: _user$project$Nutrient_Api$getAllNutrients(_user$project$Main$GotNutrients),
-		_1: {ctor: '[]'}
-	});
 var _user$project$Main$FoundRecommendedFoods = function (a) {
 	return {ctor: 'FoundRecommendedFoods', _0: a};
 };
@@ -23000,6 +22972,13 @@ var _user$project$Main$update = F2(
 	function (message, model) {
 		var _p15 = message;
 		switch (_p15.ctor) {
+			case 'NavbarMsg':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{navbarState: _p15._0}),
+					{ctor: '[]'});
 			case 'ClearSearch':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -23327,6 +23306,64 @@ var _user$project$Main$searchBar = F2(
 				}
 			});
 	});
+var _user$project$Main$NavbarMsg = function (a) {
+	return {ctor: 'NavbarMsg', _0: a};
+};
+var _user$project$Main$init = function () {
+	var _p20 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavbarMsg);
+	var navbarState = _p20._0;
+	var navbarCmd = _p20._1;
+	return A2(
+		_elm_lang$core$Platform_Cmd_ops['!'],
+		{navbarState: navbarState, searchText: '', nutrients: _elm_lang$core$Dict$empty, nutrientPopovers: _elm_lang$core$Dict$empty, selectedFoods: _user$project$Connection_Models$NotLoaded, potentialFoods: _user$project$Connection_Models$NotLoaded, recommendedFoods: _user$project$Connection_Models$NotLoaded, hoverItem: _user$project$Main$NothingHovered, connectionModalState: _user$project$Connection_Models$Hide, loadingPotentialFoods: true},
+		{
+			ctor: '::',
+			_0: _user$project$Nutrient_Api$getAllNutrients(_user$project$Main$GotNutrients),
+			_1: {
+				ctor: '::',
+				_0: navbarCmd,
+				_1: {ctor: '[]'}
+			}
+		});
+}();
+var _user$project$Main$topBar = function (model) {
+	return A2(
+		_rundis$elm_bootstrap$Bootstrap_Navbar$view,
+		model.navbarState,
+		A2(
+			_rundis$elm_bootstrap$Bootstrap_Navbar$items,
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Navbar$itemLink,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$href('#'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('About'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
+			A3(
+				_rundis$elm_bootstrap$Bootstrap_Navbar$brand,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$href('#'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Get Your Nutrients'),
+					_1: {ctor: '[]'}
+				},
+				_rundis$elm_bootstrap$Bootstrap_Navbar$fixTop(
+					_rundis$elm_bootstrap$Bootstrap_Navbar$withAnimation(
+						_rundis$elm_bootstrap$Bootstrap_Navbar$config(_user$project$Main$NavbarMsg))))));
+};
 var _user$project$Main$view = function (model) {
 	var hoverItemFood = _user$project$Main$getFoodFromHoverItem(model.hoverItem);
 	var calculateNutrients = function (nutrients) {
@@ -23356,12 +23393,26 @@ var _user$project$Main$view = function (model) {
 			_0: _rundis$elm_bootstrap$Bootstrap_CDN$stylesheet,
 			_1: {
 				ctor: '::',
-				_0: _user$project$Navigation_View$topSection,
+				_0: _user$project$Main$topBar(model),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_rundis$elm_bootstrap$Bootstrap_Grid$row,
-						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
+								{
+									ctor: '::',
+									_0: _user$project$Main$class(
+										{
+											ctor: '::',
+											_0: _user$project$AppCss$Content,
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						},
 						{
 							ctor: '::',
 							_0: A2(

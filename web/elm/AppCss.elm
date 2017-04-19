@@ -6,7 +6,7 @@ import Css.Namespace exposing (namespace)
 
 
 type CssClasses
-    = Header
+    = Content
     | NutrientLow
     | NutrientMedium
     | NutrientHigh
@@ -24,19 +24,7 @@ type CssClasses
 
 css =
     stylesheet
-        [ class Header
-            [ overflow hidden
-            , display table
-            , marginTop (em 1)
-            , children
-                [ img
-                    [ margin2 zero auto
-                    , float left
-                    , width (px 100)
-                    , height (px 100)
-                    ]
-                ]
-            ]
+        [ class Content [ marginTop (px 60) ]
         , class NutrientLow [ color (hex nutrientLow) ]
         , class NutrientMedium [ color (hex nutrientMedium) ]
         , class NutrientHigh [ color (hex nutrientHigh) ]

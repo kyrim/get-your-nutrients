@@ -33,6 +33,7 @@ import Bootstrap.Card as Card
 import Bootstrap.Form.Input as Input
 import Bootstrap.Popover as Popover
 import Bootstrap.ListGroup as ListGroup
+import Bootstrap.Navbar as Navbar
 import Nutrient.View exposing (..)
 import Food.View exposing (..)
 import Navigation.View exposing (..)
@@ -56,7 +57,8 @@ type HoverItem
 
 
 type alias Model =
-    { searchText : String
+    { navbarState : Navbar.State
+    , searchText : String
     , nutrients :
         Dict NutrientId Nutrient
         -- Unfortunately, Elm Bootstrap requires state
@@ -71,7 +73,8 @@ type alias Model =
 
 
 type Msg
-    = ClearSearch
+    = NavbarMsg Navbar.State
+    | ClearSearch
     | UpdateSearchText String
     | ClearAllSelected
     | FoundFoods (Result Http.Error (List Food))
@@ -87,27 +90,40 @@ type Msg
     | ConnectionModal ModalState
 
 
-initialModel : Model
-initialModel =
-    { searchText = ""
-    , nutrients = Dict.empty
-    , nutrientPopovers = Dict.empty
-    , selectedFoods = NotLoaded
-    , potentialFoods = NotLoaded
-    , recommendedFoods = NotLoaded
-    , hoverItem = NothingHovered
-    , connectionModalState = Hide
-    , loadingPotentialFoods = True
-    }
-
-
 init : ( Model, Cmd Msg )
 init =
-    initialModel ! [ getAllNutrients GotNutrients ]
+    let
+        ( navbarState, navbarCmd ) =
+            Navbar.initialState NavbarMsg
+    in
+        { navbarState = navbarState
+        , searchText = ""
+        , nutrients = Dict.empty
+        , nutrientPopovers = Dict.empty
+        , selectedFoods = NotLoaded
+        , potentialFoods = NotLoaded
+        , recommendedFoods = NotLoaded
+        , hoverItem = NothingHovered
+        , connectionModalState = Hide
+        , loadingPotentialFoods = True
+        }
+            ! [ getAllNutrients GotNutrients, navbarCmd ]
 
 
 
 -- View
+
+
+topBar : Model -> Html Msg
+topBar model =
+    Navbar.config NavbarMsg
+        |> Navbar.withAnimation
+        |> Navbar.fixTop
+        |> Navbar.brand [ href "#" ] [ text "Get Your Nutrients" ]
+        |> Navbar.items
+            [ Navbar.itemLink [ href "#" ] [ text "About" ]
+            ]
+        |> Navbar.view model.navbarState
 
 
 informationSection : HoverItem -> Dict FoodId Food -> Html Msg
@@ -271,8 +287,8 @@ view model =
         Grid.container []
             -- For bootstrap
             [ CDN.stylesheet
-            , topSection
-            , Grid.row []
+            , topBar model
+            , Grid.row [ Row.attrs [ class [ AppCss.Content ] ] ]
                 [ Grid.col []
                     [ Grid.row [ rowBuffer ]
                         [ Grid.col [] [ searchBar model.searchText model.potentialFoods ]
@@ -375,6 +391,9 @@ showConnectionError model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
+        NavbarMsg state ->
+            { model | navbarState = state } ! []
+
         ClearSearch ->
             { model | potentialFoods = NotLoaded } ! []
 
