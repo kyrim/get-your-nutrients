@@ -36,7 +36,6 @@ import Bootstrap.ListGroup as ListGroup
 import Bootstrap.Navbar as Navbar
 import Nutrient.View exposing (..)
 import Food.View exposing (..)
-import Navigation.View exposing (..)
 import Connection.View exposing (..)
 import AppCss
 import Html.CssHelpers
@@ -119,7 +118,16 @@ topBar model =
     Navbar.config NavbarMsg
         |> Navbar.withAnimation
         |> Navbar.fixTop
-        |> Navbar.brand [ href "#" ] [ text "Get Your Nutrients" ]
+        |> Navbar.brand
+            -- Add logo to your brand with a little styling to align nicely
+            [ href "#" ]
+            [ img
+                [ src "images/logo.png"
+                , style [ ( "width", "30px" ) ]
+                ]
+                []
+            , text "Get Your Nutrients"
+            ]
         |> Navbar.items
             [ Navbar.itemLink [ href "#" ] [ text "About" ]
             ]
@@ -218,7 +226,7 @@ searchBar searchText potentialFoods =
             [ Input.text
                 [ Input.large
                 , Input.attrs
-                    [ placeholder "Search for food here and add to calculate nutrients"
+                    [ placeholder "Search for food (eg. apple, banana etc)"
                     , value searchText
                     , onInput UpdateSearchText
                     , onBlur ClearSearch

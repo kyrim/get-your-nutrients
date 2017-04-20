@@ -93,7 +93,7 @@ nutrientProgress config isHovered nutrientPopovers nutrient =
                         ]
                     ]
                 )
-                |> Popover.left
+                |> Popover.bottom
                 |> Popover.title [ style [ ( "background-color", percentageColour ) ] ] [ text nutrient.name ]
                 |> Popover.content [] [ text nutrient.description ]
                 |> Popover.view nutrientPopover

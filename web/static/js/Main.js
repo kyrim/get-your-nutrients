@@ -22468,7 +22468,7 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 								_0: _elm_lang$html$Html$text(nutrient.name),
 								_1: {ctor: '[]'}
 							},
-							_rundis$elm_bootstrap$Bootstrap_Popover$left(
+							_rundis$elm_bootstrap$Bootstrap_Popover$bottom(
 								_rundis$elm_bootstrap$Bootstrap_Popover$config(
 									A2(
 										_elm_lang$html$Html$div,
@@ -22573,92 +22573,6 @@ var _user$project$Nutrient_View$nutrientSection = F5(
 var _user$project$Nutrient_View$NutrientProgressConfig = function (a) {
 	return {onHover: a};
 };
-
-var _user$project$Navigation_View$banner = A2(
-	_elm_lang$html$Html$div,
-	{
-		ctor: '::',
-		_0: _elm_lang$html$Html_Attributes$class('Header'),
-		_1: {ctor: '[]'}
-	},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$img,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$src('images/logo.png'),
-				_1: {ctor: '[]'}
-			},
-			{ctor: '[]'}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h1,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Get Your Nutrients'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		}
-	});
-var _user$project$Navigation_View$topSection = A2(
-	_rundis$elm_bootstrap$Bootstrap_Grid$row,
-	{ctor: '[]'},
-	{
-		ctor: '::',
-		_0: A2(
-			_rundis$elm_bootstrap$Bootstrap_Grid$col,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _user$project$Navigation_View$banner,
-				_1: {ctor: '[]'}
-			}),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_rundis$elm_bootstrap$Bootstrap_Grid$col,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('about'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$h2,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$a,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('about'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('About'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		}
-	});
 
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
@@ -23265,7 +23179,7 @@ var _user$project$Main$searchBar = F2(
 							_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$placeholder('Search for food here and add to calculate nutrients'),
+									_0: _elm_lang$html$Html_Attributes$placeholder('Search for food (eg. apple, banana etc)'),
 									_1: {
 										ctor: '::',
 										_0: _elm_lang$html$Html_Attributes$value(searchText),
@@ -23357,8 +23271,28 @@ var _user$project$Main$topBar = function (model) {
 				},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Get Your Nutrients'),
-					_1: {ctor: '[]'}
+					_0: A2(
+						_elm_lang$html$Html$img,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$src('images/logo.png'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'width', _1: '30px'},
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Get Your Nutrients'),
+						_1: {ctor: '[]'}
+					}
 				},
 				_rundis$elm_bootstrap$Bootstrap_Navbar$fixTop(
 					_rundis$elm_bootstrap$Bootstrap_Navbar$withAnimation(
