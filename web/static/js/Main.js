@@ -23417,7 +23417,15 @@ var _user$project$Main$view = function (model) {
 							ctor: '::',
 							_0: A2(
 								_rundis$elm_bootstrap$Bootstrap_Grid$col,
-								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
+										_1: {ctor: '[]'}
+									}
+								},
 								{
 									ctor: '::',
 									_0: A2(
@@ -23467,7 +23475,15 @@ var _user$project$Main$view = function (model) {
 								ctor: '::',
 								_0: A2(
 									_rundis$elm_bootstrap$Bootstrap_Grid$col,
-									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs1,
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
+											_1: {ctor: '[]'}
+										}
+									},
 									{
 										ctor: '::',
 										_0: A2(

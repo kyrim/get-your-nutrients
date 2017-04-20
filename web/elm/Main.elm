@@ -289,7 +289,7 @@ view model =
             [ CDN.stylesheet
             , topBar model
             , Grid.row [ Row.attrs [ class [ AppCss.Content ] ] ]
-                [ Grid.col []
+                [ Grid.col [ Col.xs12, Col.sm6 ]
                     [ Grid.row [ rowBuffer ]
                         [ Grid.col [] [ searchBar model.searchText model.potentialFoods ]
                         ]
@@ -297,7 +297,7 @@ view model =
                         [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
                         ]
                     ]
-                , Grid.col []
+                , Grid.col [ Col.xs1, Col.sm6 ]
                     [ Grid.row [ rowBuffer ]
                         [ Grid.col []
                             [ constructNutrientSection "Vitamins" Vitamin
