@@ -88,7 +88,7 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
 
 listWithOneItem : Html msg -> ListGroup.CustomItem msg
 listWithOneItem item =
-    ListGroup.anchor [] [ item ]
+    ListGroup.anchor [ ListGroup.disabled ] [ item ]
 
 
 selectedFoodSection : SelectedFoodSectionConfig msg -> FoodRowConfig msg -> LoadState (Dict FoodId Food) -> Html msg

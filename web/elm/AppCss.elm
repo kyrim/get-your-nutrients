@@ -30,7 +30,7 @@ css =
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
         , class RowBuffer [ marginTop (Css.rem 1) ]
-        , class SearchResults [ position absolute, zIndex 9999, width (pct 100) ]
+        , class SearchResults [ position absolute, zIndex 200, width (pct 100) ]
         , class PopoverNutrient
             [ width (pct 100)
             ]

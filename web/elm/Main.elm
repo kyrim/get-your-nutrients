@@ -33,6 +33,7 @@ import Bootstrap.Card as Card
 import Bootstrap.Form.Input as Input
 import Bootstrap.Popover as Popover
 import Bootstrap.ListGroup as ListGroup
+import Bootstrap.Form.InputGroup as InputGroup
 import Bootstrap.Navbar as Navbar
 import Nutrient.View exposing (..)
 import Food.View exposing (..)
@@ -40,6 +41,7 @@ import Connection.View exposing (..)
 import AppCss
 import Html.CssHelpers
 import BootstrapHelper exposing (rowBuffer)
+import FontAwesome.Web as Icon
 
 
 -- Model
@@ -223,15 +225,19 @@ searchBar searchText potentialFoods =
                             foods
     in
         div []
-            [ Input.text
-                [ Input.large
-                , Input.attrs
-                    [ placeholder "Search for food (eg. apple, banana etc)"
-                    , value searchText
-                    , onInput UpdateSearchText
-                    , onBlur ClearSearch
+            [ InputGroup.config
+                (InputGroup.text
+                    [ Input.placeholder "Search for Food"
+                    , Input.attrs
+                        [ onInput UpdateSearchText
+                        , onBlur ClearSearch
+                        ]
                     ]
-                ]
+                )
+                |> InputGroup.large
+                |> InputGroup.successors
+                    [ InputGroup.span [] [ Icon.search ] ]
+                |> InputGroup.view
             , div [ class [ AppCss.SearchResults ] ] [ ListGroup.custom content ]
             ]
 
@@ -305,7 +311,7 @@ view model =
                         [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
                         ]
                     ]
-                , Grid.col [ Col.xs1, Col.sm6 ]
+                , Grid.col [ Col.xs12, Col.sm6 ]
                     [ Grid.row [ rowBuffer ]
                         [ Grid.col []
                             [ constructNutrientSection "Vitamins" Vitamin
