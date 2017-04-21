@@ -25,14 +25,14 @@ type CssClasses
 
 css =
     stylesheet
-        [ class Content [ marginTop (px 60) ]
+        [ class Content [ marginTop (px 80) ]
         , class NutrientLow [ color (hex nutrientLow) ]
         , class NutrientMedium [ color (hex nutrientMedium) ]
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
         , class RowBuffer [ marginTop (Css.rem 1) ]
         , class SearchResults [ position absolute, zIndex 200, left zero, right zero ]
-        , class SearchInput [ zIndex 0 ]
+        , class SearchInput [ zIndex 0 |> important ]
         , class PopoverNutrient
             [ width (pct 100)
             ]

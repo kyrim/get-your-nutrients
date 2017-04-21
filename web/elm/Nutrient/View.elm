@@ -79,6 +79,9 @@ nutrientProgress config isHovered nutrientPopovers nutrient =
             nutrientPopovers
                 |> get nutrient.id
                 |> Maybe.withDefault Popover.initialState
+
+        popoverTitle =
+            nutrient.name ++ " - " ++ toString nutrient.amount ++ "/" ++ toString nutrient.dailyIntake ++ nutrient.unitOfMeasure
     in
         div [ class [ AppCss.NutrientProgress ] ]
             [ Popover.config
@@ -94,7 +97,7 @@ nutrientProgress config isHovered nutrientPopovers nutrient =
                     ]
                 )
                 |> Popover.left
-                |> Popover.title [ style [ ( "background-color", percentageColour ) ] ] [ text nutrient.name ]
+                |> Popover.title [ style [ ( "background-color", percentageColour ) ] ] [ text popoverTitle ]
                 |> Popover.content [] [ text nutrient.description ]
                 |> Popover.view nutrientPopover
             ]

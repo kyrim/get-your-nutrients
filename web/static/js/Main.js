@@ -21741,7 +21741,7 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 			{
 				ctor: '::',
 				_0: _rtfeldman$elm_css$Css$marginTop(
-					_rtfeldman$elm_css$Css$px(60)),
+					_rtfeldman$elm_css$Css$px(80)),
 				_1: {ctor: '[]'}
 			}),
 		_1: {
@@ -21828,7 +21828,8 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 										_user$project$AppCss$SearchInput,
 										{
 											ctor: '::',
-											_0: _user$project$AppCss$zIndex(0),
+											_0: _rtfeldman$elm_css$Css$important(
+												_user$project$AppCss$zIndex(0)),
 											_1: {ctor: '[]'}
 										}),
 									_1: {
@@ -22902,6 +22903,22 @@ var _user$project$Nutrient_View$class = _user$project$Nutrient_View$_p0.$class;
 var _user$project$Nutrient_View$classList = _user$project$Nutrient_View$_p0.classList;
 var _user$project$Nutrient_View$nutrientProgress = F4(
 	function (config, isHovered, nutrientPopovers, nutrient) {
+		var popoverTitle = A2(
+			_elm_lang$core$Basics_ops['++'],
+			nutrient.name,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' - ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(nutrient.amount),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'/',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(nutrient.dailyIntake),
+							nutrient.unitOfMeasure)))));
 		var nutrientPopover = A2(
 			_elm_lang$core$Maybe$withDefault,
 			_rundis$elm_bootstrap$Bootstrap_Popover$initialState,
@@ -22952,7 +22969,7 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(nutrient.name),
+								_0: _elm_lang$html$Html$text(popoverTitle),
 								_1: {ctor: '[]'}
 							},
 							_rundis$elm_bootstrap$Bootstrap_Popover$left(
