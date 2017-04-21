@@ -23022,7 +23022,7 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 					_elm_lang$core$Basics$toString(nutrient.amount),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						'/',
+						' / ',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							_elm_lang$core$Basics$toString(nutrient.dailyIntake),
