@@ -14,6 +14,7 @@ type CssClasses
     | RowBuffer
     | NutrientProgress
     | PopoverNutrient
+    | SearchInput
     | SearchResults
     | FoodList
     | FoodDelete
@@ -30,7 +31,8 @@ css =
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
         , class RowBuffer [ marginTop (Css.rem 1) ]
-        , class SearchResults [ position absolute, zIndex 200, width (pct 100) ]
+        , class SearchResults [ position absolute, zIndex 200, left zero, right zero ]
+        , class SearchInput [ zIndex 0 ]
         , class PopoverNutrient
             [ width (pct 100)
             ]

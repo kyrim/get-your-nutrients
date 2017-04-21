@@ -231,6 +231,7 @@ searchBar searchText potentialFoods =
                     , Input.attrs
                         [ onInput UpdateSearchText
                         , onBlur ClearSearch
+                        , class [ AppCss.SearchInput ]
                         ]
                     ]
                 )
