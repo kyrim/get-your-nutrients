@@ -16,6 +16,9 @@ type CssClasses
     | PopoverNutrient
     | SearchInput
     | SearchResults
+    | SelectedFoodHeader
+    | SelectedFoodTitle
+    | ClearAll
     | FoodList
     | FoodDelete
     | FoodInputs
@@ -52,9 +55,27 @@ css =
                     ]
                 ]
             ]
+        , class SelectedFoodHeader
+            [ width (pct 100)
+            , verticalAlign middle
+            ]
+        , class SelectedFoodTitle
+            [ float left
+            ]
+        , class ClearAll
+            [ float right
+            , cursor pointer
+            , opacity (num 0.7)
+            , hover
+                [ opacity (num 1)
+                , transform (scale 1.07)
+                , transition "all" "0.2s" "ease"
+                ]
+            ]
         , class FoodList
             [ height (em 30)
             , maxHeight (em 30)
+            , width (pct 100)
             , overflowY auto
             , backgroundColor (rgb 254 254 254)
             , border3 (px 1) solid (rgb 240 240 240)

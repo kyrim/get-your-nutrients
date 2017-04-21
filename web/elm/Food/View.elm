@@ -115,13 +115,15 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
     in
         Grid.row [ rowBuffer ]
             [ Grid.col []
-                [ h2 []
-                    [ text "Selected Food"
-                    , a
-                        [ attribute "aria-label" "Clear all food"
-                        , onClick onClearAll
+                [ div [ class [ AppCss.SelectedFoodHeader ] ]
+                    [ h2 [ class [ AppCss.SelectedFoodTitle ] ]
+                        [ text "Selected Food"
                         ]
-                        [ i [] []
+                    , a
+                        [ onClick onClearAll
+                        , class [ AppCss.ClearAll ]
+                        ]
+                        [ div [] [ text "Clear All" ]
                         ]
                     ]
                 , div [ class [ AppCss.FoodList ] ] [ ListGroup.custom selectedFoodDisplay ]
