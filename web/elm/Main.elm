@@ -243,26 +243,6 @@ searchBar searchText potentialFoods =
             ]
 
 
-personDetailSection : Html Msg
-personDetailSection =
-    grid
-        [ fullCell
-            [ text "Gender"
-            , select [ class "c-field", Html.Attributes.size 2 ]
-                [ option [] [ text "Male" ]
-                , option [] [ text "Female" ]
-                ]
-            ]
-        , fullCell
-            [ text "Age"
-            , input [ class "c-field", type_ "number" ]
-                [ option [] [ text "Male" ]
-                , option [] [ text "Female" ]
-                ]
-            ]
-        ]
-
-
 getFoodFromHoverItem : HoverItem -> Maybe FoodId
 getFoodFromHoverItem item =
     case item of
@@ -299,32 +279,6 @@ recommendedFoodRowConfig =
 
 view : Model -> Html Msg
 view model =
-<<<<<<< HEAD
-    div []
-        [ topSection
-        , grid
-            [ cell 50
-                [ defaultCellWithCls "u-letter-box--small" [ searchBar model.searchText model.potentialFoods ]
-                , grid
-                    [ cell 60 [ model.selectedFoods |> selectedFoodSection selectedFoodSectionConfig foodRowConfig ]
-                    , cell 40 [ recommendedFoodSection recommendedFoodRowConfig model.recommendedFoods ]
-                    ]
-                ]
-            , defaultCell
-                [ grid
-                    [ fullCell [ informationSection model.hoverItem (emptyDictIfNotLoaded model.selectedFoods) ]
-                    , fullCell [ personDetailSection ]
-                    , cell 50
-                        [ nutrientSection
-                            { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                            "Vitamins (DI%)"
-                            (hoverItemIsFood model.hoverItem)
-                            (model.nutrients
-                                |> filterNutrient Vitamin
-                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
-                                |> Dict.values
-                            )
-=======
     let
         hoverItemFood =
             getFoodFromHoverItem (model.hoverItem)
@@ -352,9 +306,7 @@ view model =
             , Grid.row [ Row.attrs [ class [ AppCss.Content ] ] ]
                 [ Grid.col [ Col.xs12, Col.sm6 ]
                     [ Grid.row [ rowBuffer ]
-                        [ Grid.col [] [ searchBar model.searchText model.potentialFoods ]
->>>>>>> elm-bootstrap-integration
-                        ]
+                        [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
                     , Grid.row [ rowBuffer ]
                         [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
                         ]
