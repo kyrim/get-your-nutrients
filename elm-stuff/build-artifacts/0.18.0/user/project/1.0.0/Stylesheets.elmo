@@ -1,0 +1,24 @@
+var _user$project$Stylesheets$fileStructure = _rtfeldman$elm_css$Css_File$toFileStructure(
+	{
+		ctor: '::',
+		_0: {
+			ctor: '_Tuple2',
+			_0: 'app.css',
+			_1: _rtfeldman$elm_css$Css_File$compile(
+				{
+					ctor: '::',
+					_0: _user$project$AppCss$css,
+					_1: {ctor: '[]'}
+				})
+		},
+		_1: {ctor: '[]'}
+	});
+var _user$project$Stylesheets$files = _elm_lang$core$Native_Platform.outgoingPort(
+	'files',
+	function (v) {
+		return _elm_lang$core$Native_List.toArray(v).map(
+			function (v) {
+				return {filename: v.filename, content: v.content, success: v.success};
+			});
+	});
+var _user$project$Stylesheets$main = A2(_rtfeldman$elm_css$Css_File$compiler, _user$project$Stylesheets$files, _user$project$Stylesheets$fileStructure)();

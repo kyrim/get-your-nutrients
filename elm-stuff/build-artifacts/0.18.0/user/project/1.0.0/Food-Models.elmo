@@ -1,0 +1,8 @@
+var _user$project$Food_Models$FoodNutrient = F2(
+	function (a, b) {
+		return {nutrientId: a, amount: b};
+	});
+var _user$project$Food_Models$Food = F5(
+	function (a, b, c, d, e) {
+		return {id: a, name: b, amount: c, quantity: d, nutrients: e};
+	});

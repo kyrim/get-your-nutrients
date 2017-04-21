@@ -1,0 +1,15 @@
+var _user$project$BootstrapHelper$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
+var _user$project$BootstrapHelper$id = _user$project$BootstrapHelper$_p0.id;
+var _user$project$BootstrapHelper$class = _user$project$BootstrapHelper$_p0.$class;
+var _user$project$BootstrapHelper$classList = _user$project$BootstrapHelper$_p0.classList;
+var _user$project$BootstrapHelper$rowBuffer = _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
+	{
+		ctor: '::',
+		_0: _user$project$BootstrapHelper$class(
+			{
+				ctor: '::',
+				_0: _user$project$AppCss$RowBuffer,
+				_1: {ctor: '[]'}
+			}),
+		_1: {ctor: '[]'}
+	});

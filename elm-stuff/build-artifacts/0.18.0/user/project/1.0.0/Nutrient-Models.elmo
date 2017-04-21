@@ -1,0 +1,27 @@
+var _user$project$Nutrient_Models$Nutrient = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return {id: a, name: b, description: c, amount: d, hoveredAmount: e, dailyIntake: f, lowIntakeAmount: g, lowIntakeDescription: h, highIntakeAmount: i, highIntakeDescription: j, unitOfMeasure: k, nutrientType: l};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _user$project$Nutrient_Models$Mineral = {ctor: 'Mineral'};
+var _user$project$Nutrient_Models$Vitamin = {ctor: 'Vitamin'};
