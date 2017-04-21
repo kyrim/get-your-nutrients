@@ -7,20 +7,48 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (..)
-import BlazeHelpers exposing (..)
 import Helpers exposing (..)
-import Nutrient.View exposing (..)
-import Nutrient.Models exposing (..)
+
+
+-- API Imports
+
 import Nutrient.Api exposing (..)
-import Food.View exposing (..)
-import Food.Models exposing (..)
 import Food.Api exposing (..)
-import Navigation.View exposing (..)
-import Connection.View exposing (..)
+
+
+-- Model Imports
+
+import Nutrient.Models exposing (..)
+import Food.Models exposing (..)
 import Connection.Models exposing (..)
 
 
+-- View imports
+
+import Bootstrap.CDN as CDN
+import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Col as Col
+import Bootstrap.Grid.Row as Row
+import Bootstrap.Card as Card
+import Bootstrap.Form.Input as Input
+import Bootstrap.Popover as Popover
+import Bootstrap.ListGroup as ListGroup
+import Bootstrap.Form.InputGroup as InputGroup
+import Bootstrap.Navbar as Navbar
+import Nutrient.View exposing (..)
+import Food.View exposing (..)
+import Connection.View exposing (..)
+import AppCss
+import Html.CssHelpers
+import BootstrapHelper exposing (rowBuffer)
+import FontAwesome.Web as Icon
+
+
 -- Model
+
+
+{ id, class, classList } =
+    Html.CssHelpers.withNamespace ""
 
 
 type HoverItem
@@ -30,8 +58,12 @@ type HoverItem
 
 
 type alias Model =
-    { searchText : String
-    , nutrients : Dict NutrientId Nutrient
+    { navbarState : Navbar.State
+    , searchText : String
+    , nutrients :
+        Dict NutrientId Nutrient
+        -- Unfortunately, Elm Bootstrap requires state
+    , nutrientPopovers : Dict NutrientId Popover.State
     , selectedFoods : LoadState (Dict FoodId Food)
     , potentialFoods : LoadState (List Food)
     , recommendedFoods : LoadState (List Food)
@@ -41,27 +73,67 @@ type alias Model =
     }
 
 
-initialModel : Model
-initialModel =
-    { searchText = ""
-    , nutrients = Dict.empty
-    , selectedFoods = NotLoaded
-    , potentialFoods = NotLoaded
-    , recommendedFoods = NotLoaded
-    , hoverItem = NothingHovered
-    , connectionModalState = Hide
-    , loadingPotentialFoods = True
-    }
+type Msg
+    = NavbarMsg Navbar.State
+    | ClearSearch
+    | UpdateSearchText String
+    | ClearAllSelected
+    | FoundFoods (Result Http.Error (List Food))
+    | SelectFood Food
+    | GotFood (Result Http.Error Food)
+    | FoundRecommendedFoods (Result Http.Error (List Food))
+    | GotNutrients (Result Http.Error (List Nutrient))
+    | UpdateFoodQuantity FoodId Int
+    | UpdateFoodAmount FoodId Int
+    | RemoveFood FoodId
+    | Hover HoverItem
+    | UpdateNutrientPopover NutrientId Popover.State
+    | ConnectionModal ModalState
 
 
 init : ( Model, Cmd Msg )
 init =
-    initialModel ! [ getAllNutrients GotNutrients ]
+    let
+        ( navbarState, navbarCmd ) =
+            Navbar.initialState NavbarMsg
+    in
+        { navbarState = navbarState
+        , searchText = ""
+        , nutrients = Dict.empty
+        , nutrientPopovers = Dict.empty
+        , selectedFoods = NotLoaded
+        , potentialFoods = NotLoaded
+        , recommendedFoods = NotLoaded
+        , hoverItem = NothingHovered
+        , connectionModalState = Hide
+        , loadingPotentialFoods = True
+        }
+            ! [ getAllNutrients GotNutrients, navbarCmd ]
 
 
 
 -- View
--- Please note, stylesheet is already included.
+
+
+topBar : Model -> Html Msg
+topBar model =
+    Navbar.config NavbarMsg
+        |> Navbar.withAnimation
+        |> Navbar.fixTop
+        |> Navbar.brand
+            -- Add logo to your brand with a little styling to align nicely
+            [ href "#" ]
+            [ img
+                [ src "images/logo.png"
+                , style [ ( "width", "30px" ) ]
+                ]
+                []
+            , text "Get Your Nutrients"
+            ]
+        |> Navbar.items
+            [ Navbar.itemLink [ href "#" ] [ text "About" ]
+            ]
+        |> Navbar.view model.navbarState
 
 
 informationSection : HoverItem -> Dict FoodId Food -> Html Msg
@@ -103,7 +175,7 @@ informationSection hoverItem foodDict =
                     nutrient.description
 
                 Food food ->
-                    "The purple section on the progress bars below on each nutrient, shows the perentage of nutrients from the food."
+                    "The purple section on the progress bars below on each nutrient, shows the percentage of nutrients from the food."
 
         colour =
             case hoverItem of
@@ -116,25 +188,16 @@ informationSection hoverItem foodDict =
                 Food food ->
                     "#b13fb8"
     in
-        grid
-            [ fullCell
-                [ div
-                    [ class "c-card info-panel" ]
-                    [ div
-                        [ class "c-card__item info-panel-header"
-                        , style
-                            [ ( "background-color", colour )
-                            ]
+        Grid.row [ rowBuffer ]
+            [ Grid.col []
+                [ Card.config []
+                    |> Card.header [ style [ ( "background-color", colour ) ] ]
+                        [ text header
                         ]
-                        [ div [ class "info-panel-header-text" ] [ text header ]
-                        , div [ class "info-panel-side-header" ] [ text sideHeader ]
-                        ]
-                    , div [ class "c-card__item" ]
-                        [ div [ class "c-paragraph info-panel-text" ]
-                            [ text info
-                            ]
-                        ]
-                    ]
+                    |> Card.block []
+                        [ Card.text [] [ text info ] ]
+                    |> Card.footer [] [ text sideHeader ]
+                    |> Card.view
                 ]
             ]
 
@@ -148,52 +211,35 @@ searchBar searchText potentialFoods =
                     []
 
                 Loading previousFoods ->
-                    [ loadingImage ]
+                    [ ListGroup.anchor [] [ loadingImage ] ]
 
                 Loaded foods ->
                     if List.isEmpty foods then
-                        [ li [ class "c-card__item no-results" ] [ text "No Results" ] ]
+                        [ ListGroup.anchor [] [ text "No Results" ] ]
                     else
                         List.map
                             (\food ->
-                                li [ class "c-card__item", onMouseDown (SelectFood food) ]
+                                ListGroup.anchor [ ListGroup.attrs [ onMouseDown (SelectFood food) ] ]
                                     [ text food.name ]
                             )
                             foods
-
-        ulStyle =
-            case potentialFoods of
-                NotLoaded ->
-                    "c-card search-bar-ul u-high"
-
-                Loading previousFoods ->
-                    "c-card search-bar-ul u-high"
-
-                Loaded foods ->
-                    if (List.isEmpty foods) then
-                        "c-card search-bar-ul u-high"
-                    else
-                        "c-card c-card--menu search-bar-ul u-high"
     in
-        div [ class "search-holder" ]
-            [ fullCell
-                [ div [ class "o-field o-field--icon-right" ]
-                    [ input
-                        [ class "c-field"
-                        , placeholder "Search for food here and add to calculate nutrients"
-                        , value searchText
-                        , onInput UpdateSearchText
+        div []
+            [ InputGroup.config
+                (InputGroup.text
+                    [ Input.placeholder "Search for Food"
+                    , Input.attrs
+                        [ onInput UpdateSearchText
                         , onBlur ClearSearch
+                        , class [ AppCss.SearchInput ]
                         ]
-                        []
-                    , i [ class "a fa fa-search c-icon" ] []
                     ]
-                ]
-            , div
-                [ class "search-dropdown u-pillar-box--large" ]
-                [ ul [ class ulStyle ]
-                    content
-                ]
+                )
+                |> InputGroup.large
+                |> InputGroup.successors
+                    [ InputGroup.span [] [ Icon.search ] ]
+                |> InputGroup.view
+            , div [ class [ AppCss.SearchResults ] ] [ ListGroup.custom content ]
             ]
 
 
@@ -230,26 +276,6 @@ getFoodFromHoverItem item =
             Just food
 
 
-
--- MESSAGES
-
-
-type Msg
-    = ClearSearch
-    | UpdateSearchText String
-    | ClearAllSelected
-    | FoundFoods (Result Http.Error (List Food))
-    | SelectFood Food
-    | GotFood (Result Http.Error Food)
-    | FoundRecommendedFoods (Result Http.Error (List Food))
-    | GotNutrients (Result Http.Error (List Nutrient))
-    | UpdateFoodQuantity FoodId Int
-    | UpdateFoodAmount FoodId Int
-    | RemoveFood FoodId
-    | Hover HoverItem
-    | ConnectionModal ModalState
-
-
 selectedFoodSectionConfig : SelectedFoodSectionConfig Msg
 selectedFoodSectionConfig =
     { onClearAll = ClearAllSelected }
@@ -273,6 +299,7 @@ recommendedFoodRowConfig =
 
 view : Model -> Html Msg
 view model =
+<<<<<<< HEAD
     div []
         [ topSection
         , grid
@@ -297,23 +324,54 @@ view model =
                                 |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
                                 |> Dict.values
                             )
+=======
+    let
+        hoverItemFood =
+            getFoodFromHoverItem (model.hoverItem)
+
+        calculateNutrients nutrients =
+            nutrients
+                |> calculateNutrientPercentageFromFoods hoverItemFood (emptyDictIfNotLoaded model.selectedFoods)
+                |> Dict.values
+
+        constructNutrientSection text nutrientType =
+            nutrientSection
+                { onHover = UpdateNutrientPopover }
+                text
+                (hoverItemIsFood model.hoverItem)
+                model.nutrientPopovers
+                (model.nutrients
+                    |> filterNutrient nutrientType
+                    |> calculateNutrients
+                )
+    in
+        Grid.container []
+            -- For bootstrap
+            [ CDN.stylesheet
+            , topBar model
+            , Grid.row [ Row.attrs [ class [ AppCss.Content ] ] ]
+                [ Grid.col [ Col.xs12, Col.sm6 ]
+                    [ Grid.row [ rowBuffer ]
+                        [ Grid.col [] [ searchBar model.searchText model.potentialFoods ]
+>>>>>>> elm-bootstrap-integration
                         ]
-                    , cell 50
-                        [ nutrientSection
-                            { mouseOver = Hover << Nutrient, mouseLeave = Hover NothingHovered }
-                            "Minerals (DI%)"
-                            (hoverItemIsFood model.hoverItem)
-                            (model.nutrients
-                                |> filterNutrient Mineral
-                                |> calculateNutrientPercentageFromFoods (getFoodFromHoverItem (model.hoverItem)) (emptyDictIfNotLoaded model.selectedFoods)
-                                |> Dict.values
-                            )
+                    , Grid.row [ rowBuffer ]
+                        [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
+                        ]
+                    ]
+                , Grid.col [ Col.xs12, Col.sm6 ]
+                    [ Grid.row [ rowBuffer ]
+                        [ Grid.col []
+                            [ constructNutrientSection "Vitamins" Vitamin
+                            ]
+                        , Grid.col []
+                            [ constructNutrientSection "Minerals" Mineral
+                            ]
                         ]
                     ]
                 ]
+            , connectionError { onClose = (ConnectionModal Hide) } model.connectionModalState
             ]
-        , connectionError { onClose = (ConnectionModal Hide) } model.connectionModalState
-        ]
 
 
 hoverItemIsFood : HoverItem -> Bool
@@ -395,6 +453,9 @@ showConnectionError model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
+        NavbarMsg state ->
+            { model | navbarState = state } ! []
+
         ClearSearch ->
             { model | potentialFoods = NotLoaded } ! []
 
@@ -402,7 +463,11 @@ update message model =
             if ((text |> String.trim |> String.isEmpty) || String.length text < 3) then
                 { model | potentialFoods = NotLoaded, searchText = text } ! []
             else
-                { model | searchText = text, potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods) } ! [ searchFoods text FoundFoods ]
+                { model
+                    | searchText = text
+                    , potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods)
+                }
+                    ! [ searchFoods text FoundFoods ]
 
         ClearAllSelected ->
             { model | selectedFoods = NotLoaded } ! []
@@ -475,6 +540,14 @@ update message model =
         Hover hoverItem ->
             { model
                 | hoverItem = hoverItem
+            }
+                ! []
+
+        UpdateNutrientPopover nutrientId popoverState ->
+            { model
+                | nutrientPopovers =
+                    model.nutrientPopovers
+                        |> Dict.insert nutrientId popoverState
             }
                 ! []
 

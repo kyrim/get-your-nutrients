@@ -11,7 +11,7 @@ config :get_your_nutrients, GetYourNutrients.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
+  watchers: [node: ["node_modules/gulp/bin/gulp.js", "watch", "--stdin",
                     cd: Path.expand("../", __DIR__)]]
 
 
@@ -39,7 +39,7 @@ config :get_your_nutrients, GetYourNutrients.Repo,
   username: "postgres",
   password: "postgres",
   database: "get_your_nutrients_dev",
-  hostname: "localhost",
-  port: "5433",
+  hostname: "127.0.0.1",
+  port: "5432",
   pool_size: 10,
   after_connect: {GetYourNutrients.Repo, :set_limit, [0.2]}

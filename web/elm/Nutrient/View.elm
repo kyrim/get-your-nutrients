@@ -1,37 +1,42 @@
 module Nutrient.View exposing (..)
 
+import Dict exposing (..)
 import Helpers exposing (getPercentage)
 import Nutrient.Models exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html.Attributes exposing (style)
 import Html.Events exposing (..)
-import BlazeHelpers exposing (..)
+import Bootstrap.Grid as Grid
+import Bootstrap.Progress as Progress
+import Bootstrap.Popover as Popover
+import Html.CssHelpers
+import AppCss
+
+
+{ id, class, classList } =
+    Html.CssHelpers.withNamespace ""
 
 
 getPercentageColour : Int -> String
 getPercentageColour percentage =
     if percentage <= 20 then
-        "#FF3D7F"
+        AppCss.nutrientLow
     else if percentage <= 50 then
-        "#FFAB2E"
+        AppCss.nutrientMedium
     else if percentage <= 80 then
-        "#7FC7AF"
+        AppCss.nutrientHigh
     else
-        "#6ABE6E"
+        AppCss.nutrientFull
 
 
 type alias NutrientProgressConfig msg =
-    { mouseOver : Nutrient -> msg
-    , mouseLeave : msg
+    { onHover : NutrientId -> Popover.State -> msg
     }
 
 
-nutrientProgress : NutrientProgressConfig msg -> Bool -> Nutrient -> Html msg
-nutrientProgress config isHovered nutrient =
+nutrientProgress : NutrientProgressConfig msg -> Bool -> Dict NutrientId Popover.State -> Nutrient -> Html msg
+nutrientProgress config isHovered nutrientPopovers nutrient =
     let
-        label =
-            nutrient.name
-
         hoverPercentage =
             getPercentage nutrient.hoveredAmount nutrient.dailyIntake
 
@@ -69,52 +74,43 @@ nutrientProgress config isHovered nutrient =
                 "lightgray"
             else
                 percentageColour
+
+        nutrientPopover =
+            nutrientPopovers
+                |> get nutrient.id
+                |> Maybe.withDefault Popover.initialState
+
+        popoverTitle =
+            nutrient.name ++ " - " ++ toString nutrient.amount ++ " / " ++ toString nutrient.dailyIntake ++ nutrient.unitOfMeasure
     in
-        div
-            [ class "o-grid__cell o-grid__cell--width-100 nutrient-progress"
-            , onMouseOver (config.mouseOver nutrient)
-            , onMouseLeave config.mouseLeave
-            ]
-            [ div [ class "progress-label" ]
-                [ span [] [ text label ]
-                , span
-                    [ class "progress-percentage"
-                    , style [ ( "color", displayColour ) ]
-                    ]
-                    [ text ((percentageToDisplay |> toString) ++ "%") ]
-                ]
-            , div
-                [ class "c-progress u-medium progress" ]
-                [ div
-                    [ class "c-progress__bar"
-                    , style
-                        [ ( "width", (hoverWidth |> toString) ++ "%" )
-                        , ( "background-color", "#b13fb8" )
+        div [ class [ AppCss.NutrientProgress ] ]
+            [ Popover.config
+                (div
+                    (Popover.onHover nutrientPopover (config.onHover nutrient.id))
+                    [ div []
+                        [ span [] [ text nutrient.name ]
+                        ]
+                    , Progress.progressMulti
+                        [ [ Progress.value hoverWidth, Progress.attr (style [ ( "background-color", "#b13fb8" ) ]) ]
+                        , [ Progress.value percentageWidth, Progress.attr (style [ ( "background-color", percentageColour ) ]) ]
                         ]
                     ]
-                    []
-                , div
-                    [ class "c-progress__bar"
-                    , style
-                        [ ( "width", (percentageWidth |> toString) ++ "%" )
-                        , ( "background-color", percentageColour )
-                        ]
-                    ]
-                    []
-                ]
+                )
+                |> Popover.left
+                |> Popover.title [ style [ ( "background-color", percentageColour ) ] ] [ text popoverTitle ]
+                |> Popover.content [] [ text nutrient.description ]
+                |> Popover.view nutrientPopover
             ]
 
 
-nutrientSection : NutrientProgressConfig msg -> String -> Bool -> List Nutrient -> Html msg
-nutrientSection config category foodIsHovered nutrients =
-    gridWithCls "large-fit"
-        ([ fullCell [ heading2 category ]
-         ]
-            ++ (List.map
-                    (nutrientProgress
-                        config
-                        foodIsHovered
-                    )
-                    nutrients
-               )
-        )
+nutrientSection : NutrientProgressConfig msg -> String -> Bool -> Dict NutrientId Popover.State -> List Nutrient -> Html msg
+nutrientSection config category foodIsHovered nutrientPopovers nutrients =
+    Grid.row []
+        [ Grid.col []
+            ([ h2 [] [ text category ] ]
+                ++ (List.map
+                        (nutrientProgress config foodIsHovered nutrientPopovers)
+                        nutrients
+                   )
+            )
+        ]
