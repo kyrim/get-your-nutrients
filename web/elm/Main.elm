@@ -261,6 +261,7 @@ searchBar searchText potentialFoods =
                 |> InputGroup.large
                 |> InputGroup.successors
                     [ InputGroup.span [] [ Icon.search ] ]
+                |> InputGroup.attrs [ class [ AppCss.NiceShadow ] ]
                 |> InputGroup.view
             , div [ class [ AppCss.SearchResults ] ] [ ListGroup.custom content ]
             ]
@@ -344,7 +345,35 @@ homePage model =
 
 aboutPage : Model -> List (Grid.Column Msg)
 aboutPage model =
-    [ Grid.col [ Col.xs12 ] [ text "about" ] ]
+    [ Grid.col [ Col.xs12 ]
+        [ Card.config []
+            |> Card.block []
+                [ Card.titleH4 [] [ text "About Get Your Nutrients" ]
+                , Card.text []
+                    [ text """
+                        Get your nutrients is an application designed to help identify nutrients in certain foods, in an easy and readable way. It's
+                        aim is to provide insight in the lacking or abundance of Vitamins and Minerals in a person's diet.
+                         """
+                    ]
+                , Card.custom
+                    (p []
+                        [ span [] [ text " All food and nutrient data has been retrieved and formatted from the " ]
+                        , a [ href "https://www.usda.gov/" ] [ text "U.S Department of Argiculture" ]
+                        , span [] [ text " food and nutrient database, and all nutrient descriptions sourced and summarised from " ]
+                        , a [ href "http://www.webmd.com/vitamins-supplements/" ] [ text "WebMD" ]
+                        , span [] [ text "." ]
+                        ]
+                    )
+                , Card.custom
+                    (p []
+                        [ span [] [ text "If you would like to contact me, please visit my website at: " ]
+                        , a [ href "http://www.kyrimsteele.com" ] [ text "www.kyrimsteele.com" ]
+                        ]
+                    )
+                ]
+            |> Card.view
+        ]
+    ]
 
 
 view : Model -> Html Msg

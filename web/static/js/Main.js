@@ -22382,6 +22382,7 @@ var _user$project$AppCss$SearchResults = {ctor: 'SearchResults'};
 var _user$project$AppCss$SearchInput = {ctor: 'SearchInput'};
 var _user$project$AppCss$PopoverNutrient = {ctor: 'PopoverNutrient'};
 var _user$project$AppCss$NutrientProgress = {ctor: 'NutrientProgress'};
+var _user$project$AppCss$NiceShadow = {ctor: 'NiceShadow'};
 var _user$project$AppCss$RowBuffer = {ctor: 'RowBuffer'};
 var _user$project$AppCss$NutrientFull = {ctor: 'NutrientFull'};
 var _user$project$AppCss$NutrientHigh = {ctor: 'NutrientHigh'};
@@ -22459,202 +22460,183 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 								ctor: '::',
 								_0: A2(
 									_rtfeldman$elm_css$Css$class,
-									_user$project$AppCss$SearchResults,
+									_user$project$AppCss$NiceShadow,
 									{
 										ctor: '::',
-										_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
+										_0: A4(
+											_rtfeldman$elm_css$Css$boxShadow4,
+											_rtfeldman$elm_css$Css$px(0),
+											_rtfeldman$elm_css$Css$px(6),
+											_rtfeldman$elm_css$Css$px(6),
+											A4(_rtfeldman$elm_css$Css$rgba, 0, 0, 0, 0.16)),
 										_1: {
 											ctor: '::',
-											_0: _user$project$AppCss$zIndex(200),
-											_1: {
-												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$left(_rtfeldman$elm_css$Css$zero),
-												_1: {
-													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$right(_rtfeldman$elm_css$Css$zero),
-													_1: {ctor: '[]'}
-												}
-											}
+											_0: A4(
+												_rtfeldman$elm_css$Css$boxShadow4,
+												_rtfeldman$elm_css$Css$px(0),
+												_rtfeldman$elm_css$Css$px(6),
+												_rtfeldman$elm_css$Css$px(6),
+												A4(_rtfeldman$elm_css$Css$rgba, 0, 0, 0, 0.23)),
+											_1: {ctor: '[]'}
 										}
 									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
 										_rtfeldman$elm_css$Css$class,
-										_user$project$AppCss$SearchInput,
+										_user$project$AppCss$SearchResults,
 										{
 											ctor: '::',
-											_0: _rtfeldman$elm_css$Css$important(
-												_user$project$AppCss$zIndex(0)),
-											_1: {ctor: '[]'}
+											_0: _rtfeldman$elm_css$Css$position(_rtfeldman$elm_css$Css$absolute),
+											_1: {
+												ctor: '::',
+												_0: _user$project$AppCss$zIndex(200),
+												_1: {
+													ctor: '::',
+													_0: _rtfeldman$elm_css$Css$left(_rtfeldman$elm_css$Css$zero),
+													_1: {
+														ctor: '::',
+														_0: _rtfeldman$elm_css$Css$right(_rtfeldman$elm_css$Css$zero),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
 										}),
 									_1: {
 										ctor: '::',
 										_0: A2(
 											_rtfeldman$elm_css$Css$class,
-											_user$project$AppCss$PopoverNutrient,
+											_user$project$AppCss$SearchInput,
 											{
 												ctor: '::',
-												_0: _rtfeldman$elm_css$Css$width(
-													_rtfeldman$elm_css$Css$pct(100)),
+												_0: _rtfeldman$elm_css$Css$important(
+													_user$project$AppCss$zIndex(0)),
 												_1: {ctor: '[]'}
 											}),
 										_1: {
 											ctor: '::',
 											_0: A2(
 												_rtfeldman$elm_css$Css$class,
-												_user$project$AppCss$NutrientProgress,
+												_user$project$AppCss$PopoverNutrient,
 												{
 													ctor: '::',
-													_0: _rtfeldman$elm_css$Css$marginBottom(
-														_rtfeldman$elm_css$Css$em(0.5)),
-													_1: {
-														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
-														_1: {
-															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$opacity(
-																_rtfeldman$elm_css$Css$num(0.7)),
-															_1: {
-																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$hover(
-																	{
-																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Css$opacity(
-																			_rtfeldman$elm_css$Css$num(1)),
-																		_1: {
-																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css$transform(
-																				_rtfeldman$elm_css$Css$scale(1.07)),
-																			_1: {
-																				ctor: '::',
-																				_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
-																				_1: {ctor: '[]'}
-																			}
-																		}
-																	}),
-																_1: {
-																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$children(
-																		{
-																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css_Elements$div(
-																				{
-																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$important(
-																						_rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$block)),
-																					_1: {ctor: '[]'}
-																				}),
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {ctor: '[]'}
-																}
-															}
-														}
-													}
+													_0: _rtfeldman$elm_css$Css$width(
+														_rtfeldman$elm_css$Css$pct(100)),
+													_1: {ctor: '[]'}
 												}),
 											_1: {
 												ctor: '::',
 												_0: A2(
 													_rtfeldman$elm_css$Css$class,
-													_user$project$AppCss$SelectedFoodHeader,
+													_user$project$AppCss$NutrientProgress,
 													{
 														ctor: '::',
-														_0: _rtfeldman$elm_css$Css$width(
-															_rtfeldman$elm_css$Css$pct(100)),
+														_0: _rtfeldman$elm_css$Css$marginBottom(
+															_rtfeldman$elm_css$Css$em(0.5)),
 														_1: {
 															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$verticalAlign(_rtfeldman$elm_css$Css$middle),
-															_1: {ctor: '[]'}
+															_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+															_1: {
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Css$opacity(
+																	_rtfeldman$elm_css$Css$num(0.7)),
+																_1: {
+																	ctor: '::',
+																	_0: _rtfeldman$elm_css$Css$hover(
+																		{
+																			ctor: '::',
+																			_0: _rtfeldman$elm_css$Css$opacity(
+																				_rtfeldman$elm_css$Css$num(1)),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$transform(
+																					_rtfeldman$elm_css$Css$scale(1.07)),
+																				_1: {
+																					ctor: '::',
+																					_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		}),
+																	_1: {
+																		ctor: '::',
+																		_0: _rtfeldman$elm_css$Css$children(
+																			{
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css_Elements$div(
+																					{
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$important(
+																							_rtfeldman$elm_css$Css$display(_rtfeldman$elm_css$Css$block)),
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {ctor: '[]'}
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															}
 														}
 													}),
 												_1: {
 													ctor: '::',
 													_0: A2(
 														_rtfeldman$elm_css$Css$class,
-														_user$project$AppCss$SelectedFoodTitle,
+														_user$project$AppCss$SelectedFoodHeader,
 														{
 															ctor: '::',
-															_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$left),
-															_1: {ctor: '[]'}
+															_0: _rtfeldman$elm_css$Css$width(
+																_rtfeldman$elm_css$Css$pct(100)),
+															_1: {
+																ctor: '::',
+																_0: _rtfeldman$elm_css$Css$verticalAlign(_rtfeldman$elm_css$Css$middle),
+																_1: {ctor: '[]'}
+															}
 														}),
 													_1: {
 														ctor: '::',
 														_0: A2(
 															_rtfeldman$elm_css$Css$class,
-															_user$project$AppCss$ClearAll,
+															_user$project$AppCss$SelectedFoodTitle,
 															{
 																ctor: '::',
-																_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$right),
-																_1: {
-																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
-																	_1: {
-																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Css$opacity(
-																			_rtfeldman$elm_css$Css$num(0.7)),
-																		_1: {
-																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css$hover(
-																				{
-																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$opacity(
-																						_rtfeldman$elm_css$Css$num(1)),
-																					_1: {
-																						ctor: '::',
-																						_0: _rtfeldman$elm_css$Css$transform(
-																							_rtfeldman$elm_css$Css$scale(1.07)),
-																						_1: {
-																							ctor: '::',
-																							_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
-																							_1: {ctor: '[]'}
-																						}
-																					}
-																				}),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
+																_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$left),
+																_1: {ctor: '[]'}
 															}),
 														_1: {
 															ctor: '::',
 															_0: A2(
 																_rtfeldman$elm_css$Css$class,
-																_user$project$AppCss$FoodList,
+																_user$project$AppCss$ClearAll,
 																{
 																	ctor: '::',
-																	_0: _rtfeldman$elm_css$Css$height(
-																		_rtfeldman$elm_css$Css$em(30)),
+																	_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$right),
 																	_1: {
 																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Css$maxHeight(
-																			_rtfeldman$elm_css$Css$em(30)),
+																		_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
 																		_1: {
 																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css$width(
-																				_rtfeldman$elm_css$Css$pct(100)),
+																			_0: _rtfeldman$elm_css$Css$opacity(
+																				_rtfeldman$elm_css$Css$num(0.7)),
 																			_1: {
 																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$overflowY(_rtfeldman$elm_css$Css$auto),
-																				_1: {
-																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$backgroundColor(
-																						A3(_rtfeldman$elm_css$Css$rgb, 254, 254, 254)),
-																					_1: {
+																				_0: _rtfeldman$elm_css$Css$hover(
+																					{
 																						ctor: '::',
-																						_0: A3(
-																							_rtfeldman$elm_css$Css$border3,
-																							_rtfeldman$elm_css$Css$px(1),
-																							_rtfeldman$elm_css$Css$solid,
-																							A3(_rtfeldman$elm_css$Css$rgb, 240, 240, 240)),
+																						_0: _rtfeldman$elm_css$Css$opacity(
+																							_rtfeldman$elm_css$Css$num(1)),
 																						_1: {
 																							ctor: '::',
-																							_0: _rtfeldman$elm_css$Css$borderRadius(
-																								_rtfeldman$elm_css$Css$em(0.25)),
-																							_1: {ctor: '[]'}
+																							_0: _rtfeldman$elm_css$Css$transform(
+																								_rtfeldman$elm_css$Css$scale(1.07)),
+																							_1: {
+																								ctor: '::',
+																								_0: A3(_user$project$AppCss$transition, 'all', '0.2s', 'ease'),
+																								_1: {ctor: '[]'}
+																							}
 																						}
-																					}
-																				}
+																					}),
+																				_1: {ctor: '[]'}
 																			}
 																		}
 																	}
@@ -22663,72 +22645,80 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 																ctor: '::',
 																_0: A2(
 																	_rtfeldman$elm_css$Css$class,
-																	_user$project$AppCss$FoodDelete,
+																	_user$project$AppCss$FoodList,
 																	{
 																		ctor: '::',
-																		_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+																		_0: _rtfeldman$elm_css$Css$height(
+																			_rtfeldman$elm_css$Css$em(30)),
 																		_1: {
 																			ctor: '::',
-																			_0: _rtfeldman$elm_css$Css$marginLeft(
-																				_rtfeldman$elm_css$Css$em(0.5)),
-																			_1: {ctor: '[]'}
+																			_0: _rtfeldman$elm_css$Css$maxHeight(
+																				_rtfeldman$elm_css$Css$em(30)),
+																			_1: {
+																				ctor: '::',
+																				_0: _rtfeldman$elm_css$Css$width(
+																					_rtfeldman$elm_css$Css$pct(100)),
+																				_1: {
+																					ctor: '::',
+																					_0: _rtfeldman$elm_css$Css$overflowY(_rtfeldman$elm_css$Css$auto),
+																					_1: {
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$backgroundColor(
+																							A3(_rtfeldman$elm_css$Css$rgb, 254, 254, 254)),
+																						_1: {
+																							ctor: '::',
+																							_0: A3(
+																								_rtfeldman$elm_css$Css$border3,
+																								_rtfeldman$elm_css$Css$px(1),
+																								_rtfeldman$elm_css$Css$solid,
+																								A3(_rtfeldman$elm_css$Css$rgb, 240, 240, 240)),
+																							_1: {
+																								ctor: '::',
+																								_0: _rtfeldman$elm_css$Css$borderRadius(
+																									_rtfeldman$elm_css$Css$em(0.25)),
+																								_1: {ctor: '[]'}
+																							}
+																						}
+																					}
+																				}
+																			}
 																		}
 																	}),
 																_1: {
 																	ctor: '::',
 																	_0: A2(
 																		_rtfeldman$elm_css$Css$class,
-																		_user$project$AppCss$FoodBottomSection,
+																		_user$project$AppCss$FoodDelete,
 																		{
 																			ctor: '::',
-																			_0: A3(
-																				_rtfeldman$elm_css$Css$borderTop3,
-																				_rtfeldman$elm_css$Css$px(1),
-																				_rtfeldman$elm_css$Css$solid,
-																				A3(_rtfeldman$elm_css$Css$rgb, 232, 232, 232)),
+																			_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
 																			_1: {
 																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$marginTop(
+																				_0: _rtfeldman$elm_css$Css$marginLeft(
 																					_rtfeldman$elm_css$Css$em(0.5)),
-																				_1: {
-																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$width(
-																						_rtfeldman$elm_css$Css$pct(100)),
-																					_1: {ctor: '[]'}
-																				}
+																				_1: {ctor: '[]'}
 																			}
 																		}),
 																	_1: {
 																		ctor: '::',
 																		_0: A2(
 																			_rtfeldman$elm_css$Css$class,
-																			_user$project$AppCss$FoodInputs,
+																			_user$project$AppCss$FoodBottomSection,
 																			{
 																				ctor: '::',
-																				_0: _rtfeldman$elm_css$Css$padding(
-																					_rtfeldman$elm_css$Css$em(0.5)),
+																				_0: A3(
+																					_rtfeldman$elm_css$Css$borderTop3,
+																					_rtfeldman$elm_css$Css$px(1),
+																					_rtfeldman$elm_css$Css$solid,
+																					A3(_rtfeldman$elm_css$Css$rgb, 232, 232, 232)),
 																				_1: {
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$right),
+																					_0: _rtfeldman$elm_css$Css$marginTop(
+																						_rtfeldman$elm_css$Css$em(0.5)),
 																					_1: {
 																						ctor: '::',
-																						_0: _rtfeldman$elm_css$Css$children(
-																							{
-																								ctor: '::',
-																								_0: _rtfeldman$elm_css$Css_Elements$input(
-																									{
-																										ctor: '::',
-																										_0: _rtfeldman$elm_css$Css$width(
-																											_rtfeldman$elm_css$Css$em(4)),
-																										_1: {
-																											ctor: '::',
-																											_0: _rtfeldman$elm_css$Css$marginRight(
-																												_rtfeldman$elm_css$Css$em(0.25)),
-																											_1: {ctor: '[]'}
-																										}
-																									}),
-																								_1: {ctor: '[]'}
-																							}),
+																						_0: _rtfeldman$elm_css$Css$width(
+																							_rtfeldman$elm_css$Css$pct(100)),
 																						_1: {ctor: '[]'}
 																					}
 																				}
@@ -22737,14 +22727,50 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 																			ctor: '::',
 																			_0: A2(
 																				_rtfeldman$elm_css$Css$class,
-																				_user$project$AppCss$FoodContainer,
+																				_user$project$AppCss$FoodInputs,
 																				{
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$width(
-																						_rtfeldman$elm_css$Css$pct(100)),
-																					_1: {ctor: '[]'}
+																					_0: _rtfeldman$elm_css$Css$padding(
+																						_rtfeldman$elm_css$Css$em(0.5)),
+																					_1: {
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$right),
+																						_1: {
+																							ctor: '::',
+																							_0: _rtfeldman$elm_css$Css$children(
+																								{
+																									ctor: '::',
+																									_0: _rtfeldman$elm_css$Css_Elements$input(
+																										{
+																											ctor: '::',
+																											_0: _rtfeldman$elm_css$Css$width(
+																												_rtfeldman$elm_css$Css$em(4)),
+																											_1: {
+																												ctor: '::',
+																												_0: _rtfeldman$elm_css$Css$marginRight(
+																													_rtfeldman$elm_css$Css$em(0.25)),
+																												_1: {ctor: '[]'}
+																											}
+																										}),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {ctor: '[]'}
+																						}
+																					}
 																				}),
-																			_1: {ctor: '[]'}
+																			_1: {
+																				ctor: '::',
+																				_0: A2(
+																					_rtfeldman$elm_css$Css$class,
+																					_user$project$AppCss$FoodContainer,
+																					{
+																						ctor: '::',
+																						_0: _rtfeldman$elm_css$Css$width(
+																							_rtfeldman$elm_css$Css$pct(100)),
+																						_1: {ctor: '[]'}
+																					}),
+																				_1: {ctor: '[]'}
+																			}
 																		}
 																	}
 																}
@@ -23944,7 +23970,140 @@ var _user$project$Main$aboutPage = function (model) {
 			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('about'),
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$view(
+					A3(
+						_rundis$elm_bootstrap$Bootstrap_Card$block,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Card$titleH4,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('About Get Your Nutrients'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Card$text,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is an application designed to help identify nutrients in certain foods, in an easy and readable way. It\'s\n                        aim is to provide insight in the lacking or abundance of Vitamins and Minerals in a person\'s diet.\n                         '),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+										A2(
+											_elm_lang$html$Html$p,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$span,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(' All food and nutrient data has been retrieved and formatted from the '),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$a,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$href('https://www.usda.gov/'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('U.S Department of Argiculture'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$span,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(' food and nutrient database, and all nutrient descriptions sourced and summarised from '),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$a,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$href('http://www.webmd.com/vitamins-supplements/'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('WebMD'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$span,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('.'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											})),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+											A2(
+												_elm_lang$html$Html$p,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$span,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('If you would like to contact me, please visit my website at: '),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$a,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$href('http://www.kyrimsteele.com'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('www.kyrimsteele.com'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												})),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						},
+						_rundis$elm_bootstrap$Bootstrap_Card$config(
+							{ctor: '[]'}))),
 				_1: {ctor: '[]'}
 			}),
 		_1: {ctor: '[]'}
@@ -24491,49 +24650,61 @@ var _user$project$Main$searchBar = F2(
 				ctor: '::',
 				_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
 					A2(
-						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
+						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$attrs,
 						{
 							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
-								{ctor: '[]'},
+							_0: _user$project$Main$class(
 								{
 									ctor: '::',
-									_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$search,
+									_0: _user$project$AppCss$NiceShadow,
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
 						},
-						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$large(
-							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
-								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+						A2(
+							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
+							{
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Search for Food'),
-										_1: {
+										_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$search,
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
+							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$large(
+								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+										{
 											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
-													_1: {
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Search for Food'),
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
+													{
 														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+														_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
 														_1: {
 															ctor: '::',
-															_0: _user$project$Main$class(
-																{
-																	ctor: '::',
-																	_0: _user$project$AppCss$SearchInput,
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
+															_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+															_1: {
+																ctor: '::',
+																_0: _user$project$Main$class(
+																	{
+																		ctor: '::',
+																		_0: _user$project$AppCss$SearchInput,
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
 														}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}))))),
+													}),
+												_1: {ctor: '[]'}
+											}
+										})))))),
 				_1: {
 					ctor: '::',
 					_0: A2(

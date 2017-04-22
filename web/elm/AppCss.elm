@@ -12,6 +12,7 @@ type CssClasses
     | NutrientHigh
     | NutrientFull
     | RowBuffer
+    | NiceShadow
     | NutrientProgress
     | PopoverNutrient
     | SearchInput
@@ -34,6 +35,7 @@ css =
         , class NutrientHigh [ color (hex nutrientHigh) ]
         , class NutrientFull [ color (hex nutrientFull) ]
         , class RowBuffer [ marginTop (Css.rem 1) ]
+        , class NiceShadow [ boxShadow4 (px 0) (px 6) (px 6) (rgba 0 0 0 0.16), boxShadow4 (px 0) (px 6) (px 6) (rgba 0 0 0 0.23) ]
         , class SearchResults [ position absolute, zIndex 200, left zero, right zero ]
         , class SearchInput [ zIndex 0 |> important ]
         , class PopoverNutrient

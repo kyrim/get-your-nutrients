@@ -103,7 +103,140 @@ var _user$project$Main$aboutPage = function (model) {
 			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('about'),
+				_0: _rundis$elm_bootstrap$Bootstrap_Card$view(
+					A3(
+						_rundis$elm_bootstrap$Bootstrap_Card$block,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Card$titleH4,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('About Get Your Nutrients'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Card$text,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is an application designed to help identify nutrients in certain foods, in an easy and readable way. It\'s\n                        aim is to provide insight in the lacking or abundance of Vitamins and Minerals in a person\'s diet.\n                         '),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+										A2(
+											_elm_lang$html$Html$p,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$span,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(' All food and nutrient data has been retrieved and formatted from the '),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$a,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$href('https://www.usda.gov/'),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('U.S Department of Argiculture'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$span,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(' food and nutrient database, and all nutrient descriptions sourced and summarised from '),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$a,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$href('http://www.webmd.com/vitamins-supplements/'),
+																	_1: {ctor: '[]'}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('WebMD'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$span,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('.'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											})),
+									_1: {
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Card$custom(
+											A2(
+												_elm_lang$html$Html$p,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$span,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('If you would like to contact me, please visit my website at: '),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$a,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$href('http://www.kyrimsteele.com'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('www.kyrimsteele.com'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												})),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						},
+						_rundis$elm_bootstrap$Bootstrap_Card$config(
+							{ctor: '[]'}))),
 				_1: {ctor: '[]'}
 			}),
 		_1: {ctor: '[]'}
@@ -650,49 +783,61 @@ var _user$project$Main$searchBar = F2(
 				ctor: '::',
 				_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
 					A2(
-						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
+						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$attrs,
 						{
 							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
-								{ctor: '[]'},
+							_0: _user$project$Main$class(
 								{
 									ctor: '::',
-									_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$search,
+									_0: _user$project$AppCss$NiceShadow,
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
 						},
-						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$large(
-							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
-								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+						A2(
+							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
+							{
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Search for Food'),
-										_1: {
+										_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$search,
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
+							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$large(
+								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+										{
 											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
-													_1: {
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Search for Food'),
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
+													{
 														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+														_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
 														_1: {
 															ctor: '::',
-															_0: _user$project$Main$class(
-																{
-																	ctor: '::',
-																	_0: _user$project$AppCss$SearchInput,
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
+															_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+															_1: {
+																ctor: '::',
+																_0: _user$project$Main$class(
+																	{
+																		ctor: '::',
+																		_0: _user$project$AppCss$SearchInput,
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
 														}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}
-									}))))),
+													}),
+												_1: {ctor: '[]'}
+											}
+										})))))),
 				_1: {
 					ctor: '::',
 					_0: A2(
