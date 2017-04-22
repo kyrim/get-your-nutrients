@@ -13,12 +13,6 @@ defmodule GetYourNutrients.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", GetYourNutrients do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-  end
-
   scope "/api", GetYourNutrients do
     pipe_through :api
 
@@ -31,5 +25,11 @@ defmodule GetYourNutrients.Router do
       scope "/nutrient" do
         resources "/" , NutrientIntakeController, only: [:index]
       end
+  end
+
+  scope "/", GetYourNutrients do
+    pipe_through :browser # Use the default browser stack
+
+    get "/*app", PageController, :index
   end
 end

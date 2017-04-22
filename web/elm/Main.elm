@@ -8,6 +8,8 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (..)
 import Helpers exposing (..)
+import Navigation
+import UrlParser as Url exposing ((</>), s, top, parseHash)
 
 
 -- API Imports
@@ -57,6 +59,11 @@ type HoverItem
     | NothingHovered
 
 
+type Route
+    = Home
+    | About
+
+
 type alias Model =
     { navbarState : Navbar.State
     , searchText : String
@@ -70,11 +77,14 @@ type alias Model =
     , hoverItem : HoverItem
     , connectionModalState : ModalState
     , loadingPotentialFoods : Bool
+    , history : List (Maybe Route)
     }
 
 
 type Msg
     = NavbarMsg Navbar.State
+    | UrlChange Navigation.Location
+    | NewUrl String
     | ClearSearch
     | UpdateSearchText String
     | ClearAllSelected
@@ -91,8 +101,8 @@ type Msg
     | ConnectionModal ModalState
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
     let
         ( navbarState, navbarCmd ) =
             Navbar.initialState NavbarMsg
@@ -107,8 +117,21 @@ init =
         , hoverItem = NothingHovered
         , connectionModalState = Hide
         , loadingPotentialFoods = True
+        , history = [ Url.parsePath route location ]
         }
             ! [ getAllNutrients GotNutrients, navbarCmd ]
+
+
+
+-- Routes
+
+
+route : Url.Parser (Route -> a) a
+route =
+    Url.oneOf
+        [ Url.map Home top
+        , Url.map About (Url.s "about")
+        ]
 
 
 
@@ -122,7 +145,7 @@ topBar model =
         |> Navbar.fixTop
         |> Navbar.brand
             -- Add logo to your brand with a little styling to align nicely
-            [ href "#" ]
+            [ onClick (NewUrl "/") ]
             [ img
                 [ src "images/logo.png"
                 , style [ ( "width", "30px" ) ]
@@ -131,7 +154,7 @@ topBar model =
             , text "Get Your Nutrients"
             ]
         |> Navbar.items
-            [ Navbar.itemLink [ href "#" ] [ text "About" ]
+            [ Navbar.itemLink [ onClick (NewUrl "/about") ] [ text "About" ]
             ]
         |> Navbar.view model.navbarState
 
@@ -277,8 +300,8 @@ recommendedFoodRowConfig =
     }
 
 
-view : Model -> Html Msg
-view model =
+homePage : Model -> List (Grid.Column Msg)
+homePage model =
     let
         hoverItemFood =
             getFoodFromHoverItem (model.hoverItem)
@@ -299,29 +322,57 @@ view model =
                     |> calculateNutrients
                 )
     in
+        [ Grid.col [ Col.xs12, Col.sm6 ]
+            [ Grid.row [ rowBuffer ]
+                [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
+            , Grid.row [ rowBuffer ]
+                [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
+                ]
+            ]
+        , Grid.col [ Col.xs12, Col.sm6 ]
+            [ Grid.row [ rowBuffer ]
+                [ Grid.col []
+                    [ constructNutrientSection "Vitamins" Vitamin
+                    ]
+                , Grid.col []
+                    [ constructNutrientSection "Minerals" Mineral
+                    ]
+                ]
+            ]
+        ]
+
+
+aboutPage : Model -> List (Grid.Column Msg)
+aboutPage model =
+    [ Grid.col [ Col.xs12 ] [ text "about" ] ]
+
+
+view : Model -> Html Msg
+view model =
+    let
+        page =
+            case List.head model.history of
+                Just head ->
+                    case head of
+                        Just routing ->
+                            case routing of
+                                Home ->
+                                    homePage model
+
+                                About ->
+                                    aboutPage model
+
+                        Nothing ->
+                            homePage model
+
+                Nothing ->
+                    homePage model
+    in
         Grid.container []
             -- For bootstrap
             [ CDN.stylesheet
             , topBar model
-            , Grid.row [ Row.attrs [ class [ AppCss.Content ] ] ]
-                [ Grid.col [ Col.xs12, Col.sm6 ]
-                    [ Grid.row [ rowBuffer ]
-                        [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
-                    , Grid.row [ rowBuffer ]
-                        [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
-                        ]
-                    ]
-                , Grid.col [ Col.xs12, Col.sm6 ]
-                    [ Grid.row [ rowBuffer ]
-                        [ Grid.col []
-                            [ constructNutrientSection "Vitamins" Vitamin
-                            ]
-                        , Grid.col []
-                            [ constructNutrientSection "Minerals" Mineral
-                            ]
-                        ]
-                    ]
-                ]
+            , Grid.row [ Row.attrs [ class [ AppCss.Content ] ] ] page
             , connectionError { onClose = (ConnectionModal Hide) } model.connectionModalState
             ]
 
@@ -405,6 +456,17 @@ showConnectionError model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
+        UrlChange location ->
+            { model
+                | history = Url.parsePath route location :: model.history
+            }
+                ! []
+
+        NewUrl url ->
+            ( model
+            , Navigation.newUrl url
+            )
+
         NavbarMsg state ->
             { model | navbarState = state } ! []
 
@@ -523,9 +585,8 @@ subscriptions model =
 -- Init
 
 
-main : Program Never Model Msg
 main =
-    program
+    Navigation.program UrlChange
         { init = init
         , view = view
         , update = update

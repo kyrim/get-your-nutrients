@@ -91,6 +91,24 @@ var _user$project$Main$hoverItemIsFood = function (item) {
 			return false;
 	}
 };
+var _user$project$Main$aboutPage = function (model) {
+	return {
+		ctor: '::',
+		_0: A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$col,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('about'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {ctor: '[]'}
+	};
+};
 var _user$project$Main$getFoodFromHoverItem = function (item) {
 	var _p5 = item;
 	switch (_p5.ctor) {
@@ -241,7 +259,9 @@ var _user$project$Main$Model = function (a) {
 							return function (h) {
 								return function (i) {
 									return function (j) {
-										return {navbarState: a, searchText: b, nutrients: c, nutrientPopovers: d, selectedFoods: e, potentialFoods: f, recommendedFoods: g, hoverItem: h, connectionModalState: i, loadingPotentialFoods: j};
+										return function (k) {
+											return {navbarState: a, searchText: b, nutrients: c, nutrientPopovers: d, selectedFoods: e, potentialFoods: f, recommendedFoods: g, hoverItem: h, connectionModalState: i, loadingPotentialFoods: j, history: k};
+										};
 									};
 								};
 							};
@@ -259,6 +279,21 @@ var _user$project$Main$Food = function (a) {
 var _user$project$Main$Nutrient = function (a) {
 	return {ctor: 'Nutrient', _0: a};
 };
+var _user$project$Main$About = {ctor: 'About'};
+var _user$project$Main$Home = {ctor: 'Home'};
+var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
+	{
+		ctor: '::',
+		_0: A2(_evancz$url_parser$UrlParser$map, _user$project$Main$Home, _evancz$url_parser$UrlParser$top),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_evancz$url_parser$UrlParser$map,
+				_user$project$Main$About,
+				_evancz$url_parser$UrlParser$s('about')),
+			_1: {ctor: '[]'}
+		}
+	});
 var _user$project$Main$ConnectionModal = function (a) {
 	return {ctor: 'ConnectionModal', _0: a};
 };
@@ -310,6 +345,25 @@ var _user$project$Main$update = F2(
 	function (message, model) {
 		var _p15 = message;
 		switch (_p15.ctor) {
+			case 'UrlChange':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							history: {
+								ctor: '::',
+								_0: A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Main$route, _p15._0),
+								_1: model.history
+							}
+						}),
+					{ctor: '[]'});
+			case 'NewUrl':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _elm_lang$navigation$Navigation$newUrl(_p15._0)
+				};
 			case 'NavbarMsg':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -662,16 +716,168 @@ var _user$project$Main$searchBar = F2(
 				}
 			});
 	});
+var _user$project$Main$homePage = function (model) {
+	var hoverItemFood = _user$project$Main$getFoodFromHoverItem(model.hoverItem);
+	var calculateNutrients = function (nutrients) {
+		return _elm_lang$core$Dict$values(
+			A3(
+				_user$project$Main$calculateNutrientPercentageFromFoods,
+				hoverItemFood,
+				_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
+				nutrients));
+	};
+	var constructNutrientSection = F2(
+		function (text, nutrientType) {
+			return A5(
+				_user$project$Nutrient_View$nutrientSection,
+				{onHover: _user$project$Main$UpdateNutrientPopover},
+				text,
+				_user$project$Main$hoverItemIsFood(model.hoverItem),
+				model.nutrientPopovers,
+				calculateNutrients(
+					A2(_user$project$Main$filterNutrient, nutrientType, model.nutrients)));
+		});
+	return {
+		ctor: '::',
+		_0: A2(
+			_rundis$elm_bootstrap$Bootstrap_Grid$col,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$row,
+					{
+						ctor: '::',
+						_0: _user$project$BootstrapHelper$rowBuffer,
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Grid$col,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(_user$project$Main$searchBar, model.searchText, model.potentialFoods),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$row,
+						{
+							ctor: '::',
+							_0: _user$project$BootstrapHelper$rowBuffer,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Grid$col,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A3(_user$project$Food_View$selectedFoodSection, _user$project$Main$selectedFoodSectionConfig, _user$project$Main$foodRowConfig, model.selectedFoods),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_rundis$elm_bootstrap$Bootstrap_Grid$col,
+				{
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
+					_1: {
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_Grid$row,
+						{
+							ctor: '::',
+							_0: _user$project$BootstrapHelper$rowBuffer,
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Grid$col,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(constructNutrientSection, 'Vitamins', _user$project$Nutrient_Models$Vitamin),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_rundis$elm_bootstrap$Bootstrap_Grid$col,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(constructNutrientSection, 'Minerals', _user$project$Nutrient_Models$Mineral),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	};
+};
+var _user$project$Main$NewUrl = function (a) {
+	return {ctor: 'NewUrl', _0: a};
+};
+var _user$project$Main$UrlChange = function (a) {
+	return {ctor: 'UrlChange', _0: a};
+};
 var _user$project$Main$NavbarMsg = function (a) {
 	return {ctor: 'NavbarMsg', _0: a};
 };
-var _user$project$Main$init = function () {
+var _user$project$Main$init = function (location) {
 	var _p20 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavbarMsg);
 	var navbarState = _p20._0;
 	var navbarCmd = _p20._1;
 	return A2(
 		_elm_lang$core$Platform_Cmd_ops['!'],
-		{navbarState: navbarState, searchText: '', nutrients: _elm_lang$core$Dict$empty, nutrientPopovers: _elm_lang$core$Dict$empty, selectedFoods: _user$project$Connection_Models$NotLoaded, potentialFoods: _user$project$Connection_Models$NotLoaded, recommendedFoods: _user$project$Connection_Models$NotLoaded, hoverItem: _user$project$Main$NothingHovered, connectionModalState: _user$project$Connection_Models$Hide, loadingPotentialFoods: true},
+		{
+			navbarState: navbarState,
+			searchText: '',
+			nutrients: _elm_lang$core$Dict$empty,
+			nutrientPopovers: _elm_lang$core$Dict$empty,
+			selectedFoods: _user$project$Connection_Models$NotLoaded,
+			potentialFoods: _user$project$Connection_Models$NotLoaded,
+			recommendedFoods: _user$project$Connection_Models$NotLoaded,
+			hoverItem: _user$project$Main$NothingHovered,
+			connectionModalState: _user$project$Connection_Models$Hide,
+			loadingPotentialFoods: true,
+			history: {
+				ctor: '::',
+				_0: A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Main$route, location),
+				_1: {ctor: '[]'}
+			}
+		},
 		{
 			ctor: '::',
 			_0: _user$project$Nutrient_Api$getAllNutrients(_user$project$Main$GotNutrients),
@@ -681,7 +887,7 @@ var _user$project$Main$init = function () {
 				_1: {ctor: '[]'}
 			}
 		});
-}();
+};
 var _user$project$Main$topBar = function (model) {
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_Navbar$view,
@@ -694,7 +900,8 @@ var _user$project$Main$topBar = function (model) {
 					_rundis$elm_bootstrap$Bootstrap_Navbar$itemLink,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$href('#'),
+						_0: _elm_lang$html$Html_Events$onClick(
+							_user$project$Main$NewUrl('/about')),
 						_1: {ctor: '[]'}
 					},
 					{
@@ -708,7 +915,8 @@ var _user$project$Main$topBar = function (model) {
 				_rundis$elm_bootstrap$Bootstrap_Navbar$brand,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$href('#'),
+					_0: _elm_lang$html$Html_Events$onClick(
+						_user$project$Main$NewUrl('/')),
 					_1: {ctor: '[]'}
 				},
 				{
@@ -741,26 +949,24 @@ var _user$project$Main$topBar = function (model) {
 						_rundis$elm_bootstrap$Bootstrap_Navbar$config(_user$project$Main$NavbarMsg))))));
 };
 var _user$project$Main$view = function (model) {
-	var hoverItemFood = _user$project$Main$getFoodFromHoverItem(model.hoverItem);
-	var calculateNutrients = function (nutrients) {
-		return _elm_lang$core$Dict$values(
-			A3(
-				_user$project$Main$calculateNutrientPercentageFromFoods,
-				hoverItemFood,
-				_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods),
-				nutrients));
-	};
-	var constructNutrientSection = F2(
-		function (text, nutrientType) {
-			return A5(
-				_user$project$Nutrient_View$nutrientSection,
-				{onHover: _user$project$Main$UpdateNutrientPopover},
-				text,
-				_user$project$Main$hoverItemIsFood(model.hoverItem),
-				model.nutrientPopovers,
-				calculateNutrients(
-					A2(_user$project$Main$filterNutrient, nutrientType, model.nutrients)));
-		});
+	var page = function () {
+		var _p21 = _elm_lang$core$List$head(model.history);
+		if (_p21.ctor === 'Just') {
+			var _p22 = _p21._0;
+			if (_p22.ctor === 'Just') {
+				var _p23 = _p22._0;
+				if (_p23.ctor === 'Home') {
+					return _user$project$Main$homePage(model);
+				} else {
+					return _user$project$Main$aboutPage(model);
+				}
+			} else {
+				return _user$project$Main$homePage(model);
+			}
+		} else {
+			return _user$project$Main$homePage(model);
+		}
+	}();
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_Grid$container,
 		{ctor: '[]'},
@@ -789,114 +995,7 @@ var _user$project$Main$view = function (model) {
 								}),
 							_1: {ctor: '[]'}
 						},
-						{
-							ctor: '::',
-							_0: A2(
-								_rundis$elm_bootstrap$Bootstrap_Grid$col,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
-									_1: {
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-										_1: {ctor: '[]'}
-									}
-								},
-								{
-									ctor: '::',
-									_0: A2(
-										_rundis$elm_bootstrap$Bootstrap_Grid$row,
-										{
-											ctor: '::',
-											_0: _user$project$BootstrapHelper$rowBuffer,
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: A2(
-												_rundis$elm_bootstrap$Bootstrap_Grid$col,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: A2(_user$project$Main$searchBar, model.searchText, model.potentialFoods),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Grid$row,
-											{
-												ctor: '::',
-												_0: _user$project$BootstrapHelper$rowBuffer,
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_rundis$elm_bootstrap$Bootstrap_Grid$col,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: A3(_user$project$Food_View$selectedFoodSection, _user$project$Main$selectedFoodSectionConfig, _user$project$Main$foodRowConfig, model.selectedFoods),
-														_1: {ctor: '[]'}
-													}),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Grid$col,
-									{
-										ctor: '::',
-										_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$xs12,
-										_1: {
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Grid_Col$sm6,
-											_1: {ctor: '[]'}
-										}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Grid$row,
-											{
-												ctor: '::',
-												_0: _user$project$BootstrapHelper$rowBuffer,
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: A2(
-													_rundis$elm_bootstrap$Bootstrap_Grid$col,
-													{ctor: '[]'},
-													{
-														ctor: '::',
-														_0: A2(constructNutrientSection, 'Vitamins', _user$project$Nutrient_Models$Vitamin),
-														_1: {ctor: '[]'}
-													}),
-												_1: {
-													ctor: '::',
-													_0: A2(
-														_rundis$elm_bootstrap$Bootstrap_Grid$col,
-														{ctor: '[]'},
-														{
-															ctor: '::',
-															_0: A2(constructNutrientSection, 'Minerals', _user$project$Nutrient_Models$Mineral),
-															_1: {ctor: '[]'}
-														}),
-													_1: {ctor: '[]'}
-												}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}),
+						page),
 					_1: {
 						ctor: '::',
 						_0: A2(
@@ -911,5 +1010,7 @@ var _user$project$Main$view = function (model) {
 			}
 		});
 };
-var _user$project$Main$main = _elm_lang$html$Html$program(
+var _user$project$Main$main = A2(
+	_elm_lang$navigation$Navigation$program,
+	_user$project$Main$UrlChange,
 	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();
