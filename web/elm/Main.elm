@@ -351,8 +351,9 @@ aboutPage model =
                 [ Card.titleH4 [] [ text "About Get Your Nutrients" ]
                 , Card.text []
                     [ text """
-                        Get your nutrients is an application designed to help identify nutrients in certain foods, in an easy and readable way. It's
-                        aim is to provide insight in the lacking or abundance of Vitamins and Minerals in a person's diet.
+                        Get your nutrients is an application designed to help identify nutrients in certain foods,
+                        in an simple, easy and readable way. It has the aim is to provide insight in the lacking
+                        or abundance of Vitamins and Minerals in a person's diet and their effects.
                          """
                     ]
                 , Card.custom

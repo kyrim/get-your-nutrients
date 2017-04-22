@@ -124,7 +124,7 @@ var _user$project$Main$aboutPage = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is an application designed to help identify nutrients in certain foods, in an easy and readable way. It\'s\n                        aim is to provide insight in the lacking or abundance of Vitamins and Minerals in a person\'s diet.\n                         '),
+										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is an application designed to help identify nutrients in certain foods,\n                        in an simple, easy and readable way. It has the aim is to provide insight in the lacking\n                        or abundance of Vitamins and Minerals in a person\'s diet and their effects.\n                         '),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
