@@ -24,6 +24,7 @@ var _user$project$AppCss$nutrientFull = '#6ABE6E';
 var _user$project$AppCss$nutrientHigh = '#7FC7AF';
 var _user$project$AppCss$nutrientMedium = '#FFAB2E';
 var _user$project$AppCss$nutrientLow = '#FF2020';
+var _user$project$AppCss$Clickable = {ctor: 'Clickable'};
 var _user$project$AppCss$FoodBottomSection = {ctor: 'FoodBottomSection'};
 var _user$project$AppCss$FoodContainer = {ctor: 'FoodContainer'};
 var _user$project$AppCss$FoodInputs = {ctor: 'FoodInputs'};
@@ -423,7 +424,18 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 																							_rtfeldman$elm_css$Css$pct(100)),
 																						_1: {ctor: '[]'}
 																					}),
-																				_1: {ctor: '[]'}
+																				_1: {
+																					ctor: '::',
+																					_0: A2(
+																						_rtfeldman$elm_css$Css$class,
+																						_user$project$AppCss$Clickable,
+																						{
+																							ctor: '::',
+																							_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+																							_1: {ctor: '[]'}
+																						}),
+																					_1: {ctor: '[]'}
+																				}
 																			}
 																		}
 																	}

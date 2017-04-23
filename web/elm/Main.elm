@@ -145,7 +145,7 @@ topBar model =
         |> Navbar.fixTop
         |> Navbar.brand
             -- Add logo to your brand with a little styling to align nicely
-            [ onClick (NewUrl "/") ]
+            [ onClick (NewUrl "/"), class [ AppCss.Clickable ] ]
             [ img
                 [ src "images/logo.png"
                 , style [ ( "width", "30px" ) ]
@@ -154,7 +154,7 @@ topBar model =
             , text "Get Your Nutrients"
             ]
         |> Navbar.items
-            [ Navbar.itemLink [ onClick (NewUrl "/about") ] [ text "About" ]
+            [ Navbar.itemLink [ onClick (NewUrl "/about"), class [ AppCss.Clickable ] ] [ text "About" ]
             ]
         |> Navbar.view model.navbarState
 
@@ -615,6 +615,7 @@ subscriptions model =
 -- Init
 
 
+main : Program Never Model Msg
 main =
     Navigation.program UrlChange
         { init = init

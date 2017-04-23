@@ -2,7 +2,6 @@ module AppCss exposing (..)
 
 import Css exposing (..)
 import Css.Elements exposing (body, img, li, div, input)
-import Css.Namespace exposing (namespace)
 
 
 type CssClasses
@@ -25,8 +24,10 @@ type CssClasses
     | FoodInputs
     | FoodContainer
     | FoodBottomSection
+    | Clickable
 
 
+css : Stylesheet
 css =
     stylesheet
         [ class Content [ marginTop (px 80) ]
@@ -102,6 +103,9 @@ css =
         , class FoodContainer
             [ width (pct 100)
             ]
+        , class Clickable
+            [ cursor pointer
+            ]
         ]
 
 
@@ -109,18 +113,22 @@ css =
 -- Colours
 
 
+nutrientLow : String
 nutrientLow =
     "#FF2020"
 
 
+nutrientMedium : String
 nutrientMedium =
     "#FFAB2E"
 
 
+nutrientHigh : String
 nutrientHigh =
     "#7FC7AF"
 
 
+nutrientFull : String
 nutrientFull =
     "#6ABE6E"
 

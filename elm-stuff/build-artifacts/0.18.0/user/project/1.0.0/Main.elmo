@@ -1047,7 +1047,16 @@ var _user$project$Main$topBar = function (model) {
 						ctor: '::',
 						_0: _elm_lang$html$Html_Events$onClick(
 							_user$project$Main$NewUrl('/about')),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: _user$project$Main$class(
+								{
+									ctor: '::',
+									_0: _user$project$AppCss$Clickable,
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
 					},
 					{
 						ctor: '::',
@@ -1062,7 +1071,16 @@ var _user$project$Main$topBar = function (model) {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Events$onClick(
 						_user$project$Main$NewUrl('/')),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: _user$project$Main$class(
+							{
+								ctor: '::',
+								_0: _user$project$AppCss$Clickable,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
 				},
 				{
 					ctor: '::',
