@@ -1,0 +1,119 @@
+.Content {
+    margin-top: 80px;
+}
+
+.NutrientLow {
+    color: #FF2020;
+}
+
+.NutrientMedium {
+    color: #FFAB2E;
+}
+
+.NutrientHigh {
+    color: #7FC7AF;
+}
+
+.NutrientFull {
+    color: #6ABE6E;
+}
+
+.RowBuffer {
+    margin-top: 1rem;
+}
+
+.NiceShadow {
+    box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.16);
+    box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.SearchResults {
+    position: absolute;
+    z-index: 200;
+    left: 0;
+    right: 0;
+}
+
+.SearchInput {
+    z-index: 0 !important;
+}
+
+.PopoverNutrient {
+    width: 100%;
+}
+
+.NutrientProgress {
+    margin-bottom: 0.5em;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.NutrientProgress:hover {
+    opacity: 1;
+    transform: scale(1.07);
+    transition: all 0.2s ease;
+}
+
+.NutrientProgress > div {
+    display: block !important;
+}
+
+.SelectedFoodHeader {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.SelectedFoodTitle {
+    float: left;
+}
+
+.ClearAll {
+    float: right;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.ClearAll:hover {
+    opacity: 1;
+    transform: scale(1.07);
+    transition: all 0.2s ease;
+}
+
+.FoodList {
+    height: 30em;
+    max-height: 30em;
+    width: 100%;
+    overflow-y: auto;
+    background-color: rgb(254, 254, 254);
+    border: 1px solid rgb(240, 240, 240);
+    border-radius: 0.25em;
+}
+
+.FoodDelete {
+    cursor: pointer;
+    margin-left: 0.5em;
+}
+
+.FoodBottomSection {
+    border-top: 1px solid rgb(232, 232, 232);
+    margin-top: 0.5em;
+    width: 100%;
+}
+
+.FoodInputs {
+    padding: 0.5em;
+    float: right;
+}
+
+.FoodInputs > input {
+    width: 4em;
+    margin-right: 0.25em;
+}
+
+.FoodContainer {
+    width: 100%;
+}
+
+.Clickable {
+    cursor: pointer;
+}

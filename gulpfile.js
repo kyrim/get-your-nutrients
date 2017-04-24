@@ -1,10 +1,13 @@
 var gulp = require('gulp');
 var elm = require('gulp-elm');
+var fs = require ('fs');
 var elmCss = require('elm-css');
 var browserify = require('browserify');
 var babel = require('babelify');
 var source = require('vinyl-source-stream');
 var plumber = require('gulp-plumber');
+
+var provisionData = require('./provisionData');
 
 var tasks = {
   elmInit: 'elm-init',
@@ -13,31 +16,28 @@ var tasks = {
   css: 'css',
   browserify: 'browserify',
   static: 'static',
-  watch: 'watch'
+  watch: 'watch',
+  buildAll: 'build-all',
+  provisionData: 'provision-data'
 }
 
 var paths = {
-  sourceJsFolder: 'web/static/js/',
-  destinationJsFolder: 'priv/static/js/',
+  sourceJsFolder: 'src/js/',
+  destinationJsFolder: 'dist/js/',
 
-  sourceAssetsFolder: 'web/static/assets/**/*.*',
-  destinationAssetsFolder: 'priv/static/',
+  sourceAssetsFolder: 'src/assets/**/*.*',
+  destinationAssetsFolder: 'dist/',
 
-  sourceElmCssFolder: 'web/elm/',
+  sourceElmCssFolder: 'src/elm/',
   sourceElmCssFile: 'Stylesheets.elm',
-  destinationElmCssFile: 'priv/static/css/',
+  destinationElmCssFile: 'dist/css/',
 
-  elmWatchPath: 'web/elm/**/*.elm',
-  elmEntryFile: 'web/elm/Main.elm',
-  elmOutputFile: 'web/static/js/Main.js',
+  elmWatchPath: 'src/elm/**/*.elm',
+  elmEntryFile: 'src/elm/Main.elm',
+  elmOutputFile: 'src/js/Main.js',
 
-  appEntryFile: 'web/static/js/app.js',
-  appOutputFile: 'app.js',
-
-  phoenixPaths: [
-    'deps/phoenix/priv/static/phoenix.js',
-    'deps/phoenix_html/priv/static/phoenix_html.js'
-  ]
+  appEntryFile: 'src/js/app.js',
+  appOutputFile: 'app.js'
 }
 
 gulp.task(tasks.elmInit, elm.init);
@@ -62,11 +62,14 @@ gulp.task(tasks.browserify, [tasks.elmCompile], function () {
 
 gulp.task(tasks.elmCssCompile, function() {
   var rootDir = process.cwd() + "/";
+  var elmcssDir = rootDir + paths.destinationElmCssFile;
+
+  if (!fs.existsSync(elmcssDir)) fs.mkdirSync(elmcssDir);
 
   return elmCss(
       rootDir,
       rootDir + paths.sourceElmCssFolder + paths.sourceElmCssFile,
-      rootDir + paths.destinationElmCssFile
+      elmcssDir
     )
 });
 
@@ -74,6 +77,12 @@ gulp.task(tasks.static, function () {
   return gulp.src(paths.sourceAssetsFolder)
     .pipe(gulp.dest(paths.destinationAssetsFolder));
 });
+
+gulp.task(tasks.provisionData, function() {
+  return provisionData('data/', 'data/');
+});
+
+gulp.task(tasks.buildAll, [tasks.static, tasks.browserify, tasks.elmCssCompile]);
 
 //==================WATCHERS=====================
 gulp.task(tasks.watch, [tasks.static, tasks.browserify, tasks.elmCssCompile], function () {
