@@ -1,35 +1,155 @@
-var fs = require('fs');
-var unzip = require('unzip');
+const fs = require('fs');
+const AdmZip = require('adm-zip');
+const baby = require('babyparse');
 
-var fileList = ['FD_GROUP.txt', 'FOOD_DES.txt', 'NUTR_DEF.txt', 'NUT_DATA.txt'];
-var temporaryFileExtension = '.out';
-var usdaDatabaseZipName = 'sr28asc.zip';
+const fileList = ['FOOD_DES.txt', 'NUTR_DEF.txt', 'NUT_DATA.txt'];
+const extraCsvFiles = ['nutrient-intake.csv'];
+const temporaryFileExtension = '.out';
+const usdaDatabaseZipName = 'sr28asc.zip';
 
+module.exports = function (sourceDataFolder, outputJsonPath) {
+    return unzipUsdaDatabaseAndGetContents(sourceDataFolder)
+        .then(addExtraCsvFiles)
+        .then(parseContents)
+        .then(createJsonFile)
+};
 
-function unzipUsdaDatabaseToTemporaryFiles(sourceDataFolder) {
-    return new Promise(function (resolve, reject) {
+// TODO: Make this not part of the string prototype, could cause external library issues
+String.prototype.replaceAll = function (find, replace) {
+    var str = this;
+    return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
+};
+
+function unzipUsdaDatabaseAndGetContents(sourceDataFolder) {
+    return new Promise((resolve, reject) => {
 
         if (!fs.existsSync(sourceDataFolder)) {
             reject("folder: " + sourceDataFolder + " does not exist");
         }
 
-        sourceDataFolder + usdaDatabaseZipName;
+        var transformedEntries = [];
 
-        fs.createReadStream(sourceDataFolder + usdaDatabaseZipName)
-            .pipe(unzip.Parse())
-            .on('entry', function (entry) {
+        var zip = new AdmZip(sourceDataFolder + usdaDatabaseZipName);
 
-                if (fileList.includes(entry.path)) {
-                    entry.pipe(fs.createWriteStream(sourceDataFolder + entry.path + temporaryFileExtension));
-                } else {
-                    entry.autodrain();
-                }
+        zip.getEntries().forEach(zipEntry => {
+            if (fileList.includes(zipEntry.entryName)) {
+                // using Pipe delimter rather than comma due to 
+                // use of commas in descriptions
+                // not using double quotes due to inches 
+                // being displayed as double quotes
+                var fileContents = zipEntry.getData().toString('utf8').replaceAll('^', '|').replaceAll('"', '').replaceAll('~', '');
 
-                resolve();
-            });
+                transformedEntries.push({
+                    name: zipEntry.entryName,
+                    delimiter: '|',
+                    header: false,
+                    content: fileContents
+                });
+            }
+        });
+
+        resolve({ transformedEntries, sourceDataFolder });
     });
 }
 
-module.exports = function (sourceDataFolder, outputJsonPath) {
-    return unzipUsdaDatabaseToTemporaryFiles(sourceDataFolder)
+function addExtraCsvFiles({ transformedEntries, sourceDataFolder }) {
+    return new Promise((resolve, reject) => {
+
+        var count = 1;
+
+        // Deep copy
+        var newEntries = transformedEntries.map(x => Object.assign({}, x));
+
+        extraCsvFiles.forEach(csvFile => {
+            fs.readFile(sourceDataFolder + csvFile, 'utf8', function (err, data) {
+                if (err) reject(err);
+                newEntries.push({
+                    name: csvFile,
+                    delimiter: ',',
+                    header: true,
+                    content: data
+                });
+                if (extraCsvFiles.length === count++) resolve(newEntries);
+            });
+        });
+    });
+}
+
+function parseContents(transformedEntries) {
+    return new Promise((resolve, reject) => {
+        var csvParsedEntries = transformedEntries.map(entry => ({
+            name: entry.name,
+            content: baby.parse(entry.content, { delimiter: entry.delimiter, header: entry.header }).data
+        }));
+
+        resolve(csvParsedEntries);
+    });
+}
+
+function parseFoodNutrients(foodNutrientsContent) {
+    var foodNutrients = {};
+    // We want to group all food nutrients by their food id
+    // so that itll be easier to access when constructing
+    // the foods.
+    foodNutrientsContent.forEach(foodNutrientContent => {
+        var foodId = foodNutrientContent[0];
+
+        if (!(foodId in foodNutrients)) foodNutrients[foodId] = [];
+
+        var amountFromCsv = foodNutrients[2];
+
+        foodNutrients[foodId].push({
+            nutrientId: foodNutrients[1],
+            // Dividing by 100 because amount is per 100 grams. It's much easier to calculate per gram.
+            amount: amountFromCsv || (parseFloat(amountFromCsv) / 100)
+        })
+    });
+
+    return foodNutrients;
+}
+
+function parseFoods(foodsContent, foodNutrientsContent) {
+
+    var foodNutrients = parseFoodNutrients(foodNutrientsContent);
+    var foods = [];
+    
+    foodsContent.forEach(foodContent => {
+    
+        if (!foodContent[2]) return;
+
+        foods.push({
+            id: foodContent[0],
+            name: foodContent[2],
+            foodNutrients: foodNutrients[foodContent[0]] || []
+        });
+    });
+
+    return foods;
+}
+
+function createJsonFile(csvParsedEntries) {
+    return new Promise((resolve, reject) => {
+        var jsonFile = {};
+
+        var foodsContent = [];
+        var foodNutrientsContent = []
+        var nutrientsContent = [];
+        var nutrientIntakesContent = [];
+
+        // This seems a bit gross, should probably pass it in from the top as a
+        // object dictionary.
+        csvParsedEntries.forEach(entry => {
+            if (entry.name === 'FOOD_DES.txt') foodsContent = entry.content;
+            if (entry.name === 'NUT_DATA.txt') foodNutrientsContent = entry.content;
+            if (entry.name === 'NUTR_DEF.txt') nutrientsContent = entry.content;
+            if (entry.name === 'nutrient-intake.csv') nutrientIntakesContent = entry.content;
+        });
+
+        var jsonFile = {
+            foods: parseFoods(foodsContent, foodNutrientsContent)
+            //nutrients: parseNutrients(nutrientsContent, nutrientIntakesContent),
+        }
+        console.log(jsonFile);
+        resolve(jsonFile);
+    });
 };
