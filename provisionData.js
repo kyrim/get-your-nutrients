@@ -1,6 +1,7 @@
 const fs = require('fs');
 const AdmZip = require('adm-zip');
 const baby = require('babyparse');
+const _ = require('lodash');
 
 const fileList = ['FOOD_DES.txt', 'NUTR_DEF.txt', 'NUT_DATA.txt'];
 const extraCsvFiles = ['nutrient-intake.csv'];
@@ -12,9 +13,11 @@ module.exports = function (sourceDataFolder, outputJsonPath) {
         .then(addExtraCsvFiles)
         .then(parseContents)
         .then(createJsonFile)
+        .then(outputJsonFile(outputJsonPath))
 };
 
-// TODO: Make this not part of the string prototype, could cause external library issues
+// TODO: Make this not part of the string prototype, 
+// could cause external library issues
 String.prototype.replaceAll = function (find, replace) {
     var str = this;
     return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
@@ -79,7 +82,11 @@ function parseContents(transformedEntries) {
     return new Promise((resolve, reject) => {
         var csvParsedEntries = transformedEntries.map(entry => ({
             name: entry.name,
-            content: baby.parse(entry.content, { delimiter: entry.delimiter, header: entry.header }).data
+            content: baby.parse(entry.content,
+                {
+                    delimiter: entry.delimiter,
+                    header: entry.header
+                }).data
         }));
 
         resolve(csvParsedEntries);
@@ -96,12 +103,14 @@ function parseFoodNutrients(foodNutrientsContent) {
 
         if (!(foodId in foodNutrients)) foodNutrients[foodId] = [];
 
-        var amountFromCsv = foodNutrients[2];
+        var amountFromCsv = parseFloat(foodNutrientContent[2]) / 100;
+        if (amountFromCsv === 0) return;
 
         foodNutrients[foodId].push({
-            nutrientId: foodNutrients[1],
-            // Dividing by 100 because amount is per 100 grams. It's much easier to calculate per gram.
-            amount: amountFromCsv || (parseFloat(amountFromCsv) / 100)
+            nutrientId: foodNutrientContent[1],
+            // Dividing by 100 because amount is per 100 grams. 
+            // It's much easier to calculate per gram.
+            amount: amountFromCsv
         })
     });
 
@@ -112,9 +121,9 @@ function parseFoods(foodsContent, foodNutrientsContent) {
 
     var foodNutrients = parseFoodNutrients(foodNutrientsContent);
     var foods = [];
-    
+
     foodsContent.forEach(foodContent => {
-    
+
         if (!foodContent[2]) return;
 
         foods.push({
@@ -125,6 +134,36 @@ function parseFoods(foodsContent, foodNutrientsContent) {
     });
 
     return foods;
+}
+
+function parseNullableFloat(str) {
+    if (!str) return null;
+    return parseFloat(str);
+}
+
+function parseNutrients(nutrientsContent, nutrientIntakesContent) {
+    let nutrientIntakes = nutrientIntakesContent.map(nutrientIntake => ({
+        id: nutrientIntake['nutrient_id'],
+        description: nutrientIntake['description'],
+        dailyIntake: parseNullableFloat(nutrientIntake['daily_intake']),
+        lowIntakeAmount: parseNullableFloat(nutrientIntake['low_intake_amount']),
+        lowIntakeDescription: nutrientIntake['low_intake_description'],
+        highIntakeAmount: parseNullableFloat(nutrientIntake['high_intake_amount']),
+        highIntakeDescription: nutrientIntake['high_intake_description'],
+        nutrientType: nutrientIntake['type']
+    }));
+
+    let nutrientsByNutrientId = _.keyBy(nutrientsContent, x => x[0]);
+
+    nutrientIntakes.forEach(nutrientIntake => {
+        let nutrient = nutrientsByNutrientId[nutrientIntake.id];
+        if (!nutrient) return;
+
+        nutrientIntake['unitOfMeasure'] = nutrient[1];
+        nutrientIntake['name'] = nutrient[3];
+    });
+
+    return _.filter(nutrientIntakes, x => !!x.id);
 }
 
 function createJsonFile(csvParsedEntries) {
@@ -146,10 +185,17 @@ function createJsonFile(csvParsedEntries) {
         });
 
         var jsonFile = {
-            foods: parseFoods(foodsContent, foodNutrientsContent)
-            //nutrients: parseNutrients(nutrientsContent, nutrientIntakesContent),
-        }
-        console.log(jsonFile);
+            foods: parseFoods(foodsContent, foodNutrientsContent),
+            nutrients: parseNutrients(nutrientsContent, nutrientIntakesContent),
+        };
+
         resolve(jsonFile);
     });
 };
+
+function outputJsonFile(outputJsonPath) {
+    return jsonFile => new Promise((resolve, reject) => {
+        var json = JSON.stringify(jsonFile);
+        fs.writeFile(outputJsonPath, json, 'utf8', 4);
+    });
+}

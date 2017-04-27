@@ -79,7 +79,7 @@ gulp.task(tasks.static, function () {
 });
 
 gulp.task(tasks.provisionData, function() {
-  return provisionData('data/', 'data/');
+  return provisionData('data/', 'src/js/data.json');
 });
 
 gulp.task(tasks.buildAll, [tasks.static, tasks.browserify, tasks.elmCssCompile]);
