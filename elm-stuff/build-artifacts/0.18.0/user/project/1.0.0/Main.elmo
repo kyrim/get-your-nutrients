@@ -625,7 +625,8 @@ var _user$project$Main$update = F2(
 								A2(
 									_elm_lang$core$Dict$remove,
 									_p15._0,
-									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
+									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods))),
+							hoverItem: _user$project$Main$NothingHovered
 						}),
 					{ctor: '[]'});
 			case 'Hover':

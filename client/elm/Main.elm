@@ -552,6 +552,7 @@ update message model =
         RemoveFood foodId ->
             { model
                 | selectedFoods = model.selectedFoods |> emptyDictIfNotLoaded |> Dict.remove foodId |> Loaded
+                , hoverItem = NothingHovered
             }
                 ! []
 
