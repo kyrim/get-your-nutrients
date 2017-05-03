@@ -22863,6 +22863,10 @@ var _user$project$Food_Models$Food = F5(
 	function (a, b, c, d, e) {
 		return {id: a, name: b, amount: c, quantity: d, nutrients: e};
 	});
+var _user$project$Food_Models$SearchedFood = F2(
+	function (a, b) {
+		return {id: a, name: b};
+	});
 var _user$project$Food_Models$FoodFlag = F3(
 	function (a, b, c) {
 		return {id: a, name: b, nutrients: c};
@@ -23447,82 +23451,6 @@ var _user$project$Nutrient_Models$nutrientFlagToNutrient = function (nutrientFla
 	return {id: nutrientFlag.id, name: nutrientFlag.name, description: nutrientFlag.description, amount: 0, hoveredAmount: 0, dailyIntake: nutrientFlag.dailyIntake, lowIntakeAmount: nutrientFlag.lowIntakeAmount, lowIntakeDescription: nutrientFlag.lowIntakeDescription, highIntakeAmount: nutrientFlag.highIntakeAmount, highIntakeDescription: nutrientFlag.highIntakeDescription, unitOfMeasure: nutrientFlag.unitOfMeasure, nutrientType: nutrientType};
 };
 
-var _user$project$Nutrient_Api$stringToNutrientType = function (str) {
-	var _p0 = str;
-	switch (_p0) {
-		case 'Vitamin':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Nutrient_Models$Vitamin);
-		case 'Mineral':
-			return _elm_lang$core$Json_Decode$succeed(_user$project$Nutrient_Models$Mineral);
-		default:
-			return _elm_lang$core$Json_Decode$fail(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'Value ',
-					A2(_elm_lang$core$Basics_ops['++'], str, 'Is not a nutrient')));
-	}
-};
-var _user$project$Nutrient_Api$decodeNutrientType = A2(_elm_lang$core$Json_Decode$andThen, _user$project$Nutrient_Api$stringToNutrientType, _elm_lang$core$Json_Decode$string);
-var _user$project$Nutrient_Api$decodeNutrient = A3(
-	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-	'nutrientType',
-	_user$project$Nutrient_Api$decodeNutrientType,
-	A3(
-		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-		'unitOfMeasure',
-		_elm_lang$core$Json_Decode$string,
-		A3(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-			'highIntakeDescription',
-			_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
-			A3(
-				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'highIntakeAmount',
-				_elm_lang$core$Json_Decode$nullable(_user$project$Helpers$stringFloatDecoder),
-				A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'lowIntakeDescription',
-					_elm_lang$core$Json_Decode$nullable(_elm_lang$core$Json_Decode$string),
-					A3(
-						_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-						'lowIntakeAmount',
-						_elm_lang$core$Json_Decode$nullable(_user$project$Helpers$stringFloatDecoder),
-						A3(
-							_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-							'dailyIntake',
-							_user$project$Helpers$stringFloatDecoder,
-							A4(
-								_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-								'hoveredAmount',
-								_elm_lang$core$Json_Decode$float,
-								0,
-								A4(
-									_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-									'amount',
-									_elm_lang$core$Json_Decode$float,
-									0,
-									A3(
-										_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-										'description',
-										_elm_lang$core$Json_Decode$string,
-										A3(
-											_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-											'name',
-											_elm_lang$core$Json_Decode$string,
-											A3(
-												_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-												'id',
-												_elm_lang$core$Json_Decode$string,
-												_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Nutrient_Models$Nutrient)))))))))))));
-var _user$project$Nutrient_Api$getAllNutrients = function (msg) {
-	var url = 'api/nutrient/';
-	var request = A2(
-		_elm_lang$http$Http$get,
-		url,
-		_elm_lang$core$Json_Decode$list(_user$project$Nutrient_Api$decodeNutrient));
-	return A2(_elm_lang$http$Http$send, msg, request);
-};
-
 var _user$project$Nutrient_View$getPercentageColour = function (percentage) {
 	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? _user$project$AppCss$nutrientLow : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? _user$project$AppCss$nutrientMedium : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? _user$project$AppCss$nutrientHigh : _user$project$AppCss$nutrientFull));
 };
@@ -23830,7 +23758,7 @@ var _user$project$Main$aboutPage = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is an application designed to help identify nutrients in certain foods,\n                        in an simple, easy and readable way. It has the aim is to provide insight in the lacking\n                        or abundance of Vitamins and Minerals in a person\'s diet and their effects.\n                         '),
+										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is designed to help identify nutrients in certain foods,\n                        in an simple, easy and readable way. It has the aim is to provide insight in the lacking\n                        or abundance of Vitamins and Minerals in a person\'s diet and their effects.\n                         '),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -24099,9 +24027,7 @@ var _user$project$Main$Model = function (a) {
 								return function (i) {
 									return function (j) {
 										return function (k) {
-											return function (l) {
-												return {navbarState: a, searchText: b, nutrients: c, nutrientPopovers: d, selectedFoods: e, foods: f, potentialFoods: g, recommendedFoods: h, hoverItem: i, connectionModalState: j, loadingPotentialFoods: k, history: l};
-											};
+											return {navbarState: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, foods: e, potentialFoods: f, recommendedFoods: g, hoverItem: h, connectionModalState: i, loadingPotentialFoods: j, history: k};
 										};
 									};
 								};
@@ -24169,9 +24095,6 @@ var _user$project$Main$foodRowConfig = {
 	onRemove: _user$project$Main$RemoveFood,
 	onQuantityChange: _user$project$Main$UpdateFoodQuantity,
 	onAmountChange: _user$project$Main$UpdateFoodAmount
-};
-var _user$project$Main$GotNutrients = function (a) {
-	return {ctor: 'GotNutrients', _0: a};
 };
 var _user$project$Main$FoundRecommendedFoods = function (a) {
 	return {ctor: 'FoundRecommendedFoods', _0: a};
@@ -24253,10 +24176,11 @@ var _user$project$Main$update = F2(
 						model,
 						{
 							potentialFoods: _user$project$Connection_Models$Loaded(
-								A2(
+								A3(
+									_elm_lang$core$Basics$flip,
 									_elm_lang$core$List$filterMap,
-									A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.foods),
-									_p15._0))
+									_p15._0,
+									A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.foods)))
 						}),
 					{ctor: '[]'});
 			case 'SelectFood':
@@ -24316,25 +24240,6 @@ var _user$project$Main$update = F2(
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						model,
-						{ctor: '[]'});
-				}
-			case 'GotNutrients':
-				if (_p15._0.ctor === 'Err') {
-					return _user$project$Main$showConnectionError(model);
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								nutrients: _elm_lang$core$Dict$fromList(
-									A2(
-										_elm_lang$core$List$map,
-										function (n) {
-											return {ctor: '_Tuple2', _0: n.id, _1: n};
-										},
-										_p15._0._0))
-							}),
 						{ctor: '[]'});
 				}
 			case 'UpdateFoodQuantity':
@@ -24429,149 +24334,148 @@ var _user$project$Main$UpdateSearchText = function (a) {
 	return {ctor: 'UpdateSearchText', _0: a};
 };
 var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
-var _user$project$Main$searchBar = F2(
-	function (searchText, potentialFoods) {
-		var content = function () {
-			var _p18 = potentialFoods;
-			switch (_p18.ctor) {
-				case 'NotLoaded':
-					return {ctor: '[]'};
-				case 'Loading':
-					return {
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
-							{ctor: '[]'},
-							{
-								ctor: '::',
-								_0: _user$project$Connection_View$loadingImage,
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					};
-				default:
-					var _p19 = _p18._0;
-					return _elm_lang$core$List$isEmpty(_p19) ? {
-						ctor: '::',
-						_0: A2(
-							_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
-							{ctor: '[]'},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('No Results'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					} : A2(
-						_elm_lang$core$List$map,
-						function (food) {
-							return A2(
-								_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
-								{
-									ctor: '::',
-									_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs(
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onMouseDown(
-												_user$project$Main$SelectFood(food)),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(food.name),
-									_1: {ctor: '[]'}
-								});
-						},
-						_p19);
-			}
-		}();
-		return A2(
-			_elm_lang$html$Html$div,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
-					A2(
-						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$attrs,
+var _user$project$Main$searchBar = function (potentialFoods) {
+	var content = function () {
+		var _p18 = potentialFoods;
+		switch (_p18.ctor) {
+			case 'NotLoaded':
+				return {ctor: '[]'};
+			case 'Loading':
+				return {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
+						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _user$project$Main$class(
-								{
-									ctor: '::',
-									_0: _user$project$AppCss$NiceShadow,
-									_1: {ctor: '[]'}
-								}),
+							_0: _user$project$Connection_View$loadingImage,
 							_1: {ctor: '[]'}
-						},
-						A2(
-							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
+						}),
+					_1: {ctor: '[]'}
+				};
+			default:
+				var _p19 = _p18._0;
+				return _elm_lang$core$List$isEmpty(_p19) ? {
+					ctor: '::',
+					_0: A2(
+						_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('No Results'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				} : A2(
+					_elm_lang$core$List$map,
+					function (food) {
+						return A2(
+							_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
 							{
 								ctor: '::',
-								_0: A2(
-									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
-									{ctor: '[]'},
+								_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs(
 									{
 										ctor: '::',
-										_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$search,
+										_0: _elm_lang$html$Html_Events$onMouseDown(
+											_user$project$Main$SelectFood(food)),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
 							},
-							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$large(
-								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
-									_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
-										{
-											ctor: '::',
-											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Search for Food'),
-											_1: {
-												ctor: '::',
-												_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
-															_1: {
-																ctor: '::',
-																_0: _user$project$Main$class(
-																	{
-																		ctor: '::',
-																		_0: _user$project$AppCss$SearchInput,
-																		_1: {ctor: '[]'}
-																	}),
-																_1: {ctor: '[]'}
-															}
-														}
-													}),
-												_1: {ctor: '[]'}
-											}
-										})))))),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(food.name),
+								_1: {ctor: '[]'}
+							});
+					},
+					_p19);
+		}
+	}();
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _rundis$elm_bootstrap$Bootstrap_Form_InputGroup$view(
+				A2(
+					_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$attrs,
+					{
+						ctor: '::',
+						_0: _user$project$Main$class(
+							{
+								ctor: '::',
+								_0: _user$project$AppCss$NiceShadow,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					A2(
+						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$successors,
 						{
 							ctor: '::',
-							_0: _user$project$Main$class(
+							_0: A2(
+								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$span,
+								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _user$project$AppCss$SearchResults,
+									_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$search,
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
 						},
-						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$custom(content),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			});
-	});
+						_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$large(
+							_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$config(
+								_rundis$elm_bootstrap$Bootstrap_Form_InputGroup$text(
+									{
+										ctor: '::',
+										_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$placeholder('Search for Food'),
+										_1: {
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Form_Input$attrs(
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$UpdateSearchText),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onBlur(_user$project$Main$ClearSearch),
+														_1: {
+															ctor: '::',
+															_0: _user$project$Main$class(
+																{
+																	ctor: '::',
+																	_0: _user$project$AppCss$SearchInput,
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}
+									})))))),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _user$project$Main$class(
+							{
+								ctor: '::',
+								_0: _user$project$AppCss$SearchResults,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$custom(content),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _user$project$Main$homePage = function (model) {
 	var hoverItemFood = _user$project$Main$getFoodFromHoverItem(model.hoverItem);
 	var calculateNutrients = function (nutrients) {
@@ -24622,7 +24526,7 @@ var _user$project$Main$homePage = function (model) {
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: A2(_user$project$Main$searchBar, model.searchText, model.potentialFoods),
+								_0: _user$project$Main$searchBar(model.potentialFoods),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -24726,7 +24630,6 @@ var _user$project$Main$init = F2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			{
 				navbarState: navbarState,
-				searchText: '',
 				nutrients: _elm_lang$core$Dict$fromList(
 					A2(
 						_elm_lang$core$List$map,
@@ -24866,40 +24769,36 @@ var _user$project$Main$view = function (model) {
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _rundis$elm_bootstrap$Bootstrap_CDN$stylesheet,
+			_0: _user$project$Main$topBar(model),
 			_1: {
 				ctor: '::',
-				_0: _user$project$Main$topBar(model),
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$row,
+					{
+						ctor: '::',
+						_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
+							{
+								ctor: '::',
+								_0: _user$project$Main$class(
+									{
+										ctor: '::',
+										_0: _user$project$AppCss$Content,
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					page),
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_rundis$elm_bootstrap$Bootstrap_Grid$row,
+						_user$project$Connection_View$connectionError,
 						{
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_Grid_Row$attrs(
-								{
-									ctor: '::',
-									_0: _user$project$Main$class(
-										{
-											ctor: '::',
-											_0: _user$project$AppCss$Content,
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
+							onClose: _user$project$Main$ConnectionModal(_user$project$Connection_Models$Hide)
 						},
-						page),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_user$project$Connection_View$connectionError,
-							{
-								onClose: _user$project$Main$ConnectionModal(_user$project$Connection_Models$Hide)
-							},
-							model.connectionModalState),
-						_1: {ctor: '[]'}
-					}
+						model.connectionModalState),
+					_1: {ctor: '[]'}
 				}
 			}
 		});

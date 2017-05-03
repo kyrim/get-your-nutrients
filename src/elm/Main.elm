@@ -14,7 +14,6 @@ import UrlParser as Url exposing ((</>), s, top, parseHash)
 
 -- API Imports
 
-import Nutrient.Api exposing (..)
 import Food.Api exposing (..)
 import Food.Search exposing (..)
 
@@ -67,7 +66,6 @@ type Route
 
 type alias Model =
     { navbarState : Navbar.State
-    , searchText : String
     , nutrients :
         Dict NutrientId Nutrient
         -- Unfortunately, Elm Bootstrap requires state
@@ -100,7 +98,6 @@ type Msg
     | SelectFood Food
     | GotFood (Result Http.Error Food)
     | FoundRecommendedFoods (Result Http.Error (List Food))
-    | GotNutrients (Result Http.Error (List Nutrient))
     | UpdateFoodQuantity FoodId Int
     | UpdateFoodAmount FoodId Int
     | RemoveFood FoodId
@@ -119,7 +116,6 @@ init flags location =
             flags.foods |> List.map (\x -> foodFlagToFood x)
     in
         { navbarState = navbarState
-        , searchText = ""
         , nutrients = flags.nutrients |> List.map (\n -> ( n.id, nutrientFlagToNutrient n )) |> Dict.fromList
         , nutrientPopovers = Dict.empty
         , foods = foods |> List.map (\n -> ( n.id, n )) |> Dict.fromList
@@ -237,8 +233,8 @@ informationSection hoverItem foodDict =
             ]
 
 
-searchBar : String -> LoadState (List Food) -> Html Msg
-searchBar searchText potentialFoods =
+searchBar : LoadState (List Food) -> Html Msg
+searchBar potentialFoods =
     let
         content =
             case potentialFoods of
@@ -317,7 +313,7 @@ homePage : Model -> List (Grid.Column Msg)
 homePage model =
     let
         hoverItemFood =
-            getFoodFromHoverItem (model.hoverItem)
+            getFoodFromHoverItem model.hoverItem
 
         calculateNutrients nutrients =
             nutrients
@@ -337,7 +333,7 @@ homePage model =
     in
         [ Grid.col [ Col.xs12, Col.sm6 ]
             [ Grid.row [ rowBuffer ]
-                [ Grid.col [] [ searchBar model.searchText model.potentialFoods ] ]
+                [ Grid.col [] [ searchBar model.potentialFoods ] ]
             , Grid.row [ rowBuffer ]
                 [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
                 ]
@@ -363,7 +359,7 @@ aboutPage model =
                 [ Card.titleH4 [] [ text "About Get Your Nutrients" ]
                 , Card.text []
                     [ text """
-                        Get your nutrients is an application designed to help identify nutrients in certain foods,
+                        Get your nutrients is designed to help identify nutrients in certain foods,
                         in an simple, easy and readable way. It has the aim is to provide insight in the lacking
                         or abundance of Vitamins and Minerals in a person's diet and their effects.
                          """
@@ -412,8 +408,7 @@ view model =
     in
         Grid.container []
             -- For bootstrap
-            [ CDN.stylesheet
-            , topBar model
+            [ topBar model
             , Grid.row [ Row.attrs [ class [ AppCss.Content ] ] ] page
             , connectionError { onClose = (ConnectionModal Hide) } model.connectionModalState
             ]
@@ -528,7 +523,7 @@ update message model =
             { model | selectedFoods = NotLoaded } ! []
 
         FoundFoods foodIds ->
-            { model | potentialFoods = (Loaded (List.filterMap (flip Dict.get model.foods) foodIds)) } ! []
+            { model | potentialFoods = flip Dict.get model.foods |> flip List.filterMap foodIds |> Loaded } ! []
 
         SelectFood food ->
             { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood food.id GotFood ]
@@ -552,15 +547,6 @@ update message model =
 
         FoundRecommendedFoods (Err _) ->
             model ! []
-
-        GotNutrients (Err _) ->
-            showConnectionError model
-
-        GotNutrients (Ok nutrients) ->
-            { model
-                | nutrients = nutrients |> List.map (\n -> ( n.id, n )) |> Dict.fromList
-            }
-                ! []
 
         UpdateFoodQuantity foodId q ->
             { model
@@ -622,6 +608,7 @@ subscriptions model =
 -- Init
 
 
+main : Program Flags Model Msg
 main =
     Navigation.programWithFlags UrlChange
         { init = init

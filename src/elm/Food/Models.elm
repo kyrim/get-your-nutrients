@@ -22,6 +22,12 @@ type alias Food =
     }
 
 
+type alias SearchedFood =
+    { id : FoodId
+    , name : String
+    }
+
+
 type alias FoodFlag =
     { id : String
     , name : String
