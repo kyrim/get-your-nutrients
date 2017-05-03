@@ -16,6 +16,7 @@ import UrlParser as Url exposing ((</>), s, top, parseHash)
 
 import Nutrient.Api exposing (..)
 import Food.Api exposing (..)
+import Food.Search exposing (..)
 
 
 -- Model Imports
@@ -72,12 +73,19 @@ type alias Model =
         -- Unfortunately, Elm Bootstrap requires state
     , nutrientPopovers : Dict NutrientId Popover.State
     , selectedFoods : LoadState (Dict FoodId Food)
+    , foods : Dict FoodId Food
     , potentialFoods : LoadState (List Food)
     , recommendedFoods : LoadState (List Food)
     , hoverItem : HoverItem
     , connectionModalState : ModalState
     , loadingPotentialFoods : Bool
     , history : List (Maybe Route)
+    }
+
+
+type alias Flags =
+    { foods : List FoodFlag
+    , nutrients : List NutrientFlag
     }
 
 
@@ -88,7 +96,7 @@ type Msg
     | ClearSearch
     | UpdateSearchText String
     | ClearAllSelected
-    | FoundFoods (Result Http.Error (List Food))
+    | FoundFoods (List FoodId)
     | SelectFood Food
     | GotFood (Result Http.Error Food)
     | FoundRecommendedFoods (Result Http.Error (List Food))
@@ -101,16 +109,20 @@ type Msg
     | ConnectionModal ModalState
 
 
-init : Navigation.Location -> ( Model, Cmd Msg )
-init location =
+init : Flags -> Navigation.Location -> ( Model, Cmd Msg )
+init flags location =
     let
         ( navbarState, navbarCmd ) =
             Navbar.initialState NavbarMsg
+
+        foods =
+            flags.foods |> List.map (\x -> foodFlagToFood x)
     in
         { navbarState = navbarState
         , searchText = ""
-        , nutrients = Dict.empty
+        , nutrients = flags.nutrients |> List.map (\n -> ( n.id, nutrientFlagToNutrient n )) |> Dict.fromList
         , nutrientPopovers = Dict.empty
+        , foods = foods |> List.map (\n -> ( n.id, n )) |> Dict.fromList
         , selectedFoods = NotLoaded
         , potentialFoods = NotLoaded
         , recommendedFoods = NotLoaded
@@ -119,7 +131,7 @@ init location =
         , loadingPotentialFoods = True
         , history = [ Url.parsePath route location ]
         }
-            ! [ getAllNutrients GotNutrients, navbarCmd ]
+            ! [ navbarCmd ]
 
 
 
@@ -457,7 +469,7 @@ calculateNutrientPercentageFromFoods hoveredFoodId foods nutrients =
             nutrients
 
 
-getNutrientFoodAmountById : Int -> Food -> Float
+getNutrientFoodAmountById : NutrientId -> Food -> Float
 getNutrientFoodAmountById id food =
     food.nutrients
         |> List.filter (\fn -> fn.nutrientId == id)
@@ -505,23 +517,18 @@ update message model =
 
         UpdateSearchText text ->
             if ((text |> String.trim |> String.isEmpty) || String.length text < 3) then
-                { model | potentialFoods = NotLoaded, searchText = text } ! []
+                { model | potentialFoods = NotLoaded } ! []
             else
                 { model
-                    | searchText = text
-                    , potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods)
+                    | potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods)
                 }
-                    ! [ searchFoods text FoundFoods ]
+                    ! [ foodSearch text ]
 
         ClearAllSelected ->
             { model | selectedFoods = NotLoaded } ! []
 
-        FoundFoods (Err _) ->
-            { model | potentialFoods = NotLoaded }
-                |> showConnectionError
-
-        FoundFoods (Ok foods) ->
-            { model | potentialFoods = (Loaded foods) } ! []
+        FoundFoods foodIds ->
+            { model | potentialFoods = (Loaded (List.filterMap (flip Dict.get model.foods) foodIds)) } ! []
 
         SelectFood food ->
             { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood food.id GotFood ]
@@ -608,16 +615,15 @@ update message model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    foodSearchResults FoundFoods
 
 
 
 -- Init
 
 
-main : Program Never Model Msg
 main =
-    Navigation.program UrlChange
+    Navigation.programWithFlags UrlChange
         { init = init
         , view = view
         , update = update

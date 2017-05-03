@@ -40,7 +40,7 @@ decodeNutrientType =
 decodeNutrient : Decoder Nutrient
 decodeNutrient =
     decode Nutrient
-        |> required "id" Json.Decode.int
+        |> required "id" Json.Decode.string
         |> required "name" Json.Decode.string
         |> required "description" Json.Decode.string
         |> optional "amount" Json.Decode.float 0

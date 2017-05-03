@@ -119,7 +119,7 @@ function parseFoodNutrients(foodNutrientsContent) {
 
 function parseFoods(foodsContent, foodNutrientsContent) {
 
-    var foodNutrients = parseFoodNutrients(foodNutrientsContent);
+    var foodNutrients =  []; //parseFoodNutrients(foodNutrientsContent);
     var foods = [];
 
     foodsContent.forEach(foodContent => {
@@ -129,7 +129,7 @@ function parseFoods(foodsContent, foodNutrientsContent) {
         foods.push({
             id: foodContent[0],
             name: foodContent[2],
-            foodNutrients: foodNutrients[foodContent[0]] || []
+            nutrients: foodNutrients[foodContent[0]] || []
         });
     });
 

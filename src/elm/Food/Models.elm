@@ -1,14 +1,16 @@
 module Food.Models exposing (..)
 
+import List
+
 
 type alias FoodNutrient =
-    { nutrientId : Int
+    { nutrientId : String
     , amount : Float
     }
 
 
 type alias FoodId =
-    Int
+    String
 
 
 type alias Food =
@@ -17,4 +19,21 @@ type alias Food =
     , amount : Int
     , quantity : Int
     , nutrients : List FoodNutrient
+    }
+
+
+type alias FoodFlag =
+    { id : String
+    , name : String
+    , nutrients : List FoodNutrient
+    }
+
+
+foodFlagToFood : FoodFlag -> Food
+foodFlagToFood foodFlag =
+    { id = foodFlag.id
+    , name = foodFlag.name
+    , amount = 0
+    , quantity = 0
+    , nutrients = foodFlag.nutrients
     }

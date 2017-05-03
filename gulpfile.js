@@ -55,6 +55,9 @@ gulp.task(tasks.browserify, [tasks.elmCompile], function () {
       ignore: [paths.elmOutputFile],
       presets: ["es2015"]
     })
+    .transform({
+  global: true
+}, 'uglifyify')
     .bundle()
     .pipe(source(paths.appOutputFile))
     .pipe(gulp.dest(paths.destinationJsFolder));

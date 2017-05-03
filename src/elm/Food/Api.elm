@@ -8,23 +8,11 @@ import Json.Encode exposing (string)
 import Json.Decode.Pipeline exposing (decode, required, optional, hardcoded)
 
 
-searchFoods : String -> (Result Error (List Food) -> a) -> Cmd a
-searchFoods searchKey msg =
-    let
-        url =
-            "api/food/search/" ++ searchKey
-
-        request =
-            Http.get url (list decodeFood)
-    in
-        Http.send msg request
-
-
-getFood : Int -> (Result Error Food -> a) -> Cmd a
+getFood : String -> (Result Error Food -> a) -> Cmd a
 getFood foodId msg =
     let
         url =
-            "api/food/" ++ toString (foodId)
+            "api/food/" ++ foodId
 
         request =
             Http.get url decodeFood
@@ -41,7 +29,7 @@ getRecommendedFoods foods msg =
         foodNames =
             (List.map
                 (\food ->
-                    Json.Encode.int food.id
+                    Json.Encode.string food.id
                 )
                 foods
             )
@@ -57,14 +45,14 @@ getRecommendedFoods foods msg =
 decodeFoodNutrient : Decoder FoodNutrient
 decodeFoodNutrient =
     decode FoodNutrient
-        |> required "nutrientId" Json.Decode.int
+        |> required "nutrientId" Json.Decode.string
         |> required "amount" stringFloatDecoder
 
 
 decodeFood : Decoder Food
 decodeFood =
     decode Food
-        |> required "id" Json.Decode.int
+        |> required "id" Json.Decode.string
         |> required "name" Json.Decode.string
         |> optional "amount" Json.Decode.int 100
         |> optional "quantity" Json.Decode.int 1

@@ -5,7 +5,7 @@ var _user$project$Food_Api$decodeFoodNutrient = A3(
 	A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 		'nutrientId',
-		_elm_lang$core$Json_Decode$int,
+		_elm_lang$core$Json_Decode$string,
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Food_Models$FoodNutrient)));
 var _user$project$Food_Api$decodeFood = A3(
 	_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
@@ -28,7 +28,7 @@ var _user$project$Food_Api$decodeFood = A3(
 				A3(
 					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 					'id',
-					_elm_lang$core$Json_Decode$int,
+					_elm_lang$core$Json_Decode$string,
 					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Food_Models$Food))))));
 var _user$project$Food_Api$getRecommendedFoods = F2(
 	function (foods, msg) {
@@ -37,7 +37,7 @@ var _user$project$Food_Api$getRecommendedFoods = F2(
 				A2(
 					_elm_lang$core$List$map,
 					function (food) {
-						return _elm_lang$core$Json_Encode$int(food.id);
+						return _elm_lang$core$Json_Encode$string(food.id);
 					},
 					foods)));
 		var url = 'api/food/recommend';
@@ -50,19 +50,7 @@ var _user$project$Food_Api$getRecommendedFoods = F2(
 	});
 var _user$project$Food_Api$getFood = F2(
 	function (foodId, msg) {
-		var url = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'api/food/',
-			_elm_lang$core$Basics$toString(foodId));
+		var url = A2(_elm_lang$core$Basics_ops['++'], 'api/food/', foodId);
 		var request = A2(_elm_lang$http$Http$get, url, _user$project$Food_Api$decodeFood);
-		return A2(_elm_lang$http$Http$send, msg, request);
-	});
-var _user$project$Food_Api$searchFoods = F2(
-	function (searchKey, msg) {
-		var url = A2(_elm_lang$core$Basics_ops['++'], 'api/food/search/', searchKey);
-		var request = A2(
-			_elm_lang$http$Http$get,
-			url,
-			_elm_lang$core$Json_Decode$list(_user$project$Food_Api$decodeFood));
 		return A2(_elm_lang$http$Http$send, msg, request);
 	});

@@ -1,6 +1,3 @@
-var _user$project$Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
 var _user$project$Main$showConnectionError = function (model) {
 	return A2(
 		_elm_lang$core$Platform_Cmd_ops['!'],
@@ -393,7 +390,9 @@ var _user$project$Main$Model = function (a) {
 								return function (i) {
 									return function (j) {
 										return function (k) {
-											return {navbarState: a, searchText: b, nutrients: c, nutrientPopovers: d, selectedFoods: e, potentialFoods: f, recommendedFoods: g, hoverItem: h, connectionModalState: i, loadingPotentialFoods: j, history: k};
+											return function (l) {
+												return {navbarState: a, searchText: b, nutrients: c, nutrientPopovers: d, selectedFoods: e, foods: f, potentialFoods: g, recommendedFoods: h, hoverItem: i, connectionModalState: j, loadingPotentialFoods: k, history: l};
+											};
 										};
 									};
 								};
@@ -405,6 +404,10 @@ var _user$project$Main$Model = function (a) {
 		};
 	};
 };
+var _user$project$Main$Flags = F2(
+	function (a, b) {
+		return {foods: a, nutrients: b};
+	});
 var _user$project$Main$NothingHovered = {ctor: 'NothingHovered'};
 var _user$project$Main$Food = function (a) {
 	return {ctor: 'Food', _0: a};
@@ -467,13 +470,6 @@ var _user$project$Main$FoundRecommendedFoods = function (a) {
 var _user$project$Main$GotFood = function (a) {
 	return {ctor: 'GotFood', _0: a};
 };
-var _user$project$Main$SelectFood = function (a) {
-	return {ctor: 'SelectFood', _0: a};
-};
-var _user$project$Main$recommendedFoodRowConfig = {onClick: _user$project$Main$SelectFood};
-var _user$project$Main$FoundFoods = function (a) {
-	return {ctor: 'FoundFoods', _0: a};
-};
 var _user$project$Main$update = F2(
 	function (message, model) {
 		var _p15 = message;
@@ -520,19 +516,18 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _user$project$Connection_Models$NotLoaded, searchText: _p16}),
+						{potentialFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'}) : A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							searchText: _p16,
 							potentialFoods: _user$project$Connection_Models$Loading(
 								_user$project$Connection_Models$emptyListIfNotLoaded(model.potentialFoods))
 						}),
 					{
 						ctor: '::',
-						_0: A2(_user$project$Food_Api$searchFoods, _p16, _user$project$Main$FoundFoods),
+						_0: _user$project$Food_Search$foodSearch(_p16),
 						_1: {ctor: '[]'}
 					});
 			case 'ClearAllSelected':
@@ -543,21 +538,18 @@ var _user$project$Main$update = F2(
 						{selectedFoods: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'FoundFoods':
-				if (_p15._0.ctor === 'Err') {
-					return _user$project$Main$showConnectionError(
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{potentialFoods: _user$project$Connection_Models$NotLoaded}));
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								potentialFoods: _user$project$Connection_Models$Loaded(_p15._0._0)
-							}),
-						{ctor: '[]'});
-				}
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							potentialFoods: _user$project$Connection_Models$Loaded(
+								A2(
+									_elm_lang$core$List$filterMap,
+									A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.foods),
+									_p15._0))
+						}),
+					{ctor: '[]'});
 			case 'SelectFood':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -712,6 +704,16 @@ var _user$project$Main$update = F2(
 					{ctor: '[]'});
 		}
 	});
+var _user$project$Main$SelectFood = function (a) {
+	return {ctor: 'SelectFood', _0: a};
+};
+var _user$project$Main$recommendedFoodRowConfig = {onClick: _user$project$Main$SelectFood};
+var _user$project$Main$FoundFoods = function (a) {
+	return {ctor: 'FoundFoods', _0: a};
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _user$project$Food_Search$foodSearchResults(_user$project$Main$FoundFoods);
+};
 var _user$project$Main$ClearAllSelected = {ctor: 'ClearAllSelected'};
 var _user$project$Main$selectedFoodSectionConfig = {onClearAll: _user$project$Main$ClearAllSelected};
 var _user$project$Main$UpdateSearchText = function (a) {
@@ -1000,39 +1002,59 @@ var _user$project$Main$UrlChange = function (a) {
 var _user$project$Main$NavbarMsg = function (a) {
 	return {ctor: 'NavbarMsg', _0: a};
 };
-var _user$project$Main$init = function (location) {
-	var _p20 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavbarMsg);
-	var navbarState = _p20._0;
-	var navbarCmd = _p20._1;
-	return A2(
-		_elm_lang$core$Platform_Cmd_ops['!'],
-		{
-			navbarState: navbarState,
-			searchText: '',
-			nutrients: _elm_lang$core$Dict$empty,
-			nutrientPopovers: _elm_lang$core$Dict$empty,
-			selectedFoods: _user$project$Connection_Models$NotLoaded,
-			potentialFoods: _user$project$Connection_Models$NotLoaded,
-			recommendedFoods: _user$project$Connection_Models$NotLoaded,
-			hoverItem: _user$project$Main$NothingHovered,
-			connectionModalState: _user$project$Connection_Models$Hide,
-			loadingPotentialFoods: true,
-			history: {
-				ctor: '::',
-				_0: A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Main$route, location),
-				_1: {ctor: '[]'}
-			}
-		},
-		{
-			ctor: '::',
-			_0: _user$project$Nutrient_Api$getAllNutrients(_user$project$Main$GotNutrients),
-			_1: {
+var _user$project$Main$init = F2(
+	function (flags, location) {
+		var foods = A2(
+			_elm_lang$core$List$map,
+			function (x) {
+				return _user$project$Food_Models$foodFlagToFood(x);
+			},
+			flags.foods);
+		var _p20 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavbarMsg);
+		var navbarState = _p20._0;
+		var navbarCmd = _p20._1;
+		return A2(
+			_elm_lang$core$Platform_Cmd_ops['!'],
+			{
+				navbarState: navbarState,
+				searchText: '',
+				nutrients: _elm_lang$core$Dict$fromList(
+					A2(
+						_elm_lang$core$List$map,
+						function (n) {
+							return {
+								ctor: '_Tuple2',
+								_0: n.id,
+								_1: _user$project$Nutrient_Models$nutrientFlagToNutrient(n)
+							};
+						},
+						flags.nutrients)),
+				nutrientPopovers: _elm_lang$core$Dict$empty,
+				foods: _elm_lang$core$Dict$fromList(
+					A2(
+						_elm_lang$core$List$map,
+						function (n) {
+							return {ctor: '_Tuple2', _0: n.id, _1: n};
+						},
+						foods)),
+				selectedFoods: _user$project$Connection_Models$NotLoaded,
+				potentialFoods: _user$project$Connection_Models$NotLoaded,
+				recommendedFoods: _user$project$Connection_Models$NotLoaded,
+				hoverItem: _user$project$Main$NothingHovered,
+				connectionModalState: _user$project$Connection_Models$Hide,
+				loadingPotentialFoods: true,
+				history: {
+					ctor: '::',
+					_0: A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Main$route, location),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
 				ctor: '::',
 				_0: navbarCmd,
 				_1: {ctor: '[]'}
-			}
-		});
-};
+			});
+	});
 var _user$project$Main$topBar = function (model) {
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_Navbar$view,
@@ -1174,6 +1196,156 @@ var _user$project$Main$view = function (model) {
 		});
 };
 var _user$project$Main$main = A2(
-	_elm_lang$navigation$Navigation$program,
+	_elm_lang$navigation$Navigation$programWithFlags,
 	_user$project$Main$UrlChange,
-	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();
+	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})(
+	A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (foods) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (nutrients) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{foods: foods, nutrients: nutrients});
+				},
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'nutrients',
+					_elm_lang$core$Json_Decode$list(
+						A2(
+							_elm_lang$core$Json_Decode$andThen,
+							function (dailyIntake) {
+								return A2(
+									_elm_lang$core$Json_Decode$andThen,
+									function (description) {
+										return A2(
+											_elm_lang$core$Json_Decode$andThen,
+											function (highIntakeAmount) {
+												return A2(
+													_elm_lang$core$Json_Decode$andThen,
+													function (highIntakeDescription) {
+														return A2(
+															_elm_lang$core$Json_Decode$andThen,
+															function (id) {
+																return A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	function (lowIntakeAmount) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			function (lowIntakeDescription) {
+																				return A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					function (name) {
+																						return A2(
+																							_elm_lang$core$Json_Decode$andThen,
+																							function (nutrientType) {
+																								return A2(
+																									_elm_lang$core$Json_Decode$andThen,
+																									function (unitOfMeasure) {
+																										return _elm_lang$core$Json_Decode$succeed(
+																											{dailyIntake: dailyIntake, description: description, highIntakeAmount: highIntakeAmount, highIntakeDescription: highIntakeDescription, id: id, lowIntakeAmount: lowIntakeAmount, lowIntakeDescription: lowIntakeDescription, name: name, nutrientType: nutrientType, unitOfMeasure: unitOfMeasure});
+																									},
+																									A2(_elm_lang$core$Json_Decode$field, 'unitOfMeasure', _elm_lang$core$Json_Decode$string));
+																							},
+																							A2(_elm_lang$core$Json_Decode$field, 'nutrientType', _elm_lang$core$Json_Decode$string));
+																					},
+																					A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string));
+																			},
+																			A2(
+																				_elm_lang$core$Json_Decode$field,
+																				'lowIntakeDescription',
+																				_elm_lang$core$Json_Decode$oneOf(
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, _elm_lang$core$Json_Decode$string),
+																							_1: {ctor: '[]'}
+																						}
+																					})));
+																	},
+																	A2(
+																		_elm_lang$core$Json_Decode$field,
+																		'lowIntakeAmount',
+																		_elm_lang$core$Json_Decode$oneOf(
+																			{
+																				ctor: '::',
+																				_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																				_1: {
+																					ctor: '::',
+																					_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, _elm_lang$core$Json_Decode$float),
+																					_1: {ctor: '[]'}
+																				}
+																			})));
+															},
+															A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string));
+													},
+													A2(
+														_elm_lang$core$Json_Decode$field,
+														'highIntakeDescription',
+														_elm_lang$core$Json_Decode$oneOf(
+															{
+																ctor: '::',
+																_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																_1: {
+																	ctor: '::',
+																	_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, _elm_lang$core$Json_Decode$string),
+																	_1: {ctor: '[]'}
+																}
+															})));
+											},
+											A2(
+												_elm_lang$core$Json_Decode$field,
+												'highIntakeAmount',
+												_elm_lang$core$Json_Decode$oneOf(
+													{
+														ctor: '::',
+														_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+														_1: {
+															ctor: '::',
+															_0: A2(_elm_lang$core$Json_Decode$map, _elm_lang$core$Maybe$Just, _elm_lang$core$Json_Decode$float),
+															_1: {ctor: '[]'}
+														}
+													})));
+									},
+									A2(_elm_lang$core$Json_Decode$field, 'description', _elm_lang$core$Json_Decode$string));
+							},
+							A2(_elm_lang$core$Json_Decode$field, 'dailyIntake', _elm_lang$core$Json_Decode$float)))));
+		},
+		A2(
+			_elm_lang$core$Json_Decode$field,
+			'foods',
+			_elm_lang$core$Json_Decode$list(
+				A2(
+					_elm_lang$core$Json_Decode$andThen,
+					function (id) {
+						return A2(
+							_elm_lang$core$Json_Decode$andThen,
+							function (name) {
+								return A2(
+									_elm_lang$core$Json_Decode$andThen,
+									function (nutrients) {
+										return _elm_lang$core$Json_Decode$succeed(
+											{id: id, name: name, nutrients: nutrients});
+									},
+									A2(
+										_elm_lang$core$Json_Decode$field,
+										'nutrients',
+										_elm_lang$core$Json_Decode$list(
+											A2(
+												_elm_lang$core$Json_Decode$andThen,
+												function (amount) {
+													return A2(
+														_elm_lang$core$Json_Decode$andThen,
+														function (nutrientId) {
+															return _elm_lang$core$Json_Decode$succeed(
+																{amount: amount, nutrientId: nutrientId});
+														},
+														A2(_elm_lang$core$Json_Decode$field, 'nutrientId', _elm_lang$core$Json_Decode$string));
+												},
+												A2(_elm_lang$core$Json_Decode$field, 'amount', _elm_lang$core$Json_Decode$float)))));
+							},
+							A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string));
+					},
+					A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string))))));
