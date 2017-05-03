@@ -22,21 +22,21 @@ var tasks = {
 }
 
 var paths = {
-  sourceJsFolder: 'src/js/',
+  sourceJsFolder: 'client/js/',
   destinationJsFolder: 'dist/js/',
 
-  sourceAssetsFolder: 'src/assets/**/*.*',
+  sourceAssetsFolder: 'client/assets/**/*.*',
   destinationAssetsFolder: 'dist/',
 
-  sourceElmCssFolder: 'src/elm/',
+  sourceElmCssFolder: 'client/elm/',
   sourceElmCssFile: 'Stylesheets.elm',
   destinationElmCssFile: 'dist/css/',
 
-  elmWatchPath: 'src/elm/**/*.elm',
-  elmEntryFile: 'src/elm/Main.elm',
-  elmOutputFile: 'src/js/Main.js',
+  elmWatchPath: 'client/elm/**/*.elm',
+  elmEntryFile: 'client/elm/Main.elm',
+  elmOutputFile: 'client/js/Main.js',
 
-  appEntryFile: 'src/js/app.js',
+  appEntryFile: 'client/js/app.js',
   appOutputFile: 'app.js'
 }
 
@@ -82,7 +82,7 @@ gulp.task(tasks.static, function () {
 });
 
 gulp.task(tasks.provisionData, function() {
-  return provisionData('data/', 'src/js/data.json');
+  return provisionData('data/', 'data/foods.json', 'client/js/searchableFoods.json', 'client/js/nutrients.json');
 });
 
 gulp.task(tasks.buildAll, [tasks.static, tasks.browserify, tasks.elmCssCompile]);

@@ -8,12 +8,12 @@ const extraCsvFiles = ['nutrient-intake.csv'];
 const temporaryFileExtension = '.out';
 const usdaDatabaseZipName = 'sr28asc.zip';
 
-module.exports = function (sourceDataFolder, outputJsonPath) {
+module.exports = function (sourceDataFolder, outputFoodsJsonPath, outputSearchableFoodsJsonPath, outputNutrientsJsonPath) {
     return unzipUsdaDatabaseAndGetContents(sourceDataFolder)
         .then(addExtraCsvFiles)
         .then(parseContents)
         .then(createJsonFile)
-        .then(outputJsonFile(outputJsonPath))
+        .then(outputJsonFiles(outputFoodsJsonPath, outputSearchableFoodsJsonPath, outputNutrientsJsonPath))
 };
 
 // TODO: Make this not part of the string prototype, 
@@ -119,7 +119,7 @@ function parseFoodNutrients(foodNutrientsContent) {
 
 function parseFoods(foodsContent, foodNutrientsContent) {
 
-    var foodNutrients =  []; //parseFoodNutrients(foodNutrientsContent);
+    var foodNutrients =  parseFoodNutrients(foodNutrientsContent);
     var foods = [];
 
     foodsContent.forEach(foodContent => {
@@ -129,7 +129,7 @@ function parseFoods(foodsContent, foodNutrientsContent) {
         foods.push({
             id: foodContent[0],
             name: foodContent[2],
-           // nutrients: foodNutrients[foodContent[0]] || []
+            foodNutrients: foodNutrients[foodContent[0]] || []
         });
     });
 
@@ -184,18 +184,27 @@ function createJsonFile(csvParsedEntries) {
             if (entry.name === 'nutrient-intake.csv') nutrientIntakesContent = entry.content;
         });
 
-        var jsonFile = {
-            foods: parseFoods(foodsContent, foodNutrientsContent),
+        var foods = parseFoods(foodsContent, foodNutrientsContent);
+
+        var json = {
+            foods: foods,
+            searchableFoods: foods.map(({id, name}) => ({id, name})),
             nutrients: parseNutrients(nutrientsContent, nutrientIntakesContent),
         };
 
-        resolve(jsonFile);
+        resolve(json);
     });
 };
 
-function outputJsonFile(outputJsonPath) {
-    return jsonFile => new Promise((resolve, reject) => {
-        var json = JSON.stringify(jsonFile);
-        fs.writeFile(outputJsonPath, json, 'utf8', 4);
+function outputJsonFiles(outputFoodsJsonPath, outputSearchableFoodsJsonPath, outputNutrientsJsonPath) {
+    return jsonFile => new Promise(({resolve}, reject) => {
+
+        var foodsJson = JSON.stringify(jsonFile.foods);
+        var searchableFoodsJson = JSON.stringify(jsonFile.searchableFoods);
+        var nutrientsJson = JSON.stringify(jsonFile.nutrients);
+
+        fs.writeFile(outputFoodsJsonPath, foodsJson, 'utf8', 4);
+        fs.writeFile(outputSearchableFoodsJsonPath, searchableFoodsJson, 'utf8', 4);
+        fs.writeFile(outputNutrientsJsonPath, nutrientsJson, 'utf8', 4);
     });
 }

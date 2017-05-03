@@ -1,5 +1,6 @@
 /node_modules
 /elm-stuff
-/src/js/data.json
-/src/js/Main.js
+/client/js/searchableFoods.json
+/client/js/nutrients.json
+/client/js/Main.js
 /dist

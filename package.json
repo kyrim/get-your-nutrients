@@ -2,8 +2,8 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "brunch build --production",
-    "watch": "brunch watch --stdin"
+    "deploy": "gulp build --production",
+    "watch": "gulp watch --stdin"
   },
   "devDependencies": {
     "adm-zip": "^0.4.7",
@@ -19,5 +19,8 @@
     "lodash": "^4.17.4",
     "uglifyify": "^3.0.4",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2"
   }
 }
