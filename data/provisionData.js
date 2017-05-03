@@ -160,7 +160,7 @@ function parseNutrients(nutrientsContent, nutrientIntakesContent) {
         if (!nutrient) return;
 
         nutrientIntake['unitOfMeasure'] = nutrient[1];
-        nutrientIntake['name'] = nutrient[3];
+        nutrientIntake['name'] = nutrient[3].split(',')[0].split('(')[0];
     });
 
     return _.filter(nutrientIntakes, x => !!x.id);

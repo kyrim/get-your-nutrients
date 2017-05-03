@@ -534,11 +534,14 @@ var _user$project$Main$update = F2(
 						model,
 						{
 							foodSearchResults: _user$project$Connection_Models$Loaded(
-								A3(
-									_elm_lang$core$Basics$flip,
-									_elm_lang$core$List$filterMap,
-									_p15._0,
-									A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.searchableFoods)))
+								A2(
+									_elm_lang$core$List$take,
+									10,
+									A3(
+										_elm_lang$core$Basics$flip,
+										_elm_lang$core$List$filterMap,
+										_p15._0,
+										A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.searchableFoods))))
 						}),
 					{ctor: '[]'});
 			case 'SelectFood':

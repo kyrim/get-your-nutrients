@@ -511,7 +511,7 @@ update message model =
             { model | selectedFoods = NotLoaded } ! []
 
         FoundFoods foodIds ->
-            { model | foodSearchResults = flip Dict.get model.searchableFoods |> flip List.filterMap foodIds |> Loaded } ! []
+            { model | foodSearchResults = flip Dict.get model.searchableFoods |> flip List.filterMap foodIds |> List.take 10 |> Loaded } ! []
 
         SelectFood searchFood ->
             { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood searchFood.id GotFood ]

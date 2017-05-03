@@ -2,8 +2,8 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "gulp build --production",
-    "watch": "gulp watch --stdin"
+    "build": "gulp build-all",
+    "watch": "gulp watch"
   },
   "devDependencies": {
     "adm-zip": "^0.4.7",
@@ -21,6 +21,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "compression": "^1.6.2",
     "express": "^4.15.2"
   }
 }
