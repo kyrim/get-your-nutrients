@@ -7,7 +7,7 @@ var babel = require('babelify');
 var source = require('vinyl-source-stream');
 var plumber = require('gulp-plumber');
 
-var provisionData = require('./provisionData');
+var provisionData = require('./data/provisionData');
 
 var tasks = {
   elmInit: 'elm-init',

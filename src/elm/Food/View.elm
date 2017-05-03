@@ -25,11 +25,6 @@ type alias FoodRowConfig msg =
     }
 
 
-type alias RecommendedFoodRowConfig msg =
-    { onClick : Food -> msg
-    }
-
-
 type alias SelectedFoodSectionConfig msg =
     { onClearAll : msg
     }
@@ -127,48 +122,5 @@ selectedFoodSection { onClearAll } foodRowConfig foods =
                         ]
                     ]
                 , div [ class [ AppCss.FoodList ] ] [ ListGroup.custom selectedFoodDisplay ]
-                ]
-            ]
-
-
-recommendedFoodRow : RecommendedFoodRowConfig msg -> Food -> ListGroup.CustomItem msg
-recommendedFoodRow config food =
-    ListGroup.anchor []
-        [ div []
-            [ i []
-                []
-            , div [ onClick (config.onClick food) ] [ text food.name ]
-            ]
-        ]
-
-
-recommendedFoodSection : RecommendedFoodRowConfig msg -> LoadState (List Food) -> Html msg
-recommendedFoodSection config recommendedFoods =
-    let
-        pleaseSearchFoodText =
-            listWithOneItem (text "Please search a food above")
-
-        recommendedFoodDisplay =
-            case recommendedFoods of
-                NotLoaded ->
-                    [ pleaseSearchFoodText ]
-
-                Loading previousFoods ->
-                    [ listWithOneItem loadingImage ]
-
-                Loaded loadedFoods ->
-                    if List.isEmpty loadedFoods then
-                        [ pleaseSearchFoodText ]
-                    else
-                        List.map
-                            (recommendedFoodRow config)
-                            loadedFoods
-    in
-        Grid.row []
-            [ Grid.col []
-                [ h2 []
-                    [ text "Recommended"
-                    ]
-                , ListGroup.custom recommendedFoodDisplay
                 ]
             ]

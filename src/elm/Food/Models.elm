@@ -22,24 +22,7 @@ type alias Food =
     }
 
 
-type alias SearchedFood =
-    { id : FoodId
-    , name : String
-    }
-
-
-type alias FoodFlag =
+type alias SearchFood =
     { id : String
     , name : String
-    , nutrients : List FoodNutrient
-    }
-
-
-foodFlagToFood : FoodFlag -> Food
-foodFlagToFood foodFlag =
-    { id = foodFlag.id
-    , name = foodFlag.name
-    , amount = 0
-    , quantity = 0
-    , nutrients = foodFlag.nutrients
     }

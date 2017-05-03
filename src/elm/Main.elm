@@ -71,9 +71,8 @@ type alias Model =
         -- Unfortunately, Elm Bootstrap requires state
     , nutrientPopovers : Dict NutrientId Popover.State
     , selectedFoods : LoadState (Dict FoodId Food)
-    , foods : Dict FoodId Food
-    , potentialFoods : LoadState (List Food)
-    , recommendedFoods : LoadState (List Food)
+    , searchableFoods : Dict FoodId SearchFood
+    , foodSearchResults : LoadState (List SearchFood)
     , hoverItem : HoverItem
     , connectionModalState : ModalState
     , loadingPotentialFoods : Bool
@@ -82,7 +81,7 @@ type alias Model =
 
 
 type alias Flags =
-    { foods : List FoodFlag
+    { foods : List SearchFood
     , nutrients : List NutrientFlag
     }
 
@@ -95,9 +94,8 @@ type Msg
     | UpdateSearchText String
     | ClearAllSelected
     | FoundFoods (List FoodId)
-    | SelectFood Food
+    | SelectFood SearchFood
     | GotFood (Result Http.Error Food)
-    | FoundRecommendedFoods (Result Http.Error (List Food))
     | UpdateFoodQuantity FoodId Int
     | UpdateFoodAmount FoodId Int
     | RemoveFood FoodId
@@ -111,17 +109,13 @@ init flags location =
     let
         ( navbarState, navbarCmd ) =
             Navbar.initialState NavbarMsg
-
-        foods =
-            flags.foods |> List.map (\x -> foodFlagToFood x)
     in
         { navbarState = navbarState
         , nutrients = flags.nutrients |> List.map (\n -> ( n.id, nutrientFlagToNutrient n )) |> Dict.fromList
         , nutrientPopovers = Dict.empty
-        , foods = foods |> List.map (\n -> ( n.id, n )) |> Dict.fromList
+        , searchableFoods = flags.foods |> List.map (\n -> ( n.id, n )) |> Dict.fromList
         , selectedFoods = NotLoaded
-        , potentialFoods = NotLoaded
-        , recommendedFoods = NotLoaded
+        , foodSearchResults = NotLoaded
         , hoverItem = NothingHovered
         , connectionModalState = Hide
         , loadingPotentialFoods = True
@@ -233,7 +227,7 @@ informationSection hoverItem foodDict =
             ]
 
 
-searchBar : LoadState (List Food) -> Html Msg
+searchBar : LoadState (List SearchFood) -> Html Msg
 searchBar potentialFoods =
     let
         content =
@@ -303,12 +297,6 @@ foodRowConfig =
     }
 
 
-recommendedFoodRowConfig : RecommendedFoodRowConfig Msg
-recommendedFoodRowConfig =
-    { onClick = SelectFood
-    }
-
-
 homePage : Model -> List (Grid.Column Msg)
 homePage model =
     let
@@ -333,7 +321,7 @@ homePage model =
     in
         [ Grid.col [ Col.xs12, Col.sm6 ]
             [ Grid.row [ rowBuffer ]
-                [ Grid.col [] [ searchBar model.potentialFoods ] ]
+                [ Grid.col [] [ searchBar model.foodSearchResults ] ]
             , Grid.row [ rowBuffer ]
                 [ Grid.col [] [ selectedFoodSection selectedFoodSectionConfig foodRowConfig model.selectedFoods ]
                 ]
@@ -508,14 +496,14 @@ update message model =
             { model | navbarState = state } ! []
 
         ClearSearch ->
-            { model | potentialFoods = NotLoaded } ! []
+            { model | foodSearchResults = NotLoaded } ! []
 
         UpdateSearchText text ->
             if ((text |> String.trim |> String.isEmpty) || String.length text < 3) then
-                { model | potentialFoods = NotLoaded } ! []
+                { model | foodSearchResults = NotLoaded } ! []
             else
                 { model
-                    | potentialFoods = Loading (emptyListIfNotLoaded model.potentialFoods)
+                    | foodSearchResults = Loading (emptyListIfNotLoaded model.foodSearchResults)
                 }
                     ! [ foodSearch text ]
 
@@ -523,10 +511,10 @@ update message model =
             { model | selectedFoods = NotLoaded } ! []
 
         FoundFoods foodIds ->
-            { model | potentialFoods = flip Dict.get model.foods |> flip List.filterMap foodIds |> Loaded } ! []
+            { model | foodSearchResults = flip Dict.get model.searchableFoods |> flip List.filterMap foodIds |> Loaded } ! []
 
-        SelectFood food ->
-            { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood food.id GotFood ]
+        SelectFood searchFood ->
+            { model | selectedFoods = Loading (emptyDictIfNotLoaded model.selectedFoods) } ! [ getFood searchFood.id GotFood ]
 
         GotFood (Err _) ->
             showConnectionError model
@@ -538,15 +526,8 @@ update message model =
                         |> emptyDictIfNotLoaded
                         |> Dict.insert food.id food
                         |> Loaded
-                , recommendedFoods = Loading (emptyListIfNotLoaded model.recommendedFoods)
             }
-                ! [ getRecommendedFoods (model.selectedFoods |> emptyDictIfNotLoaded |> Dict.values) FoundRecommendedFoods ]
-
-        FoundRecommendedFoods (Ok foods) ->
-            { model | recommendedFoods = Loaded foods } ! []
-
-        FoundRecommendedFoods (Err _) ->
-            model ! []
+                ! []
 
         UpdateFoodQuantity foodId q ->
             { model

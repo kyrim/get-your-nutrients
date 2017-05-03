@@ -1,6 +1,3 @@
-var _user$project$Food_Models$foodFlagToFood = function (foodFlag) {
-	return {id: foodFlag.id, name: foodFlag.name, amount: 0, quantity: 0, nutrients: foodFlag.nutrients};
-};
 var _user$project$Food_Models$FoodNutrient = F2(
 	function (a, b) {
 		return {nutrientId: a, amount: b};
@@ -9,11 +6,7 @@ var _user$project$Food_Models$Food = F5(
 	function (a, b, c, d, e) {
 		return {id: a, name: b, amount: c, quantity: d, nutrients: e};
 	});
-var _user$project$Food_Models$SearchedFood = F2(
+var _user$project$Food_Models$SearchFood = F2(
 	function (a, b) {
 		return {id: a, name: b};
-	});
-var _user$project$Food_Models$FoodFlag = F3(
-	function (a, b, c) {
-		return {id: a, name: b, nutrients: c};
 	});

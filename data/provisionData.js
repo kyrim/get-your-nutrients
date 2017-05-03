@@ -129,7 +129,7 @@ function parseFoods(foodsContent, foodNutrientsContent) {
         foods.push({
             id: foodContent[0],
             name: foodContent[2],
-            nutrients: foodNutrients[foodContent[0]] || []
+           // nutrients: foodNutrients[foodContent[0]] || []
         });
     });
 

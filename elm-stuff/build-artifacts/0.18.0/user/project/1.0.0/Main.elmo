@@ -389,9 +389,7 @@ var _user$project$Main$Model = function (a) {
 							return function (h) {
 								return function (i) {
 									return function (j) {
-										return function (k) {
-											return {navbarState: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, foods: e, potentialFoods: f, recommendedFoods: g, hoverItem: h, connectionModalState: i, loadingPotentialFoods: j, history: k};
-										};
+										return {navbarState: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, searchableFoods: e, foodSearchResults: f, hoverItem: g, connectionModalState: h, loadingPotentialFoods: i, history: j};
 									};
 								};
 							};
@@ -459,9 +457,6 @@ var _user$project$Main$foodRowConfig = {
 	onQuantityChange: _user$project$Main$UpdateFoodQuantity,
 	onAmountChange: _user$project$Main$UpdateFoodAmount
 };
-var _user$project$Main$FoundRecommendedFoods = function (a) {
-	return {ctor: 'FoundRecommendedFoods', _0: a};
-};
 var _user$project$Main$GotFood = function (a) {
 	return {ctor: 'GotFood', _0: a};
 };
@@ -500,7 +495,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _user$project$Connection_Models$NotLoaded}),
+						{foodSearchResults: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'UpdateSearchText':
 				var _p16 = _p15._0;
@@ -511,14 +506,14 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{potentialFoods: _user$project$Connection_Models$NotLoaded}),
+						{foodSearchResults: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'}) : A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							potentialFoods: _user$project$Connection_Models$Loading(
-								_user$project$Connection_Models$emptyListIfNotLoaded(model.potentialFoods))
+							foodSearchResults: _user$project$Connection_Models$Loading(
+								_user$project$Connection_Models$emptyListIfNotLoaded(model.foodSearchResults))
 						}),
 					{
 						ctor: '::',
@@ -538,12 +533,12 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							potentialFoods: _user$project$Connection_Models$Loaded(
+							foodSearchResults: _user$project$Connection_Models$Loaded(
 								A3(
 									_elm_lang$core$Basics$flip,
 									_elm_lang$core$List$filterMap,
 									_p15._0,
-									A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.foods)))
+									A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.searchableFoods)))
 						}),
 					{ctor: '[]'});
 			case 'SelectFood':
@@ -575,34 +570,8 @@ var _user$project$Main$update = F2(
 										_elm_lang$core$Dict$insert,
 										_p17.id,
 										_p17,
-										_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods))),
-								recommendedFoods: _user$project$Connection_Models$Loading(
-									_user$project$Connection_Models$emptyListIfNotLoaded(model.recommendedFoods))
+										_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 							}),
-						{
-							ctor: '::',
-							_0: A2(
-								_user$project$Food_Api$getRecommendedFoods,
-								_elm_lang$core$Dict$values(
-									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)),
-								_user$project$Main$FoundRecommendedFoods),
-							_1: {ctor: '[]'}
-						});
-				}
-			case 'FoundRecommendedFoods':
-				if (_p15._0.ctor === 'Ok') {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{
-								recommendedFoods: _user$project$Connection_Models$Loaded(_p15._0._0)
-							}),
-						{ctor: '[]'});
-				} else {
-					return A2(
-						_elm_lang$core$Platform_Cmd_ops['!'],
-						model,
 						{ctor: '[]'});
 				}
 			case 'UpdateFoodQuantity':
@@ -684,7 +653,6 @@ var _user$project$Main$update = F2(
 var _user$project$Main$SelectFood = function (a) {
 	return {ctor: 'SelectFood', _0: a};
 };
-var _user$project$Main$recommendedFoodRowConfig = {onClick: _user$project$Main$SelectFood};
 var _user$project$Main$FoundFoods = function (a) {
 	return {ctor: 'FoundFoods', _0: a};
 };
@@ -889,7 +857,7 @@ var _user$project$Main$homePage = function (model) {
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _user$project$Main$searchBar(model.potentialFoods),
+								_0: _user$project$Main$searchBar(model.foodSearchResults),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -980,12 +948,6 @@ var _user$project$Main$NavbarMsg = function (a) {
 };
 var _user$project$Main$init = F2(
 	function (flags, location) {
-		var foods = A2(
-			_elm_lang$core$List$map,
-			function (x) {
-				return _user$project$Food_Models$foodFlagToFood(x);
-			},
-			flags.foods);
 		var _p20 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavbarMsg);
 		var navbarState = _p20._0;
 		var navbarCmd = _p20._1;
@@ -1005,16 +967,15 @@ var _user$project$Main$init = F2(
 						},
 						flags.nutrients)),
 				nutrientPopovers: _elm_lang$core$Dict$empty,
-				foods: _elm_lang$core$Dict$fromList(
+				searchableFoods: _elm_lang$core$Dict$fromList(
 					A2(
 						_elm_lang$core$List$map,
 						function (n) {
 							return {ctor: '_Tuple2', _0: n.id, _1: n};
 						},
-						foods)),
+						flags.foods)),
 				selectedFoods: _user$project$Connection_Models$NotLoaded,
-				potentialFoods: _user$project$Connection_Models$NotLoaded,
-				recommendedFoods: _user$project$Connection_Models$NotLoaded,
+				foodSearchResults: _user$project$Connection_Models$NotLoaded,
 				hoverItem: _user$project$Main$NothingHovered,
 				connectionModalState: _user$project$Connection_Models$Hide,
 				loadingPotentialFoods: true,
@@ -1294,28 +1255,8 @@ var _user$project$Main$main = A2(
 						return A2(
 							_elm_lang$core$Json_Decode$andThen,
 							function (name) {
-								return A2(
-									_elm_lang$core$Json_Decode$andThen,
-									function (nutrients) {
-										return _elm_lang$core$Json_Decode$succeed(
-											{id: id, name: name, nutrients: nutrients});
-									},
-									A2(
-										_elm_lang$core$Json_Decode$field,
-										'nutrients',
-										_elm_lang$core$Json_Decode$list(
-											A2(
-												_elm_lang$core$Json_Decode$andThen,
-												function (amount) {
-													return A2(
-														_elm_lang$core$Json_Decode$andThen,
-														function (nutrientId) {
-															return _elm_lang$core$Json_Decode$succeed(
-																{amount: amount, nutrientId: nutrientId});
-														},
-														A2(_elm_lang$core$Json_Decode$field, 'nutrientId', _elm_lang$core$Json_Decode$string));
-												},
-												A2(_elm_lang$core$Json_Decode$field, 'amount', _elm_lang$core$Json_Decode$float)))));
+								return _elm_lang$core$Json_Decode$succeed(
+									{id: id, name: name});
 							},
 							A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string));
 					},
