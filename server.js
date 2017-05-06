@@ -10,6 +10,10 @@ var foodById = _.keyBy(foods, food => food.id);
 app.use(compression())
 app.use(express.static('dist'));
 
+  app.get('*', function(req, res) {
+      res.sendfile('./dist/index.html'); // load our public/index.html file
+  });
+
 app.get('/api/food/:foodId', function (req, res) {
   res.send(foodById[req.params.foodId]);
 });
