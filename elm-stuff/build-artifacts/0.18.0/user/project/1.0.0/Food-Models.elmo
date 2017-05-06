@@ -2,9 +2,9 @@ var _user$project$Food_Models$FoodNutrient = F2(
 	function (a, b) {
 		return {nutrientId: a, amount: b};
 	});
-var _user$project$Food_Models$Food = F5(
-	function (a, b, c, d, e) {
-		return {id: a, name: b, amount: c, quantity: d, nutrients: e};
+var _user$project$Food_Models$Food = F4(
+	function (a, b, c, d) {
+		return {id: a, name: b, amount: c, nutrients: d};
 	});
 var _user$project$Food_Models$SearchFood = F2(
 	function (a, b) {

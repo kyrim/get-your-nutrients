@@ -2,6 +2,7 @@ module AppCss exposing (..)
 
 import Css exposing (..)
 import Css.Elements exposing (body, img, li, div, input)
+import Css.Colors exposing (..)
 
 
 type CssClasses
@@ -14,7 +15,9 @@ type CssClasses
     | NiceShadow
     | NutrientProgress
     | PopoverNutrient
+    | PopoverText
     | SearchInput
+    | PleaseSearchText
     | SearchResults
     | SelectedFoodHeader
     | SelectedFoodTitle
@@ -43,8 +46,12 @@ css =
         , class NiceShadow [ boxShadow4 (px 0) (px 6) (px 6) (rgba 0 0 0 0.16), boxShadow4 (px 0) (px 6) (px 6) (rgba 0 0 0 0.23) ]
         , class SearchResults [ position absolute, zIndex 200, left zero, right zero ]
         , class SearchInput [ zIndex 0 |> important ]
+        , class PleaseSearchText [ opacity (num 0.5) ]
         , class PopoverNutrient
             [ width (pct 100)
+            ]
+        , class PopoverText
+            [ fontSize (em 0.9)
             ]
         , class NutrientProgress
             [ marginBottom (em 0.5)
@@ -91,6 +98,7 @@ css =
         , class FoodDelete
             [ cursor pointer
             , marginLeft (em 0.5)
+            , color red
             ]
         , class FoodLeftSection
             [ float left

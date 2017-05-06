@@ -94,7 +94,6 @@ type Msg
     | FoundFoods (List FoodId)
     | SelectFood SearchFood
     | GotFood (Result Http.Error Food)
-    | UpdateFoodQuantity FoodId Int
     | UpdateFoodAmount FoodId Int
     | RemoveFood FoodId
     | Hover HoverItem
@@ -130,7 +129,7 @@ route : Url.Parser (Route -> a) a
 route =
     Url.oneOf
         [ Url.map Home top
-        , Url.map About (Url.s "/about")
+        , Url.map About (Url.s "about")
         ]
 
 
@@ -154,7 +153,7 @@ topBar model =
             , text "Get Your Nutrients"
             ]
         |> Navbar.items
-            [ Navbar.itemLink [ onClick (NewUrl "/about"), class [ AppCss.Clickable ] ] [ text "About" ]
+            [ Navbar.itemLink [ onClick (NewUrl "about"), class [ AppCss.Clickable ] ] [ text "About" ]
             ]
         |> Navbar.view model.navbarState
 
@@ -225,7 +224,6 @@ foodRowConfig =
     { onFocus = Hover << Food
     , onBlur = Hover NothingHovered
     , onRemove = RemoveFood
-    , onQuantityChange = UpdateFoodQuantity
     , onAmountChange = UpdateFoodAmount
     }
 
@@ -312,16 +310,16 @@ view model =
         routerMap routing =
             case routing of
                 Home ->
-                    homePage model
+                    homePage model |> Just
 
                 About ->
-                    aboutPage model
+                    aboutPage model |> Just
 
         page =
             model.history
                 |> List.head
                 |> Maybe.andThen identity
-                |> Maybe.andThen (routerMap >> Just)
+                |> Maybe.andThen routerMap
                 |> Maybe.withDefault (homePage model)
     in
         Grid.container []
@@ -381,7 +379,7 @@ getNutrientFoodAmountById : NutrientId -> Food -> Float
 getNutrientFoodAmountById id food =
     food.nutrients
         |> List.filter (\fn -> fn.nutrientId == id)
-        |> List.map (\fn -> fn.amount * toFloat food.amount * toFloat food.quantity)
+        |> List.map (\fn -> fn.amount * toFloat food.amount)
         |> List.sum
 
 
@@ -450,16 +448,6 @@ update message model =
                     model.selectedFoods
                         |> emptyDictIfNotLoaded
                         |> Dict.insert food.id food
-                        |> Loaded
-            }
-                ! []
-
-        UpdateFoodQuantity foodId q ->
-            { model
-                | selectedFoods =
-                    model.selectedFoods
-                        |> emptyDictIfNotLoaded
-                        |> Dict.update foodId (Maybe.map (\food -> { food | quantity = q }))
                         |> Loaded
             }
                 ! []

@@ -38,8 +38,16 @@
     z-index: 0 !important;
 }
 
+.PleaseSearchText {
+    opacity: 0.5;
+}
+
 .PopoverNutrient {
     width: 100%;
+}
+
+.PopoverText {
+    font-size: 0.9em;
 }
 
 .NutrientProgress {
@@ -92,6 +100,7 @@
 .FoodDelete {
     cursor: pointer;
     margin-left: 0.5em;
+    color: #FF4136;
 }
 
 .FoodLeftSection {

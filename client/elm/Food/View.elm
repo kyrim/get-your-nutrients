@@ -8,7 +8,6 @@ import Connection.Models exposing (..)
 import Connection.View exposing (..)
 import Dict exposing (..)
 import Bootstrap.Grid as Grid
-import Bootstrap.Grid.Row as Row
 import Bootstrap.ListGroup as ListGroup
 import BootstrapHelper exposing (rowBuffer)
 import AppCss
@@ -20,7 +19,6 @@ type alias FoodRowConfig msg =
     { onFocus : FoodId -> msg
     , onBlur : msg
     , onRemove : FoodId -> msg
-    , onQuantityChange : FoodId -> Int -> msg
     , onAmountChange : FoodId -> Int -> msg
     }
 
@@ -40,7 +38,7 @@ onInputToInt food default onFunction =
 
 
 foodRow : FoodRowConfig msg -> Food -> ListGroup.CustomItem msg
-foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
+foodRow { onFocus, onBlur, onRemove, onAmountChange } food =
     ListGroup.anchor [ ListGroup.attrs [ class [ AppCss.FoodRow ] ] ]
         [ div
             [ onMouseOver (onFocus food.id)
@@ -52,17 +50,6 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
                 [ class [ AppCss.FoodRightSection ] ]
                 [ div [ class [ AppCss.FoodInputs ] ]
                     [ input
-                        [ type_ "number"
-                        , Html.Attributes.min "1"
-                        , class [ AppCss.QuantityFoodInput ]
-                        , value (food.quantity |> toString)
-                        , onInput (onInputToInt food.id 1 onQuantityChange)
-                        ]
-                        []
-                    , span
-                        []
-                        [ text "x" ]
-                    , input
                         [ type_ "number"
                         , Html.Attributes.min "1"
                         , class [ AppCss.AmountFoodInput ]
@@ -92,7 +79,11 @@ selectedFoodSection : SelectedFoodSectionConfig msg -> FoodRowConfig msg -> Load
 selectedFoodSection { onClearAll } foodRowConfig foods =
     let
         pleaseSearchFoodText =
-            listWithOneItem (text "Please search for a food above")
+            ListGroup.anchor
+                [ ListGroup.disabled
+                , ListGroup.attrs [ class [ AppCss.PleaseSearchText ] ]
+                ]
+                [ text "Please search for a food above" ]
 
         selectedFoodDisplay =
             case foods of

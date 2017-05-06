@@ -132,17 +132,17 @@ var _user$project$Food_View$foodRow = F2(
 															_0: _user$project$Food_View$class(
 																{
 																	ctor: '::',
-																	_0: _user$project$AppCss$QuantityFoodInput,
+																	_0: _user$project$AppCss$AmountFoodInput,
 																	_1: {ctor: '[]'}
 																}),
 															_1: {
 																ctor: '::',
 																_0: _elm_lang$html$Html_Attributes$value(
-																	_elm_lang$core$Basics$toString(food.quantity)),
+																	_elm_lang$core$Basics$toString(food.amount)),
 																_1: {
 																	ctor: '::',
 																	_0: _elm_lang$html$Html_Events$onInput(
-																		A3(_user$project$Food_View$onInputToInt, food.id, 1, _p2.onQuantityChange)),
+																		A3(_user$project$Food_View$onInputToInt, food.id, 100, _p2.onAmountChange)),
 																	_1: {ctor: '[]'}
 																}
 															}
@@ -157,86 +157,41 @@ var _user$project$Food_View$foodRow = F2(
 													{ctor: '[]'},
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html$text('x'),
+														_0: _elm_lang$html$Html$text('g'),
 														_1: {ctor: '[]'}
 													}),
 												_1: {
 													ctor: '::',
 													_0: A2(
-														_elm_lang$html$Html$input,
+														_elm_lang$html$Html$a,
+														{ctor: '[]'},
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('number'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$min('1'),
-																_1: {
-																	ctor: '::',
-																	_0: _user$project$Food_View$class(
-																		{
-																			ctor: '::',
-																			_0: _user$project$AppCss$AmountFoodInput,
-																			_1: {ctor: '[]'}
-																		}),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$value(
-																			_elm_lang$core$Basics$toString(food.amount)),
-																		_1: {
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onInput(
-																				A3(_user$project$Food_View$onInputToInt, food.id, 100, _p2.onAmountChange)),
-																			_1: {ctor: '[]'}
-																		}
-																	}
-																}
-															}
-														},
-														{ctor: '[]'}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$span,
-															{ctor: '[]'},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text('g'),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$a,
-																{ctor: '[]'},
+																_elm_lang$html$Html$i,
 																{
 																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$i,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onClick(
-																				_p2.onRemove(food.id)),
-																			_1: {
+																	_0: _elm_lang$html$Html_Events$onClick(
+																		_p2.onRemove(food.id)),
+																	_1: {
+																		ctor: '::',
+																		_0: _user$project$Food_View$class(
+																			{
 																				ctor: '::',
-																				_0: _user$project$Food_View$class(
-																					{
-																						ctor: '::',
-																						_0: _user$project$AppCss$FoodDelete,
-																						_1: {ctor: '[]'}
-																					}),
+																				_0: _user$project$AppCss$FoodDelete,
 																				_1: {ctor: '[]'}
-																			}
-																		},
-																		{
-																			ctor: '::',
-																			_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$times,
-																			_1: {ctor: '[]'}
-																		}),
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$times,
 																	_1: {ctor: '[]'}
 																}),
 															_1: {ctor: '[]'}
-														}
-													}
+														}),
+													_1: {ctor: '[]'}
 												}
 											}
 										}),
@@ -251,8 +206,32 @@ var _user$project$Food_View$foodRow = F2(
 var _user$project$Food_View$selectedFoodSection = F3(
 	function (_p3, foodRowConfig, foods) {
 		var _p4 = _p3;
-		var pleaseSearchFoodText = _user$project$Food_View$listWithOneItem(
-			_elm_lang$html$Html$text('Please search for a food above'));
+		var pleaseSearchFoodText = A2(
+			_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$disabled,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs(
+						{
+							ctor: '::',
+							_0: _user$project$Food_View$class(
+								{
+									ctor: '::',
+									_0: _user$project$AppCss$PleaseSearchText,
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Please search for a food above'),
+				_1: {ctor: '[]'}
+			});
 		var selectedFoodDisplay = function () {
 			var _p5 = foods;
 			switch (_p5.ctor) {
@@ -383,9 +362,9 @@ var _user$project$Food_View$selectedFoodSection = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Food_View$FoodRowConfig = F5(
-	function (a, b, c, d, e) {
-		return {onFocus: a, onBlur: b, onRemove: c, onQuantityChange: d, onAmountChange: e};
+var _user$project$Food_View$FoodRowConfig = F4(
+	function (a, b, c, d) {
+		return {onFocus: a, onBlur: b, onRemove: c, onAmountChange: d};
 	});
 var _user$project$Food_View$SelectedFoodSectionConfig = function (a) {
 	return {onClearAll: a};

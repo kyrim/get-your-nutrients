@@ -17,7 +17,6 @@ type alias Food =
     { id : FoodId
     , name : String
     , amount : Int
-    , quantity : Int
     , nutrients : List FoodNutrient
     }
 

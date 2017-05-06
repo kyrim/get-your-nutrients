@@ -19,7 +19,10 @@ searchableFoods.forEach(food => index.addDoc(food));
 
   app.ports.foodSearch.subscribe(
     searchText => {
-      var searchResults = index.search(searchText);
+      var searchResults = index.search(searchText, { fields:{
+        name: {boost: 1}
+      }
+  });
       var foodIds = searchResults.map(result => result.ref);
       app.ports.foodSearchResults.send(foodIds);
     }

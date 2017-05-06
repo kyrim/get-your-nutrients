@@ -33,5 +33,4 @@ decodeFood =
         |> required "id" Json.Decode.string
         |> required "name" Json.Decode.string
         |> optional "amount" Json.Decode.int 100
-        |> optional "quantity" Json.Decode.int 1
         |> required "foodNutrients" (list decodeFoodNutrient)

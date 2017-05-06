@@ -13,23 +13,18 @@ var _user$project$Food_Api$decodeFood = A3(
 	_elm_lang$core$Json_Decode$list(_user$project$Food_Api$decodeFoodNutrient),
 	A4(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-		'quantity',
+		'amount',
 		_elm_lang$core$Json_Decode$int,
-		1,
-		A4(
-			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$optional,
-			'amount',
-			_elm_lang$core$Json_Decode$int,
-			100,
+		100,
+		A3(
+			_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
+			'name',
+			_elm_lang$core$Json_Decode$string,
 			A3(
 				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-				'name',
+				'id',
 				_elm_lang$core$Json_Decode$string,
-				A3(
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
-					'id',
-					_elm_lang$core$Json_Decode$string,
-					_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Food_Models$Food))))));
+				_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Food_Models$Food)))));
 var _user$project$Food_Api$getFood = F2(
 	function (foodId, msg) {
 		var url = A2(_elm_lang$core$Basics_ops['++'], 'api/food/', foodId);

@@ -22,7 +22,7 @@ var _user$project$Main$getNutrientFoodAmountById = F2(
 			A2(
 				_elm_lang$core$List$map,
 				function (fn) {
-					return (fn.amount * _elm_lang$core$Basics$toFloat(food.amount)) * _elm_lang$core$Basics$toFloat(food.quantity);
+					return fn.amount * _elm_lang$core$Basics$toFloat(food.amount);
 				},
 				A2(
 					_elm_lang$core$List$filter,
@@ -294,7 +294,7 @@ var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
 			_0: A2(
 				_evancz$url_parser$UrlParser$map,
 				_user$project$Main$About,
-				_evancz$url_parser$UrlParser$s('/about')),
+				_evancz$url_parser$UrlParser$s('about')),
 			_1: {ctor: '[]'}
 		}
 	});
@@ -315,10 +315,6 @@ var _user$project$Main$UpdateFoodAmount = F2(
 	function (a, b) {
 		return {ctor: 'UpdateFoodAmount', _0: a, _1: b};
 	});
-var _user$project$Main$UpdateFoodQuantity = F2(
-	function (a, b) {
-		return {ctor: 'UpdateFoodQuantity', _0: a, _1: b};
-	});
 var _user$project$Main$foodRowConfig = {
 	onFocus: function (_p4) {
 		return _user$project$Main$Hover(
@@ -326,7 +322,6 @@ var _user$project$Main$foodRowConfig = {
 	},
 	onBlur: _user$project$Main$Hover(_user$project$Main$NothingHovered),
 	onRemove: _user$project$Main$RemoveFood,
-	onQuantityChange: _user$project$Main$UpdateFoodQuantity,
 	onAmountChange: _user$project$Main$UpdateFoodAmount
 };
 var _user$project$Main$GotFood = function (a) {
@@ -449,25 +444,6 @@ var _user$project$Main$update = F2(
 							}),
 						{ctor: '[]'});
 				}
-			case 'UpdateFoodQuantity':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{
-							selectedFoods: _user$project$Connection_Models$Loaded(
-								A3(
-									_elm_lang$core$Dict$update,
-									_p5._0,
-									_elm_lang$core$Maybe$map(
-										function (food) {
-											return _elm_lang$core$Native_Utils.update(
-												food,
-												{quantity: _p5._1});
-										}),
-									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
-						}),
-					{ctor: '[]'});
 			case 'UpdateFoodAmount':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -880,7 +856,7 @@ var _user$project$Main$topBar = function (model) {
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Events$onClick(
-							_user$project$Main$NewUrl('/about')),
+							_user$project$Main$NewUrl('about')),
 						_1: {
 							ctor: '::',
 							_0: _user$project$Main$class(
@@ -949,9 +925,11 @@ var _user$project$Main$view = function (model) {
 	var routerMap = function (routing) {
 		var _p11 = routing;
 		if (_p11.ctor === 'Home') {
-			return _user$project$Main$homePage(model);
+			return _elm_lang$core$Maybe$Just(
+				_user$project$Main$homePage(model));
 		} else {
-			return _user$project$Main$aboutPage(model);
+			return _elm_lang$core$Maybe$Just(
+				_user$project$Main$aboutPage(model));
 		}
 	};
 	var page = A2(
@@ -959,10 +937,7 @@ var _user$project$Main$view = function (model) {
 		_user$project$Main$homePage(model),
 		A2(
 			_elm_lang$core$Maybe$andThen,
-			function (_p12) {
-				return _elm_lang$core$Maybe$Just(
-					routerMap(_p12));
-			},
+			routerMap,
 			A2(
 				_elm_lang$core$Maybe$andThen,
 				_elm_lang$core$Basics$identity,

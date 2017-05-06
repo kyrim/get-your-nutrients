@@ -85,7 +85,8 @@ function parseContents(transformedEntries) {
             content: baby.parse(entry.content,
                 {
                     delimiter: entry.delimiter,
-                    header: entry.header
+                    header: entry.header,
+                    encoding: 'CP1253'
                 }).data
         }));
 
@@ -159,7 +160,8 @@ function parseNutrients(nutrientsContent, nutrientIntakesContent) {
         let nutrient = nutrientsByNutrientId[nutrientIntake.id];
         if (!nutrient) return;
 
-        nutrientIntake['unitOfMeasure'] = nutrient[1];
+        // Encoding doesn't seem to fix the weird symbols, so manually
+        nutrientIntake['unitOfMeasure'] = nutrient[1].replace("�", "μ");
         nutrientIntake['name'] = nutrient[3].split(',')[0].split('(')[0];
     });
 
