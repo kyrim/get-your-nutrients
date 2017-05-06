@@ -1,40 +1,3 @@
-var _user$project$Food_View$recommendedFoodRow = F2(
-	function (config, food) {
-		return A2(
-			_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$i,
-							{ctor: '[]'},
-							{ctor: '[]'}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$div,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onClick(
-										config.onClick(food)),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(food.name),
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {ctor: '[]'}
-			});
-	});
 var _user$project$Food_View$listWithOneItem = function (item) {
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
@@ -49,64 +12,6 @@ var _user$project$Food_View$listWithOneItem = function (item) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Food_View$recommendedFoodSection = F2(
-	function (config, recommendedFoods) {
-		var pleaseSearchFoodText = _user$project$Food_View$listWithOneItem(
-			_elm_lang$html$Html$text('Please search a food above'));
-		var recommendedFoodDisplay = function () {
-			var _p0 = recommendedFoods;
-			switch (_p0.ctor) {
-				case 'NotLoaded':
-					return {
-						ctor: '::',
-						_0: pleaseSearchFoodText,
-						_1: {ctor: '[]'}
-					};
-				case 'Loading':
-					return {
-						ctor: '::',
-						_0: _user$project$Food_View$listWithOneItem(_user$project$Connection_View$loadingImage),
-						_1: {ctor: '[]'}
-					};
-				default:
-					var _p1 = _p0._0;
-					return _elm_lang$core$List$isEmpty(_p1) ? {
-						ctor: '::',
-						_0: pleaseSearchFoodText,
-						_1: {ctor: '[]'}
-					} : A2(
-						_elm_lang$core$List$map,
-						_user$project$Food_View$recommendedFoodRow(config),
-						_p1);
-			}
-		}();
-		return A2(
-			_rundis$elm_bootstrap$Bootstrap_Grid$row,
-			{ctor: '[]'},
-			{
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$h2,
-							{ctor: '[]'},
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html$text('Recommended'),
-								_1: {ctor: '[]'}
-							}),
-						_1: {
-							ctor: '::',
-							_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$custom(recommendedFoodDisplay),
-							_1: {ctor: '[]'}
-						}
-					}),
-				_1: {ctor: '[]'}
-			});
-	});
 var _user$project$Food_View$onInputToInt = F4(
 	function (food, $default, onFunction, string) {
 		return A2(
@@ -118,16 +23,30 @@ var _user$project$Food_View$onInputToInt = F4(
 				_elm_lang$core$Result$toMaybe(
 					_elm_lang$core$String$toInt(string))));
 	});
-var _user$project$Food_View$_p2 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
-var _user$project$Food_View$id = _user$project$Food_View$_p2.id;
-var _user$project$Food_View$class = _user$project$Food_View$_p2.$class;
-var _user$project$Food_View$classList = _user$project$Food_View$_p2.classList;
+var _user$project$Food_View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
+var _user$project$Food_View$id = _user$project$Food_View$_p0.id;
+var _user$project$Food_View$class = _user$project$Food_View$_p0.$class;
+var _user$project$Food_View$classList = _user$project$Food_View$_p0.classList;
 var _user$project$Food_View$foodRow = F2(
-	function (_p3, food) {
-		var _p4 = _p3;
+	function (_p1, food) {
+		var _p2 = _p1;
 		return A2(
 			_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs(
+					{
+						ctor: '::',
+						_0: _user$project$Food_View$class(
+							{
+								ctor: '::',
+								_0: _user$project$AppCss$FoodRow,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
@@ -135,10 +54,10 @@ var _user$project$Food_View$foodRow = F2(
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Events$onMouseOver(
-							_p4.onFocus(food.id)),
+							_p2.onFocus(food.id)),
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onMouseLeave(_p4.onBlur),
+							_0: _elm_lang$html$Html_Events$onMouseLeave(_p2.onBlur),
 							_1: {
 								ctor: '::',
 								_0: _user$project$Food_View$class(
@@ -155,7 +74,16 @@ var _user$project$Food_View$foodRow = F2(
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$div,
-							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _user$project$Food_View$class(
+									{
+										ctor: '::',
+										_0: _user$project$AppCss$FoodLeftSection,
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(food.name),
@@ -170,7 +98,7 @@ var _user$project$Food_View$foodRow = F2(
 									_0: _user$project$Food_View$class(
 										{
 											ctor: '::',
-											_0: _user$project$AppCss$FoodBottomSection,
+											_0: _user$project$AppCss$FoodRightSection,
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -201,13 +129,22 @@ var _user$project$Food_View$foodRow = F2(
 														_0: _elm_lang$html$Html_Attributes$min('1'),
 														_1: {
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$value(
-																_elm_lang$core$Basics$toString(food.quantity)),
+															_0: _user$project$Food_View$class(
+																{
+																	ctor: '::',
+																	_0: _user$project$AppCss$AmountFoodInput,
+																	_1: {ctor: '[]'}
+																}),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	A3(_user$project$Food_View$onInputToInt, food.id, 1, _p4.onQuantityChange)),
-																_1: {ctor: '[]'}
+																_0: _elm_lang$html$Html_Attributes$value(
+																	_elm_lang$core$Basics$toString(food.amount)),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onInput(
+																		A3(_user$project$Food_View$onInputToInt, food.id, 100, _p2.onAmountChange)),
+																	_1: {ctor: '[]'}
+																}
 															}
 														}
 													}
@@ -220,77 +157,41 @@ var _user$project$Food_View$foodRow = F2(
 													{ctor: '[]'},
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html$text('x'),
+														_0: _elm_lang$html$Html$text('g'),
 														_1: {ctor: '[]'}
 													}),
 												_1: {
 													ctor: '::',
 													_0: A2(
-														_elm_lang$html$Html$input,
+														_elm_lang$html$Html$a,
+														{ctor: '[]'},
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('number'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$min('1'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$value(
-																		_elm_lang$core$Basics$toString(food.amount)),
-																	_1: {
-																		ctor: '::',
-																		_0: _elm_lang$html$Html_Events$onInput(
-																			A3(_user$project$Food_View$onInputToInt, food.id, 100, _p4.onAmountChange)),
-																		_1: {ctor: '[]'}
-																	}
-																}
-															}
-														},
-														{ctor: '[]'}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$span,
-															{ctor: '[]'},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text('g'),
-																_1: {ctor: '[]'}
-															}),
-														_1: {
-															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$a,
-																{ctor: '[]'},
+																_elm_lang$html$Html$i,
 																{
 																	ctor: '::',
-																	_0: A2(
-																		_elm_lang$html$Html$i,
-																		{
-																			ctor: '::',
-																			_0: _elm_lang$html$Html_Events$onClick(
-																				_p4.onRemove(food.id)),
-																			_1: {
+																	_0: _elm_lang$html$Html_Events$onClick(
+																		_p2.onRemove(food.id)),
+																	_1: {
+																		ctor: '::',
+																		_0: _user$project$Food_View$class(
+																			{
 																				ctor: '::',
-																				_0: _user$project$Food_View$class(
-																					{
-																						ctor: '::',
-																						_0: _user$project$AppCss$FoodDelete,
-																						_1: {ctor: '[]'}
-																					}),
+																				_0: _user$project$AppCss$FoodDelete,
 																				_1: {ctor: '[]'}
-																			}
-																		},
-																		{
-																			ctor: '::',
-																			_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$times,
-																			_1: {ctor: '[]'}
-																		}),
+																			}),
+																		_1: {ctor: '[]'}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _Fresheyeball$elm_font_awesome$FontAwesome_Web$times,
 																	_1: {ctor: '[]'}
 																}),
 															_1: {ctor: '[]'}
-														}
-													}
+														}),
+													_1: {ctor: '[]'}
 												}
 											}
 										}),
@@ -303,13 +204,37 @@ var _user$project$Food_View$foodRow = F2(
 			});
 	});
 var _user$project$Food_View$selectedFoodSection = F3(
-	function (_p5, foodRowConfig, foods) {
-		var _p6 = _p5;
-		var pleaseSearchFoodText = _user$project$Food_View$listWithOneItem(
-			_elm_lang$html$Html$text('Please search for a food above'));
+	function (_p3, foodRowConfig, foods) {
+		var _p4 = _p3;
+		var pleaseSearchFoodText = A2(
+			_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$disabled,
+				_1: {
+					ctor: '::',
+					_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs(
+						{
+							ctor: '::',
+							_0: _user$project$Food_View$class(
+								{
+									ctor: '::',
+									_0: _user$project$AppCss$PleaseSearchText,
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Please search for a food above'),
+				_1: {ctor: '[]'}
+			});
 		var selectedFoodDisplay = function () {
-			var _p7 = foods;
-			switch (_p7.ctor) {
+			var _p5 = foods;
+			switch (_p5.ctor) {
 				case 'NotLoaded':
 					return {
 						ctor: '::',
@@ -323,15 +248,15 @@ var _user$project$Food_View$selectedFoodSection = F3(
 						_1: {ctor: '[]'}
 					};
 				default:
-					var _p8 = _p7._0;
-					return _elm_lang$core$Dict$isEmpty(_p8) ? {
+					var _p6 = _p5._0;
+					return _elm_lang$core$Dict$isEmpty(_p6) ? {
 						ctor: '::',
 						_0: pleaseSearchFoodText,
 						_1: {ctor: '[]'}
 					} : A2(
 						_elm_lang$core$List$map,
 						_user$project$Food_View$foodRow(foodRowConfig),
-						_elm_lang$core$Dict$values(_p8));
+						_elm_lang$core$Dict$values(_p6));
 			}
 		}();
 		return A2(
@@ -385,7 +310,7 @@ var _user$project$Food_View$selectedFoodSection = F3(
 										_elm_lang$html$Html$a,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onClick(_p6.onClearAll),
+											_0: _elm_lang$html$Html_Events$onClick(_p4.onClearAll),
 											_1: {
 												ctor: '::',
 												_0: _user$project$Food_View$class(
@@ -437,13 +362,10 @@ var _user$project$Food_View$selectedFoodSection = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Food_View$FoodRowConfig = F5(
-	function (a, b, c, d, e) {
-		return {onFocus: a, onBlur: b, onRemove: c, onQuantityChange: d, onAmountChange: e};
+var _user$project$Food_View$FoodRowConfig = F4(
+	function (a, b, c, d) {
+		return {onFocus: a, onBlur: b, onRemove: c, onAmountChange: d};
 	});
-var _user$project$Food_View$RecommendedFoodRowConfig = function (a) {
-	return {onClick: a};
-};
 var _user$project$Food_View$SelectedFoodSectionConfig = function (a) {
 	return {onClearAll: a};
 };

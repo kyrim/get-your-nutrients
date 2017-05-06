@@ -12,17 +12,18 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 			nutrient.name,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				' - ',
+				' (',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(nutrient.amount),
+					_elm_lang$core$Basics$toString(
+						_elm_lang$core$Basics$round(nutrient.amount)),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						' / ',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							_elm_lang$core$Basics$toString(nutrient.dailyIntake),
-							nutrient.unitOfMeasure)))));
+							A2(_elm_lang$core$Basics_ops['++'], nutrient.unitOfMeasure, ')'))))));
 		var nutrientPopover = A2(
 			_elm_lang$core$Maybe$withDefault,
 			_rundis$elm_bootstrap$Bootstrap_Popover$initialState,
@@ -56,7 +57,23 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(nutrient.description),
+							_0: A2(
+								_elm_lang$html$Html$p,
+								{
+									ctor: '::',
+									_0: _user$project$Nutrient_View$class(
+										{
+											ctor: '::',
+											_0: _user$project$AppCss$PopoverText,
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(nutrient.description),
+									_1: {ctor: '[]'}
+								}),
 							_1: {ctor: '[]'}
 						},
 						A3(

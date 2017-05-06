@@ -63,7 +63,7 @@ var _user$project$Nutrient_Api$decodeNutrient = A3(
 											A3(
 												_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 												'id',
-												_elm_lang$core$Json_Decode$int,
+												_elm_lang$core$Json_Decode$string,
 												_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode(_user$project$Nutrient_Models$Nutrient)))))))))))));
 var _user$project$Nutrient_Api$getAllNutrients = function (msg) {
 	var url = 'api/nutrient/';

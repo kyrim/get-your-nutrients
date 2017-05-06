@@ -1,10 +1,13 @@
 var gulp = require('gulp');
 var elm = require('gulp-elm');
+var fs = require ('fs');
 var elmCss = require('elm-css');
 var browserify = require('browserify');
 var babel = require('babelify');
 var source = require('vinyl-source-stream');
 var plumber = require('gulp-plumber');
+
+var provisionData = require('./data/provisionData');
 
 var tasks = {
   elmInit: 'elm-init',
@@ -13,31 +16,28 @@ var tasks = {
   css: 'css',
   browserify: 'browserify',
   static: 'static',
-  watch: 'watch'
+  watch: 'watch',
+  buildAll: 'build-all',
+  provisionData: 'provision-data'
 }
 
 var paths = {
-  sourceJsFolder: 'web/static/js/',
-  destinationJsFolder: 'priv/static/js/',
+  sourceJsFolder: 'client/js/',
+  destinationJsFolder: 'dist/js/',
 
-  sourceAssetsFolder: 'web/static/assets/**/*.*',
-  destinationAssetsFolder: 'priv/static/',
+  sourceAssetsFolder: 'client/assets/**/*.*',
+  destinationAssetsFolder: 'dist/',
 
-  sourceElmCssFolder: 'web/elm/',
+  sourceElmCssFolder: 'client/elm/',
   sourceElmCssFile: 'Stylesheets.elm',
-  destinationElmCssFile: 'priv/static/css/',
+  destinationElmCssFile: 'dist/css/',
 
-  elmWatchPath: 'web/elm/**/*.elm',
-  elmEntryFile: 'web/elm/Main.elm',
-  elmOutputFile: 'web/static/js/Main.js',
+  elmWatchPath: 'client/elm/**/*.elm',
+  elmEntryFile: 'client/elm/Main.elm',
+  elmOutputFile: 'client/js/Main.js',
 
-  appEntryFile: 'web/static/js/app.js',
-  appOutputFile: 'app.js',
-
-  phoenixPaths: [
-    'deps/phoenix/priv/static/phoenix.js',
-    'deps/phoenix_html/priv/static/phoenix_html.js'
-  ]
+  appEntryFile: 'client/js/app.js',
+  appOutputFile: 'app.js'
 }
 
 gulp.task(tasks.elmInit, elm.init);
@@ -55,6 +55,9 @@ gulp.task(tasks.browserify, [tasks.elmCompile], function () {
       ignore: [paths.elmOutputFile],
       presets: ["es2015"]
     })
+    .transform({
+  global: true
+}, 'uglifyify')
     .bundle()
     .pipe(source(paths.appOutputFile))
     .pipe(gulp.dest(paths.destinationJsFolder));
@@ -62,11 +65,14 @@ gulp.task(tasks.browserify, [tasks.elmCompile], function () {
 
 gulp.task(tasks.elmCssCompile, function() {
   var rootDir = process.cwd() + "/";
+  var elmcssDir = rootDir + paths.destinationElmCssFile;
+
+  if (!fs.existsSync(elmcssDir)) fs.mkdirSync(elmcssDir);
 
   return elmCss(
       rootDir,
       rootDir + paths.sourceElmCssFolder + paths.sourceElmCssFile,
-      rootDir + paths.destinationElmCssFile
+      elmcssDir
     )
 });
 
@@ -74,6 +80,12 @@ gulp.task(tasks.static, function () {
   return gulp.src(paths.sourceAssetsFolder)
     .pipe(gulp.dest(paths.destinationAssetsFolder));
 });
+
+gulp.task(tasks.provisionData, function() {
+  return provisionData('data/', 'data/foods.json', 'client/js/searchableFoods.json', 'client/js/nutrients.json');
+});
+
+gulp.task(tasks.buildAll, [tasks.static, tasks.browserify, tasks.elmCssCompile]);
 
 //==================WATCHERS=====================
 gulp.task(tasks.watch, [tasks.static, tasks.browserify, tasks.elmCssCompile], function () {
