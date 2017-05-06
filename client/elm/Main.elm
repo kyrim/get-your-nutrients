@@ -7,7 +7,6 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (..)
-import Helpers exposing (..)
 import Navigation
 import UrlParser as Url exposing ((</>), s, top, parseHash)
 
@@ -27,7 +26,6 @@ import Connection.Models exposing (..)
 
 -- View imports
 
-import Bootstrap.CDN as CDN
 import Bootstrap.Grid as Grid
 import Bootstrap.Grid.Col as Col
 import Bootstrap.Grid.Row as Row
@@ -75,7 +73,7 @@ type alias Model =
     , foodSearchResults : LoadState (List SearchFood)
     , hoverItem : HoverItem
     , connectionModalState : ModalState
-    , loadingPotentialFoods : Bool
+    , loadingfoodSearchResults : Bool
     , history : List (Maybe Route)
     }
 
@@ -118,7 +116,7 @@ init flags location =
         , foodSearchResults = NotLoaded
         , hoverItem = NothingHovered
         , connectionModalState = Hide
-        , loadingPotentialFoods = True
+        , loadingfoodSearchResults = True
         , history = [ Url.parsePath route location ]
         }
             ! [ navbarCmd ]
@@ -132,7 +130,7 @@ route : Url.Parser (Route -> a) a
 route =
     Url.oneOf
         [ Url.map Home top
-        , Url.map About (Url.s "about")
+        , Url.map About (Url.s "/about")
         ]
 
 
@@ -161,77 +159,11 @@ topBar model =
         |> Navbar.view model.navbarState
 
 
-informationSection : HoverItem -> Dict FoodId Food -> Html Msg
-informationSection hoverItem foodDict =
-    let
-        header =
-            case hoverItem of
-                NothingHovered ->
-                    "Summary"
-
-                Nutrient nutrient ->
-                    nutrient.name
-
-                Food foodId ->
-                    case (Dict.get foodId foodDict) of
-                        Nothing ->
-                            ""
-
-                        Just food ->
-                            food.name
-
-        sideHeader =
-            case hoverItem of
-                NothingHovered ->
-                    ""
-
-                Nutrient nutrient ->
-                    (nutrient.amount |> toString) ++ " / " ++ (nutrient.dailyIntake |> toString) ++ "" ++ nutrient.unitOfMeasure
-
-                Food foodId ->
-                    ""
-
-        info =
-            case hoverItem of
-                NothingHovered ->
-                    "Please hover over a food or nutrient to view its summary."
-
-                Nutrient nutrient ->
-                    nutrient.description
-
-                Food food ->
-                    "The purple section on the progress bars below on each nutrient, shows the percentage of nutrients from the food."
-
-        colour =
-            case hoverItem of
-                NothingHovered ->
-                    "#3f9cb8"
-
-                Nutrient nutrient ->
-                    nutrient.dailyIntake |> getPercentage nutrient.amount |> getPercentageColour
-
-                Food food ->
-                    "#b13fb8"
-    in
-        Grid.row [ rowBuffer ]
-            [ Grid.col []
-                [ Card.config []
-                    |> Card.header [ style [ ( "background-color", colour ) ] ]
-                        [ text header
-                        ]
-                    |> Card.block []
-                        [ Card.text [] [ text info ] ]
-                    |> Card.footer [] [ text sideHeader ]
-                    |> Card.view
-                ]
-            ]
-
-
 searchBar : LoadState (List SearchFood) -> Html Msg
-searchBar potentialFoods =
+searchBar foodSearchResults =
     let
         content =
-            case potentialFoods of
+            case foodSearchResults of
                 NotLoaded ->
                     []
 
@@ -244,7 +176,8 @@ searchBar potentialFoods =
                     else
                         List.map
                             (\food ->
-                                ListGroup.anchor [ ListGroup.attrs [ onMouseDown (SelectFood food) ] ]
+                                ListGroup.anchor
+                                    [ ListGroup.attrs [ onMouseDown (SelectFood food) ] ]
                                     [ text food.name ]
                             )
                             foods
@@ -347,8 +280,8 @@ aboutPage model =
                 [ Card.titleH4 [] [ text "About Get Your Nutrients" ]
                 , Card.text []
                     [ text """
-                        Get your nutrients is designed to help identify nutrients in certain foods,
-                        in an simple, easy and readable way. It has the aim is to provide insight in the lacking
+                        Get your nutrients is designed to help identify nutrients in certain foods
+                        in an simple, easy and readable way. It has the aim to provide insight in the lacking
                         or abundance of Vitamins and Minerals in a person's diet and their effects.
                          """
                     ]
@@ -376,23 +309,20 @@ aboutPage model =
 view : Model -> Html Msg
 view model =
     let
-        page =
-            case List.head model.history of
-                Just head ->
-                    case head of
-                        Just routing ->
-                            case routing of
-                                Home ->
-                                    homePage model
-
-                                About ->
-                                    aboutPage model
-
-                        Nothing ->
-                            homePage model
-
-                Nothing ->
+        routerMap routing =
+            case routing of
+                Home ->
                     homePage model
+
+                About ->
+                    aboutPage model
+
+        page =
+            model.history
+                |> List.head
+                |> Maybe.andThen identity
+                |> Maybe.andThen (routerMap >> Just)
+                |> Maybe.withDefault (homePage model)
     in
         Grid.container []
             -- For bootstrap
@@ -419,34 +349,29 @@ calculateNutrientPercentageFromFoods : Maybe FoodId -> Dict FoodId Food -> Dict 
 calculateNutrientPercentageFromFoods hoveredFoodId foods nutrients =
     let
         food =
-            case hoveredFoodId of
+            hoveredFoodId
+                |> Maybe.andThen (\foodId -> Dict.get foodId foods)
+                |> flip Maybe.withDefault Maybe.Nothing
+
+        calculateNutrientFoodAmount nutrientId =
+            foods
+                |> Dict.values
+                |> List.map (getNutrientFoodAmountById nutrientId)
+                |> List.sum
+
+        calculateHoveredAmount nutrientId =
+            case hoveredFoodId |> Maybe.andThen (flip Dict.get foods) of
+                Just food ->
+                    getNutrientFoodAmountById nutrientId food
+
                 Nothing ->
-                    Nothing
-
-                Just foodId ->
-                    case foods |> Dict.get foodId of
-                        Nothing ->
-                            Maybe.Nothing
-
-                        Just food ->
-                            Just food
+                    0
     in
         Dict.map
             (\nutrientId nutrient ->
                 { nutrient
-                    | amount = (foods |> Dict.values |> List.map (\food -> getNutrientFoodAmountById nutrient.id food) |> List.sum)
-                    , hoveredAmount =
-                        case hoveredFoodId of
-                            Nothing ->
-                                0
-
-                            Just foodId ->
-                                case foods |> Dict.get foodId of
-                                    Nothing ->
-                                        0
-
-                                    Just food ->
-                                        getNutrientFoodAmountById nutrient.id food
+                    | amount = calculateNutrientFoodAmount nutrient.id
+                    , hoveredAmount = calculateHoveredAmount nutrient.id
                 }
             )
             nutrients

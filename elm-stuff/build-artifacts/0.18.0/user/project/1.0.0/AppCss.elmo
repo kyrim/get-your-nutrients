@@ -25,8 +25,12 @@ var _user$project$AppCss$nutrientHigh = '#7FC7AF';
 var _user$project$AppCss$nutrientMedium = '#FFAB2E';
 var _user$project$AppCss$nutrientLow = '#FF2020';
 var _user$project$AppCss$Clickable = {ctor: 'Clickable'};
-var _user$project$AppCss$FoodBottomSection = {ctor: 'FoodBottomSection'};
+var _user$project$AppCss$FoodRightSection = {ctor: 'FoodRightSection'};
+var _user$project$AppCss$FoodLeftSection = {ctor: 'FoodLeftSection'};
 var _user$project$AppCss$FoodContainer = {ctor: 'FoodContainer'};
+var _user$project$AppCss$FoodRow = {ctor: 'FoodRow'};
+var _user$project$AppCss$AmountFoodInput = {ctor: 'AmountFoodInput'};
+var _user$project$AppCss$QuantityFoodInput = {ctor: 'QuantityFoodInput'};
 var _user$project$AppCss$FoodInputs = {ctor: 'FoodInputs'};
 var _user$project$AppCss$FoodDelete = {ctor: 'FoodDelete'};
 var _user$project$AppCss$FoodList = {ctor: 'FoodList'};
@@ -358,23 +362,35 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 																		ctor: '::',
 																		_0: A2(
 																			_rtfeldman$elm_css$Css$class,
-																			_user$project$AppCss$FoodBottomSection,
+																			_user$project$AppCss$FoodLeftSection,
 																			{
 																				ctor: '::',
-																				_0: A3(
-																					_rtfeldman$elm_css$Css$borderTop3,
-																					_rtfeldman$elm_css$Css$px(1),
-																					_rtfeldman$elm_css$Css$solid,
-																					A3(_rtfeldman$elm_css$Css$rgb, 232, 232, 232)),
+																				_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$left),
 																				_1: {
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$marginTop(
-																						_rtfeldman$elm_css$Css$em(0.5)),
+																					_0: A4(
+																						_rtfeldman$elm_css$Css$padding4,
+																						_rtfeldman$elm_css$Css$em(0.7),
+																						_rtfeldman$elm_css$Css$zero,
+																						_rtfeldman$elm_css$Css$em(0.7),
+																						_rtfeldman$elm_css$Css$em(0.7)),
 																					_1: {
 																						ctor: '::',
-																						_0: _rtfeldman$elm_css$Css$width(
-																							_rtfeldman$elm_css$Css$pct(100)),
-																						_1: {ctor: '[]'}
+																						_0: _rtfeldman$elm_css$Css$maxWidth(
+																							_rtfeldman$elm_css$Css$pct(60)),
+																						_1: {
+																							ctor: '::',
+																							_0: _rtfeldman$elm_css$Css$textOverflow(_rtfeldman$elm_css$Css$ellipsis),
+																							_1: {
+																								ctor: '::',
+																								_0: _rtfeldman$elm_css$Css$whiteSpace(_rtfeldman$elm_css$Css$noWrap),
+																								_1: {
+																									ctor: '::',
+																									_0: _rtfeldman$elm_css$Css$overflow(_rtfeldman$elm_css$Css$hidden),
+																									_1: {ctor: '[]'}
+																								}
+																							}
+																						}
 																					}
 																				}
 																			}),
@@ -382,59 +398,100 @@ var _user$project$AppCss$css = _rtfeldman$elm_css$Css$stylesheet(
 																			ctor: '::',
 																			_0: A2(
 																				_rtfeldman$elm_css$Css$class,
-																				_user$project$AppCss$FoodInputs,
+																				_user$project$AppCss$FoodRightSection,
 																				{
 																					ctor: '::',
-																					_0: _rtfeldman$elm_css$Css$padding(
-																						_rtfeldman$elm_css$Css$em(0.5)),
+																					_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$right),
 																					_1: {
 																						ctor: '::',
-																						_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$right),
-																						_1: {
-																							ctor: '::',
-																							_0: _rtfeldman$elm_css$Css$children(
-																								{
-																									ctor: '::',
-																									_0: _rtfeldman$elm_css$Css_Elements$input(
-																										{
-																											ctor: '::',
-																											_0: _rtfeldman$elm_css$Css$width(
-																												_rtfeldman$elm_css$Css$em(4)),
-																											_1: {
-																												ctor: '::',
-																												_0: _rtfeldman$elm_css$Css$marginRight(
-																													_rtfeldman$elm_css$Css$em(0.25)),
-																												_1: {ctor: '[]'}
-																											}
-																										}),
-																									_1: {ctor: '[]'}
-																								}),
-																							_1: {ctor: '[]'}
-																						}
+																						_0: A4(
+																							_rtfeldman$elm_css$Css$padding4,
+																							_rtfeldman$elm_css$Css$em(0.5),
+																							_rtfeldman$elm_css$Css$em(0.5),
+																							_rtfeldman$elm_css$Css$em(0.5),
+																							_rtfeldman$elm_css$Css$zero),
+																						_1: {ctor: '[]'}
 																					}
 																				}),
 																			_1: {
 																				ctor: '::',
 																				_0: A2(
 																					_rtfeldman$elm_css$Css$class,
-																					_user$project$AppCss$FoodContainer,
+																					_user$project$AppCss$FoodInputs,
 																					{
 																						ctor: '::',
-																						_0: _rtfeldman$elm_css$Css$width(
-																							_rtfeldman$elm_css$Css$pct(100)),
+																						_0: _rtfeldman$elm_css$Css$float(_rtfeldman$elm_css$Css$right),
 																						_1: {ctor: '[]'}
 																					}),
 																				_1: {
 																					ctor: '::',
 																					_0: A2(
 																						_rtfeldman$elm_css$Css$class,
-																						_user$project$AppCss$Clickable,
+																						_user$project$AppCss$QuantityFoodInput,
 																						{
 																							ctor: '::',
-																							_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
-																							_1: {ctor: '[]'}
+																							_0: _rtfeldman$elm_css$Css$width(
+																								_rtfeldman$elm_css$Css$em(2)),
+																							_1: {
+																								ctor: '::',
+																								_0: _rtfeldman$elm_css$Css$marginRight(
+																									_rtfeldman$elm_css$Css$em(0.25)),
+																								_1: {ctor: '[]'}
+																							}
 																						}),
-																					_1: {ctor: '[]'}
+																					_1: {
+																						ctor: '::',
+																						_0: A2(
+																							_rtfeldman$elm_css$Css$class,
+																							_user$project$AppCss$AmountFoodInput,
+																							{
+																								ctor: '::',
+																								_0: _rtfeldman$elm_css$Css$width(
+																									_rtfeldman$elm_css$Css$em(3)),
+																								_1: {
+																									ctor: '::',
+																									_0: _rtfeldman$elm_css$Css$marginRight(
+																										_rtfeldman$elm_css$Css$em(0.25)),
+																									_1: {ctor: '[]'}
+																								}
+																							}),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(
+																								_rtfeldman$elm_css$Css$class,
+																								_user$project$AppCss$FoodRow,
+																								{
+																									ctor: '::',
+																									_0: _rtfeldman$elm_css$Css$important(
+																										_rtfeldman$elm_css$Css$padding(_rtfeldman$elm_css$Css$zero)),
+																									_1: {ctor: '[]'}
+																								}),
+																							_1: {
+																								ctor: '::',
+																								_0: A2(
+																									_rtfeldman$elm_css$Css$class,
+																									_user$project$AppCss$FoodContainer,
+																									{
+																										ctor: '::',
+																										_0: _rtfeldman$elm_css$Css$width(
+																											_rtfeldman$elm_css$Css$pct(100)),
+																										_1: {ctor: '[]'}
+																									}),
+																								_1: {
+																									ctor: '::',
+																									_0: A2(
+																										_rtfeldman$elm_css$Css$class,
+																										_user$project$AppCss$Clickable,
+																										{
+																											ctor: '::',
+																											_0: _rtfeldman$elm_css$Css$cursor(_rtfeldman$elm_css$Css$pointer),
+																											_1: {ctor: '[]'}
+																										}),
+																									_1: {ctor: '[]'}
+																								}
+																							}
+																						}
+																					}
 																				}
 																			}
 																		}

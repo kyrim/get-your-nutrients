@@ -5,7 +5,6 @@ import Helpers exposing (getPercentage)
 import Nutrient.Models exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (style)
-import Html.Events exposing (..)
 import Bootstrap.Grid as Grid
 import Bootstrap.Progress as Progress
 import Bootstrap.Popover as Popover

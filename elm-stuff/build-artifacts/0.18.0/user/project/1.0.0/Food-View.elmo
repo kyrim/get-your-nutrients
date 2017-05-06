@@ -32,7 +32,21 @@ var _user$project$Food_View$foodRow = F2(
 		var _p2 = _p1;
 		return A2(
 			_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _rundis$elm_bootstrap$Bootstrap_ListGroup$attrs(
+					{
+						ctor: '::',
+						_0: _user$project$Food_View$class(
+							{
+								ctor: '::',
+								_0: _user$project$AppCss$FoodRow,
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
@@ -60,7 +74,16 @@ var _user$project$Food_View$foodRow = F2(
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$div,
-							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _user$project$Food_View$class(
+									{
+										ctor: '::',
+										_0: _user$project$AppCss$FoodLeftSection,
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(food.name),
@@ -75,7 +98,7 @@ var _user$project$Food_View$foodRow = F2(
 									_0: _user$project$Food_View$class(
 										{
 											ctor: '::',
-											_0: _user$project$AppCss$FoodBottomSection,
+											_0: _user$project$AppCss$FoodRightSection,
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -106,13 +129,22 @@ var _user$project$Food_View$foodRow = F2(
 														_0: _elm_lang$html$Html_Attributes$min('1'),
 														_1: {
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$value(
-																_elm_lang$core$Basics$toString(food.quantity)),
+															_0: _user$project$Food_View$class(
+																{
+																	ctor: '::',
+																	_0: _user$project$AppCss$QuantityFoodInput,
+																	_1: {ctor: '[]'}
+																}),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onInput(
-																	A3(_user$project$Food_View$onInputToInt, food.id, 1, _p2.onQuantityChange)),
-																_1: {ctor: '[]'}
+																_0: _elm_lang$html$Html_Attributes$value(
+																	_elm_lang$core$Basics$toString(food.quantity)),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onInput(
+																		A3(_user$project$Food_View$onInputToInt, food.id, 1, _p2.onQuantityChange)),
+																	_1: {ctor: '[]'}
+																}
 															}
 														}
 													}
@@ -140,13 +172,22 @@ var _user$project$Food_View$foodRow = F2(
 																_0: _elm_lang$html$Html_Attributes$min('1'),
 																_1: {
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$value(
-																		_elm_lang$core$Basics$toString(food.amount)),
+																	_0: _user$project$Food_View$class(
+																		{
+																			ctor: '::',
+																			_0: _user$project$AppCss$AmountFoodInput,
+																			_1: {ctor: '[]'}
+																		}),
 																	_1: {
 																		ctor: '::',
-																		_0: _elm_lang$html$Html_Events$onInput(
-																			A3(_user$project$Food_View$onInputToInt, food.id, 100, _p2.onAmountChange)),
-																		_1: {ctor: '[]'}
+																		_0: _elm_lang$html$Html_Attributes$value(
+																			_elm_lang$core$Basics$toString(food.amount)),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Events$onInput(
+																				A3(_user$project$Food_View$onInputToInt, food.id, 100, _p2.onAmountChange)),
+																			_1: {ctor: '[]'}
+																		}
 																	}
 																}
 															}

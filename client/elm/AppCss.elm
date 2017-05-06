@@ -22,8 +22,12 @@ type CssClasses
     | FoodList
     | FoodDelete
     | FoodInputs
+    | QuantityFoodInput
+    | AmountFoodInput
+    | FoodRow
     | FoodContainer
-    | FoodBottomSection
+    | FoodLeftSection
+    | FoodRightSection
     | Clickable
 
 
@@ -88,18 +92,31 @@ css =
             [ cursor pointer
             , marginLeft (em 0.5)
             ]
-        , class FoodBottomSection
-            [ borderTop3 (px 1) solid (rgb 232 232 232)
-            , marginTop (em 0.5)
-            , width (pct 100)
+        , class FoodLeftSection
+            [ float left
+            , padding4 (em 0.7) zero (em 0.7) (em 0.7)
+            , maxWidth (pct 60)
+            , textOverflow ellipsis
+            , whiteSpace noWrap
+            , overflow hidden
+            ]
+        , class FoodRightSection
+            [ float right
+            , padding4 (em 0.5) (em 0.5) (em 0.5) zero
             ]
         , class FoodInputs
-            [ padding (em 0.5)
-            , float right
-            , children
-                [ input [ width (em 4), marginRight (em 0.25) ]
-                ]
+            [ float right
             ]
+        , class QuantityFoodInput
+            [ width (em 2)
+            , marginRight (em 0.25)
+            ]
+        , class AmountFoodInput
+            [ width (em 3)
+            , marginRight (em 0.25)
+            ]
+        , class FoodRow
+            [ padding zero |> important ]
         , class FoodContainer
             [ width (pct 100)
             ]

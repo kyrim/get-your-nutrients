@@ -41,19 +41,20 @@ onInputToInt food default onFunction =
 
 foodRow : FoodRowConfig msg -> Food -> ListGroup.CustomItem msg
 foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
-    ListGroup.anchor []
+    ListGroup.anchor [ ListGroup.attrs [ class [ AppCss.FoodRow ] ] ]
         [ div
             [ onMouseOver (onFocus food.id)
             , onMouseLeave onBlur
             , class [ AppCss.FoodContainer ]
             ]
-            [ div [] [ text food.name ]
+            [ div [ class [ AppCss.FoodLeftSection ] ] [ text food.name ]
             , div
-                [ class [ AppCss.FoodBottomSection ] ]
+                [ class [ AppCss.FoodRightSection ] ]
                 [ div [ class [ AppCss.FoodInputs ] ]
                     [ input
                         [ type_ "number"
                         , Html.Attributes.min "1"
+                        , class [ AppCss.QuantityFoodInput ]
                         , value (food.quantity |> toString)
                         , onInput (onInputToInt food.id 1 onQuantityChange)
                         ]
@@ -64,6 +65,7 @@ foodRow { onFocus, onBlur, onRemove, onQuantityChange, onAmountChange } food =
                     , input
                         [ type_ "number"
                         , Html.Attributes.min "1"
+                        , class [ AppCss.AmountFoodInput ]
                         , value (food.amount |> toString)
                         , onInput (onInputToInt food.id 100 onAmountChange)
                         ]

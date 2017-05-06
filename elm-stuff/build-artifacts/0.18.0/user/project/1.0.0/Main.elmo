@@ -33,19 +33,34 @@ var _user$project$Main$getNutrientFoodAmountById = F2(
 	});
 var _user$project$Main$calculateNutrientPercentageFromFoods = F3(
 	function (hoveredFoodId, foods, nutrients) {
-		var food = function () {
-			var _p0 = hoveredFoodId;
-			if (_p0.ctor === 'Nothing') {
-				return _elm_lang$core$Maybe$Nothing;
+		var calculateHoveredAmount = function (nutrientId) {
+			var _p0 = A2(
+				_elm_lang$core$Maybe$andThen,
+				A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, foods),
+				hoveredFoodId);
+			if (_p0.ctor === 'Just') {
+				return A2(_user$project$Main$getNutrientFoodAmountById, nutrientId, _p0._0);
 			} else {
-				var _p1 = A2(_elm_lang$core$Dict$get, _p0._0, foods);
-				if (_p1.ctor === 'Nothing') {
-					return _elm_lang$core$Maybe$Nothing;
-				} else {
-					return _elm_lang$core$Maybe$Just(_p1._0);
-				}
+				return 0;
 			}
-		}();
+		};
+		var calculateNutrientFoodAmount = function (nutrientId) {
+			return _elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Main$getNutrientFoodAmountById(nutrientId),
+					_elm_lang$core$Dict$values(foods)));
+		};
+		var food = A3(
+			_elm_lang$core$Basics$flip,
+			_elm_lang$core$Maybe$withDefault,
+			_elm_lang$core$Maybe$Nothing,
+			A2(
+				_elm_lang$core$Maybe$andThen,
+				function (foodId) {
+					return A2(_elm_lang$core$Dict$get, foodId, foods);
+				},
+				hoveredFoodId));
 		return A2(
 			_elm_lang$core$Dict$map,
 			F2(
@@ -53,33 +68,15 @@ var _user$project$Main$calculateNutrientPercentageFromFoods = F3(
 					return _elm_lang$core$Native_Utils.update(
 						nutrient,
 						{
-							amount: _elm_lang$core$List$sum(
-								A2(
-									_elm_lang$core$List$map,
-									function (food) {
-										return A2(_user$project$Main$getNutrientFoodAmountById, nutrient.id, food);
-									},
-									_elm_lang$core$Dict$values(foods))),
-							hoveredAmount: function () {
-								var _p2 = hoveredFoodId;
-								if (_p2.ctor === 'Nothing') {
-									return 0;
-								} else {
-									var _p3 = A2(_elm_lang$core$Dict$get, _p2._0, foods);
-									if (_p3.ctor === 'Nothing') {
-										return 0;
-									} else {
-										return A2(_user$project$Main$getNutrientFoodAmountById, nutrient.id, _p3._0);
-									}
-								}
-							}()
+							amount: calculateNutrientFoodAmount(nutrient.id),
+							hoveredAmount: calculateHoveredAmount(nutrient.id)
 						});
 				}),
 			nutrients);
 	});
 var _user$project$Main$hoverItemIsFood = function (item) {
-	var _p4 = item;
-	switch (_p4.ctor) {
+	var _p1 = item;
+	switch (_p1.ctor) {
 		case 'Nutrient':
 			return false;
 		case 'Food':
@@ -121,7 +118,7 @@ var _user$project$Main$aboutPage = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is designed to help identify nutrients in certain foods,\n                        in an simple, easy and readable way. It has the aim is to provide insight in the lacking\n                        or abundance of Vitamins and Minerals in a person\'s diet and their effects.\n                         '),
+										_0: _elm_lang$html$Html$text('\n                        Get your nutrients is designed to help identify nutrients in certain foods\n                        in an simple, easy and readable way. It has the aim to provide insight in the lacking\n                        or abundance of Vitamins and Minerals in a person\'s diet and their effects.\n                         '),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -240,145 +237,20 @@ var _user$project$Main$aboutPage = function (model) {
 	};
 };
 var _user$project$Main$getFoodFromHoverItem = function (item) {
-	var _p5 = item;
-	switch (_p5.ctor) {
+	var _p2 = item;
+	switch (_p2.ctor) {
 		case 'NothingHovered':
 			return _elm_lang$core$Maybe$Nothing;
 		case 'Nutrient':
 			return _elm_lang$core$Maybe$Nothing;
 		default:
-			return _elm_lang$core$Maybe$Just(_p5._0);
+			return _elm_lang$core$Maybe$Just(_p2._0);
 	}
 };
-var _user$project$Main$informationSection = F2(
-	function (hoverItem, foodDict) {
-		var colour = function () {
-			var _p6 = hoverItem;
-			switch (_p6.ctor) {
-				case 'NothingHovered':
-					return '#3f9cb8';
-				case 'Nutrient':
-					var _p7 = _p6._0;
-					return _user$project$Nutrient_View$getPercentageColour(
-						A2(_user$project$Helpers$getPercentage, _p7.amount, _p7.dailyIntake));
-				default:
-					return '#b13fb8';
-			}
-		}();
-		var info = function () {
-			var _p8 = hoverItem;
-			switch (_p8.ctor) {
-				case 'NothingHovered':
-					return 'Please hover over a food or nutrient to view its summary.';
-				case 'Nutrient':
-					return _p8._0.description;
-				default:
-					return 'The purple section on the progress bars below on each nutrient, shows the percentage of nutrients from the food.';
-			}
-		}();
-		var sideHeader = function () {
-			var _p9 = hoverItem;
-			switch (_p9.ctor) {
-				case 'NothingHovered':
-					return '';
-				case 'Nutrient':
-					var _p10 = _p9._0;
-					return A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p10.amount),
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							' / ',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p10.dailyIntake),
-								A2(_elm_lang$core$Basics_ops['++'], '', _p10.unitOfMeasure))));
-				default:
-					return '';
-			}
-		}();
-		var header = function () {
-			var _p11 = hoverItem;
-			switch (_p11.ctor) {
-				case 'NothingHovered':
-					return 'Summary';
-				case 'Nutrient':
-					return _p11._0.name;
-				default:
-					var _p12 = A2(_elm_lang$core$Dict$get, _p11._0, foodDict);
-					if (_p12.ctor === 'Nothing') {
-						return '';
-					} else {
-						return _p12._0.name;
-					}
-			}
-		}();
-		return A2(
-			_rundis$elm_bootstrap$Bootstrap_Grid$row,
-			{
-				ctor: '::',
-				_0: _user$project$BootstrapHelper$rowBuffer,
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_rundis$elm_bootstrap$Bootstrap_Grid$col,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _rundis$elm_bootstrap$Bootstrap_Card$view(
-							A3(
-								_rundis$elm_bootstrap$Bootstrap_Card$footer,
-								{ctor: '[]'},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text(sideHeader),
-									_1: {ctor: '[]'}
-								},
-								A3(
-									_rundis$elm_bootstrap$Bootstrap_Card$block,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: A2(
-											_rundis$elm_bootstrap$Bootstrap_Card$text,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(info),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									},
-									A3(
-										_rundis$elm_bootstrap$Bootstrap_Card$header,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$style(
-												{
-													ctor: '::',
-													_0: {ctor: '_Tuple2', _0: 'background-color', _1: colour},
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text(header),
-											_1: {ctor: '[]'}
-										},
-										_rundis$elm_bootstrap$Bootstrap_Card$config(
-											{ctor: '[]'}))))),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			});
-	});
-var _user$project$Main$_p13 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
-var _user$project$Main$id = _user$project$Main$_p13.id;
-var _user$project$Main$class = _user$project$Main$_p13.$class;
-var _user$project$Main$classList = _user$project$Main$_p13.classList;
+var _user$project$Main$_p3 = _rtfeldman$elm_css_helpers$Html_CssHelpers$withNamespace('');
+var _user$project$Main$id = _user$project$Main$_p3.id;
+var _user$project$Main$class = _user$project$Main$_p3.$class;
+var _user$project$Main$classList = _user$project$Main$_p3.classList;
 var _user$project$Main$Model = function (a) {
 	return function (b) {
 		return function (c) {
@@ -389,7 +261,7 @@ var _user$project$Main$Model = function (a) {
 							return function (h) {
 								return function (i) {
 									return function (j) {
-										return {navbarState: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, searchableFoods: e, foodSearchResults: f, hoverItem: g, connectionModalState: h, loadingPotentialFoods: i, history: j};
+										return {navbarState: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, searchableFoods: e, foodSearchResults: f, hoverItem: g, connectionModalState: h, loadingfoodSearchResults: i, history: j};
 									};
 								};
 							};
@@ -422,7 +294,7 @@ var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
 			_0: A2(
 				_evancz$url_parser$UrlParser$map,
 				_user$project$Main$About,
-				_evancz$url_parser$UrlParser$s('about')),
+				_evancz$url_parser$UrlParser$s('/about')),
 			_1: {ctor: '[]'}
 		}
 	});
@@ -448,9 +320,9 @@ var _user$project$Main$UpdateFoodQuantity = F2(
 		return {ctor: 'UpdateFoodQuantity', _0: a, _1: b};
 	});
 var _user$project$Main$foodRowConfig = {
-	onFocus: function (_p14) {
+	onFocus: function (_p4) {
 		return _user$project$Main$Hover(
-			_user$project$Main$Food(_p14));
+			_user$project$Main$Food(_p4));
 	},
 	onBlur: _user$project$Main$Hover(_user$project$Main$NothingHovered),
 	onRemove: _user$project$Main$RemoveFood,
@@ -462,8 +334,8 @@ var _user$project$Main$GotFood = function (a) {
 };
 var _user$project$Main$update = F2(
 	function (message, model) {
-		var _p15 = message;
-		switch (_p15.ctor) {
+		var _p5 = message;
+		switch (_p5.ctor) {
 			case 'UrlChange':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -472,7 +344,7 @@ var _user$project$Main$update = F2(
 						{
 							history: {
 								ctor: '::',
-								_0: A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Main$route, _p15._0),
+								_0: A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Main$route, _p5._0),
 								_1: model.history
 							}
 						}),
@@ -481,14 +353,14 @@ var _user$project$Main$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: _elm_lang$navigation$Navigation$newUrl(_p15._0)
+					_1: _elm_lang$navigation$Navigation$newUrl(_p5._0)
 				};
 			case 'NavbarMsg':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{navbarState: _p15._0}),
+						{navbarState: _p5._0}),
 					{ctor: '[]'});
 			case 'ClearSearch':
 				return A2(
@@ -498,10 +370,10 @@ var _user$project$Main$update = F2(
 						{foodSearchResults: _user$project$Connection_Models$NotLoaded}),
 					{ctor: '[]'});
 			case 'UpdateSearchText':
-				var _p16 = _p15._0;
+				var _p6 = _p5._0;
 				return (_elm_lang$core$String$isEmpty(
-					_elm_lang$core$String$trim(_p16)) || (_elm_lang$core$Native_Utils.cmp(
-					_elm_lang$core$String$length(_p16),
+					_elm_lang$core$String$trim(_p6)) || (_elm_lang$core$Native_Utils.cmp(
+					_elm_lang$core$String$length(_p6),
 					3) < 0)) ? A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -517,7 +389,7 @@ var _user$project$Main$update = F2(
 						}),
 					{
 						ctor: '::',
-						_0: _user$project$Food_Search$foodSearch(_p16),
+						_0: _user$project$Food_Search$foodSearch(_p6),
 						_1: {ctor: '[]'}
 					});
 			case 'ClearAllSelected':
@@ -540,7 +412,7 @@ var _user$project$Main$update = F2(
 									A3(
 										_elm_lang$core$Basics$flip,
 										_elm_lang$core$List$filterMap,
-										_p15._0,
+										_p5._0,
 										A2(_elm_lang$core$Basics$flip, _elm_lang$core$Dict$get, model.searchableFoods))))
 						}),
 					{ctor: '[]'});
@@ -555,14 +427,14 @@ var _user$project$Main$update = F2(
 						}),
 					{
 						ctor: '::',
-						_0: A2(_user$project$Food_Api$getFood, _p15._0.id, _user$project$Main$GotFood),
+						_0: A2(_user$project$Food_Api$getFood, _p5._0.id, _user$project$Main$GotFood),
 						_1: {ctor: '[]'}
 					});
 			case 'GotFood':
-				if (_p15._0.ctor === 'Err') {
+				if (_p5._0.ctor === 'Err') {
 					return _user$project$Main$showConnectionError(model);
 				} else {
-					var _p17 = _p15._0._0;
+					var _p7 = _p5._0._0;
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
@@ -571,8 +443,8 @@ var _user$project$Main$update = F2(
 								selectedFoods: _user$project$Connection_Models$Loaded(
 									A3(
 										_elm_lang$core$Dict$insert,
-										_p17.id,
-										_p17,
+										_p7.id,
+										_p7,
 										_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 							}),
 						{ctor: '[]'});
@@ -586,12 +458,12 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A3(
 									_elm_lang$core$Dict$update,
-									_p15._0,
+									_p5._0,
 									_elm_lang$core$Maybe$map(
 										function (food) {
 											return _elm_lang$core$Native_Utils.update(
 												food,
-												{quantity: _p15._1});
+												{quantity: _p5._1});
 										}),
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
@@ -605,12 +477,12 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A3(
 									_elm_lang$core$Dict$update,
-									_p15._0,
+									_p5._0,
 									_elm_lang$core$Maybe$map(
 										function (food) {
 											return _elm_lang$core$Native_Utils.update(
 												food,
-												{amount: _p15._1});
+												{amount: _p5._1});
 										}),
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods)))
 						}),
@@ -624,7 +496,7 @@ var _user$project$Main$update = F2(
 							selectedFoods: _user$project$Connection_Models$Loaded(
 								A2(
 									_elm_lang$core$Dict$remove,
-									_p15._0,
+									_p5._0,
 									_user$project$Connection_Models$emptyDictIfNotLoaded(model.selectedFoods))),
 							hoverItem: _user$project$Main$NothingHovered
 						}),
@@ -634,7 +506,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{hoverItem: _p15._0}),
+						{hoverItem: _p5._0}),
 					{ctor: '[]'});
 			case 'UpdateNutrientPopover':
 				return A2(
@@ -642,7 +514,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							nutrientPopovers: A3(_elm_lang$core$Dict$insert, _p15._0, _p15._1, model.nutrientPopovers)
+							nutrientPopovers: A3(_elm_lang$core$Dict$insert, _p5._0, _p5._1, model.nutrientPopovers)
 						}),
 					{ctor: '[]'});
 			default:
@@ -650,7 +522,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{connectionModalState: _p15._0}),
+						{connectionModalState: _p5._0}),
 					{ctor: '[]'});
 		}
 	});
@@ -669,10 +541,10 @@ var _user$project$Main$UpdateSearchText = function (a) {
 	return {ctor: 'UpdateSearchText', _0: a};
 };
 var _user$project$Main$ClearSearch = {ctor: 'ClearSearch'};
-var _user$project$Main$searchBar = function (potentialFoods) {
+var _user$project$Main$searchBar = function (foodSearchResults) {
 	var content = function () {
-		var _p18 = potentialFoods;
-		switch (_p18.ctor) {
+		var _p8 = foodSearchResults;
+		switch (_p8.ctor) {
 			case 'NotLoaded':
 				return {ctor: '[]'};
 			case 'Loading':
@@ -689,8 +561,8 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 					_1: {ctor: '[]'}
 				};
 			default:
-				var _p19 = _p18._0;
-				return _elm_lang$core$List$isEmpty(_p19) ? {
+				var _p9 = _p8._0;
+				return _elm_lang$core$List$isEmpty(_p9) ? {
 					ctor: '::',
 					_0: A2(
 						_rundis$elm_bootstrap$Bootstrap_ListGroup$anchor,
@@ -723,7 +595,7 @@ var _user$project$Main$searchBar = function (potentialFoods) {
 								_1: {ctor: '[]'}
 							});
 					},
-					_p19);
+					_p9);
 		}
 	}();
 	return A2(
@@ -952,9 +824,9 @@ var _user$project$Main$NavbarMsg = function (a) {
 };
 var _user$project$Main$init = F2(
 	function (flags, location) {
-		var _p20 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavbarMsg);
-		var navbarState = _p20._0;
-		var navbarCmd = _p20._1;
+		var _p10 = _rundis$elm_bootstrap$Bootstrap_Navbar$initialState(_user$project$Main$NavbarMsg);
+		var navbarState = _p10._0;
+		var navbarCmd = _p10._1;
 		return A2(
 			_elm_lang$core$Platform_Cmd_ops['!'],
 			{
@@ -982,7 +854,7 @@ var _user$project$Main$init = F2(
 				foodSearchResults: _user$project$Connection_Models$NotLoaded,
 				hoverItem: _user$project$Main$NothingHovered,
 				connectionModalState: _user$project$Connection_Models$Hide,
-				loadingPotentialFoods: true,
+				loadingfoodSearchResults: true,
 				history: {
 					ctor: '::',
 					_0: A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Main$route, location),
@@ -1074,24 +946,27 @@ var _user$project$Main$topBar = function (model) {
 						_rundis$elm_bootstrap$Bootstrap_Navbar$config(_user$project$Main$NavbarMsg))))));
 };
 var _user$project$Main$view = function (model) {
-	var page = function () {
-		var _p21 = _elm_lang$core$List$head(model.history);
-		if (_p21.ctor === 'Just') {
-			var _p22 = _p21._0;
-			if (_p22.ctor === 'Just') {
-				var _p23 = _p22._0;
-				if (_p23.ctor === 'Home') {
-					return _user$project$Main$homePage(model);
-				} else {
-					return _user$project$Main$aboutPage(model);
-				}
-			} else {
-				return _user$project$Main$homePage(model);
-			}
-		} else {
+	var routerMap = function (routing) {
+		var _p11 = routing;
+		if (_p11.ctor === 'Home') {
 			return _user$project$Main$homePage(model);
+		} else {
+			return _user$project$Main$aboutPage(model);
 		}
-	}();
+	};
+	var page = A2(
+		_elm_lang$core$Maybe$withDefault,
+		_user$project$Main$homePage(model),
+		A2(
+			_elm_lang$core$Maybe$andThen,
+			function (_p12) {
+				return _elm_lang$core$Maybe$Just(
+					routerMap(_p12));
+			},
+			A2(
+				_elm_lang$core$Maybe$andThen,
+				_elm_lang$core$Basics$identity,
+				_elm_lang$core$List$head(model.history))));
 	return A2(
 		_rundis$elm_bootstrap$Bootstrap_Grid$container,
 		{ctor: '[]'},
