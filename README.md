@@ -6,6 +6,7 @@ from the person's diet.
 
 #TODO
 - [x] Implement import from USDA foods database (sr228)
-- [x] Create front end
-- [ ] Missing Nutrient Data according to http://www.lenntech.com/recommended-daily-intake.htm ? 
-      (Biotin, Boron, Chlorine, Chromium, Iodine, Molybdenum, Nickel, Vanadium) 
+- [x] Create front-end
+- [x] Create back-end 
+- [ ] Add recommended foods, based on current nutrient intake
+- [ ] Add Selecting age and gender to accomodate different nutrient daily intakes per demographic
