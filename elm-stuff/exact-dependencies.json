@@ -16,6 +16,7 @@
     "elm-lang/http": "1.0.0",
     "rluiten/elm-text-search": "4.0.0",
     "rtfeldman/hex": "1.0.0",
+    "myrho/elm-round": "1.0.2",
     "rluiten/trie": "2.0.2",
     "NoRedInk/elm-decode-pipeline": "3.0.0",
     "debois/elm-dom": "1.2.3",

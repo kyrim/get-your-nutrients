@@ -15,8 +15,7 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 				' (',
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(
-						_elm_lang$core$Basics$round(nutrient.amount)),
+					A2(_myrho$elm_round$Round$round, 2, nutrient.amount),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						' / ',

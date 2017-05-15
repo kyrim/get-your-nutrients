@@ -8,5 +8,6 @@ from the person's diet.
 - [x] Implement import from USDA foods database (sr228)
 - [x] Create front-end
 - [x] Create back-end 
+- [ ] Fix CSS issues with nutrient pop-over beint cut off by other elements
 - [ ] Add recommended foods, based on current nutrient intake
 - [ ] Add Selecting age and gender to accomodate different nutrient daily intakes per demographic

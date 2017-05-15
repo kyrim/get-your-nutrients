@@ -10,6 +10,7 @@ import Bootstrap.Progress as Progress
 import Bootstrap.Popover as Popover
 import Html.CssHelpers
 import AppCss
+import Round exposing (round)
 
 
 { id, class, classList } =
@@ -80,7 +81,7 @@ nutrientProgress config isHovered nutrientPopovers nutrient =
                 |> Maybe.withDefault Popover.initialState
 
         popoverTitle =
-            nutrient.name ++ " (" ++ toString (round nutrient.amount) ++ " / " ++ toString nutrient.dailyIntake ++ nutrient.unitOfMeasure ++ ")"
+            nutrient.name ++ " (" ++ Round.round 2 nutrient.amount ++ " / " ++ toString nutrient.dailyIntake ++ nutrient.unitOfMeasure ++ ")"
     in
         div [ class [ AppCss.NutrientProgress ] ]
             [ Popover.config
