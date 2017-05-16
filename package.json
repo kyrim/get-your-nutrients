@@ -7,20 +7,21 @@
     "watch": "gulp watch"
   },
   "dependencies": {
-    "compression": "^1.6.2",
-    "elm-css": "^0.6.0",
-    "express": "^4.15.2",
-    "lodash": "^4.17.4",
     "adm-zip": "^0.4.7",
     "babel-preset-es2015": "^6.24.0",
     "babelify": "^7.3.0",
     "babyparse": "^0.4.6",
     "browserify": "^14.1.0",
+    "compression": "^1.6.2",
     "elasticlunr": "^0.9.5",
+    "elm": "^0.18.0",
+    "elm-css": "^0.6.0",
+    "express": "^4.15.2",
     "fuse.js": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-elm": "^0.6.1",
     "gulp-plumber": "^1.1.0",
+    "lodash": "^4.17.4",
     "uglifyify": "^3.0.4",
     "vinyl-source-stream": "^1.1.0"
   }
