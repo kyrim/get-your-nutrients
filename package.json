@@ -3,6 +3,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gulp build-all",
+    "postinstall": "npm install -g gulp-cli && npm install -g elm-css && gulp build-all",
     "watch": "gulp watch"
   },
   "devDependencies": {
@@ -23,6 +24,7 @@
   },
   "dependencies": {
     "compression": "^1.6.2",
+    "elm-css": "^0.6.0",
     "express": "^4.15.2",
     "lodash": "^4.17.4"
   }
