@@ -85,7 +85,7 @@ gulp.task(tasks.provisionData, function() {
   return provisionData('data/', 'data/foods.json', 'client/js/searchableFoods.json', 'client/js/nutrients.json');
 });
 
-gulp.task(tasks.buildAll, [tasks.static, tasks.browserify, tasks.elmCssCompile]);
+gulp.task(tasks.buildAll, [tasks.static, tasks.provisionData, tasks.browserify, tasks.elmCssCompile]);
 
 //==================WATCHERS=====================
 gulp.task(tasks.watch, [tasks.static, tasks.browserify, tasks.elmCssCompile], function () {

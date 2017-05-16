@@ -322,13 +322,13 @@ aboutPage model =
                         , a [ href "https://www.usda.gov/" ] [ text "U.S Department of Argiculture" ]
                         , span [] [ text " food and nutrient database, and all nutrient descriptions sourced and summarised from " ]
                         , a [ href "http://www.webmd.com/vitamins-supplements/" ] [ text "WebMD" ]
+                        , span []
+                            [ text "." ]
+                        , span
+                            []
+                            [ text " The daily recommended intakes were sourced from: " ]
+                        , a [ href "http://www.lenntech.com/recommended-daily-intake.htm" ] [ text "Recommended daily intake of vitamins and minerals" ]
                         , span [] [ text "." ]
-                        ]
-                    )
-                , Card.custom
-                    (p []
-                        [ span [] [ text "If you would like to contact me, please visit my website at: " ]
-                        , a [ href "http://www.kyrimsteele.com" ] [ text "www.kyrimsteele.com" ]
                         ]
                     )
                 ]
