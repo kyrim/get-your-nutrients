@@ -261,7 +261,11 @@ var _user$project$Main$Model = function (a) {
 							return function (h) {
 								return function (i) {
 									return function (j) {
-										return {navbarState: a, nutrients: b, nutrientPopovers: c, selectedFoods: d, searchableFoods: e, foodSearchResults: f, hoverItem: g, connectionModalState: h, loadingfoodSearchResults: i, history: j};
+										return function (k) {
+											return function (l) {
+												return {navbarState: a, nutrients: b, nutrientPopovers: c, modalState: d, selectedNutrientId: e, selectedFoods: f, searchableFoods: g, foodSearchResults: h, hoverItem: i, connectionModalState: j, loadingfoodSearchResults: k, history: l};
+											};
+										};
 									};
 								};
 							};
@@ -301,6 +305,10 @@ var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
 var _user$project$Main$ConnectionModal = function (a) {
 	return {ctor: 'ConnectionModal', _0: a};
 };
+var _user$project$Main$UpdateModalState = F2(
+	function (a, b) {
+		return {ctor: 'UpdateModalState', _0: a, _1: b};
+	});
 var _user$project$Main$UpdateNutrientPopover = F2(
 	function (a, b) {
 		return {ctor: 'UpdateNutrientPopover', _0: a, _1: b};
@@ -493,6 +501,17 @@ var _user$project$Main$update = F2(
 							nutrientPopovers: A3(_elm_lang$core$Dict$insert, _p5._0, _p5._1, model.nutrientPopovers)
 						}),
 					{ctor: '[]'});
+			case 'UpdateModalState':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							modalState: _p5._1,
+							selectedNutrientId: _elm_lang$core$Maybe$Just(_p5._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -660,6 +679,31 @@ var _user$project$Main$searchBar = function (foodSearchResults) {
 		});
 };
 var _user$project$Main$homePage = function (model) {
+	var nutrientForModal = A2(
+		_elm_lang$core$Maybe$andThen,
+		function (x) {
+			return A2(_elm_lang$core$Dict$get, x, model.nutrients);
+		},
+		model.selectedNutrientId);
+	var nutrientNameForModal = A2(
+		_elm_lang$core$Maybe$withDefault,
+		'',
+		A2(
+			_elm_lang$core$Maybe$andThen,
+			function (x) {
+				return _elm_lang$core$Maybe$Just(
+					_user$project$Nutrient_View$nutrientTitle(x));
+			},
+			nutrientForModal));
+	var nutrientDescriptionForModal = A2(
+		_elm_lang$core$Maybe$withDefault,
+		'',
+		A2(
+			_elm_lang$core$Maybe$andThen,
+			function (x) {
+				return _elm_lang$core$Maybe$Just(x.description);
+			},
+			nutrientForModal));
 	var hoverItemFood = _user$project$Main$getFoodFromHoverItem(model.hoverItem);
 	var calculateNutrients = function (nutrients) {
 		return _elm_lang$core$Dict$values(
@@ -671,12 +715,13 @@ var _user$project$Main$homePage = function (model) {
 	};
 	var constructNutrientSection = F2(
 		function (text, nutrientType) {
-			return A5(
+			return A6(
 				_user$project$Nutrient_View$nutrientSection,
-				{onHover: _user$project$Main$UpdateNutrientPopover},
+				{onHover: _user$project$Main$UpdateNutrientPopover, onClick: _user$project$Main$UpdateModalState},
 				text,
 				_user$project$Main$hoverItemIsFood(model.hoverItem),
 				model.nutrientPopovers,
+				model.modalState,
 				calculateNutrients(
 					A2(_user$project$Main$filterNutrient, nutrientType, model.nutrients)));
 		});
@@ -785,7 +830,79 @@ var _user$project$Main$homePage = function (model) {
 						}),
 					_1: {ctor: '[]'}
 				}),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_rundis$elm_bootstrap$Bootstrap_Grid$col,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_rundis$elm_bootstrap$Bootstrap_Modal$view,
+							model.modalState,
+							A3(
+								_rundis$elm_bootstrap$Bootstrap_Modal$footer,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_rundis$elm_bootstrap$Bootstrap_Button$button,
+										{
+											ctor: '::',
+											_0: _rundis$elm_bootstrap$Bootstrap_Button$outlinePrimary,
+											_1: {
+												ctor: '::',
+												_0: _rundis$elm_bootstrap$Bootstrap_Button$attrs(
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onClick(
+															A2(
+																_user$project$Main$UpdateModalState,
+																A2(_elm_lang$core$Maybe$withDefault, '', model.selectedNutrientId),
+																_rundis$elm_bootstrap$Bootstrap_Modal$hiddenState)),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Close'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								},
+								A3(
+									_rundis$elm_bootstrap$Bootstrap_Modal$body,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(nutrientDescriptionForModal),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									},
+									A3(
+										_rundis$elm_bootstrap$Bootstrap_Modal$h5,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(nutrientNameForModal),
+											_1: {ctor: '[]'}
+										},
+										_rundis$elm_bootstrap$Bootstrap_Modal$large(
+											_rundis$elm_bootstrap$Bootstrap_Modal$config(
+												_user$project$Main$UpdateModalState(
+													A2(_elm_lang$core$Maybe$withDefault, '', model.selectedNutrientId)))))))),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
 		}
 	};
 };
@@ -819,6 +936,8 @@ var _user$project$Main$init = F2(
 						},
 						flags.nutrients)),
 				nutrientPopovers: _elm_lang$core$Dict$empty,
+				selectedNutrientId: _elm_lang$core$Maybe$Nothing,
+				modalState: _rundis$elm_bootstrap$Bootstrap_Modal$hiddenState,
 				searchableFoods: _elm_lang$core$Dict$fromList(
 					A2(
 						_elm_lang$core$List$map,

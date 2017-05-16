@@ -35,6 +35,8 @@ import Bootstrap.Popover as Popover
 import Bootstrap.ListGroup as ListGroup
 import Bootstrap.Form.InputGroup as InputGroup
 import Bootstrap.Navbar as Navbar
+import Bootstrap.Modal as Modal
+import Bootstrap.Button as Button
 import Nutrient.View exposing (..)
 import Food.View exposing (..)
 import Connection.View exposing (..)
@@ -68,6 +70,8 @@ type alias Model =
         Dict NutrientId Nutrient
         -- Unfortunately, Elm Bootstrap requires state
     , nutrientPopovers : Dict NutrientId Popover.State
+    , modalState : Modal.State
+    , selectedNutrientId : Maybe NutrientId
     , selectedFoods : LoadState (Dict FoodId Food)
     , searchableFoods : Dict FoodId SearchFood
     , foodSearchResults : LoadState (List SearchFood)
@@ -98,6 +102,7 @@ type Msg
     | RemoveFood FoodId
     | Hover HoverItem
     | UpdateNutrientPopover NutrientId Popover.State
+    | UpdateModalState NutrientId Modal.State
     | ConnectionModal ModalState
 
 
@@ -110,6 +115,8 @@ init flags location =
         { navbarState = navbarState
         , nutrients = flags.nutrients |> List.map (\n -> ( n.id, nutrientFlagToNutrient n )) |> Dict.fromList
         , nutrientPopovers = Dict.empty
+        , selectedNutrientId = Maybe.Nothing
+        , modalState = Modal.hiddenState
         , searchableFoods = flags.searchableFoods |> List.map (\n -> ( n.id, n )) |> Dict.fromList
         , selectedFoods = NotLoaded
         , foodSearchResults = NotLoaded
@@ -239,12 +246,24 @@ homePage model =
                 |> calculateNutrientPercentageFromFoods hoverItemFood (emptyDictIfNotLoaded model.selectedFoods)
                 |> Dict.values
 
+        nutrientForModal =
+            model.selectedNutrientId |> Maybe.andThen (\x -> Dict.get x model.nutrients)
+
+        nutrientNameForModal =
+            nutrientForModal |> Maybe.andThen (\x -> Just (Nutrient.View.nutrientTitle x)) |> Maybe.withDefault ""
+
+        nutrientDescriptionForModal =
+            nutrientForModal |> Maybe.andThen (\x -> Just x.description) |> Maybe.withDefault ""
+
         constructNutrientSection text nutrientType =
             nutrientSection
-                { onHover = UpdateNutrientPopover }
+                { onHover = UpdateNutrientPopover
+                , onClick = UpdateModalState
+                }
                 text
                 (hoverItemIsFood model.hoverItem)
                 model.nutrientPopovers
+                model.modalState
                 (model.nutrients
                     |> filterNutrient nutrientType
                     |> calculateNutrients
@@ -266,6 +285,20 @@ homePage model =
                     [ constructNutrientSection "Minerals" Mineral
                     ]
                 ]
+            ]
+        , Grid.col []
+            [ Modal.config (UpdateModalState (model.selectedNutrientId |> Maybe.withDefault ""))
+                |> Modal.large
+                |> Modal.h5 [] [ text nutrientNameForModal ]
+                |> Modal.body [] [ p [] [ text nutrientDescriptionForModal ] ]
+                |> Modal.footer []
+                    [ Button.button
+                        [ Button.outlinePrimary
+                        , Button.attrs [ onClick (UpdateModalState (model.selectedNutrientId |> Maybe.withDefault "") Modal.hiddenState) ]
+                        ]
+                        [ text "Close" ]
+                    ]
+                |> Modal.view model.modalState
             ]
         ]
 
@@ -482,6 +515,9 @@ update message model =
                         |> Dict.insert nutrientId popoverState
             }
                 ! []
+
+        UpdateModalState nutrientId state ->
+            ( { model | modalState = state, selectedNutrientId = Just nutrientId }, Cmd.none )
 
         ConnectionModal modal ->
             { model

@@ -5,9 +5,12 @@ import Helpers exposing (getPercentage)
 import Nutrient.Models exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (style)
+import Html.Events exposing (onClick)
 import Bootstrap.Grid as Grid
 import Bootstrap.Progress as Progress
 import Bootstrap.Popover as Popover
+import Bootstrap.Modal as Modal
+import Bootstrap.Button as Button
 import Html.CssHelpers
 import AppCss
 import Round exposing (round)
@@ -31,11 +34,17 @@ getPercentageColour percentage =
 
 type alias NutrientProgressConfig msg =
     { onHover : NutrientId -> Popover.State -> msg
+    , onClick : NutrientId -> Modal.State -> msg
     }
 
 
-nutrientProgress : NutrientProgressConfig msg -> Bool -> Dict NutrientId Popover.State -> Nutrient -> Html msg
-nutrientProgress config isHovered nutrientPopovers nutrient =
+nutrientTitle : Nutrient -> String
+nutrientTitle nutrient =
+    nutrient.name ++ " (" ++ (Round.round 2 nutrient.amount) ++ " / " ++ toString nutrient.dailyIntake ++ nutrient.unitOfMeasure ++ ")"
+
+
+nutrientProgress : NutrientProgressConfig msg -> Bool -> Dict NutrientId Popover.State -> Modal.State -> Nutrient -> Html msg
+nutrientProgress config isHovered nutrientPopovers modalState nutrient =
     let
         hoverPercentage =
             getPercentage nutrient.hoveredAmount nutrient.dailyIntake
@@ -81,9 +90,9 @@ nutrientProgress config isHovered nutrientPopovers nutrient =
                 |> Maybe.withDefault Popover.initialState
 
         popoverTitle =
-            nutrient.name ++ " (" ++ Round.round 2 nutrient.amount ++ " / " ++ toString nutrient.dailyIntake ++ nutrient.unitOfMeasure ++ ")"
+            nutrientTitle nutrient
     in
-        div [ class [ AppCss.NutrientProgress ] ]
+        div [ class [ AppCss.NutrientProgress ], onClick <| (config.onClick nutrient.id Modal.visibleState) ]
             [ Popover.config
                 (div
                     (Popover.onHover nutrientPopover (config.onHover nutrient.id))
@@ -103,13 +112,13 @@ nutrientProgress config isHovered nutrientPopovers nutrient =
             ]
 
 
-nutrientSection : NutrientProgressConfig msg -> String -> Bool -> Dict NutrientId Popover.State -> List Nutrient -> Html msg
-nutrientSection config category foodIsHovered nutrientPopovers nutrients =
+nutrientSection : NutrientProgressConfig msg -> String -> Bool -> Dict NutrientId Popover.State -> Modal.State -> List Nutrient -> Html msg
+nutrientSection config category foodIsHovered nutrientPopovers modalState nutrients =
     Grid.row []
         [ Grid.col []
             ([ h2 [] [ text category ] ]
                 ++ (List.map
-                        (nutrientProgress config foodIsHovered nutrientPopovers)
+                        (nutrientProgress config foodIsHovered nutrientPopovers modalState)
                         nutrients
                    )
             )

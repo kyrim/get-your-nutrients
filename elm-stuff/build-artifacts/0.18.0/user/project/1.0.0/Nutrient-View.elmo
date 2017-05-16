@@ -1,3 +1,21 @@
+var _user$project$Nutrient_View$nutrientTitle = function (nutrient) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		nutrient.name,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			' (',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(_myrho$elm_round$Round$round, 2, nutrient.amount),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' / ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(nutrient.dailyIntake),
+						A2(_elm_lang$core$Basics_ops['++'], nutrient.unitOfMeasure, ')'))))));
+};
 var _user$project$Nutrient_View$getPercentageColour = function (percentage) {
 	return (_elm_lang$core$Native_Utils.cmp(percentage, 20) < 1) ? _user$project$AppCss$nutrientLow : ((_elm_lang$core$Native_Utils.cmp(percentage, 50) < 1) ? _user$project$AppCss$nutrientMedium : ((_elm_lang$core$Native_Utils.cmp(percentage, 80) < 1) ? _user$project$AppCss$nutrientHigh : _user$project$AppCss$nutrientFull));
 };
@@ -5,24 +23,9 @@ var _user$project$Nutrient_View$_p0 = _rtfeldman$elm_css_helpers$Html_CssHelpers
 var _user$project$Nutrient_View$id = _user$project$Nutrient_View$_p0.id;
 var _user$project$Nutrient_View$class = _user$project$Nutrient_View$_p0.$class;
 var _user$project$Nutrient_View$classList = _user$project$Nutrient_View$_p0.classList;
-var _user$project$Nutrient_View$nutrientProgress = F4(
-	function (config, isHovered, nutrientPopovers, nutrient) {
-		var popoverTitle = A2(
-			_elm_lang$core$Basics_ops['++'],
-			nutrient.name,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				' (',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					A2(_myrho$elm_round$Round$round, 2, nutrient.amount),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						' / ',
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							_elm_lang$core$Basics$toString(nutrient.dailyIntake),
-							A2(_elm_lang$core$Basics_ops['++'], nutrient.unitOfMeasure, ')'))))));
+var _user$project$Nutrient_View$nutrientProgress = F5(
+	function (config, isHovered, nutrientPopovers, modalState, nutrient) {
+		var popoverTitle = _user$project$Nutrient_View$nutrientTitle(nutrient);
 		var nutrientPopover = A2(
 			_elm_lang$core$Maybe$withDefault,
 			_rundis$elm_bootstrap$Bootstrap_Popover$initialState,
@@ -44,7 +47,12 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 						_0: _user$project$AppCss$NutrientProgress,
 						_1: {ctor: '[]'}
 					}),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(
+						A2(config.onClick, nutrient.id, _rundis$elm_bootstrap$Bootstrap_Modal$visibleState)),
+					_1: {ctor: '[]'}
+				}
 			},
 			{
 				ctor: '::',
@@ -163,8 +171,8 @@ var _user$project$Nutrient_View$nutrientProgress = F4(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Nutrient_View$nutrientSection = F5(
-	function (config, category, foodIsHovered, nutrientPopovers, nutrients) {
+var _user$project$Nutrient_View$nutrientSection = F6(
+	function (config, category, foodIsHovered, nutrientPopovers, modalState, nutrients) {
 		return A2(
 			_rundis$elm_bootstrap$Bootstrap_Grid$row,
 			{ctor: '[]'},
@@ -189,11 +197,12 @@ var _user$project$Nutrient_View$nutrientSection = F5(
 						},
 						A2(
 							_elm_lang$core$List$map,
-							A3(_user$project$Nutrient_View$nutrientProgress, config, foodIsHovered, nutrientPopovers),
+							A4(_user$project$Nutrient_View$nutrientProgress, config, foodIsHovered, nutrientPopovers, modalState),
 							nutrients))),
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Nutrient_View$NutrientProgressConfig = function (a) {
-	return {onHover: a};
-};
+var _user$project$Nutrient_View$NutrientProgressConfig = F2(
+	function (a, b) {
+		return {onHover: a, onClick: b};
+	});
