@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var elm = require('gulp-elm');
-var fs = require ('fs');
+var fs = require('fs');
 var elmCss = require('elm-css');
 var browserify = require('browserify');
 var babel = require('babelify');
@@ -39,6 +39,16 @@ var paths = {
   appEntryFile: 'client/js/app.js',
   appOutputFile: 'app.js'
 }
+function createDirRecursive(dir) {
+  dir.split('/')
+    .reduce((path, folder) => {
+      path += folder + '/';
+      if (!fs.existsSync(path)) {
+        fs.mkdirSync(path);
+      }
+      return path;
+    }, '');
+}
 
 gulp.task(tasks.elmInit, elm.init);
 
@@ -56,24 +66,24 @@ gulp.task(tasks.browserify, [tasks.elmCompile], function () {
       presets: ["es2015"]
     })
     .transform({
-  global: true
-}, 'uglifyify')
+      global: true
+    }, 'uglifyify')
     .bundle()
     .pipe(source(paths.appOutputFile))
     .pipe(gulp.dest(paths.destinationJsFolder));
 });
 
-gulp.task(tasks.elmCssCompile, function() {
+gulp.task(tasks.elmCssCompile, function () {
   var rootDir = process.cwd() + "/";
   var elmcssDir = rootDir + paths.destinationElmCssFile;
 
-  if (!fs.existsSync(elmcssDir)) fs.mkdirSync(elmcssDir);
+  if (!fs.existsSync(elmcssDir)) createDirRecursive(elmcssDir);
 
   return elmCss(
-      rootDir,
-      rootDir + paths.sourceElmCssFolder + paths.sourceElmCssFile,
-      elmcssDir
-    )
+    rootDir,
+    rootDir + paths.sourceElmCssFolder + paths.sourceElmCssFile,
+    elmcssDir
+  )
 });
 
 gulp.task(tasks.static, function () {
@@ -81,7 +91,7 @@ gulp.task(tasks.static, function () {
     .pipe(gulp.dest(paths.destinationAssetsFolder));
 });
 
-gulp.task(tasks.provisionData, function() {
+gulp.task(tasks.provisionData, function () {
   return provisionData('data/', 'data/foods.json', 'client/js/searchableFoods.json', 'client/js/nutrients.json');
 });
 
