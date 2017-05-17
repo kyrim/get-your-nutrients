@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gulp build-all",
-    "postinstall": "npm install -g gulp && elm package install -y && npm install -g elm-css && gulp build-all",
+    "postinstall": "npm install -g gulp && elm-package install -y && npm install -g elm-css && npm install -g elm && gulp build-all",
     "watch": "gulp watch"
   },
   "dependencies": {
