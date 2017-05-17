@@ -13,20 +13,7 @@ type alias ConnectionErrorConfig msg =
 
 loadingImage : Html msg
 loadingImage =
-    li []
-        [ div [ class "spinner" ]
-            [ div [ class "rect1" ]
-                []
-            , div [ class "rect2" ]
-                []
-            , div [ class "rect3" ]
-                []
-            , div [ class "rect4" ]
-                []
-            , div [ class "rect5" ]
-                []
-            ]
-        ]
+    div [] [ text "Loading..." ]
 
 
 connectionError : ConnectionErrorConfig msg -> ModalState -> Html msg
