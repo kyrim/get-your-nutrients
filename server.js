@@ -18,6 +18,8 @@ app.get('/api/food/:foodId', function (req, res) {
       res.sendFile('/dist/index.html');
   });
 
-app.listen(3000, function () {
-    console.log("Listening on port 3000");
+var port = process.env.PORT || 3000;
+
+app.listen(port, function () {
+    console.log("Listening on port " + port);
 });
